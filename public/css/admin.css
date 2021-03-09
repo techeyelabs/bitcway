@@ -1,0 +1,25 @@
+body{
+    background-color: #0B0C10;
+}
+.chiller-theme .sidebar-wrapper {
+    background: #202833;
+}
+
+.card {
+    box-shadow: inset #081420;
+    background-color: #202833;
+}
+
+.form-control, .form-check-input {
+    background-color: #0B0C10 !important;
+    color: darkgray !important;
+    border: none;
+
+}
+.login-form .form-control:focus {
+    background-color: #0B0C10 !important;
+}
+
+table.dataTable tbody tr {
+    background-color: transparent !important;
+}
