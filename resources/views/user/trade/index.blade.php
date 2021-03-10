@@ -20,6 +20,25 @@
         .cursor-pointer{
             cursor: pointer;
         }
+        output {
+            display: block;
+            text-align:center;
+        }
+        .rangeslider--horizontal {
+            height: 10px;
+            width: 400px;
+            max-width: 100%;
+        }
+        .rangeslider--horizontal .rangeslider__handle {
+            top: -5px;
+        }
+        .rangeslider__handle{
+            width: 20px;
+            height: 20px;
+        }
+        .rangeslider__fill {
+            background: #198754;
+        }
     </style>
 @endsection
 @section('content')
@@ -105,6 +124,18 @@
                                         <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell">SELL</button>
                                     </div>
                                 </div>
+                                <div class="mt-5">
+
+                                    <input type="number" id="sliderRange" value="" class="form-control">
+                                    <output></output>
+                                    <br>
+                                    <input type="range" min="0" max="100" value="0">
+                                    <br>
+                                    <br>
+                                    <br>
+{{--                                    <button data-behaviour="toggle">Toggle disabled state</button>--}}
+                                </div>
+
                             </div>
                         </div>
                         @else
@@ -276,9 +307,10 @@
         $(".page-wrapper").removeClass("toggled");
     </script>
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.js"></script>
 
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+
     <script>
         const socket = io('http://bitc-way.com:3000');
         showLoader('Loading...');
@@ -532,5 +564,44 @@
             }
         });
     
+    </script>
+    <script>
+        $(function() {
+            var $document   = $(document),
+                $inputRange = $('input[type="range"]');
+
+            // Example functionality to demonstrate a value feedback
+            function valueOutput(element) {
+                var value = element.value,
+                    output = element.parentNode.getElementsByTagName('output')[0];
+                // output.innerHTML = value;
+                let slidervalue = value;
+                document.getElementById("sliderRange").value = slidervalue;
+            }
+            for (var i = $inputRange.length - 1; i >= 0; i--) {
+                valueOutput($inputRange[i]);
+            };
+            $document.on('input', 'input[type="range"]', function(e) {
+                valueOutput(e.target);
+            });
+            // end
+
+            // Example functionality to demonstrate disabled functionality
+            $document .on('click', 'button[data-behaviour="toggle"]', function(e) {
+                var $inputRange = $('input[type="range"]', e.target.parentNode);
+                if ($inputRange[0].disabled) {
+                    $inputRange.prop("disabled", false);
+                }
+                else {
+                    $inputRange.prop("disabled", true);
+                }
+
+                $inputRange.rangeslider('update');
+            });
+
+            $inputRange.rangeslider({
+                polyfill: false
+            });
+        });
     </script>
 @endsection
