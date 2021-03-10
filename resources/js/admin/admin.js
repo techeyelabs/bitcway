@@ -9,7 +9,7 @@ import VeeValidate from 'vee-validate';
 import 'flatpickr/dist/flatpickr.css';
 import VueCookie from 'vue-cookie';
 import { Admin } from 'craftable';
-import VModal from 'vue-js-modal'
+import VModal from 'vue-js-modal';
 import Vue from 'vue';
 
 import './app-components/bootstrap';

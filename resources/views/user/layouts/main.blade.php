@@ -19,6 +19,10 @@
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
+    <!-- Maizied -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.css">
+   
+
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/user.css">
     @yield('custom_css')
