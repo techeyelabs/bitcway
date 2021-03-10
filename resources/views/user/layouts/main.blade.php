@@ -83,6 +83,20 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{route('user-trade', ['type' => 'derivative'])}}">
+                                <i class="fas fa-route"></i>
+                                <span>Derivatives</span>
+                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{route('user-trade', ['type' => 'finance'])}}">
+                                <i class="fas fa-route"></i>
+                                <span>Finance</span>
+                                {{--<span class="badge badge-pill badge-primary">Beta</span>--}}
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{route('user-transactions')}}">
                                 <i class="fas fa-money-bill-wave"></i>
                                 <span>Buy/Sell</span>

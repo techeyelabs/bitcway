@@ -16,6 +16,12 @@ class TradeController extends Controller
 {
     public function index(Request $request)
     {
+        if(isset($request->type)){
+            $data = [
+                'type' => $request->type
+            ];
+            return view('user.trade.index', $data);
+        }
         return view('user.trade.index');
     }
     public function getChartData(Request $request)
