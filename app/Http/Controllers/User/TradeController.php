@@ -12,6 +12,7 @@ use App\Models\Currency;
 use App\Models\UserWallet;
 use App\Models\TransactionHistory;
 use App\Models\LockedSavingsSetting;
+use App\Models\LockedSaving;
 
 class TradeController extends Controller
 {
@@ -32,9 +33,29 @@ class TradeController extends Controller
         //dummy coin data grab
         $id = Currency::where('name', 'DSH')->pluck('id');
         $data['dummy_coin_balance'] = UserWallet::where('user_id', Auth::id())->where('currency_id', $id)->sum('balance');
+        $data['history'] = LockedSaving::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->get();
         $data['total'] = 0;
 
         return view('user.trade.finance', $data);
+    }
+
+    public function insertFinance(Request $request)
+    {
+        try {
+            $date = date('Y-m-d');
+            $plan = LockedSavingsSetting::where('id', $request->plan)->first();
+            $lockedInvest = new LockedSaving();
+            $lockedInvest->user_id = Auth::user()->id;
+            $lockedInvest->plan_id = $request->plan;
+            $lockedInvest->lot_count = $request->lot;
+            $lockedInvest->value_date = $date;
+            $lockedInvest->redemption_date = date('Y-m-d', strtotime($date . ' + ' . $plan->duration . ' days'));
+            $lockedInvest->expected_interest = $plan->interest_per_lot * $request->lot;
+            $lockedInvest->save();
+        } catch (Exception $e){
+            return route('user-trade-finance');
+        }
+        return redirect()->back();
     }
 
     public function getChartData(Request $request)

@@ -73,61 +73,86 @@
                             <span>{{$item->rate}}</span>
                             <span>{{$item->duration}}</span>
                             <span>{{$item->interest_per_lot}}</span>
-                            <span class="badge bg-primary pill cursor-pointer" onclick="changeData({{$item->rate}}, {{$item->duration}}, {{$item->interest_per_lot}})">Transfer</span>
+                            <span class="badge bg-primary pill cursor-pointer" onclick="changeData({{$item->id}}, {{$item->rate}}, {{$item->duration}}, {{$item->interest_per_lot}})">Transfer</span>
                         </li>
                     @endforeach
                 </ul>
             </div>
         </div>
-        <div class="card mt-3 confirmation" style="display: none">
-            <div class="card-body">
-               <div class="row col-md-12">
-                   <div class="col-md-6 mb-5 mt-4" style="padding-left: 5%">
-                       <div>coin<br/><h4>OMG</h4></div>
-                       <div>Activity Duration <span class="day-block"><span id="days">7</span> days</span></div><br/>
-                       <div>Lot amount (Available Lot: 0)</div>
-                       <div>
-                           <input type="number" class="lot-input" onchange="setTotalInterest(this)">
-                           <input type="hidden" id="ratePerLot">
+        <form method="post" action="{{route('user-trade-finance-entry')}}">
+            @csrf
+            <div class="card mt-3 confirmation" style="display: none">
+                <div class="card-body list-group col-md-8 offset-md-2">
+                   <div class="row col-md-12">
+                       <div class="col-md-6 mb-5 mt-4" style="padding-left: 5%">
+                           <div>coin<br/><h4>OMG</h4></div>
+                           <div>Activity Duration <span class="day-block"><span id="days">7</span> days</span></div><br/>
+                           <div>Lot amount (Available Lot: {!! floor($dummy_coin_balance/5) !!})</div>
+                           <div>
+                               <input type="number" class="lot-input" name="lot" id="lot" onchange="setTotalInterest(this)">
+                               <input type="hidden" id="ratePerLot" name="ratePerLot">
+                               <input type="hidden" id="plan" name="plan">
+                               <input type="hidden" id="balance" name="balance" value={{$dummy_coin_balance}}>
+                           </div>
+                           <div>= <span id="total">0</span>&nbsp;<span>OMGC</span></div>
                        </div>
-                       <div>= <span>0</span>&nbsp;<span>OMGC</span></div>
+                       <div class="row col-md-6 mb-5 mt-4">
+                           <div>
+                               <span style="float: left">Lot Size</span>
+                               <span style="float: right">5 OMGC</span>
+                           </div>
+                           <div>
+                               <span style="float: left">Interest Per Lot</span>
+                               <span style="float: right" id="ipl">0.1201 (6.31% Annually)</span>
+                           </div>
+                           <div>
+                               <span style="float: left">Value Date</span>
+                               <span style="float: right">{!! date('Y-m-d h:i:s') !!}</span>
+                           </div>
+                           <div>
+                               <span style="float: left">Redemption Date</span>
+                               <span style="float: right" id="termination">2021-02-26 09:00</span>
+                           </div>
+                           <div>
+                               <span style="float: left">Expected Interest</span>
+                               <span style="float: right" id="interest">0 OMGC</span>
+                           </div>
+                       </div>
                    </div>
-                   <div class="row col-md-6 mb-5 mt-4">
-                       <div>
-                           <span style="float: left">Lot Size</span>
-                           <span style="float: right">5 OMGC</span>
-                       </div>
-                       <div>
-                           <span style="float: left">Interest Per Lot</span>
-                           <span style="float: right" id="ipl">0.1201 (6.31% Annually)</span>
-                       </div>
-                       <div>
-                           <span style="float: left">Value Date</span>
-                           <span style="float: right">{!! date('Y-m-d h:i:s') !!}</span>
-                       </div>
-                       <div>
-                           <span style="float: left">Redemption Date</span>
-                           <span style="float: right" id="termination">2021-02-26 09:00</span>
-                       </div>
-                       <div>
-                           <span style="float: left">Expected Interest</span>
-                           <span style="float: right" id="interest">0 OMGC</span>
-                       </div>
-                   </div>
-               </div>
+                </div>
+                <div class="card-body list-group col-md-8 offset-md-2">
+                    <div class="row col-md-12" style="text-align: right">
+                        <span>
+                            <input type="checkbox" id="acceptance" name="acceptance" value="confirm" onchange="confirmButtonCheck()">
+                            <label for="vehicle1"> I have read and accepted the terms and conditions of OMGCoin</label>
+                        </span>
+                    </div>
+                    <div class="row col-md-12" style="text-align: right">
+                        <span>
+                            <button class="confirm-button" disabled>Confirm Transaction</button>
+                        </span>
+                    </div>
+                </div>
             </div>
+        </form>
+        <div class="card mt-3">
             <div class="card-body">
-                <div class="row col-md-12" style="text-align: right">
-                    <span>
-                        <input type="checkbox" id="acceptance" name="acceptance" value="Bike" onchange="confirmButtonCheck()">
-                        <label for="vehicle1"> I have read and accepted the terms and conditions of OMGCoin</label>
-                    </span>
-                </div>
-                <div class="row col-md-12" style="text-align: right">
-                    <span>
-                        <button class="confirm-button" disabled>Confirm Transaction</button>
-                    </span>
-                </div>
+                <ul class="list-group col-md-8 offset-md-2">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <p class="col-1">Lot</p>
+                        <p class="col-4">Value Date</p>
+                        <p class="col-4">Redemption Date</p>
+                        <p class="col-2">Expected Interest</p>
+                    </li>
+                    @foreach($history as $item)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p class="col-1">{{$item->lot_count}}</p>
+                            <p class="col-4">{{$item->value_date}}</p>
+                            <p class="col-4">{{$item->redemption_date}}</p>
+                            <p class="col-2">{{$item->expected_interest}}</p>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
         </div>
     </div>
@@ -137,7 +162,7 @@
 
 @section('custom_js')
     <script>
-        function changeData(rate, duration, interest)
+        function changeData(id, rate, duration, interest)
         {
             console.log(rate);
             console.log(duration);
@@ -145,6 +170,7 @@
             $('.confirmation').show();
             $('#days').html(duration);
             $('#ratePerLot').val(interest);
+            $('#plan').val(id);
             $('#ipl').html(interest+' ('+rate+'%'+' Annually)');
 
             let myDate = new Date(new Date().getTime()+(parseInt(duration)*24*60*60*1000));
@@ -153,7 +179,7 @@
 
         function confirmButtonCheck()
         {
-            if ($('input[class="lot-input"]').val() > 0 && $('input[id="acceptance"]:checked').length > 0){
+            if ($('input[class="lot-input"]').val() > 0 && $('input[id="acceptance"]:checked').length > 0 && $('#balance').val()/5 >= $('input[class="lot-input"]').val()){
                 $('.confirm-button').attr('disabled', false);
             } else {
                 $('.confirm-button').attr('disabled', true);
@@ -163,9 +189,11 @@
         function setTotalInterest(value)
         {
             console.log(value.value);
+            console.log($('#balance').val());
             let totalinterest = $('#ratePerLot').val() * (value.value);
             $('#interest').html(totalinterest+' OMGC');
-            if (value.value > 0 && $('input[id="acceptance"]:checked').length > 0){
+            $('#total').html(value.value * 5);
+            if (value.value > 0 && $('input[id="acceptance"]:checked').length > 0 && parseInt($('#balance').val()/5) >= value.value){
                 $('.confirm-button').attr('disabled', false);
             } else {
                 $('.confirm-button').attr('disabled', true);

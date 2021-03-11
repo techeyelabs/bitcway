@@ -92,10 +92,7 @@
                 full_data.forEach(async function (item){
                     if (item[0] === 't'+currencyName+'USD' ){
                         $('#CoinpriceIntoMycoin'+i).html((currencyAmount* item[1] ).toFixed(2));
-<<<<<<< HEAD
                         $('#CoinpriceIntoMycoin2'+i).html((currencyAmount* item[1] ).toFixed(2));
-=======
->>>>>>> origin/dev_ashik
                     }
                 });
             };
