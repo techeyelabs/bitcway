@@ -14,17 +14,41 @@
     </div>
     <div class="card mt-3">
         <div class="card-body">
-            <div class="text-center"><h4>Asset Breakdown</h4></div>
+            <div class="text-center"><h4>Trade Wallet</h4></div>
             <ul class="list-group col-md-6 offset-md-3">
                 <?php
                     $i = 0;
                     foreach($wallets as $index =>$item ){
                         $i++;
                 ?>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                         <span class="badge bg-primary pill" id="MyCoinCurrencyName{{$index}}">{{$item->currency->name}}</span>
-                        <span class="badge bg-primary pill" id="CoinpriceIntoMycoin{{$index}}"></span>
-                        <span class="badge bg-primary pill" id="MyTotalCoinAmount{{$index}}">{{$item->balance}}</span>
+{{--<span class="badge bg-primary pill" id="MyCoinCurrencyName{{$index}}">{{$item->currency->name}}</span>--}}
+                    <li class="row list-group-item d-flex justify-content-between align-items-center">
+                        <p class="col" id="MyCoinCurrencyName{{$index}}" style="text-align: left; color:white;">{{$item->currency->name}}</p>
+                        <p class="col" id="CoinpriceIntoMycoin{{$index}}" style="text-align: right;color:white;"></p>
+                        <p class="col" id="MyTotalCoinAmount{{$index}}" style="text-align: right;color:white;">{{$item->balance}}</p>
+                    </li>
+                <?php
+                    }
+                ?>
+                <p style="display: none;" id="myCoinIndex">{{$i}}</p>
+            </ul>
+        </div>
+    </div>
+    <div class="card mt-3">
+        <div class="card-body">
+            <div class="text-center"><h4>Derivative Wallet</h4></div>
+            <ul class="list-group col-md-6 offset-md-3">
+                <?php
+                    $i = 0;
+                    foreach($wallets as $index =>$item ){
+                        $i++;
+                ?>
+{{--<span class="badge bg-primary pill" id="MyCoinCurrencyName{{$index}}">{{$item->currency->name}}</span>--}}
+                    <li class="row list-group-item d-flex justify-content-between align-items-center">
+                        <p class="col" id="MyCoinCurrencyName{{$index}}" style="text-align: left; color:white;">{{$item->currency->name}}</p>
+                        <p class="col" id="derivati8vePercent" style="text-align: left; color:white;">10X</p>
+                        <p class="col" id="CoinpriceIntoMycoin2{{$index}}" style="text-align: right;color:white;"></p>
+                        <p class="col" id="MyTotalCoinAmount{{$index}}" style="text-align: right;color:white;">{{$item->balance}}</p>
                     </li>
                 <?php
                     }
@@ -53,7 +77,8 @@
                 let full_data = trackers.trackers;
                 full_data.forEach(async function (item){
                     if (item[0] === 't'+currencyName+'USD' ){
-                        $('#CoinpriceIntoMycoin'+i).html(currencyAmount* item[1] );
+                        $('#CoinpriceIntoMycoin'+i).html((currencyAmount* item[1] ).toFixed(2));
+                        $('#CoinpriceIntoMycoin2'+i).html((currencyAmount* item[1] ).toFixed(2));
                     }
                 });
             };

@@ -132,8 +132,6 @@
                                     <input type="range" min="0" max="100" value="0">
                                     <br>
                                     <br>
-                                    <br>
-{{--                                    <button data-behaviour="toggle">Toggle disabled state</button>--}}
                                 </div>
 
                             </div>
