@@ -21,11 +21,18 @@
                     foreach($wallets as $index =>$item ){
                         $i++;
                 ?>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
                          <span class="badge bg-primary pill" id="MyCoinCurrencyName{{$index}}">{{$item->currency->name}}</span>
                         <span class="badge bg-primary pill" id="CoinpriceIntoMycoin{{$index}}"></span>
                         <span class="badge bg-primary pill" id="MyTotalCoinAmount{{$index}}">{{$item->balance}}</span>
-                    </li>
+                    </li> --}}
+
+                    <li class="row list-group-item d-flex justify-content-between align-items-center">
+                        <p class="col" id="MyCoinCurrencyName{{$index}}" style="text-align: left; color:white;">{{$item->currency->name}}</p>
+                        <p class="col" id="CoinpriceIntoMycoin{{$index}}" style="text-align: right;color:white;margin-right: 15%;"></p>
+                        <p class="col" id="MyTotalCoinAmount{{$index}}" style="text-align: right;color:white;">{{$item->balance}}</p>                   
+                   </li>
+
                 <?php
                     }
                 ?>
@@ -53,7 +60,7 @@
                 let full_data = trackers.trackers;
                 full_data.forEach(async function (item){
                     if (item[0] === 't'+currencyName+'USD' ){
-                        $('#CoinpriceIntoMycoin'+i).html(currencyAmount* item[1] );
+                        $('#CoinpriceIntoMycoin'+i).html((currencyAmount* item[1] ).toFixed(2));
                     }
                 });
             };
