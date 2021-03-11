@@ -24,6 +24,7 @@ class TradeController extends Controller
         }
         return view('user.trade.index');
     }
+
     public function getChartData(Request $request)
     {
         if(empty($request->currency)) return response()->json(['status' => false]);
@@ -36,6 +37,7 @@ class TradeController extends Controller
         else $balance = 0;
         return response()->json(['status' => true, 'chartData' => $response, 'balance' => $balance]);
     }
+
     public function buy(Request $request)
     {
         $currency = Currency::where('name', $request->currency)->first();
@@ -47,6 +49,11 @@ class TradeController extends Controller
             $UserWallet->balance = $request->buyAmount;
         }else{
             $UserWallet->balance = $UserWallet->balance+$request->buyAmount;
+        }
+
+        $leverage = 0;
+        if(isset($request->leverage)){
+            $leverage = $request->leverage;
         }
         
         $UserWallet->user_id = Auth::user()->id;
@@ -60,12 +67,14 @@ class TradeController extends Controller
         $TransactionHistory->amount = $request->buyAmount;
         $TransactionHistory->equivalent_amount = $request->calcBuyAmount;
         $TransactionHistory->type = 1;
+        $TransactionHistory->leverage = $leverage;
         $TransactionHistory->user_id = Auth::user()->id;
         $TransactionHistory->currency_id = $currency->id;
         $TransactionHistory->save();
 
         return response()->json(['status' => true]);
     }
+
     public function sell(Request $request)
     {
         $currency = Currency::where('name', $request->currency)->first();
