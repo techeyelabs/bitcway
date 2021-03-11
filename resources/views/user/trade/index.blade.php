@@ -133,9 +133,7 @@
                                     <br>
                                     <br>
                                     <br>
-{{--                                    <button data-behaviour="toggle">Toggle disabled state</button>--}}
                                 </div>
-
                             </div>
                         </div>
                         @else
@@ -289,20 +287,12 @@
                         </div>
                     </div>
                 </div>
-                
-
             </div>
         </div>
     </div>
-
-
 @endsection
 
 @section('custom_js')
-
-
-
-
     <script>
         $(".page-wrapper").removeClass("toggled");
     </script>
@@ -516,7 +506,8 @@
                     axios.post('{{route("user-trade-buy")}}', {
                         currency: that.currency,
                         buyAmount: that.amount,
-                        calcBuyAmount: that.calcAmount
+                        calcBuyAmount: that.calcAmount,
+                        leverage: $("#sliderRange").val()
                     })
                     .then(function (response) {
                         if(response.data.status){
