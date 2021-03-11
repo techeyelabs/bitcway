@@ -44,7 +44,11 @@
 @section('content')
 
     <div id="wrap" class="trade">
-        <h2>Trade</h2>
+        @if(isset($type))
+            <h2>Derivatives</h2>
+        @else
+            <h2>Trade</h2>
+        @endif
         <hr>
         <div class="row">
             <div class="col-md-3 mb-3">
