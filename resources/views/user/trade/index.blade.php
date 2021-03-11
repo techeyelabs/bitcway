@@ -87,59 +87,58 @@
                     <div class="card">
                         @if(isset($type))
                             <div class="card-body">
-                            <h4>Buy/Sell @{{currency}}</h4> 
-                            {{-- <small class="float-end">BALANCE: @{{usdBalance}}</small> --}}
-                            <hr>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="">PRICE USD:</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control mb-1" placeholder="" v-model="selectedPrice">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="">
-                                                   <span class="text-muted">~@{{calcAmount.toFixed(2)}}</span>
-                                                </span>
+                                <h4>Buy/Sell @{{currency}}</h4>
+                                {{-- <small class="float-end">BALANCE: @{{usdBalance}}</small> --}}
+                                <hr>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="">PRICE USD:</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control mb-1" placeholder="" v-model="selectedPrice">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="">
+                                                       <span class="text-muted">~@{{calcAmount.toFixed(2)}}</span>
+                                                    </span>
+                                                </div>
                                             </div>
+                                            <small>BID</small>
+                                            <small class="float-end text-success cursor-pointer" v-on:click="selectedPrice=latestBid">
+                                                <i v-if="bidIncrease" class="fas fa-sort-up"></i>
+                                                <i v-else class="fas fa-sort-down"></i>
+                                                @{{latestBid}}
+                                            </small>
                                         </div>
-                                        <small>BID</small>
-                                        <small class="float-end text-success cursor-pointer" v-on:click="selectedPrice=latestBid">
-                                            <i v-if="bidIncrease" class="fas fa-sort-up"></i>
-                                            <i v-else class="fas fa-sort-down"></i>
-                                            @{{latestBid}}
-                                        </small>
                                     </div>
-                                    <div class="d-grid">
-                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy">BUY</button>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="">AMOUNT @{{currency}}:</label>
+                                            <input type="text" class="form-control mb-1" placeholder="" v-model="amount">
+                                            <small>ASK</small>
+                                            <small class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
+                                                <i v-if="askIncrease" class="fas fa-sort-up"></i>
+                                                <i v-else class="fas fa-sort-down"></i>
+                                                @{{latestAsk}}
+                                            </small>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="">AMOUNT @{{currency}}:</label>
-                                        <input type="text" class="form-control mb-1" placeholder="" v-model="amount">
-                                        <small>ASK</small>
-                                        <small class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
-                                            <i v-if="askIncrease" class="fas fa-sort-up"></i>
-                                            <i v-else class="fas fa-sort-down"></i>
-                                            @{{latestAsk}}
-                                        </small>
+                                <div class="row mb-3">
+                                    <div >
+                                        <input type="number" id="sliderRange" value="" class="form-control">
+                                        <output class="mb-3"></output>
+                                        <input type="range" min="0" max="100" value="0">
                                     </div>
-                                    <div class="d-grid">
+                                </div>
+                                <div class="row mt-5">
+                                    <div class="col d-grid">
+                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy">BUY</button>
+                                    </div>
+                                    <div class="col d-grid">
                                         <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell">SELL</button>
                                     </div>
                                 </div>
-                                <div class="mt-5">
-
-                                    <input type="number" id="sliderRange" value="" class="form-control">
-                                    <output></output>
-                                    <br>
-                                    <input type="range" min="0" max="100" value="0">
-                                    <br>
-                                    <br>
-                                    <br>
-                                </div>
                             </div>
-                        </div>
                         @else
                             <div class="card-body">
                             <h4>Buy/Sell @{{currency}}</h4>
@@ -218,9 +217,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                
-                                
                             </div>
                             <div class="col">
                                 <div class="card">
@@ -321,8 +317,6 @@
                 setInterval(function(){
                     Home.getOrders();
                 }, 5000);
-
-                
                 loaded = true;
             }
         })
@@ -364,9 +358,7 @@
 
                     Home.latestAsk = Home.asks[0][0];
                     Home.askIncrease = Home.asks[0][0]>Home.asks[1][0];
-                    
                 }
-                
             }
 
             let msg = JSON.stringify({ 
@@ -463,8 +455,6 @@
                         that.chart.remove();
                     }
                     that.chart = LightweightCharts.createChart(document.getElementById('chart'), {
-                        // width: 100%,
-                        // height: 300,
                         layout: {
                             backgroundColor: '#000000',
                             textColor: 'rgba(255, 255, 255, 0.9)',
@@ -555,12 +545,9 @@
                     let currency = that.selectedItem[0];
                     getOrders(currency);
                 }
-                
             }
         });
-    
-    </script>
-    <script>
+
         $(function() {
             var $document   = $(document),
                 $inputRange = $('input[type="range"]');
