@@ -22,8 +22,8 @@ class WalletController extends Controller
     public function deposit(Request $request)
     {
         $Bitfinex = new Bitfinex();
-        // $data['rate'] = $Bitfinex->getRate('BTC');
-        $data['rate'] = 46000;
+         $data['rate'] = $Bitfinex->getRate('BTC');
+//        $data['rate'] = 46000;
         return view('user.wallet.deposit', $data);
     }
     public function depositAction(Request $request)
