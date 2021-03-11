@@ -20,12 +20,35 @@
         .cursor-pointer{
             cursor: pointer;
         }
+        output {
+            display: block;
+            text-align:center;
+        }
+        .rangeslider--horizontal {
+            height: 10px;
+            width: 400px;
+            max-width: 100%;
+        }
+        .rangeslider--horizontal .rangeslider__handle {
+            top: -5px;
+        }
+        .rangeslider__handle{
+            width: 20px;
+            height: 20px;
+        }
+        .rangeslider__fill {
+            background: #198754;
+        }
     </style>
 @endsection
 @section('content')
 
     <div id="wrap" class="trade">
-        <h2>Trade</h2>
+        @if(isset($type))
+            <h2>Derivatives</h2>
+        @else
+            <h2>Trade</h2>
+        @endif
         <hr>
         <div class="row">
             <div class="col-md-3 mb-3">
@@ -64,49 +87,58 @@
                     <div class="card">
                         @if(isset($type))
                             <div class="card-body">
-                            <h4>Buy/Sell @{{currency}}</h4> 
-                            {{-- <small class="float-end">BALANCE: @{{usdBalance}}</small> --}}
-                            <hr>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="">PRICE USD:</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control mb-1" placeholder="" v-model="selectedPrice">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="">
-                                                   <span class="text-muted">~@{{calcAmount.toFixed(2)}}</span>
-                                                </span>
+                                <h4>Buy/Sell @{{currency}}</h4>
+                                {{-- <small class="float-end">BALANCE: @{{usdBalance}}</small> --}}
+                                <hr>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="">PRICE USD:</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control mb-1" placeholder="" v-model="selectedPrice">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="">
+                                                       <span class="text-muted">~@{{calcAmount.toFixed(2)}}</span>
+                                                    </span>
+                                                </div>
                                             </div>
+                                            <small>BID</small>
+                                            <small class="float-end text-success cursor-pointer" v-on:click="selectedPrice=latestBid">
+                                                <i v-if="bidIncrease" class="fas fa-sort-up"></i>
+                                                <i v-else class="fas fa-sort-down"></i>
+                                                @{{latestBid}}
+                                            </small>
                                         </div>
-                                        <small>BID</small>
-                                        <small class="float-end text-success cursor-pointer" v-on:click="selectedPrice=latestBid">
-                                            <i v-if="bidIncrease" class="fas fa-sort-up"></i>
-                                            <i v-else class="fas fa-sort-down"></i>
-                                            @{{latestBid}}
-                                        </small>
                                     </div>
-                                    <div class="d-grid">
-                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy">BUY</button>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="">AMOUNT @{{currency}}:</label>
+                                            <input type="text" class="form-control mb-1" placeholder="" v-model="amount">
+                                            <small>ASK</small>
+                                            <small class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
+                                                <i v-if="askIncrease" class="fas fa-sort-up"></i>
+                                                <i v-else class="fas fa-sort-down"></i>
+                                                @{{latestAsk}}
+                                            </small>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="">AMOUNT @{{currency}}:</label>
-                                        <input type="text" class="form-control mb-1" placeholder="" v-model="amount">
-                                        <small>ASK</small>
-                                        <small class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
-                                            <i v-if="askIncrease" class="fas fa-sort-up"></i>
-                                            <i v-else class="fas fa-sort-down"></i>
-                                            @{{latestAsk}}
-                                        </small>
+                                <div class="row mb-3">
+                                    <div >
+                                        <input type="number" id="sliderRange" value="" class="form-control">
+                                        <output class="mb-3"></output>
+                                        <input type="range" min="0" max="100" value="0">
                                     </div>
-                                    <div class="d-grid">
+                                </div>
+                                <div class="row mt-5">
+                                    <div class="col d-grid">
+                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy">BUY</button>
+                                    </div>
+                                    <div class="col d-grid">
                                         <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell">SELL</button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         @else
                             <div class="card-body">
                             <h4>Buy/Sell @{{currency}}</h4>
@@ -185,9 +217,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                
-                                
                             </div>
                             <div class="col">
                                 <div class="card">
@@ -258,27 +287,20 @@
                         </div>
                     </div>
                 </div>
-                
-
             </div>
         </div>
     </div>
-
-
 @endsection
 
 @section('custom_js')
-
-
-
-
     <script>
         $(".page-wrapper").removeClass("toggled");
     </script>
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.js"></script>
 
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+
     <script>
         const socket = io('http://bitc-way.com:3000');
         // showLoader('Loading...');
@@ -295,8 +317,6 @@
                 setInterval(function(){
                     Home.getOrders();
                 }, 5000);
-
-                
                 loaded = true;
             }
         })
@@ -338,9 +358,7 @@
 
                     Home.latestAsk = Home.asks[0][0];
                     Home.askIncrease = Home.asks[0][0]>Home.asks[1][0];
-                    
                 }
-                
             }
 
             let msg = JSON.stringify({ 
@@ -437,8 +455,6 @@
                         that.chart.remove();
                     }
                     that.chart = LightweightCharts.createChart(document.getElementById('chart'), {
-                        // width: 100%,
-                        // height: 300,
                         layout: {
                             backgroundColor: '#000000',
                             textColor: 'rgba(255, 255, 255, 0.9)',
@@ -484,7 +500,8 @@
                     axios.post('{{route("user-trade-buy")}}', {
                         currency: that.currency,
                         buyAmount: that.amount,
-                        calcBuyAmount: that.calcAmount
+                        calcBuyAmount: that.calcAmount,
+                        leverage: $("#sliderRange").val()
                     })
                     .then(function (response) {
                         if(response.data.status){
@@ -528,9 +545,45 @@
                     let currency = that.selectedItem[0];
                     getOrders(currency);
                 }
-                
             }
         });
-    
+
+        $(function() {
+            var $document   = $(document),
+                $inputRange = $('input[type="range"]');
+
+            // Example functionality to demonstrate a value feedback
+            function valueOutput(element) {
+                var value = element.value,
+                    output = element.parentNode.getElementsByTagName('output')[0];
+                // output.innerHTML = value;
+                let slidervalue = value;
+                document.getElementById("sliderRange").value = slidervalue;
+            }
+            for (var i = $inputRange.length - 1; i >= 0; i--) {
+                valueOutput($inputRange[i]);
+            };
+            $document.on('input', 'input[type="range"]', function(e) {
+                valueOutput(e.target);
+            });
+            // end
+
+            // Example functionality to demonstrate disabled functionality
+            $document .on('click', 'button[data-behaviour="toggle"]', function(e) {
+                var $inputRange = $('input[type="range"]', e.target.parentNode);
+                if ($inputRange[0].disabled) {
+                    $inputRange.prop("disabled", false);
+                }
+                else {
+                    $inputRange.prop("disabled", true);
+                }
+
+                $inputRange.rangeslider('update');
+            });
+
+            $inputRange.rangeslider({
+                polyfill: false
+            });
+        });
     </script>
 @endsection
