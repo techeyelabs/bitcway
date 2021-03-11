@@ -13,8 +13,11 @@ class CreateLockedsavingssettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('lockedsavingssettings', function (Blueprint $table) {
+        Schema::create('locked_savings_settings', function (Blueprint $table) {
             $table->id();
+            $table->double('rate', 11, 3);
+            $table->integer('duration');
+            $table->double('interest_per_lot', 11, 5);
             $table->timestamps();
         });
     }

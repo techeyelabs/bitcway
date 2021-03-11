@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e01f7375-6e93-4441-9900-cb9f74e758a4" name="Default Changelist" comment="">
+    <list default="true" id="e01f7375-6e93-4441-9900-cb9f74e758a4" name="Default Changelist" comment="Locked savings seeting table migration">
+      <change afterPath="$PROJECT_DIR$/resources/views/user/trade/finance.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/User/TradeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/User/TradeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_03_10_063952_create_lockedsavingssettings_table.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/user/layouts/main.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/layouts/main.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/user/trade/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/trade/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
@@ -161,11 +165,36 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1615281884290</updated>
-      <workItem from="1615281885670" duration="4728000" />
+      <workItem from="1615281885670" duration="18144000" />
+      <workItem from="1615433850197" duration="9563000" />
     </task>
+    <task id="LOCAL-00001" summary="Locked savings seeting table migration">
+      <created>1615358466917</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1615358466917</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Locked savings seeting table migration" />
+    <option name="LAST_COMMIT_MESSAGE" value="Locked savings seeting table migration" />
   </component>
 </project>

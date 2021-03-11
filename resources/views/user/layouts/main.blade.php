@@ -90,7 +90,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('user-trade', ['type' => 'finance'])}}">
+                            <a href="{{route('user-trade-finance')}}">
                                 <i class="fas fa-route"></i>
                                 <span>Finance</span>
                                 {{--<span class="badge badge-pill badge-primary">Beta</span>--}}

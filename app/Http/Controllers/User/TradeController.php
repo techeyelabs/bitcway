@@ -11,6 +11,7 @@ use App\Libraries\Bitfinex;
 use App\Models\Currency;
 use App\Models\UserWallet;
 use App\Models\TransactionHistory;
+use App\Models\LockedSavingsSetting;
 
 class TradeController extends Controller
 {
@@ -23,6 +24,16 @@ class TradeController extends Controller
             return view('user.trade.index', $data);
         }
         return view('user.trade.index');
+    }
+    public function finance(Request $request)
+    {
+        $data['settings'] = LockedSavingsSetting::get();
+        //dummy coin data grab
+        $id = Currency::where('name', 'DSH')->pluck('id');
+        $data['dummy_coin_balance'] = UserWallet::where('user_id', Auth::id())->where('currency_id', $id)->sum('balance');
+        $data['total'] = 0;
+
+        return view('user.trade.finance', $data);
     }
     public function getChartData(Request $request)
     {
