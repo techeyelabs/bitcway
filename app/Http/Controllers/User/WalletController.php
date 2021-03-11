@@ -10,6 +10,8 @@ use App\Models\Currency;
 use App\Models\DepositHistory;
 use App\Models\WithdrawHistory;
 use App\Models\UserWallet;
+use App\Models\TransactionHistory;
+use App\Models\User;
 
 class WalletController extends Controller
 {
@@ -57,9 +59,24 @@ class WalletController extends Controller
         $Bitfinex = new Bitfinex();
         $data['total'] = 0;
         $data['wallets'] = UserWallet::where('user_id', Auth::user()->id)->with('currency')->get();
-        foreach($data['wallets'] as $item){         
+        $data['transactionHistory'] = TransactionHistory::where('user_id', Auth::user()->id)->where('leverage','>',0)->with('transactionhistory')->get();
+        foreach($data['wallets'] as $item){
             $data['total'] += $item->balance*$Bitfinex->getRate($item->currency->name);
         }
         return view('user.wallet.wallets', $data);
+    }
+
+    public function derivativedeposit(Request $request)
+    {
+        $derivative = User::find(Auth::user()->id);
+        if($request->flag == 1){
+            $derivative->derivative = $derivative->derivative + $request->derivativeamount;
+            $derivative->balance = $derivative->balance - $request->derivativeamount;
+        } else {
+            $derivative->derivative = $derivative->derivative - $request->derivativeamount;
+            $derivative->balance = $derivative->balance + $request->derivativeamount;
+        }
+        $derivative->save();
+        return redirect()->route('user-wallets');
     }
 }
