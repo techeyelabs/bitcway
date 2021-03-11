@@ -19,6 +19,7 @@ class CreateTransactionHistoriesTable extends Migration
             $table->double('equivalent_amount', 16, 8)->default(0);
             $table->tinyInteger('type')->default(1)->comment('1=buy, 2=sell');
             $table->boolean('status')->default(true);
+            $table->integer('leverage',8)->default(0)->comment('Leverage Percentage');
             $table->timestamps();
         });
         Schema::table('transaction_histories', function (Blueprint $table) {
