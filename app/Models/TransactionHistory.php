@@ -16,4 +16,9 @@ class TransactionHistory extends Model
     {
         return $this->belongsTo(Currency::class);
     }
+    public function transactionhistory()
+    {
+        return $this->belongsTo(UserWallet::class,'user_id');
+    }
+
 }

@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('memo')->nullale();
             $table->double('balance', 16, 8)->default(0);
+            $table->double('derivative', 16, 8)->default(0);
             $table->string('verification_token')->nullable();
             $table->boolean('status')->default(false);
             $table->rememberToken();

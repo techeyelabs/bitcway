@@ -303,7 +303,7 @@
 
     <script>
         const socket = io('http://bitc-way.com:3000');
-        // showLoader('Loading...');
+        showLoader('Loading...');
         let loaded = false;
         socket.on('trackers', (trackers) => {
             console.log(trackers);
@@ -425,7 +425,7 @@
                 getChartData(){
                     let that = this;
                     let currency = that.selectedItem[0];
-                    // showLoader('Loading ...');
+                    showLoader('Loading ...');
                     axios.get('{{route("user-get-chart-data")}}', {params: {currency: currency, user_currency: that.currency}})
                     .then(function (response) {
                         console.log(response);

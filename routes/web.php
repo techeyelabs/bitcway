@@ -71,6 +71,7 @@ Route::prefix('user')->middleware(['auth'])->group(function(){
     Route::get('/', [DashboardController::class, 'index'])->name('user-dashboard');
     Route::get('/transactions', [BuySellController::class, 'index'])->name('user-transactions');
     Route::get('/wallets', [WalletController::class, 'wallets'])->name('user-wallets');
+    Route::post('/wallets', [WalletController::class, 'derivativedeposit'])->name('derivativedeposit');
     Route::prefix('wallet')->group(function(){
         Route::get('/', [WalletController::class, 'index'])->name('user-wallet');
         Route::get('/deposit', [WalletController::class, 'deposit'])->name('user-deposit');
