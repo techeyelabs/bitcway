@@ -41,6 +41,7 @@ class TradeController extends Controller
 
     public function insertFinance(Request $request)
     {
+//        dd($request->plan);
         try {
             $date = date('Y-m-d');
             $plan = LockedSavingsSetting::where('id', $request->plan)->first();
@@ -87,14 +88,15 @@ class TradeController extends Controller
         $leverage = 0;
         if(isset($request->leverage)){
             $leverage = $request->leverage;
+            Auth::user()->balance = Auth::user()->balance-$request->calcBuyAmount/$leverage;
+        }else{
+            Auth::user()->balance = Auth::user()->balance-$request->calcBuyAmount;
         }
-        
+        Auth::user()->save();
+
         $UserWallet->user_id = Auth::user()->id;
         $UserWallet->currency_id = $currency->id;
         $UserWallet->save();
-
-        Auth::user()->balance = Auth::user()->balance-$request->calcBuyAmount;
-        Auth::user()->save();
 
         $TransactionHistory= new TransactionHistory();
         $TransactionHistory->amount = $request->buyAmount;

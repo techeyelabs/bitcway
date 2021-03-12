@@ -30,8 +30,8 @@
                 <ul class="list-group col-md-6 offset-md-3">
                     <li class="row list-group-item d-flex justify-content-between align-items-center">
                         <p class="col" id="MyCoinCurrencyName" style="text-align: left; color:white;">Currency</p>
-                        <p class="col" id="CoinpriceIntoMycoin" style="text-align: center;color:white;">Current Price</p>
-                        <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">Balance</p>
+                        <p class="col" id="MyTotalCoinAmount" style="text-align: center;color:white;">Balance</p>
+                        <p class="col" id="CoinpriceIntoMycoin" style="text-align: right;color:white;" >Current Price</p>
                     </li>
                     <?php
                     $i = 0;
@@ -41,8 +41,8 @@
                     {{--<span class="badge bg-primary pill" id="MyCoinCurrencyName{{$index}}">{{$item->currency->name}}</span>--}}
                     <li class="row list-group-item d-flex justify-content-between align-items-center">
                         <p class="col" id="MyCoinCurrencyName{{$index}}" style="text-align: left; color:white;">{{$item->currency->name}}</p>
-                        <p class="col" id="CoinpriceIntoMycoin{{$index}}" style="text-align: center;color:white;"></p>
-                        <p class="col" id="MyTotalCoinAmount{{$index}}" style="text-align: right;color:white;">{{$item->balance}}</p>
+                        <p class="col" id="MyTotalCoinAmount{{$index}}" style="text-align: center;color:white;">{{$item->balance}}</p>
+                        <p class="col" id="CoinpriceIntoMycoin{{$index}}"  style="text-align: right;color:white;"></p>
                     </li>
                     <?php
                     }
@@ -72,26 +72,24 @@
 
                     </li>
                     <?php
-                    $ii = 0;
-                    ?>
-                    @foreach($transactionHistory as $index =>$item )
-                        <?php
-                        $ii++;
+                    $j = 0;
+                    foreach($transactionHistory as $index =>$item ){
+                        if(($item->leverage) > 1 ){
+                            $j++;
                         ?>
-                        @if(($item->leverage)>0)
                             <li class="row list-group-item d-flex justify-content-between align-items-center">
-                                <p class="col" id="MyCoinCurrencyName2" style="text-align: left; color:white;">{{$item->currency->name}}</p>
-                                <p class="col" id="derivati8vePercent" style="text-align: left; color:white;">{{$item->leverage}}</p>
-                                <p class="col" id="derivati8vePercent" style="text-align: left; color:white;">{{($item->equivalent_amount*$item->leverage)/100}}</p>
-                                <p class="col" id="MyTotalCoinAmountlev" style="text-align: right;color:white;">{{$item->transactionhistory->balance}}</p>
-                                <p class="col" id="CoinpriceIntoMycoin2{{$index}}" style="text-align: right;color:white;"></p>
+                                <p class="col" id="MyCoinCurrencyName2{{$j}}" style="text-align: left; color:white;">{{$item->currency->name}}</p>
+                                <p class="col" id="derivativePercent{{$j}}" style="text-align: left; color:white;">{{$item->leverage}}</p>
+                                <p class="col" id="derivativePercent{{$j}}" style="text-align: left; color:white;">{{($item->equivalent_amount / $item->leverage)}}</p>
+                                <p class="col" id="MyTotalCoinAmount2{{$j}}" style="text-align: right;color:white;">{{$item->amount}}</p>
+                                <p class="col" id="CoinpriceIntoMycoin2{{$j}}" style="text-align: right;color:white;"></p>
 
                             </li>
-                        @endif
-                    @endforeach
-
-
-                    <p style="display: none;" id="myCoinIndex2">{{$ii}}</p>
+                       <?php
+                           }
+                        }
+                       ?>
+                    <p style="display: none;" id="myCoinIndex2">{{$j}}</p>
                 </ul>
             </div>
         </div>
@@ -160,20 +158,31 @@
             console.log(trackers);
             // Home.trackers = trackers.trackers;
             let indexNumber = $('#myCoinIndex').html();
-            let indexNumber2 = $('#myCoinIndex2').html();
-            for(let i = 0;  i < indexNumber; i++){
+            for(let i = 0;  i <= indexNumber; i++){
                 let currencyName = $('#MyCoinCurrencyName'+i).html();
                 let currencyAmount = $('#MyTotalCoinAmount'+i).html();
-
 
                 let full_data = trackers.trackers;
                 full_data.forEach(async function (item){
                     if (item[0] === 't'+currencyName+'USD' ){
-                        $('#CoinpriceIntoMycoin'+i).html((currencyAmount* item[1] ).toFixed(4));
-                        $('#CoinpriceIntoMycoin2'+i).html((currencyAmount* item[1] ).toFixed(4));
+                        $('#CoinpriceIntoMycoin'+i).html((currencyAmount * item[1] ).toFixed(2));
                     }
                 });
             };
+
+            let indexNumber2 = $('#myCoinIndex2').html();
+            for(let j = 1;  j <= indexNumber2; j++){
+                let currencyName = $('#MyCoinCurrencyName2'+j).html();
+                let currencyAmount = $('#MyTotalCoinAmount2'+j).html();
+
+                let full_data = trackers.trackers;
+                full_data.forEach(async function (item){
+                    if (item[0] === 't'+currencyName+'USD' ){
+                        $('#CoinpriceIntoMycoin2'+j).html((currencyAmount * item[1] ).toFixed(2));
+                    }
+                });
+            };
+
 
             if(loaded == false){
                 setInterval(function(){

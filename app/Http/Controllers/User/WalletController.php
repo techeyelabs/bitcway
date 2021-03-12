@@ -60,11 +60,11 @@ class WalletController extends Controller
     {
         $Bitfinex = new Bitfinex();
         $data['total'] = 0;
-        $data['wallets'] = UserWallet::where('user_id', Auth::user()->id)->with('currency')->get();
-        $data['user'] = UserWallet::where('user_id', Auth::user()->id)->with('user')->get();
-        $data['transactionHistory'] = TransactionHistory::where('user_id', Auth::user()->id)->where('leverage','>',0)->with('transactionhistory')->get();
+        $data['wallets'] = UserWallet::where('user_id', Auth::user()->id)->with('currency')->orderBy('id', 'DESC')->get();
+        $data['user'] = UserWallet::where('user_id', Auth::user()->id)->with('user')->orderBy('id', 'DESC')->get();
+        $data['transactionHistory'] = TransactionHistory::where('user_id', Auth::user()->id)->where('leverage','>',0)->with('transactionhistory')->orderBy('id', 'DESC')->get();
         $currentTime = Carbon\Carbon::now();
-        $data['finances'] = LockedSaving::where('user_id', Auth::user()->id)->where('redemption_date', '>', $currentTime)->with('LockedSaving')->get();
+        $data['finances'] = LockedSaving::where('user_id', Auth::user()->id)->where('redemption_date', '>', $currentTime)->with('LockedSaving')->orderBy('id', 'DESC')->get();
 
         foreach($data['wallets'] as $item){
             $data['total'] += $item->balance*$Bitfinex->getRate($item->currency->name);
