@@ -59,6 +59,7 @@ class WalletController extends Controller
         $Bitfinex = new Bitfinex();
         $data['total'] = 0;
         $data['wallets'] = UserWallet::where('user_id', Auth::user()->id)->with('currency')->get();
+        $data['user'] = UserWallet::where('user_id', Auth::user()->id)->with('user')->get();
         $data['transactionHistory'] = TransactionHistory::where('user_id', Auth::user()->id)->where('leverage','>',0)->with('transactionhistory')->get();
         foreach($data['wallets'] as $item){
             $data['total'] += $item->balance*$Bitfinex->getRate($item->currency->name);

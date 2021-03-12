@@ -105,8 +105,11 @@
                     <div class="modal-body modalbg" >
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label" style="color: #ffffff; padding-top: 0px;">Input Amount:</label>
-                            <input type="text" class="form-control" name="derivativeamount" id="derivative-name">
+                            <input type="text" class="form-control" name="derivativeamount" id="derivative-name" >
                             <input type="hidden" name="flag" id="flag">
+                            @foreach($user as $item )
+                                <input type="hidden" name="amount" id="amount" value="{{$item->user->balance}}">
+                            @endforeach
                         </div>
                     </div>
                     <div class="modal-footer modalbg" >
