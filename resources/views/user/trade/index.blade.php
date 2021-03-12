@@ -126,9 +126,12 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div >
+                                        <small class="float-end text-success cursor-pointer">
+                                            ~@{{derivativeRange.toFixed(2)}}
+                                        </small>
                                         <input type="number" id="sliderRange" value="" class="form-control">
                                         <output class="mb-3"></output>
-                                        <input type="range" min="0" max="100" value="0">
+                                        <input type="range" min="1" max="100" value="0" v-on:keyup="derivativeRange">
                                     </div>
                                 </div>
                                 <div class="row mt-5">
@@ -435,6 +438,10 @@
                 },
                 calcAmount(){
                     return this.amount*this.selectedPrice;
+                },
+                derivativeRange(){
+                    let derivativeX = $('#sliderRange').val();
+                    return (this.amount*this.selectedPrice)/derivativeX;
                 }
             },
             methods: {
@@ -447,7 +454,6 @@
                     let coin = item[0];
                     let symbolx = coin.substr(1);
                     new TradingView.widget({
-
                         "width": "auto",
                         "height": 610,
                         "symbol": symbolx,
@@ -628,13 +634,14 @@
                 else {
                     $inputRange.prop("disabled", true);
                 }
-
                 $inputRange.rangeslider('update');
             });
-
             $inputRange.rangeslider({
                 polyfill: false
             });
         });
+    </script>
+    <script>
+
     </script>
 @endsection
