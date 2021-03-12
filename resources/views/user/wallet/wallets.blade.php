@@ -30,7 +30,7 @@
                 <ul class="list-group col-md-6 offset-md-3">
                     <li class="row list-group-item d-flex justify-content-between align-items-center">
                         <p class="col" id="MyCoinCurrencyName" style="text-align: left; color:white;">Currency</p>
-                        <p class="col" id="CoinpriceIntoMycoin" style="text-align: right;color:white;">Current Price</p>
+                        <p class="col" id="CoinpriceIntoMycoin" style="text-align: center;color:white;">Current Price</p>
                         <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">Balance</p>
                     </li>
                     <?php
@@ -41,7 +41,7 @@
                     {{--<span class="badge bg-primary pill" id="MyCoinCurrencyName{{$index}}">{{$item->currency->name}}</span>--}}
                     <li class="row list-group-item d-flex justify-content-between align-items-center">
                         <p class="col" id="MyCoinCurrencyName{{$index}}" style="text-align: left; color:white;">{{$item->currency->name}}</p>
-                        <p class="col" id="CoinpriceIntoMycoin{{$index}}" style="text-align: right;color:white;"></p>
+                        <p class="col" id="CoinpriceIntoMycoin{{$index}}" style="text-align: center;color:white;"></p>
                         <p class="col" id="MyTotalCoinAmount{{$index}}" style="text-align: right;color:white;">{{$item->balance}}</p>
                     </li>
                     <?php
