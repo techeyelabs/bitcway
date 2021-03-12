@@ -12,6 +12,8 @@ use App\Models\WithdrawHistory;
 use App\Models\UserWallet;
 use App\Models\TransactionHistory;
 use App\Models\User;
+use App\Models\LockedSaving;
+use Carbon;
 
 class WalletController extends Controller
 {
@@ -61,6 +63,9 @@ class WalletController extends Controller
         $data['wallets'] = UserWallet::where('user_id', Auth::user()->id)->with('currency')->get();
         $data['user'] = UserWallet::where('user_id', Auth::user()->id)->with('user')->get();
         $data['transactionHistory'] = TransactionHistory::where('user_id', Auth::user()->id)->where('leverage','>',0)->with('transactionhistory')->get();
+        $currentTime = Carbon\Carbon::now();
+        $data['finances'] = LockedSaving::where('user_id', Auth::user()->id)->where('redemption_date', '>', $currentTime)->with('LockedSaving')->get();
+
         foreach($data['wallets'] as $item){
             $data['total'] += $item->balance*$Bitfinex->getRate($item->currency->name);
         }

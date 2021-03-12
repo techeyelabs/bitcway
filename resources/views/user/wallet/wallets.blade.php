@@ -23,13 +23,14 @@
                 <h4>Equivalent Asset Amount:  {{$total}} USDT</h4>
             </div>
         </div>
+        {{--Trade Wallet Start--}}
         <div class="card mt-3">
             <div class="card-body">
                 <div class="text-center"><h4>Trade Wallet</h4></div>
                 <ul class="list-group col-md-6 offset-md-3">
                     <li class="row list-group-item d-flex justify-content-between align-items-center">
                         <p class="col" id="MyCoinCurrencyName" style="text-align: left; color:white;">Currency</p>
-                        <p class="col" id="CoinpriceIntoMycoin" style="text-align: right;color:white;">Current Price</p>
+                        <p class="col" id="CoinpriceIntoMycoin" style="text-align: center;color:white;">Current Price</p>
                         <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">Balance</p>
                     </li>
                     <?php
@@ -40,7 +41,7 @@
                     {{--<span class="badge bg-primary pill" id="MyCoinCurrencyName{{$index}}">{{$item->currency->name}}</span>--}}
                     <li class="row list-group-item d-flex justify-content-between align-items-center">
                         <p class="col" id="MyCoinCurrencyName{{$index}}" style="text-align: left; color:white;">{{$item->currency->name}}</p>
-                        <p class="col" id="CoinpriceIntoMycoin{{$index}}" style="text-align: right;color:white;"></p>
+                        <p class="col" id="CoinpriceIntoMycoin{{$index}}" style="text-align: center;color:white;"></p>
                         <p class="col" id="MyTotalCoinAmount{{$index}}" style="text-align: right;color:white;">{{$item->balance}}</p>
                     </li>
                     <?php
@@ -50,6 +51,9 @@
                 </ul>
             </div>
         </div>
+        {{--Trade Wallet End--}}
+
+        {{--Derivative Wallet Start--}}
         <div class="card mt-3">
             <div class="card-body">
                 <div class="text-center"><h4>Derivative Wallet</h4></div>
@@ -91,6 +95,31 @@
                 </ul>
             </div>
         </div>
+        {{--Derivative Wallet End--}}
+
+        {{--Finance Wallet Start--}}
+        <div class="card mt-3">
+            <div class="card-body">
+                <div class="text-center"><h4>Finance Wallet</h4></div>
+                <ul class="list-group col-md-6 offset-md-3">
+                    <li class="row list-group-item d-flex justify-content-between align-items-center">
+                        <p class="col" id="MyCoinCurrencyName" style="text-align: left; color:white;">Lot</p>
+                        <p class="col" id="CoinpriceIntoMycoin" style="text-align: left;color:white;">Value Date</p>
+                        <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">Redemption Date</p>
+                        <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">Expected Interest</p>
+                    </li>
+                    @foreach($finances as $finance)
+                    <li class="row list-group-item d-flex justify-content-between align-items-center">
+                        <p class="col" id="MyCoinCurrencyName" style="text-align: left; color:white;">{{$finance->lot_count}}</p>
+                        <p class="col" id="CoinpriceIntoMycoin" style="text-align: left;color:white;">{{$finance->value_date}}</p>
+                        <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">{{$finance->redemption_date}}</p>
+                        <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">{{$finance->expected_interest}}</p>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+        {{--Finance Wallet End--}}
     </div>
     <!-- Modal -->
     <div class="modal fade" id="derivativeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -105,15 +134,15 @@
                     <div class="modal-body modalbg" >
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label" style="color: #ffffff; padding-top: 0px;">Input Amount:</label>
-                            <input type="text" class="form-control" name="derivativeamount" id="derivative-name" >
-                            <input type="hidden" name="flag" id="flag">
-                            @foreach($user as $item )
-                                <input type="hidden" name="amount" id="amount" value="{{$item->user->balance}}">
-                            @endforeach
+                            <input type="text" class="form-control" name="derivativeamount" id="derivative-name" onkeyup="manage(this)">
+                            <input type="hidden" name="flag" id="flag" value="">
+                            <input type="hidden" name="amount" id="amount" value="{{Auth::user()->balance}}">
+                            <input type="hidden" name="amount" id="derivativeanount" value="{{Auth::user()->derivative}}">
+                           
                         </div>
                     </div>
                     <div class="modal-footer modalbg" >
-                        <button type="submit" class="btn btn-primary" >Submit</button>
+                        <button class="btn btn-primary" id="btSubmit" disabled >Submit</button>
                     </div>
                 </form>
             </div>
@@ -159,5 +188,29 @@
             $('#flag').val(type);
         }
     </script>
+    <script>
+	function manage(amount) {
+        var bt = document.getElementById('btSubmit');
+        var available_balance_deposit = document.getElementById('amount').value;
+        var available_balance_withdraw = document.getElementById('derivativeanount').value;
+        var flag = document.getElementById('flag').value;
+        console.log(flag);
+        if(flag == 1){
+            if (amount.value !== '' && parseFloat(amount.value) <= parseFloat(available_balance_deposit)) {
+            bt.disabled = false;
+        }
+        else {
+            bt.disabled = true;
+        }
+        } else{
+            if (amount.value !== '' && parseFloat(amount.value) <= parseFloat(available_balance_withdraw)) {
+                bt.disabled = false;
+            }
+            else {
+                bt.disabled = true;
+            }
+        }
+    }    
+</script>
 
 @endsection
