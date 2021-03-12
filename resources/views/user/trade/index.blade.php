@@ -3,7 +3,7 @@
 @section('custom_css')
     <style>
         #trackers {
-            max-height: calc(100vh - 420px);
+            /*max-height: calc(100vh - 420px);*/
             overflow-y: scroll;
             margin-top: 50px;
         }
@@ -39,6 +39,12 @@
         .rangeslider__fill {
             background: #198754;
         }
+        th{
+            font-size: 10px !important
+        }
+        .tables{
+            padding: 5px 0px 5px 0px
+        }
     </style>
 @endsection
 @section('content')
@@ -51,12 +57,12 @@
         @endif
         <hr>
         <div class="row">
-            <div class="col-md-3 mb-3">
+            <div class="col-md-4 mb-3">
                 <div class="card">
                     <div class="card-body">
                         <div id="trackers">
                             <div class="text-center title"><h4>Current Rate/Change</h4></div>
-                            <table class="table trackers">
+                            <table class="tables trackers">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -189,7 +195,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center title mb-2"><h4>Showing Chart for @{{currency}}</h4></div>
@@ -299,7 +305,7 @@
     <script type="text/javascript">
         new TradingView.widget({
             "width": "auto",
-            "height": 610,
+            "height": 510,
             "symbol": "BTCUSD",
             "timezone": "Etc/UTC",
             "theme": "dark",
@@ -311,9 +317,9 @@
             "range": "YTD",
             "hide_side_toolbar": true,
             "allow_symbol_change": true,
-            "details": true,
-            "hotlist": true,
-            "calendar": true,
+            "details": false,
+            "hotlist": false,
+            "calendar": false,
             "container_id": "tradingview_f7648"
         });
     </script>
@@ -328,7 +334,7 @@
 
     <script>
         const socket = io('http://bitc-way.com:3000');
-        showLoader('Loading...');
+        // showLoader('Loading...');
         let loaded = false;
         socket.on('trackers', (trackers) => {
             console.log(trackers);
@@ -341,7 +347,7 @@
                 Home.getChartData();
                 setInterval(function(){
                     Home.getOrders();
-                }, 5000);
+                }, 2000);
                 loaded = true;
             }
         })
@@ -447,7 +453,6 @@
                     let coin = item[0];
                     let symbolx = coin.substr(1);
                     new TradingView.widget({
-
                         "width": "auto",
                         "height": 610,
                         "symbol": symbolx,
@@ -461,11 +466,13 @@
                         "range": "YTD",
                         "hide_side_toolbar": true,
                         "allow_symbol_change": true,
-                        "details": true,
-                        "hotlist": true,
-                        "calendar": true,
+                        "details": false,
+                        "hotlist": false,
+                        "calendar": false,
                         "container_id": "tradingview_f7648"
                     });
+                    this.selectedItem = item;
+                    this.getChartData();
                 },
                 setCurrencyPrev(item){
                     console.log("Hello");
@@ -476,7 +483,7 @@
                 getChartData(){
                     let that = this;
                     let currency = that.selectedItem[0];
-                    showLoader('Loading ...');
+                    // showLoader('Loading ...');
                     axios.get('{{route("user-get-chart-data")}}', {params: {currency: currency, user_currency: that.currency}})
                     .then(function (response) {
                         console.log(response);
