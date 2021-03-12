@@ -192,7 +192,8 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center title mb-2"><h4>Showing Chart for @{{currency}}</h4></div>
-                        <div id="chart" style="width:100%;height:600px;"></div>
+                        <div id="chart" style="width:100%;height:600px; display: none"></div>
+                        <div id="tradingview_f7648"></div>
                     </div>
                 </div>
                 {{-- <div class="mt-3">
@@ -293,6 +294,53 @@
 @endsection
 
 @section('custom_js')
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script type="text/javascript">
+        new TradingView.widget({
+            // "autosize": true,
+            // "symbol": "FX:ETHUSD",
+            // "interval": "D",
+            // "timezone": "exchange",
+            // "theme": "dark",
+            // "style": "0",
+            // "locale": "en",
+            // "toolbar_bg": "#f1f3f6",
+            // "enable_publishing": false,
+            // "allow_symbol_change": true,
+            // "container_id": "tradingview_99b08"
+
+            "width": "auto",
+            "height": 610,
+            "symbol": "FX:BTCUSD",
+            "timezone": "Etc/UTC",
+            "theme": "dark",
+            "style": "1",
+            "locale": "en",
+            "toolbar_bg": "#f1f3f6",
+            "enable_publishing": false,
+            "withdateranges": true,
+            "range": "YTD",
+            "hide_side_toolbar": true,
+            "allow_symbol_change": true,
+            "details": true,
+            "hotlist": true,
+            "calendar": true,
+            "container_id": "tradingview_f7648"
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script>
         $(".page-wrapper").removeClass("toggled");
     </script>
