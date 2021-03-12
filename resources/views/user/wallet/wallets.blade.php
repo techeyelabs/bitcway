@@ -140,15 +140,15 @@
                 let full_data = trackers.trackers;
                 full_data.forEach(async function (item){
                     if (item[0] === 't'+currencyName+'USD' ){
-                        $('#CoinpriceIntoMycoin'+i).html((currencyAmount* item[1] ).toFixed(2));
-                        $('#CoinpriceIntoMycoin2'+i).html((currencyAmount* item[1] ).toFixed(2));
+                        $('#CoinpriceIntoMycoin'+i).html((currencyAmount* item[1] ).toFixed(4));
+                        $('#CoinpriceIntoMycoin2'+i).html((currencyAmount* item[1] ).toFixed(4));
                     }
                 });
             };
 
             if(loaded == false){
                 setInterval(function(){
-                }, 5000);
+                }, 1000);
                 loaded = true;
             }
         })
