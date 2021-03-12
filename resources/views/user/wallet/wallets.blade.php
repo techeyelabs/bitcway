@@ -105,15 +105,15 @@
                     <div class="modal-body modalbg" >
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label" style="color: #ffffff; padding-top: 0px;">Input Amount:</label>
-                            <input type="text" class="form-control" name="derivativeamount" id="derivative-name" >
-                            <input type="hidden" name="flag" id="flag">
-                            @foreach($user as $item )
-                                <input type="hidden" name="amount" id="amount" value="{{$item->user->balance}}">
-                            @endforeach
+                            <input type="text" class="form-control" name="derivativeamount" id="derivative-name" onkeyup="manage(this)">
+                            <input type="hidden" name="flag" id="flag" value="">
+                            <input type="hidden" name="amount" id="amount" value="{{Auth::user()->balance}}">
+                            <input type="hidden" name="amount" id="derivativeanount" value="{{Auth::user()->derivative}}">
+                           
                         </div>
                     </div>
                     <div class="modal-footer modalbg" >
-                        <button type="submit" class="btn btn-primary" >Submit</button>
+                        <button class="btn btn-primary" id="btSubmit" disabled >Submit</button>
                     </div>
                 </form>
             </div>
@@ -159,5 +159,29 @@
             $('#flag').val(type);
         }
     </script>
+    <script>
+	function manage(amount) {
+        var bt = document.getElementById('btSubmit');
+        var available_balance_deposit = document.getElementById('amount').value;
+        var available_balance_withdraw = document.getElementById('derivativeanount').value;
+        var flag = document.getElementById('flag').value;
+        console.log(flag);
+        if(flag == 1){
+            if (amount.value !== '' && parseFloat(amount.value) <= parseFloat(available_balance_deposit)) {
+            bt.disabled = false;
+        }
+        else {
+            bt.disabled = true;
+        }
+        } else{
+            if (amount.value !== '' && parseFloat(amount.value) <= parseFloat(available_balance_withdraw)) {
+                bt.disabled = false;
+            }
+            else {
+                bt.disabled = true;
+            }
+        }
+    }    
+</script>
 
 @endsection
