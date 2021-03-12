@@ -138,6 +138,19 @@
                                         <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell">SELL</button>
                                     </div>
                                 </div>
+<<<<<<<<< Temporary merge branch 1
+=========
+                                <div class="mt-5">
+
+                                    <input type="number" id="sliderRange" value="" class="form-control">
+                                    <output></output>
+                                    <br>
+                                    <input type="range" min="0" max="100" value="0">
+                                    <br>
+                                    <br>
+                                </div>
+
+>>>>>>>>> Temporary merge branch 2
                             </div>
                         @else
                             <div class="card-body">

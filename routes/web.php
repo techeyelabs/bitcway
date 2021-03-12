@@ -85,6 +85,8 @@ Route::prefix('user')->middleware(['auth'])->group(function(){
     Route::get('/get-message', [MessageController::class, 'getMessages'])->name('user-get-message');
 
     Route::get('/trade', [TradeController::class, 'index'])->name('user-trade');
+    Route::get('/trade-finance', [TradeController::class, 'finance'])->name('user-trade-finance');
+    Route::post('/trade-finance-entry', [TradeController::class, 'insertFinance'])->name('user-trade-finance-entry');
     Route::get('/get-chart-data', [TradeController::class, 'getChartData'])->name('user-get-chart-data');
     Route::post('/trade-buy', [TradeController::class, 'buy'])->name('user-trade-buy');
     Route::post('/trade-sell', [TradeController::class, 'sell'])->name('user-trade-sell');
