@@ -23,6 +23,7 @@
                 <h4>Equivalent Asset Amount:  {{$total}} USDT</h4>
             </div>
         </div>
+        {{--Trade Wallet Start--}}
         <div class="card mt-3">
             <div class="card-body">
                 <div class="text-center"><h4>Trade Wallet</h4></div>
@@ -50,6 +51,9 @@
                 </ul>
             </div>
         </div>
+        {{--Trade Wallet End--}}
+
+        {{--Derivative Wallet Start--}}
         <div class="card mt-3">
             <div class="card-body">
                 <div class="text-center"><h4>Derivative Wallet</h4></div>
@@ -91,6 +95,31 @@
                 </ul>
             </div>
         </div>
+        {{--Derivative Wallet End--}}
+
+        {{--Finance Wallet Start--}}
+        <div class="card mt-3">
+            <div class="card-body">
+                <div class="text-center"><h4>Finance Wallet</h4></div>
+                <ul class="list-group col-md-6 offset-md-3">
+                    <li class="row list-group-item d-flex justify-content-between align-items-center">
+                        <p class="col" id="MyCoinCurrencyName" style="text-align: left; color:white;">Lot</p>
+                        <p class="col" id="CoinpriceIntoMycoin" style="text-align: left;color:white;">Value Date</p>
+                        <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">Redemption Date</p>
+                        <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">Expected Interest</p>
+                    </li>
+                    @foreach($finances as $finance)
+                    <li class="row list-group-item d-flex justify-content-between align-items-center">
+                        <p class="col" id="MyCoinCurrencyName" style="text-align: left; color:white;">{{$finance->lot_count}}</p>
+                        <p class="col" id="CoinpriceIntoMycoin" style="text-align: left;color:white;">{{$finance->value_date}}</p>
+                        <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">{{$finance->redemption_date}}</p>
+                        <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">{{$finance->expected_interest}}</p>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+        {{--Finance Wallet End--}}
     </div>
     <!-- Modal -->
     <div class="modal fade" id="derivativeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

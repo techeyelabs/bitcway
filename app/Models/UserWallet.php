@@ -21,5 +21,9 @@ class UserWallet extends Model
     {
         return $this->belongsTo(TransactionHistory::class);
     }
+    public function lockedSaving()
+    {
+        return $this->belongsTo(LockedSaving::class);
+    }
 
 }

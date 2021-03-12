@@ -13,6 +13,11 @@ class LockedSaving extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function lockedSaving()
+    {
+        return $this->belongsTo(UserWallet::class);
+    }
+
 
     /**
      * The attributes that are mass assignable.
