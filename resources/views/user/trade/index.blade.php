@@ -69,7 +69,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="item in trackers" v-on:click="setCurrency(item)" :class="{active: item[0] == selectedItem[0]}">
+{{--                                    <tr v-for="item in trackers" v-on:click="setCurrency(item)" :class="{active: item[0] == selectedItem[0]}" >--}}
+                                    <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}" v-on:click="setCurrency(item)">
                                         <td></td>
                                         <td>@{{splitCurrency(item[0])}}</td>
                                         <td>@{{item[7]}} USD</td>
@@ -297,21 +298,9 @@
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script type="text/javascript">
         new TradingView.widget({
-            // "autosize": true,
-            // "symbol": "FX:ETHUSD",
-            // "interval": "D",
-            // "timezone": "exchange",
-            // "theme": "dark",
-            // "style": "0",
-            // "locale": "en",
-            // "toolbar_bg": "#f1f3f6",
-            // "enable_publishing": false,
-            // "allow_symbol_change": true,
-            // "container_id": "tradingview_99b08"
-
             "width": "auto",
             "height": 610,
-            "symbol": "FX:BTCUSD",
+            "symbol": "BTCUSD",
             "timezone": "Etc/UTC",
             "theme": "dark",
             "style": "1",
@@ -328,18 +317,6 @@
             "container_id": "tradingview_f7648"
         });
     </script>
-
-
-
-
-
-
-
-
-
-
-
-
 
     <script>
         $(".page-wrapper").removeClass("toggled");
@@ -467,6 +444,32 @@
                     return currency;
                 },
                 setCurrency(item){
+                    let coin = item[0];
+                    let symbolx = coin.substr(1);
+                    new TradingView.widget({
+
+                        "width": "auto",
+                        "height": 610,
+                        "symbol": symbolx,
+                        "timezone": "Etc/UTC",
+                        "theme": "dark",
+                        "style": "1",
+                        "locale": "en",
+                        "toolbar_bg": "#f1f3f6",
+                        "enable_publishing": false,
+                        "withdateranges": true,
+                        "range": "YTD",
+                        "hide_side_toolbar": true,
+                        "allow_symbol_change": true,
+                        "details": true,
+                        "hotlist": true,
+                        "calendar": true,
+                        "container_id": "tradingview_f7648"
+                    });
+                },
+                setCurrencyPrev(item){
+                    console.log("Hello");
+                    console.log(item[0]);
                     this.selectedItem = item;
                     this.getChartData();
                 },
