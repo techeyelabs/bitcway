@@ -20,7 +20,8 @@ class MessageController extends Controller
     public function getMessages(Request $request)
     {
         $messages = Message::where('user_id', Auth::user()->id)->get();
-        return response()->json(['status' => true, 'messages' => $messages]);
+        $type = Message::select('type')->where('user_id', Auth::user()->id)->get();
+        return response()->json(['status' => true, 'messages' => $messages, 'type' => $type]);
     }
     public function send(Request $request)
     {
