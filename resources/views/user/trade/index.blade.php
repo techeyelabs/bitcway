@@ -20,24 +20,9 @@
         .cursor-pointer{
             cursor: pointer;
         }
-        output {
-            display: block;
-            text-align:center;
-        }
-        .rangeslider--horizontal {
-            height: 10px;
+        #rangeInput{
             width: 400px;
             max-width: 100%;
-        }
-        .rangeslider--horizontal .rangeslider__handle {
-            top: -5px;
-        }
-        .rangeslider__handle{
-            width: 20px;
-            height: 20px;
-        }
-        .rangeslider__fill {
-            background: #198754;
         }
     </style>
 @endsection
@@ -127,11 +112,16 @@
                                 <div class="row mb-3">
                                     <div >
                                         <small class="float-end text-success cursor-pointer">
+{{--                                            <p> ~@{{derivativeRange.toFixed(2)}}</p>--}}
                                             ~@{{derivativeRange.toFixed(2)}}
                                         </small>
-                                        <input type="number" id="sliderRange" value="" class="form-control">
-                                        <output class="mb-3"></output>
-                                        <input type="range" min="1" max="100" value="0" v-on:keyup="derivativeRange">
+{{--                                        <input type="number" id="sliderRange" value="100" min="0" max="100"  class="form-control" oninput="slideval.value=sliderRange.value">--}}
+{{--                                        <output class="mb-3"></output>--}}
+{{--                                        <input type="range" min="1" id="slideval" max="100" value="0" v-on:keyup="derivativeRange" oninput="sliderRange.value=slideval.value">--}}
+
+
+                                        <input id="sliderRange" class="form-control" type="number"  min="1" value="1" max="100" oninput="rangeInput.value=sliderRange.value" v-model="derivativeValue"/><br>
+                                        <input id="rangeInput" type="range" min="1" value="1" max="100" oninput="sliderRange.value=rangeInput.value" v-on:keypress="derivativeRange"/>
                                     </div>
                                 </div>
                                 <div class="row mt-5">
@@ -298,6 +288,9 @@
 @endsection
 
 @section('custom_js')
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.js"></script>--}}
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script type="text/javascript">
         new TradingView.widget({
@@ -324,11 +317,6 @@
     <script>
         $(".page-wrapper").removeClass("toggled");
     </script>
-    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.js"></script>
-
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
-
     <script>
         const socket = io('http://bitc-way.com:3000');
         showLoader('Loading...');
@@ -420,7 +408,8 @@
                 bidIncrease: false,
                 latestAsk: 0,
                 askIncrease: false,
-                selectedPrice: ''
+                selectedPrice: '',
+                derivativeValue:'1'
             },
             mounted() {
             },
@@ -441,7 +430,7 @@
                 },
                 derivativeRange(){
                     let derivativeX = $('#sliderRange').val();
-                    return (this.amount*this.selectedPrice)/derivativeX;
+                    return (this.amount*this.selectedPrice)/this.derivativeValue;
                 }
             },
             methods: {
@@ -605,41 +594,39 @@
             }
         });
 
-        $(function() {
-            var $document   = $(document),
-                $inputRange = $('input[type="range"]');
-
-            // Example functionality to demonstrate a value feedback
-            function valueOutput(element) {
-                var value = element.value,
-                    output = element.parentNode.getElementsByTagName('output')[0];
-                // output.innerHTML = value;
-                let slidervalue = value;
-                document.getElementById("sliderRange").value = slidervalue;
-            }
-            for (var i = $inputRange.length - 1; i >= 0; i--) {
-                valueOutput($inputRange[i]);
-            };
-            $document.on('input', 'input[type="range"]', function(e) {
-                valueOutput(e.target);
-            });
-            // end
-
-            // Example functionality to demonstrate disabled functionality
-            $document .on('click', 'button[data-behaviour="toggle"]', function(e) {
-                var $inputRange = $('input[type="range"]', e.target.parentNode);
-                if ($inputRange[0].disabled) {
-                    $inputRange.prop("disabled", false);
-                }
-                else {
-                    $inputRange.prop("disabled", true);
-                }
-                $inputRange.rangeslider('update');
-            });
-            $inputRange.rangeslider({
-                polyfill: false
-            });
+        $("#outputs").find("input:text").bind("change", function(){
+            $(this).highlightFade('red');
         });
+
+        // $(function() {
+        //     var $document   = $(document),
+        //         $inputRange = $('input[type="range"]');
+        //
+        //     // Example functionality to demonstrate a value feedback
+        //     function valueOutput(element) {
+        //         var value = element.value,
+        //             output = element.parentNode.getElementsByTagName('output')[0];
+        //         // output.innerHTML = value;
+        //         let slidervalue = value;
+        //         document.getElementById("sliderRange").value = slidervalue;
+        //     }
+        //     for (var i = $inputRange.length - 1; i >= 0; i--) {
+        //         valueOutput($inputRange[i]);
+        //     };
+        //     $document.on('input', 'input[type="range"]', function(e) {
+        //         valueOutput(e.target);
+        //     });
+        //     // end
+        //
+        //     // Example functionality to demonstrate disabled functionality
+        //     $document .on('click', 'button[data-behaviour="toggle"]', function(e) {
+        //         var $inputRange = $('input[type="range"]', e.target.parentNode);
+        //         $inputRange.rangeslider('update');
+        //     });
+        //     $inputRange.rangeslider({
+        //         polyfill: false
+        //     });
+        // });
     </script>
     <script>
 
