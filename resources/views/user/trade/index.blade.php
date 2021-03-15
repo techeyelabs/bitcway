@@ -423,7 +423,6 @@
                     return this.amount*this.selectedPrice;
                 },
                 derivativeRange(){
-                    let derivativeX = $('#sliderRange').val();
                     return (this.amount*this.selectedPrice)/this.derivativeValue;
                 }
             },
