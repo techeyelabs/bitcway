@@ -112,14 +112,8 @@
                                 <div class="row mb-3">
                                     <div >
                                         <small class="float-end text-success cursor-pointer">
-{{--                                            <p> ~@{{derivativeRange.toFixed(2)}}</p>--}}
                                             ~@{{derivativeRange.toFixed(2)}}
                                         </small>
-{{--                                        <input type="number" id="sliderRange" value="100" min="0" max="100"  class="form-control" oninput="slideval.value=sliderRange.value">--}}
-{{--                                        <output class="mb-3"></output>--}}
-{{--                                        <input type="range" min="1" id="slideval" max="100" value="0" v-on:keyup="derivativeRange" oninput="sliderRange.value=slideval.value">--}}
-
-
                                         <input id="sliderRange" class="form-control" type="number"  min="1" value="1" max="100" oninput="rangeInput.value=sliderRange.value" v-model="derivativeValue"/><br>
                                         <input id="rangeInput" type="range" min="1" value="1" max="100" oninput="sliderRange.value=rangeInput.value" v-on:keypress="derivativeRange"/>
                                     </div>
@@ -594,41 +588,6 @@
             }
         });
 
-        $("#outputs").find("input:text").bind("change", function(){
-            $(this).highlightFade('red');
-        });
-
-        // $(function() {
-        //     var $document   = $(document),
-        //         $inputRange = $('input[type="range"]');
-        //
-        //     // Example functionality to demonstrate a value feedback
-        //     function valueOutput(element) {
-        //         var value = element.value,
-        //             output = element.parentNode.getElementsByTagName('output')[0];
-        //         // output.innerHTML = value;
-        //         let slidervalue = value;
-        //         document.getElementById("sliderRange").value = slidervalue;
-        //     }
-        //     for (var i = $inputRange.length - 1; i >= 0; i--) {
-        //         valueOutput($inputRange[i]);
-        //     };
-        //     $document.on('input', 'input[type="range"]', function(e) {
-        //         valueOutput(e.target);
-        //     });
-        //     // end
-        //
-        //     // Example functionality to demonstrate disabled functionality
-        //     $document .on('click', 'button[data-behaviour="toggle"]', function(e) {
-        //         var $inputRange = $('input[type="range"]', e.target.parentNode);
-        //         $inputRange.rangeslider('update');
-        //     });
-        //     $inputRange.rangeslider({
-        //         polyfill: false
-        //     });
-        // });
-    </script>
-    <script>
 
     </script>
 @endsection
