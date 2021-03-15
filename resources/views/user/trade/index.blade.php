@@ -136,10 +136,10 @@
                                 </div>
                                 <div class="row mt-5">
                                     <div class="col d-grid">
-                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy">BUY</button>
+                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || derivativeRange > derivativeBalance" v-on:click="derivativeBuy">BUY</button>
                                     </div>
                                     <div class="col d-grid">
-                                        <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell">SELL</button>
+                                        <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="derivativeSell">SELL</button>
                                     </div>
                                 </div>
                             </div>
@@ -412,6 +412,7 @@
                 amount: '',
                 balance: 0,
                 usdBalance: '{{Auth::user()->balance}}',
+                derivativeBalance:'{{Auth::user()->derivative}}',
                 bids: [],
                 asks: [],
                 latestBid: 0,
@@ -548,6 +549,7 @@
                     candleSeries.setData(data);
                 },
                 buy(){
+
                     let that = this;
                     if(that.calcAmount <= 0 || that.calcAmount > that.usdBalance) {
                         toastr.error('Invalid amount !!');
@@ -596,6 +598,57 @@
                     .catch(function (error) {
                         toastr.error('Error occured !!');
                     });
+                },
+                derivativeBuy(){
+
+                    let that = this;
+                    if(that.calcAmount <= 0 || that.calcAmount > that.usdBalance) {
+                        toastr.error('Invalid amount !!');
+                        return false;
+                    }
+                    showLoader('Processing...');
+                    axios.post('{{route("user-trade-buy")}}', {
+                        currency: that.currency,
+                        buyAmount: that.amount,
+                        calcBuyAmount: that.calcAmount,
+                        leverage: $("#sliderRange").val()
+                    })
+                        .then(function (response) {
+                            if(response.data.status){
+                                toastr.success('Buy successfull');
+                                window.location.href = '{{route("user-wallets")}}';
+                                return false;
+                            }
+                            toastr.error('Error occured !!');
+                        })
+                        .catch(function (error) {
+                            toastr.error('Error occured !!');
+                        });
+                },
+                derivativeSell(){
+                    let that = this;
+                    if(that.calcAmount <= 0 || that.amount > that.balance) {
+                        toastr.error('Invalid amount !!');
+                        return false;
+                    }
+
+                    showLoader('Processing...');
+                    axios.post('{{route("user-trade-sell")}}', {
+                        currency: that.currency,
+                        sellAmount: that.amount,
+                        calcSellAmount: that.calcAmount
+                    })
+                        .then(function (response) {
+                            if(response.data.status){
+                                toastr.success('Sell successfull');
+                                window.location.href = '{{route("user-wallets")}}';
+                                return false;
+                            }
+                            toastr.error('Error occured !!');
+                        })
+                        .catch(function (error) {
+                            toastr.error('Error occured !!');
+                        });
                 },
                 getOrders(){
                     let that = this;

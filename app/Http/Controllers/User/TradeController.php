@@ -88,7 +88,7 @@ class TradeController extends Controller
         $leverage = 0;
         if(isset($request->leverage)){
             $leverage = $request->leverage;
-            Auth::user()->balance = Auth::user()->balance-$request->calcBuyAmount/$leverage;
+            Auth::user()->derivative = Auth::user()->derivative-$request->calcBuyAmount/$leverage;
         }else{
             Auth::user()->balance = Auth::user()->balance-$request->calcBuyAmount;
         }
@@ -140,5 +140,10 @@ class TradeController extends Controller
     {
         $Bitfinex = new Bitfinex();
         return $Bitfinex->getOrderBook($request->currency);
+    }
+//    Maizied
+    public function derivativeTransaction(Request $request)
+    {
+
     }
 }
