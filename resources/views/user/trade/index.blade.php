@@ -21,7 +21,7 @@
             cursor: pointer;
         }
         #rangeInput{
-            width: 400px;
+            width: 560px;
             max-width: 100%;
         }
         .rangeslider--horizontal .rangeslider__handle {
@@ -131,7 +131,7 @@
                                             ~@{{derivativeRange.toFixed(2)}}
                                         </small>
                                         <input id="sliderRange" class="form-control" type="number"  min="1" value="1" max="100" oninput="rangeInput.value=sliderRange.value" v-model="derivativeValue"/><br>
-                                        <input id="rangeInput" type="range" min="1" value="1" max="100" oninput="sliderRange.value=rangeInput.value" v-on:keypress="derivativeRange"/>
+                                        <input id="rangeInput" type="range" min="1" value="1" max="100" oninput="sliderRange.value=rangeInput.value" v-model="derivativeValue"/>
                                     </div>
                                 </div>
                                 <div class="row mt-5">
