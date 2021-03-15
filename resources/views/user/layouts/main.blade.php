@@ -53,7 +53,8 @@
                     <div class="user-info">
                         <span class="user-name">{{Auth::user()->first_name}}{{Auth::user()->last_name}}</span>
                         <strong>BALANCE: {{Auth::user()->balance}} USDT</strong>
-                        
+                        <strong>DERIVATIVE: {{Auth::user()->derivative}} USDT</strong>
+
                     </div>
                 </div>
                 <!-- sidebar-search  -->

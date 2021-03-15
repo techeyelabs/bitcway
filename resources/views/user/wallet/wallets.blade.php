@@ -179,7 +179,6 @@
                 full_data.forEach(async function (item){
                     if (item[0] === 't'+currencyName+'USD' ){
                         $('#CoinpriceIntoMycoin2'+j).html((currencyAmount * item[1] ).toFixed(2));
-                        console.log(j, item[0]);
                     }
                 });
             };
@@ -187,7 +186,7 @@
 
             if(loaded == false){
                 setInterval(function(){
-                }, 5000);
+                }, 1000);
                 loaded = true;
             }
         })
