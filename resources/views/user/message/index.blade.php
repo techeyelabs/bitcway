@@ -33,7 +33,7 @@
         <hr>
         <div class="card message-list">
             <div class="card-body">
-                <div class="list-group" style="height: 800px;">
+                <div class="list-group" style="height: 850px;">
                                 
                         <div v-for="item in messages" class="list-group-item  align-items-center" :class="{'right': item.type==1}" style="border: 0px solid ;">
                             
@@ -62,7 +62,7 @@
                 <form action="#" v-on:submit="send">
                     <div class="input-group">
                         
-                            <input v-model="message" type="text" class="form-control" style = "width: 283%;" placeholder="type your message here...">
+                            <input v-model="message" type="text" class="form-control" style = "width: 283%;height: 75px;" placeholder="type your message here...">
                             <br><br>
                             <button  class="btn btn-outline-success mt-2" type="submit" :disabled="message == ''" style="margin: auto;">Send</button>
                         
