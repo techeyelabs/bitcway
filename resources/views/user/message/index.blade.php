@@ -11,7 +11,7 @@
     }
     .message-input{
         width: 100%;
-        position: absolute;
+        position: relative;
         bottom: 0px;
     }
     .message-list{
@@ -33,7 +33,7 @@
         <hr>
         <div class="card message-list">
             <div class="card-body">
-                <div class="list-group" style="height: 850px;">
+                <div class="list-group" style="height: 650px;background-color: #081420">
                                 
                         <div v-for="item in messages" class="list-group-item  align-items-center" :class="{'right': item.type==1}" style="border: 0px solid ;">
                             
@@ -65,7 +65,7 @@
                             <input v-model="message" type="text" class="form-control" style = "width: 283%;height: 75px;" placeholder="type your message here...">
                             <br><br>
                             <button  class="btn btn-outline-success mt-2" type="submit" :disabled="message == ''" style="margin: auto;">Send</button>
-                        
+                            
                     </div>
                 </form>
             </div>
