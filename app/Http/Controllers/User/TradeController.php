@@ -20,10 +20,10 @@ class TradeController extends Controller
 {
     public function index(Request $request)
     {
+        $currency = Currency::where('name', $request->currency)->first();
         if(isset($request->type)){
-            $data = [
-                'type' => $request->type
-            ];
+            $data['type'] = $request->type;
+            $data['leverageAmount'] = Leverage_Wallet::select('currency_id')->selectRaw('sum(amount) as total')->where('user_id', Auth::id())->groupBy('currency_id')->get();
             return view('user.trade.index', $data);
         }
         return view('user.trade.index');
