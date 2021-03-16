@@ -24,16 +24,6 @@
             width: 560px;
             max-width: 100%;
         }
-        .rangeslider--horizontal .rangeslider__handle {
-            top: -5px;
-        }
-        .rangeslider__handle{
-            width: 20px;
-            height: 20px;
-        }
-        .rangeslider__fill {
-            background: #198754;
-        }
         th{
             font-size: 10px !important
         }
@@ -45,13 +35,11 @@
             min-width: 375px;
             z-index: 6;
             margin-left: 6px;
-            padding-top: 52px;
         }
         .main-app-container{
             margin: 0 5px;
             flex-grow: 1;
             min-width: 0;
-            padding-top: 52px;
         }
     </style>
 @endsection
