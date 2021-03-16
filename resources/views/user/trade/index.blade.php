@@ -140,7 +140,7 @@
                                         <button class="btn btn-block btn-success" :disabled="amount<=0 || derivativeRange > derivativeBalance" v-on:click="derivativeBuy">BUY</button>
                                     </div>
                                     <div class="col d-grid">
-                                        <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="derivativeSell">SELL</button>
+                                        <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > leverageWalletAmount" v-on:click="derivativeSell">SELL</button>
                                     </div>
                                 </div>
                             </div>
@@ -413,6 +413,7 @@
                 balance: 0,
                 usdBalance: '{{Auth::user()->balance}}',
                 derivativeBalance:'{{Auth::user()->derivative}}',
+                {{--leverageWalletAmount:'{{leverageAmount}}',--}}
                 bids: [],
                 asks: [],
                 latestBid: 0,
