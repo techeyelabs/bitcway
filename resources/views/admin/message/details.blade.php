@@ -33,7 +33,7 @@
         <hr>
         <div class="card message-list">
             <div class="card-body">
-                <div class="list-group" style="height: 650px;background-color: #081420">
+                <div class="list-group" style="height: 650px;background-color: #081420;display:none;">
                                 
                         <div v-for="item in messages" class="list-group-item  align-items-center" :class="{'right': item.type==2}" style="border: 0px solid ;">
                             
@@ -94,6 +94,7 @@
             setInterval(function(){
                 that.getMessage();
             }, 5000);
+            $('div.list-group').css('display', 'block');
 
         },
         methods:{

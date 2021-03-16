@@ -27,13 +27,14 @@
 @endsection
 
 @section('content')
-<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px; margin: auto;" bis_skin_checked="1">
+
+<div class="w3-modal-content w3-card-4 w3-animate-zoom" id="div" style="max-width:600px; margin: auto;" bis_skin_checked="1">
     <div id="wrap" class="message">
         <h2>Message List</h2>
         <hr>
         <div class="card message-list">
             <div class="card-body">
-                <div class="list-group" style="height: 650px;background-color: #081420">
+                <div class="list-group" style="height: 650px;background-color: #081420; display:none;">
                                 
                         <div v-for="item in messages" class="list-group-item  align-items-center" :class="{'right': item.type==1}" style="border: 0px solid ;">
                             
@@ -79,6 +80,7 @@
 @endsection
 
 @section('custom_js')
+
 <script type="text/javascript">
     let message = new Vue({
         el: '.message',
@@ -93,6 +95,7 @@
             setInterval(function(){
                 that.getMessage();
             }, 5000);
+            $('div.list-group').css('display', 'block');
         },
         methods:{
             send(e){
@@ -145,4 +148,10 @@
         }
     });
 </script>
+
+{{-- <script>
+</script> --}}
+
+
+
 @endsection
