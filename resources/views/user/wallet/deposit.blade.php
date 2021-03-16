@@ -5,7 +5,7 @@
 
 @section('content')
 <div id="wrap" class="deposit">
-    <h2>Deposit</h2>
+    <h2>Deposit0</h2>
     <hr>
 
     <div class="row">

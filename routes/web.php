@@ -133,6 +133,10 @@ Route::prefix('admin')->group(function(){
 
         Route::get('/locked-savings', [AdminLockedSavingsController::class, 'index'])->name('admin-locked-savings');
         Route::post('/locked-savings', [AdminLockedSavingsController::class, 'action'])->name('admin-locked-savings-action');
+        Route::post('/locked-savings-settings', [AdminLockedSavingsController::class, 'lockedSavingsSettings'])->name('admin-locked-savings-settings');
+        Route::get('/locked-savings-delete-action/{id}', [AdminLockedSavingsController::class, 'lockedSavingsDeleteAction'])->name('admin-locked-savings-delete-action');
+        Route::post('/locked-savings-edit-action/{id}', [AdminLockedSavingsController::class, 'lockedSavingsEditAction'])->name('admin-locked-savings-edit-action');
+        Route::get('/locked-savings-edit/{id}', [AdminLockedSavingsController::class, 'lockedSavingsEdit'])->name('admin-locked-savings-edit');
 
     });
 });

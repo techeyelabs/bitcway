@@ -41,4 +41,51 @@ class LockedSavingsController extends Controller
 
         return redirect()->back()->with('success_message', 'successfully updated');
     }
+
+    public function lockedSavingsSettings(Request $request)
+    {
+        $data = new LockedSavingsSetting();
+        $data->rate = $request->interest_rate;
+        $data->duration = $request->duration;
+        $data->interest_per_lot = (($request->interest_rate)*($request->duration))/365;
+        $data->save();
+
+        return redirect()->back()->with('success_message', 'successfully updated');
+    }
+
+    public function lockedSavingsDeleteAction($id)
+    {
+        $id = \Crypt::decrypt($id);
+        $data = LockedSavingsSetting::where('id', $id);
+        // echo '<pre>';
+        // print_r($data);
+        // exit;
+        $data->delete();
+
+        return redirect()->back()->with('success_message', 'successfully deleted');
+    }
+    public function lockedSavingsEdit($id)
+    {
+        $id = \Crypt::decrypt($id);
+        $data['settings'] = LockedSavingsSetting::orderBy('id', 'desc')->get();
+        $user = LockedSavingsSetting::where('id', $id)->get();
+        // echo '<pre>';
+        // print_r($user);
+        // exit;
+        return view('admin.locked_savings.index', $data)->with('user', $user);
+        
+    }
+    public function lockedSavingsEditAction(Request $request, $id)
+    {
+        $id = \Crypt::decrypt($id);
+
+        LockedSavingsSetting::where('id', $id)
+                ->update(['rate' => $request->interest_rate,
+                         'duration'=> $request->duration,
+                         'interest_per_lot'=> (($request->interest_rate)*($request->duration))/365]
+                        );
+        
+        return redirect()->back()->with('success_message', 'successfully edited');
+        
+    }
 }
