@@ -40,6 +40,19 @@
         .tables{
             padding: 5px 0px 5px 0px
         }
+        .sidebar{
+            width: 375px;
+            min-width: 375px;
+            z-index: 6;
+            margin-left: 6px;
+            padding-top: 52px;
+        }
+        .main-app-container{
+            margin: 0 5px;
+            flex-grow: 1;
+            min-width: 0;
+            padding-top: 52px;
+        }
     </style>
 @endsection
 @section('content')
@@ -51,9 +64,9 @@
             <h2>Trade</h2>
         @endif
         <hr>
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <div class="card">
+        <div class="row" style="display: flex;">
+            <div class="col-md-3 sidebar">
+                <div class="card" >
                     <div class="card-body">
                         <div id="trackers">
                             <div class="text-center title"><h4>Current Rate/Change</h4></div>
@@ -85,8 +98,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card mt-3">
-                    <div class="card">
+                <div class="card mt-3" >
+                    <div class="card" >
                         @if(isset($type))
                             <div class="card-body">
                                 <h4>Buy/Sell @{{currency}}</h4>
@@ -192,12 +205,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col main-app-container">
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center title mb-2"><h4>Showing Chart for @{{currency}}</h4></div>
-                        <div id="chart" style="width:100%;height:600px; display: none"></div>
-                        <div id="tradingview_f7648"></div>
+                        <div id="chart" style="height:600px; display: none"></div>
+                        <div id="tradingview_f7648" ></div>
                     </div>
                 </div>
                 {{-- <div class="mt-3">
@@ -305,7 +318,7 @@
     <script type="text/javascript">
         new TradingView.widget({
             "width": "auto",
-            "height": 510,
+            "height": 515,
             "symbol": "BTCUSD",
             "timezone": "Etc/UTC",
             "theme": "dark",
@@ -323,7 +336,6 @@
             "container_id": "tradingview_f7648"
         });
     </script>
-
     <script>
         $(".page-wrapper").removeClass("toggled");
     </script>
@@ -454,7 +466,7 @@
                     let symbolx = coin.substr(1);
                     new TradingView.widget({
                         "width": "auto",
-                        "height": 610,
+                        "height": 515,
                         "symbol": symbolx,
                         "timezone": "Etc/UTC",
                         "theme": "dark",
