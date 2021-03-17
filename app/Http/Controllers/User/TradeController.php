@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\DerivativeSell;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +43,6 @@ class TradeController extends Controller
 
             }
             $data['currency'] = $currency;
-//           dd($data);
             return view('user.trade.index', $data);
         }
         return view('user.trade.index');
@@ -61,7 +62,6 @@ class TradeController extends Controller
 
     public function insertFinance(Request $request)
     {
-//        dd($request->plan);
         try {
             $date = date('Y-m-d');
             $plan = LockedSavingsSetting::where('id', $request->plan)->first();
@@ -158,18 +158,50 @@ class TradeController extends Controller
         $UserWallet->balance = $UserWallet->balance-$request->sellAmount;
         $UserWallet->save();
 
-//        Auth::user()->balance = Auth::user()->balance+$request->calcSellAmount;
-//        Auth::user()->save();
-
 
         $leverageWalletCurrency = Leverage_Wallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->orderBy('id', 'desc')->get();
 //        $leverageWalletTotalCurrency = Leverage_Wallet::where('currency_id', $leverageWalletCurrency)->sum('amount');
         $leverageSellAmount = $request->sellAmount;
-        foreach($leverageWalletCurrency as $item){
+        $equivalentSellAmount = $request->calcSellAmount;
+
+        foreach($leverageWalletCurrency as $item ){
+            $derivativeSells = new DerivativeSell();
+            $derivativeSells->type = $item->type;
+            $derivativeSells->status = $item->status;
+            $derivativeSells->user_id = $item->user_id;
+            $derivativeSells->currency_id = $item->currency_id;
+            $derivativeSells->leverage = $item->leverage;
+
             if( $item->amount <= $leverageSellAmount && $leverageSellAmount != 0){
+                $sellTimeValue = ($equivalentSellAmount * $item->amount) / $request->sellAmount;
+                $sellAmountToUser = $sellTimeValue - (($item->equivalent_amount * $item->amount) * (($item->leverage - 1)/$item->leverage));
+
+                $derivativeSells->amount = $item->amount;
+                $derivativeSells->equivalent_amount = $item->equivalent_amount;
+                $derivativeSells->priceAtSell = $sellTimeValue;
+                $derivativeSells->profit = $sellTimeValue - $item->equivalent_amount;
+                $derivativeSells->save();
+
+                Auth::user()->derivative = Auth::user()->derivative + $sellAmountToUser;
+                Auth::user()->save();
+
                 $leverageSellAmount -= $item->amount;
                 $item->delete();
-            }else{
+            }
+            else{
+                $sellTimeValue = ($equivalentSellAmount * $leverageSellAmount) / $request->sellAmount;
+                $buyTimeValue = ($item->equivalent_amount * $leverageSellAmount) / $item->amount;
+                $sellAmountToUser = $sellTimeValue - ((($item->equivalent_amount * $item->amount) * ($leverageSellAmount / $item->amount)) * (($item->leverage - 1)/$item->leverage));
+
+                $derivativeSells->amount = $leverageSellAmount;
+                $derivativeSells->equivalent_amount = $item->equivalent_amount;
+                $derivativeSells->priceAtSell = $sellTimeValue;
+                $derivativeSells->profit = $sellTimeValue - $buyTimeValue;
+                $derivativeSells->save();
+
+                Auth::user()->derivative = Auth::user()->derivative + $sellAmountToUser;
+                Auth::user()->save();
+
                 $item->amount = $item->amount - $leverageSellAmount;
                 $item->save();
                 $leverageSellAmount = 0;
@@ -179,7 +211,7 @@ class TradeController extends Controller
         }
 
         $TransactionHistory= new TransactionHistory();
-        $TransactionHistory->amount = $request->sellAmount;
+        $TransactionHistory->amount = $leverageSellAmount;
         $TransactionHistory->equivalent_amount = $request->calcSellAmount;
         $TransactionHistory->type = 2;
         $TransactionHistory->user_id = Auth::user()->id;

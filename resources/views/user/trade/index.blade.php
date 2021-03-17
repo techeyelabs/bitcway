@@ -336,7 +336,6 @@
             Home.trackers = trackers.trackers;
             
             if(loaded == false){
-                console.log('working');
                 hideLoader();
                 Home.selectedItem = Home.trackers[0];
                 Home.getChartData();
@@ -496,7 +495,6 @@
                     // showLoader('Loading ...');
                     axios.get('{{route("user-get-chart-data")}}', {params: {currency: currency, user_currency: that.currency}})
                     .then(function (response) {
-                        console.log(response);
                         let chartData = [];
                         if(response.data.status){
                             that.balance = response.data.balance;
@@ -508,7 +506,7 @@
                                 that.drawChart(chartData);
                             }, 100);
                         }
-                        
+
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -555,7 +553,6 @@
                         wickUpColor: 'rgba(255, 144, 0, 1)',
                     });
                     data.sort((a, b) => (a.time > b.time) ? 1 : -1);
-                    console.log('drawing chart');
                     candleSeries.setData(data);
                 },
                 buy(){
