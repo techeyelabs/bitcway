@@ -20,30 +20,26 @@
         .cursor-pointer{
             cursor: pointer;
         }
-        output {
-            display: block;
-            text-align:center;
-        }
-        .rangeslider--horizontal {
-            height: 10px;
-            width: 400px;
+        #rangeInput{
+            width: 560px;
             max-width: 100%;
-        }
-        .rangeslider--horizontal .rangeslider__handle {
-            top: -5px;
-        }
-        .rangeslider__handle{
-            width: 20px;
-            height: 20px;
-        }
-        .rangeslider__fill {
-            background: #198754;
         }
         th{
             font-size: 10px !important
         }
         .tables{
             padding: 5px 0px 5px 0px
+        }
+        .sidebar{
+            width: 375px;
+            min-width: 375px;
+            z-index: 6;
+            margin-left: 6px;
+        }
+        .main-app-container{
+            margin: 0 5px;
+            flex-grow: 1;
+            min-width: 0;
         }
     </style>
 @endsection
@@ -56,9 +52,9 @@
             <h2>Trade</h2>
         @endif
         <hr>
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <div class="card">
+        <div class="row" style="display: flex;">
+            <div class="col-md-3 sidebar">
+                <div class="card" >
                     <div class="card-body">
                         <div id="trackers">
                             <div class="text-center title"><h4>Current Rate/Change</h4></div>
@@ -90,8 +86,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card mt-3">
-                    <div class="card">
+                <div class="card mt-3" >
+                    <div class="card" >
                         @if(isset($type))
                             <div class="card-body">
                                 <h4>Buy/Sell @{{currency}}</h4>
@@ -135,17 +131,16 @@
                                         <small class="float-end text-success cursor-pointer">
                                             ~@{{derivativeRange.toFixed(2)}}
                                         </small>
-                                        <input type="number" id="sliderRange" value="" class="form-control">
-                                        <output class="mb-3"></output>
-                                        <input type="range" min="1" max="100" value="0" v-on:keyup="derivativeRange">
+                                        <input id="sliderRange" class="form-control" type="number"  min="1" value="1" max="100" oninput="rangeInput.value=sliderRange.value" v-model="derivativeValue"/><br>
+                                        <input id="rangeInput" type="range" min="1" value="1" max="100" oninput="sliderRange.value=rangeInput.value" v-model="derivativeValue"/>
                                     </div>
                                 </div>
                                 <div class="row mt-5">
                                     <div class="col d-grid">
-                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy">BUY</button>
+                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || derivativeRange > derivativeBalance" v-on:click="derivativeBuy">BUY</button>
                                     </div>
                                     <div class="col d-grid">
-                                        <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell">SELL</button>
+                                        <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > leverageWalletAmount" v-on:click="derivativeSell">SELL</button>
                                     </div>
                                 </div>
                             </div>
@@ -198,12 +193,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col main-app-container">
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center title mb-2"><h4>Showing Chart for @{{currency}}</h4></div>
-                        <div id="chart" style="width:100%;height:600px; display: none"></div>
-                        <div id="tradingview_f7648"></div>
+                        <div id="chart" style="height:600px; display: none"></div>
+                        <div id="tradingview_f7648" ></div>
                     </div>
                 </div>
                 {{-- <div class="mt-3">
@@ -304,11 +299,14 @@
 @endsection
 
 @section('custom_js')
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.js"></script>--}}
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script type="text/javascript">
         new TradingView.widget({
             "width": "auto",
-            "height": 510,
+            "height": 515,
             "symbol": "BTCUSD",
             "timezone": "Etc/UTC",
             "theme": "dark",
@@ -326,15 +324,9 @@
             "container_id": "tradingview_f7648"
         });
     </script>
-
     <script>
         $(".page-wrapper").removeClass("toggled");
     </script>
-    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.js"></script>
-
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
-
     <script>
         const socket = io('http://bitc-way.com:3000');
         // showLoader('Loading...');
@@ -420,13 +412,16 @@
                 amount: '',
                 balance: 0,
                 usdBalance: '{{Auth::user()->balance}}',
+                derivativeBalance:'{{Auth::user()->derivative}}',
+                {{--leverageWalletAmount:'{{leverageAmount}}',--}}
                 bids: [],
                 asks: [],
                 latestBid: 0,
                 bidIncrease: false,
                 latestAsk: 0,
                 askIncrease: false,
-                selectedPrice: ''
+                selectedPrice: '',
+                derivativeValue:'1'
             },
             mounted() {
             },
@@ -446,8 +441,7 @@
                     return this.amount*this.selectedPrice;
                 },
                 derivativeRange(){
-                    let derivativeX = $('#sliderRange').val();
-                    return (this.amount*this.selectedPrice)/derivativeX;
+                    return (this.amount*this.selectedPrice)/this.derivativeValue;
                 }
             },
             methods: {
@@ -461,7 +455,7 @@
                     let symbolx = coin.substr(1);
                     new TradingView.widget({
                         "width": "auto",
-                        "height": 610,
+                        "height": 515,
                         "symbol": symbolx,
                         "timezone": "Etc/UTC",
                         "theme": "dark",
@@ -556,6 +550,7 @@
                     candleSeries.setData(data);
                 },
                 buy(){
+
                     let that = this;
                     if(that.calcAmount <= 0 || that.calcAmount > that.usdBalance) {
                         toastr.error('Invalid amount !!');
@@ -605,6 +600,57 @@
                         toastr.error('Error occured !!');
                     });
                 },
+                derivativeBuy(){
+
+                    let that = this;
+                    if(that.calcAmount <= 0 || that.calcAmount > that.usdBalance) {
+                        toastr.error('Invalid amount !!');
+                        return false;
+                    }
+                    showLoader('Processing...');
+                    axios.post('{{route("user-trade-buy")}}', {
+                        currency: that.currency,
+                        buyAmount: that.amount,
+                        calcBuyAmount: that.calcAmount,
+                        leverage: $("#sliderRange").val()
+                    })
+                        .then(function (response) {
+                            if(response.data.status){
+                                toastr.success('Buy successfull');
+                                window.location.href = '{{route("user-wallets")}}';
+                                return false;
+                            }
+                            toastr.error('Error occured !!');
+                        })
+                        .catch(function (error) {
+                            toastr.error('Error occured !!');
+                        });
+                },
+                derivativeSell(){
+                    let that = this;
+                    if(that.calcAmount <= 0 || that.amount > that.balance) {
+                        toastr.error('Invalid amount !!');
+                        return false;
+                    }
+
+                    showLoader('Processing...');
+                    axios.post('{{route("user-trade-sell")}}', {
+                        currency: that.currency,
+                        sellAmount: that.amount,
+                        calcSellAmount: that.calcAmount
+                    })
+                        .then(function (response) {
+                            if(response.data.status){
+                                toastr.success('Sell successfull');
+                                window.location.href = '{{route("user-wallets")}}';
+                                return false;
+                            }
+                            toastr.error('Error occured !!');
+                        })
+                        .catch(function (error) {
+                            toastr.error('Error occured !!');
+                        });
+                },
                 getOrders(){
                     let that = this;
                     let currency = that.selectedItem[0];
@@ -613,43 +659,6 @@
             }
         });
 
-        $(function() {
-            var $document   = $(document),
-                $inputRange = $('input[type="range"]');
-
-            // Example functionality to demonstrate a value feedback
-            function valueOutput(element) {
-                var value = element.value,
-                    output = element.parentNode.getElementsByTagName('output')[0];
-                // output.innerHTML = value;
-                let slidervalue = value;
-                document.getElementById("sliderRange").value = slidervalue;
-            }
-            for (var i = $inputRange.length - 1; i >= 0; i--) {
-                valueOutput($inputRange[i]);
-            };
-            $document.on('input', 'input[type="range"]', function(e) {
-                valueOutput(e.target);
-            });
-            // end
-
-            // Example functionality to demonstrate disabled functionality
-            $document .on('click', 'button[data-behaviour="toggle"]', function(e) {
-                var $inputRange = $('input[type="range"]', e.target.parentNode);
-                if ($inputRange[0].disabled) {
-                    $inputRange.prop("disabled", false);
-                }
-                else {
-                    $inputRange.prop("disabled", true);
-                }
-                $inputRange.rangeslider('update');
-            });
-            $inputRange.rangeslider({
-                polyfill: false
-            });
-        });
-    </script>
-    <script>
 
     </script>
 @endsection
