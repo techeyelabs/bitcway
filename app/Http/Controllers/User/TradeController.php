@@ -15,15 +15,33 @@ use App\Models\LockedSavingsSetting;
 use App\Models\LockedSaving;
 use App\Models\Leverage_Wallet;
 use mysql_xdevapi\Exception;
+use function PHPUnit\Framework\countOf;
 
 class TradeController extends Controller
 {
     public function index(Request $request)
     {
-        $currency = Currency::where('name', $request->currency)->first();
+
+
         if(isset($request->type)){
+            $currency = array();
             $data['type'] = $request->type;
-            $data['leverageAmount'] = Leverage_Wallet::select('currency_id')->selectRaw('sum(amount) as total')->where('user_id', Auth::id())->groupBy('currency_id')->get();
+            $data['leverageAmount'] = Leverage_Wallet::select('currency_id')
+                                                        ->selectRaw('sum(amount) as total')
+                                                        ->where('user_id', Auth::id())
+                                                        ->groupBy('currency_id')
+                                                        ->with('currencyName')
+                                                        ->get();
+
+            for ($i = 0 ; $i < count($data['leverageAmount']); $i++){
+                $currencyInfo = array();
+                $currencyInfo["id"] = $data['leverageAmount'][$i]->currency_id;
+                $currencyInfo["amount"] = $data['leverageAmount'][$i]->total;
+                $currency[$data['leverageAmount'][$i]->currencyName->name] = $currencyInfo;
+
+            }
+            $data['currency'] = $currency;
+//           dd($data);
             return view('user.trade.index', $data);
         }
         return view('user.trade.index');
@@ -96,7 +114,6 @@ class TradeController extends Controller
         }
         Auth::user()->save();
 
-//        return response()->json(['status' => true]);
         try{
             $UserWallet->user_id = Auth::user()->id;
             $UserWallet->currency_id = $currency->id;
@@ -177,9 +194,5 @@ class TradeController extends Controller
         $Bitfinex = new Bitfinex();
         return $Bitfinex->getOrderBook($request->currency);
     }
-//    Maizied
-    public function derivativeTransaction(Request $request)
-    {
 
-    }
 }

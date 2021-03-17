@@ -2,10 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Currency extends Model
 {
+    use HasFactory;
+//    protected $table = 'currencies';
+    public function currencyName()
+    {
+        return $this->belongsTo(Leverage_Wallet::class);
+    }
+
     protected $fillable = [
         'name',
         'is_custom',
@@ -28,4 +36,5 @@ class Currency extends Model
     {
         return url('/admin/currencies/'.$this->getKey());
     }
+
 }

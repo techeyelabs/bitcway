@@ -116,7 +116,7 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="">AMOUNT @{{currency}}:</label>
-                                            <input type="text" class="form-control mb-1" placeholder="" v-model="amount">
+                                            <input type="number" class="form-control mb-1" placeholder="" v-model="amount">
                                             <small>ASK</small>
                                             <small class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
                                                 <i v-if="askIncrease" class="fas fa-sort-up"></i>
@@ -348,6 +348,9 @@
         })
 
         let w = null;
+        var totalSellAmount = 0;
+        var currencies = <?php echo json_encode($currency); ?>;
+
         let getOrders = function(currency){
             if(w) w.close();
             w = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
@@ -413,7 +416,7 @@
                 balance: 0,
                 usdBalance: '{{Auth::user()->balance}}',
                 derivativeBalance:'{{Auth::user()->derivative}}',
-                {{--leverageWalletAmount:'{{leverageAmount}}',--}}
+                leverageWalletAmount: 0,
                 bids: [],
                 asks: [],
                 latestBid: 0,
@@ -474,10 +477,16 @@
                     });
                     this.selectedItem = item;
                     this.getChartData();
+                    let currentCoin = this.splitCurrency(symbolx);
+                    if(currencies[currentCoin]){
+                        totalSellAmount = currencies[currentCoin]['amount'];
+                    }
+                    else{
+                        totalSellAmount = 0;
+                    }
+                    this.leverageWalletAmount = totalSellAmount;
                 },
                 setCurrencyPrev(item){
-                    console.log("Hello");
-                    console.log(item[0]);
                     this.selectedItem = item;
                     this.getChartData();
                 },
