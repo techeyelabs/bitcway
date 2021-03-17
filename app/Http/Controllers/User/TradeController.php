@@ -13,15 +13,17 @@ use App\Models\UserWallet;
 use App\Models\TransactionHistory;
 use App\Models\LockedSavingsSetting;
 use App\Models\LockedSaving;
+use App\Models\Leverage_Wallet;
+use mysql_xdevapi\Exception;
 
 class TradeController extends Controller
 {
     public function index(Request $request)
     {
+        $currency = Currency::where('name', $request->currency)->first();
         if(isset($request->type)){
-            $data = [
-                'type' => $request->type
-            ];
+            $data['type'] = $request->type;
+            $data['leverageAmount'] = Leverage_Wallet::select('currency_id')->selectRaw('sum(amount) as total')->where('user_id', Auth::id())->groupBy('currency_id')->get();
             return view('user.trade.index', $data);
         }
         return view('user.trade.index');
@@ -88,42 +90,76 @@ class TradeController extends Controller
         $leverage = 0;
         if(isset($request->leverage)){
             $leverage = $request->leverage;
-            Auth::user()->balance = Auth::user()->balance-$request->calcBuyAmount/$leverage;
+            Auth::user()->derivative = Auth::user()->derivative-$request->calcBuyAmount/$leverage;
         }else{
             Auth::user()->balance = Auth::user()->balance-$request->calcBuyAmount;
         }
         Auth::user()->save();
 
-        $UserWallet->user_id = Auth::user()->id;
-        $UserWallet->currency_id = $currency->id;
-        $UserWallet->save();
+//        return response()->json(['status' => true]);
+        try{
+            $UserWallet->user_id = Auth::user()->id;
+            $UserWallet->currency_id = $currency->id;
+            $UserWallet->save();
 
-        $TransactionHistory= new TransactionHistory();
-        $TransactionHistory->amount = $request->buyAmount;
-        $TransactionHistory->equivalent_amount = $request->calcBuyAmount;
-        $TransactionHistory->type = 1;
-        $TransactionHistory->leverage = $leverage;
-        $TransactionHistory->user_id = Auth::user()->id;
-        $TransactionHistory->currency_id = $currency->id;
-        $TransactionHistory->save();
+            $TransactionHistory= new TransactionHistory();
+            $TransactionHistory->amount = $request->buyAmount;
+            $TransactionHistory->equivalent_amount = $request->calcBuyAmount;
+            $TransactionHistory->type = 1;
+            $TransactionHistory->leverage = $leverage;
+            $TransactionHistory->user_id = Auth::user()->id;
+            $TransactionHistory->currency_id = $currency->id;
+            $TransactionHistory->save();
 
-        return response()->json(['status' => true]);
+            $LeverageWallet= new Leverage_Wallet();
+            $LeverageWallet->amount = $request->buyAmount;
+            $LeverageWallet->equivalent_amount = $request->calcBuyAmount;
+            $LeverageWallet->type = 1;
+            $LeverageWallet->leverage = $leverage;
+            $LeverageWallet->user_id = Auth::user()->id;
+            $LeverageWallet->currency_id = $currency->id;
+            $LeverageWallet->save();
+        } catch(Exception $e){
+            return response()->json(['status' => false]);
+        }
+
+       return response()->json(['status' => true]);
     }
 
     public function sell(Request $request)
     {
+//        return response()->json(['status'=>$request->all()]);
         $currency = Currency::where('name', $request->currency)->first();
+
         if(!$currency) return response()->json(['status' => false]);
 
         $UserWallet = UserWallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->first();
+
 
         if(!$UserWallet) return response()->json(['status' => false]);
         
         $UserWallet->balance = $UserWallet->balance-$request->sellAmount;
         $UserWallet->save();
 
-        Auth::user()->balance = Auth::user()->balance+$request->calcSellAmount;
-        Auth::user()->save();
+//        Auth::user()->balance = Auth::user()->balance+$request->calcSellAmount;
+//        Auth::user()->save();
+
+
+        $leverageWalletCurrency = Leverage_Wallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->orderBy('id', 'desc')->get();
+//        $leverageWalletTotalCurrency = Leverage_Wallet::where('currency_id', $leverageWalletCurrency)->sum('amount');
+        $leverageSellAmount = $request->sellAmount;
+        foreach($leverageWalletCurrency as $item){
+            if( $item->amount <= $leverageSellAmount && $leverageSellAmount != 0){
+                $leverageSellAmount -= $item->amount;
+                $item->delete();
+            }else{
+                $item->amount = $item->amount - $leverageSellAmount;
+                $item->save();
+                $leverageSellAmount = 0;
+            }
+            if($leverageSellAmount == 0)
+                break;
+        }
 
         $TransactionHistory= new TransactionHistory();
         $TransactionHistory->amount = $request->sellAmount;
@@ -140,5 +176,10 @@ class TradeController extends Controller
     {
         $Bitfinex = new Bitfinex();
         return $Bitfinex->getOrderBook($request->currency);
+    }
+//    Maizied
+    public function derivativeTransaction(Request $request)
+    {
+
     }
 }

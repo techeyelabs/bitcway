@@ -140,7 +140,7 @@
                         </div>
                     </div>
                     <div class="modal-footer modalbg" >
-                        <button class="btn btn-primary" id="btSubmit" disabled >Submit</button>
+                        <input type="submit" class="btn btn-primary" id="btSubmit" disabled value="Submit"  onclick="var e=this;setTimeout(function(){e.disabled=true;},0);return true;">
                     </div>
                 </form>
             </div>
@@ -204,9 +204,10 @@
         var available_balance_withdraw = document.getElementById('derivativeanount').value;
         var flag = document.getElementById('flag').value;
         console.log(flag);
-        if(flag == 1){
+        if(flag == 1 ){
             if (amount.value !== '' && parseFloat(amount.value) <= parseFloat(available_balance_deposit)) {
             bt.disabled = false;
+
         }
         else {
             bt.disabled = true;
@@ -219,7 +220,11 @@
                 bt.disabled = true;
             }
         }
+
+
     }    
 </script>
+    <script>
 
+    </script>
 @endsection
