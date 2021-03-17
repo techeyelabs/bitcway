@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\DepositController as AdminDepositController;
 use App\Http\Controllers\Admin\WithdrawController as AdminWithdrawController;
 use App\Http\Controllers\Admin\MessageController as AdminMessageController;
 use App\Http\Controllers\Admin\DmgCoinController as AdminDmgCoinController;
+use App\Http\Controllers\Admin\LockedSavingsController as AdminLockedSavingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -129,6 +130,9 @@ Route::prefix('admin')->group(function(){
 
         Route::get('/dmg-coin', [AdminDmgCoinController::class, 'index'])->name('admin-dmg-coin');
         Route::post('/dmg-coin', [AdminDmgCoinController::class, 'action'])->name('admin-dmg-coin-action');
+
+        Route::get('/locked-savings', [AdminLockedSavingsController::class, 'index'])->name('admin-locked-savings');
+        Route::post('/locked-savings', [AdminLockedSavingsController::class, 'action'])->name('admin-locked-savings-action');
 
     });
 });

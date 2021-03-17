@@ -99,6 +99,14 @@
                             </a>
                         </li>
 
+                        <li>
+                            <a href="{{route('admin-locked-savings')}}">
+                                <i class="fas fa-coins"></i>
+                                <span>Locked Savings Settings</span>
+                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
+                            </a>
+                        </li>
+
                         <li class="header-menu">
                             <span>Settings</span>
                         </li>
