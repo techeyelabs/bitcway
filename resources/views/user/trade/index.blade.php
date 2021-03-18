@@ -63,7 +63,7 @@
                                     <tr>
                                         <th></th>
                                         <th>CURRENCY</th>
-                                        <th>LAST PRICE</th>
+                                        <th  style="text-align: end; padding-right: 20px;">LAST PRICE</th>
                                         <th>24H CHANGE</th>
                                         {{-- <th>24H HIGH</th>
                                         <th>24H LOW</th> --}}
@@ -75,7 +75,7 @@
                                     <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}" v-on:click="setCurrency(item)">
                                         <td></td>
                                         <td>@{{splitCurrency(item[0])}}</td>
-                                        <td>@{{item[7]}} USD</td>
+                                        <td  style="text-align: end; padding-right: 20px;">@{{item[7]}} USD</td>
                                         <td :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
                                         {{-- <td>@{{item[3]}}</td>
                                         <td>@{{item[4]}}</td> --}}
@@ -101,7 +101,7 @@
                                                 <input type="text" class="form-control mb-1" placeholder="" v-model="selectedPrice">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="">
-                                                       <span class="text-muted">~@{{calcAmount.toFixed(2)}}</span>
+                                                       <span class="text-muted">~@{{calcAmount}}</span>
                                                     </span>
                                                 </div>
                                             </div>
@@ -129,7 +129,7 @@
                                 <div class="row mb-3">
                                     <div >
                                         <small class="float-end text-success cursor-pointer">
-                                            ~@{{derivativeRange.toFixed(2)}}
+                                            ~@{{derivativeRange}}
                                         </small>
                                         <input id="sliderRange" class="form-control" type="number"  min="1" value="1" max="100" oninput="rangeInput.value=sliderRange.value" v-model="derivativeValue"/><br>
                                         <input id="rangeInput" type="range" min="1" value="1" max="100" oninput="sliderRange.value=rangeInput.value" v-model="derivativeValue"/>
@@ -157,7 +157,7 @@
                                             <input type="text" class="form-control mb-1" placeholder="" v-model="selectedPrice">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="">
-                                                   <span class="text-muted">~@{{calcAmount.toFixed(2)}}</span>
+                                                   <span class="text-muted">~@{{calcAmount}}</span>
                                                 </span>
                                             </div>
                                         </div>
@@ -215,7 +215,7 @@
                                             <input type="text" class="form-control" placeholder="Coin exchange proce.." :value="selectedItem[7]">
                                         </div>
                                         <div class="form-group">
-                                            <label for="">Amount:</label> <small class="float-end" :class="{'text-danger': calcAmount>usdBalance, 'text-success': calcAmount<=usdBalance}">TOTAL: @{{calcAmount.toFixed(2)}}</small>
+                                            <label for="">Amount:</label> <small class="float-end" :class="{'text-danger': calcAmount>usdBalance, 'text-success': calcAmount<=usdBalance}">TOTAL: @{{calcAmount}}</small>
                                             <input type="number" class="form-control" placeholder="Enter buy amount..." v-model="buyAmount">
                                         </div>
                                         <div class="d-grid">
@@ -234,7 +234,7 @@
                                             <input type="text" class="form-control" placeholder="Coin exchange proce.." :value="selectedItem[7]">
                                         </div>
                                         <div class="form-group">
-                                            <label for="">Amount:</label> <small class="float-end" :class="{'text-danger': sellAmount>balance, 'text-success': sellAmount<=balance}">TOTAL: @{{calcSellAmount.toFixed(2)}}</small>
+                                            <label for="">Amount:</label> <small class="float-end" :class="{'text-danger': sellAmount>balance, 'text-success': sellAmount<=balance}">TOTAL: @{{calcSellAmount}}</small>
                                             <input type="number" class="form-control" placeholder="Enter sell amount..." v-model="sellAmount">
                                         </div>
                                         <div class="d-grid">

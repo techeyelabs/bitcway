@@ -23,29 +23,28 @@ class TradeController extends Controller
 {
     public function index(Request $request)
     {
-
-
+        $currency = array();
+        $data['currency'] = 0;
         if(isset($request->type)){
-            $currency = array();
             $data['type'] = $request->type;
-            $data['leverageAmount'] = Leverage_Wallet::select('currency_id')
+            $leverageAmount= Leverage_Wallet::select('currency_id')
                                                         ->selectRaw('sum(amount) as total')
                                                         ->where('user_id', Auth::id())
                                                         ->groupBy('currency_id')
                                                         ->with('currencyName')
                                                         ->get();
 
-            for ($i = 0 ; $i < count($data['leverageAmount']); $i++){
+            for ($i = 0 ; $i < count($leverageAmount); $i++){
                 $currencyInfo = array();
-                $currencyInfo["id"] = $data['leverageAmount'][$i]->currency_id;
-                $currencyInfo["amount"] = $data['leverageAmount'][$i]->total;
-                $currency[$data['leverageAmount'][$i]->currencyName->name] = $currencyInfo;
+                $currencyInfo["id"] = $leverageAmount[$i]->currency_id;
+                $currencyInfo["amount"] = $leverageAmount[$i]->total;
+                $currency[$leverageAmount[$i]->currencyName->name] = $currencyInfo;
 
             }
             $data['currency'] = $currency;
             return view('user.trade.index', $data);
         }
-        return view('user.trade.index');
+        return view('user.trade.index', $data);
     }
 
     public function finance(Request $request)
@@ -145,26 +144,23 @@ class TradeController extends Controller
 
     public function sell(Request $request)
     {
-//        return response()->json(['status'=>$request->all()]);
-        $currency = Currency::where('name', $request->currency)->first();
-
-        if(!$currency) return response()->json(['status' => false]);
-
-        $UserWallet = UserWallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->first();
-
-
-        if(!$UserWallet) return response()->json(['status' => false]);
-        
-        $UserWallet->balance = $UserWallet->balance-$request->sellAmount;
-        $UserWallet->save();
-
-
-        $leverageWalletCurrency = Leverage_Wallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->orderBy('id', 'desc')->get();
-//        $leverageWalletTotalCurrency = Leverage_Wallet::where('currency_id', $leverageWalletCurrency)->sum('amount');
-        $leverageSellAmount = $request->sellAmount;
+        $leverageRequestSellAmount = $request->sellAmount;
         $equivalentSellAmount = $request->calcSellAmount;
 
-        foreach($leverageWalletCurrency as $item ){
+        $currency = Currency::where('name', $request->currency)->first();
+        if(!$currency){
+            return response()->json(['status' => false]);
+        }
+
+        $UserWallet = UserWallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->first();
+        if(!$UserWallet) return response()->json(['status' => false]);
+        $UserWallet->balance = $UserWallet->balance-$leverageRequestSellAmount;
+        $UserWallet->save();
+
+        $leverageWalletCurrency = Leverage_Wallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->orderBy('id', 'desc')->get();
+        $leverageSellAmount = $leverageRequestSellAmount;
+
+        foreach($leverageWalletCurrency as $item){
             $derivativeSells = new DerivativeSell();
             $derivativeSells->type = $item->type;
             $derivativeSells->status = $item->status;
@@ -172,9 +168,12 @@ class TradeController extends Controller
             $derivativeSells->currency_id = $item->currency_id;
             $derivativeSells->leverage = $item->leverage;
 
-            if( $item->amount <= $leverageSellAmount && $leverageSellAmount != 0){
-                $sellTimeValue = ($equivalentSellAmount * $item->amount) / $request->sellAmount;
-                $sellAmountToUser = $sellTimeValue - (($item->equivalent_amount * $item->amount) * (($item->leverage - 1)/$item->leverage));
+            if($leverageSellAmount == 0){
+                break;
+            }
+            elseif( $item->amount <= $leverageSellAmount){
+                $sellTimeValue = ($equivalentSellAmount * $item->amount) / $leverageRequestSellAmount;
+                $sellAmountToUserWallet = $sellTimeValue - ($item->equivalent_amount * (($item->leverage - 1)/$item->leverage));
 
                 $derivativeSells->amount = $item->amount;
                 $derivativeSells->equivalent_amount = $item->equivalent_amount;
@@ -182,37 +181,36 @@ class TradeController extends Controller
                 $derivativeSells->profit = $sellTimeValue - $item->equivalent_amount;
                 $derivativeSells->save();
 
-                Auth::user()->derivative = Auth::user()->derivative + $sellAmountToUser;
+                Auth::user()->derivative = Auth::user()->derivative + $sellAmountToUserWallet;
                 Auth::user()->save();
 
                 $leverageSellAmount -= $item->amount;
                 $item->delete();
             }
             else{
-                $sellTimeValue = ($equivalentSellAmount * $leverageSellAmount) / $request->sellAmount;
+                $sellTimeValue = ($equivalentSellAmount * $leverageSellAmount) / $leverageRequestSellAmount;
                 $buyTimeValue = ($item->equivalent_amount * $leverageSellAmount) / $item->amount;
-                $sellAmountToUser = $sellTimeValue - ((($item->equivalent_amount * $item->amount) * ($leverageSellAmount / $item->amount)) * (($item->leverage - 1)/$item->leverage));
+                $sellAmountToUserWallet = $sellTimeValue - ($buyTimeValue * (($item->leverage - 1)/$item->leverage));
 
                 $derivativeSells->amount = $leverageSellAmount;
-                $derivativeSells->equivalent_amount = $item->equivalent_amount;
+                $derivativeSells->equivalent_amount = $buyTimeValue;
                 $derivativeSells->priceAtSell = $sellTimeValue;
                 $derivativeSells->profit = $sellTimeValue - $buyTimeValue;
                 $derivativeSells->save();
 
-                Auth::user()->derivative = Auth::user()->derivative + $sellAmountToUser;
+                Auth::user()->derivative = Auth::user()->derivative + $sellAmountToUserWallet;
                 Auth::user()->save();
 
                 $item->amount = $item->amount - $leverageSellAmount;
+                $item->equivalent_amount = $item->equivalent_amount - $buyTimeValue;
                 $item->save();
                 $leverageSellAmount = 0;
             }
-            if($leverageSellAmount == 0)
-                break;
         }
 
         $TransactionHistory= new TransactionHistory();
         $TransactionHistory->amount = $leverageSellAmount;
-        $TransactionHistory->equivalent_amount = $request->calcSellAmount;
+        $TransactionHistory->equivalent_amount = $equivalentSellAmount;
         $TransactionHistory->type = 2;
         $TransactionHistory->user_id = Auth::user()->id;
         $TransactionHistory->currency_id = $currency->id;
