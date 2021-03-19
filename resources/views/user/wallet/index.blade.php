@@ -1,17 +1,24 @@
 @extends('user.layouts.main')
 
 @section('custom_css')
-
+    <style>
+        .txtWhitecolor{
+            color: #D3D6D8;
+        }
+        .txtHeadingColor{
+            color: yellow;
+        }
+    </style>
 @endsection
 @section('content')
 
 <div id="wrap">
-    <h2>Wallet</h2>
+    <h3 class="txtHeadingColor">Wallet</h3>
     <hr>
     <div class="card">
         <div class="card-body">
             <div class="text-center">
-                <h4>BALANCE: {{Auth::user()->balance}} USDT</h4>
+                <h4 class="txtHeadingColor">BALANCE: {{Auth::user()->balance}} USDt</h4>
             </div>
         </div>
     </div>
@@ -27,35 +34,36 @@
         </div>
     </div>
     <div class="card mt-3">
+        @if(isset($withdrawFlag))
         <div class="card-body">
             <div class="text-center">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link active" id="deposit-history-tab" data-bs-toggle="tab" href="#deposit-history" role="tab"
-                            aria-controls="deposit-history" aria-selected="true">Deposit History</a>
+                        <a class="nav-link txtWhitecolor" id="deposit-history-tab" data-bs-toggle="tab" href="#deposit-history" role="tab"
+                            aria-controls="deposit-history" aria-selected="false">Deposit History</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="withdraw-histoty-tab" data-bs-toggle="tab" href="#withdraw-histoty" role="tab"
-                            aria-controls="withdraw-histoty" aria-selected="false">Withdraw Histoty</a>
+                        <a class="nav-link active txtWhitecolor" id="withdraw-histoty-tab" data-bs-toggle="tab" href="#withdraw-histoty" role="tab"
+                            aria-controls="withdraw-histoty" aria-selected="true">Withdraw Histoty</a>
                     </li>
                     
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active row" id="deposit-history" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="tab-pane fade row" id="deposit-history" role="tabpanel" aria-labelledby="home-tab">
                         <table class="table col-md-6">
                             <thead>
-                                <th>Date</th>
-                                <th>Amount (BTC)</th>
-                                <th>Amount (USDT)</th>
-                                <th>Status</th>
+                                <th class="txtWhitecolor">Date</th>
+                                <th class="txtWhitecolor">Amount (BTC)</th>
+                                <th class="txtWhitecolor">Amount (USDt)</th>
+                                <th class="txtWhitecolor">Status</th>
                             </thead>
                             <tbody>
                                 <?php foreach($deposit as $item){?>
                                 <tr>
-                                    <td>{{date('d/m/Y H:i', strtotime($item->created_at))}}</td>
-                                    <td>{{$item->amount}}</td>
-                                    <td>{{$item->equivalent_amount}}</td>
-                                    <td>
+                                    <td class="txtWhitecolor">{{date('d/m/Y H:i', strtotime($item->created_at))}}</td>
+                                    <td class="txtWhitecolor">{{$item->amount}}</td>
+                                    <td class="txtWhitecolor">{{$item->equivalent_amount}}</td>
+                                    <td class="txtWhitecolor">
                                         <?php if($item->status == 1) echo 'Approved';elseif($item->status == 2) echo 'Declined'; else echo 'Pending';?>
                                     </td>
                                 </tr>
@@ -64,19 +72,19 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="tab-pane fade" id="withdraw-histoty" role="tabpanel" aria-labelledby="withdraw-histoty-tab">
+                    <div class="tab-pane fade show active" id="withdraw-histoty" role="tabpanel" aria-labelledby="withdraw-histoty-tab">
                         <table class="table">
                             <thead>
-                                <th>Date</th>
-                                <th>Amount</th>
-                                <th>Status</th>
+                                <th class="txtWhitecolor">Date</th>
+                                <th class="txtWhitecolor">Amount</th>
+                                <th class="txtWhitecolor">Status</th>
                             </thead>
                             <tbody>
                                 <?php foreach($withdraw as $item){?>
                                 <tr>
-                                    <td>{{date('d/m/Y H:i', strtotime($item->created_at))}}</td>
-                                    <td>{{$item->amount}}</td>
-                                    <td>
+                                    <td class="txtWhitecolor">{{date('d/m/Y H:i', strtotime($item->created_at))}}</td>
+                                    <td class="txtWhitecolor">{{$item->amount}}</td>
+                                    <td class="txtWhitecolor">
                                         <?php if($item->status == 1) echo 'Approved';elseif($item->status == 2) echo 'Declined'; else echo 'Pending';?>
                                     </td>
                                 </tr>
@@ -87,6 +95,68 @@
                 </div>
             </div>
         </div>
+        @else
+        <div class="card-body">
+            <div class="text-center">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active txtWhitecolor" id="deposit-history-tab" data-bs-toggle="tab" href="#deposit-history" role="tab"
+                            aria-controls="deposit-history" aria-selected="true">Deposit History</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link txtWhitecolor" id="withdraw-histoty-tab" data-bs-toggle="tab" href="#withdraw-histoty" role="tab"
+                            aria-controls="withdraw-histoty" aria-selected="false">Withdraw Histoty</a>
+                    </li>
+
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active row" id="deposit-history" role="tabpanel" aria-labelledby="home-tab">
+                        <table class="table col-md-6">
+                            <thead>
+                                <th class="txtWhitecolor">Date</th>
+                                <th class="txtWhitecolor">Amount (BTC)</th>
+                                <th class="txtWhitecolor">Amount (USDt)</th>
+                                <th class="txtWhitecolor">Status</th>
+                            </thead>
+                            <tbody>
+                                <?php foreach($deposit as $item){?>
+                                <tr>
+                                    <td class="txtWhitecolor">{{date('d/m/Y H:i', strtotime($item->created_at))}}</td>
+                                    <td class="txtWhitecolor">{{$item->amount}}</td>
+                                    <td class="txtWhitecolor">{{$item->equivalent_amount}}</td>
+                                    <td class="txtWhitecolor">
+                                        <?php if($item->status == 1) echo 'Approved';elseif($item->status == 2) echo 'Declined'; else echo 'Pending';?>
+                                    </td>
+                                </tr>
+                                <?php }?>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="withdraw-histoty" role="tabpanel" aria-labelledby="withdraw-histoty-tab">
+                        <table class="table">
+                            <thead>
+                                <th class="txtWhitecolor">Date</th>
+                                <th class="txtWhitecolor">Amount</th>
+                                <th class="txtWhitecolor">Status</th>
+                            </thead>
+                            <tbody>
+                                <?php foreach($withdraw as $item){?>
+                                <tr>
+                                    <td class="txtWhitecolor">{{date('d/m/Y H:i', strtotime($item->created_at))}}</td>
+                                    <td class="txtWhitecolor">{{$item->amount}}</td>
+                                    <td class="txtWhitecolor">
+                                        <?php if($item->status == 1) echo 'Approved';elseif($item->status == 2) echo 'Declined'; else echo 'Pending';?>
+                                    </td>
+                                </tr>
+                                <?php }?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 
@@ -94,5 +164,20 @@
 @endsection
 
 @section('custom_js')
+
+{{--    <script>--}}
+{{--        $(document).ready( function(){--}}
+{{--            let tabChanger = $('#withdrawFlagid').html();--}}
+{{--            if (typeof tabChanger !== "undefined"){--}}
+{{--                $('#deposit-history-tab').removeClass('active');--}}
+{{--                $('#deposit-history').removeClass('active');--}}
+{{--                $('#deposit-history').removeClass('show');--}}
+{{--                $('#withdraw-histoty-tab').addClass('active');--}}
+{{--                $('#withdraw-histoty').addClass('active');--}}
+{{--                $('#withdraw-histoty').addClass('show');--}}
+{{--         }--}}
+{{--        })--}}
+
+{{--    </script>--}}
 
 @endsection

@@ -41,15 +41,21 @@
             flex-grow: 1;
             min-width: 0;
         }
+        .txtWhitecolor{
+            color: #D3D6D8;
+        }
+        .txtHeadingColor{
+            color: yellow;
+        }
     </style>
 @endsection
 @section('content')
 
     <div id="wrap" class="trade">
         @if(isset($type))
-            <h2>Derivatives</h2>
+            <h3 class="txtHeadingColor">Derivatives</h3>
         @else
-            <h2>Trade</h2>
+            <h3 class="txtHeadingColor">Trade</h3>
         @endif
         <hr>
         <div class="row" style="display: flex;">
@@ -57,29 +63,29 @@
                 <div class="card" >
                     <div class="card-body">
                         <div id="trackers">
-                            <div class="text-center title"><h4>Current Rate/Change</h4></div>
+                            <div class="text-center title txtHeadingColor"><h4>TICKERS</h4></div>
                             <table class="tables trackers">
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>CURRENCY</th>
-                                        <th  style="text-align: end; padding-right: 20px;">LAST PRICE</th>
-                                        <th>24H CHANGE</th>
+                                        <th class="txtWhitecolor">CURRENCY</th>
+                                        <th class="txtWhitecolor"  style="text-align: end; padding-right: 20px;">LAST PRICE</th>
+                                        <th class="txtWhitecolor">24H CHANGE</th>
                                         {{-- <th>24H HIGH</th>
                                         <th>24H LOW</th> --}}
-                                        <th>VOLUME</th>
+                                        <th class="txtWhitecolor">VOLUME</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 {{--                                    <tr v-for="item in trackers" v-on:click="setCurrency(item)" :class="{active: item[0] == selectedItem[0]}" >--}}
                                     <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}" v-on:click="setCurrency(item)">
                                         <td></td>
-                                        <td>@{{splitCurrency(item[0])}}</td>
-                                        <td  style="text-align: end; padding-right: 20px;">@{{item[7]}} USD</td>
+                                        <td  class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
+                                        <td  style="text-align: end; padding-right: 20px;"><span style="color: #D3D6D8;font-size: 12px;">@{{item[7]}}</span> USDt</td>
                                         <td :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
                                         {{-- <td>@{{item[3]}}</td>
                                         <td>@{{item[4]}}</td> --}}
-                                        <td>@{{Math.round(item[7]*item[8])}}</td>
+                                        <td class="txtWhitecolor">@{{Math.round(item[7]*item[8])}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -90,23 +96,23 @@
                     <div class="card" >
                         @if(isset($type))
                             <div class="card-body">
-                                <h4>Buy/Sell @{{currency}}</h4>
+                                <h4 class="txtHeadingColor">ORDER FORM: @{{currency}}</h4>
                                 {{-- <small class="float-end">BALANCE: @{{usdBalance}}</small> --}}
                                 <hr>
                                 <div class="row">
-                                    <div class="col">
+                                    <div class="col ">
                                         <div class="form-group">
-                                            <label for="">PRICE USD:</label>
+                                            <label for="" class="txtWhitecolor">USDt:</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control mb-1" placeholder="" v-model="selectedPrice">
+                                                <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="">
                                                        <span class="text-muted">~@{{calcAmount}}</span>
                                                     </span>
                                                 </div>
                                             </div>
-                                            <small>BID</small>
-                                            <small class="float-end text-success cursor-pointer" v-on:click="selectedPrice=latestBid">
+                                            <small class="txtWhitecolor">BID</small>
+                                            <small class="float-end text-success cursor-pointer " v-on:click="selectedPrice=latestBid">
                                                 <i v-if="bidIncrease" class="fas fa-sort-up"></i>
                                                 <i v-else class="fas fa-sort-down"></i>
                                                 @{{latestBid}}
@@ -115,9 +121,9 @@
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
-                                            <label for="">AMOUNT @{{currency}}:</label>
+                                            <label class="txtWhitecolor" for="">@{{currency}}:</label>
                                             <input type="number" class="form-control mb-1" placeholder="" v-model="amount">
-                                            <small>ASK</small>
+                                            <small class="txtWhitecolor">ASK</small>
                                             <small class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
                                                 <i v-if="askIncrease" class="fas fa-sort-up"></i>
                                                 <i v-else class="fas fa-sort-down"></i>
@@ -133,35 +139,36 @@
                                         </small>
                                         <input id="sliderRange" class="form-control" type="number"  min="1" value="1" max="100" oninput="rangeInput.value=sliderRange.value" v-model="derivativeValue"/><br>
                                         <input id="rangeInput" type="range" min="1" value="1" max="100" oninput="sliderRange.value=rangeInput.value" v-model="derivativeValue"/>
+                                        <input id="derivativeType" type="hidden" name="derivativeType" />
                                     </div>
                                 </div>
                                 <div class="row mt-5">
                                     <div class="col d-grid">
-                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || derivativeRange > derivativeBalance" v-on:click="derivativeBuy">BUY</button>
+                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || derivativeRange > derivativeBalance" v-on:click="derivativeBuy">Derivative Buy</button>
                                     </div>
                                     <div class="col d-grid">
-                                        <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > leverageWalletAmount" v-on:click="derivativeSell">SELL</button>
+                                        <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > leverageWalletAmount" v-on:click="derivativeSell">Derivative Sell</button>
                                     </div>
                                 </div>
                             </div>
                         @else
                             <div class="card-body">
-                            <h4>Buy/Sell @{{currency}}</h4>
+                            <h4 class="txtHeadingColor">ORDER FORM: @{{currency}}</h4>
                             {{-- <small class="float-end">BALANCE: @{{usdBalance}}</small> --}}
                             <hr>
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="">PRICE USD:</label>
+                                        <label class="txtWhitecolor" for="">USDt:</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control mb-1" placeholder="" v-model="selectedPrice">
+                                            <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="">
                                                    <span class="text-muted">~@{{calcAmount}}</span>
                                                 </span>
                                             </div>
                                         </div>
-                                        <small>BID</small>
+                                        <small class="txtWhitecolor">BID</small>
                                         <small class="float-end text-success cursor-pointer" v-on:click="selectedPrice=latestBid">
                                             <i v-if="bidIncrease" class="fas fa-sort-up"></i>
                                             <i v-else class="fas fa-sort-down"></i>
@@ -169,14 +176,14 @@
                                         </small>
                                     </div>
                                     <div class="d-grid">
-                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy">BUY</button>
+                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy">Exchange Buy</button>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="">AMOUNT @{{currency}}:</label>
+                                        <label class="txtWhitecolor" for="">@{{currency}}:</label>
                                         <input type="text" class="form-control mb-1" placeholder="" v-model="amount">
-                                        <small>ASK</small>
+                                        <small class="txtWhitecolor">ASK</small>
                                         <small class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
                                             <i v-if="askIncrease" class="fas fa-sort-up"></i>
                                             <i v-else class="fas fa-sort-down"></i>
@@ -184,7 +191,7 @@
                                         </small>
                                     </div>
                                     <div class="d-grid">
-                                        <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell">SELL</button>
+                                        <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell">Exchange SELL</button>
                                     </div>
                                 </div>
                             </div>
@@ -196,7 +203,7 @@
             <div class="col main-app-container">
                 <div class="card">
                     <div class="card-body">
-                        <div class="text-center title mb-2"><h4>Showing Chart for @{{currency}}</h4></div>
+                        <div class="text-center title mb-2 txtHeadingColor"><h4>Showing Chart for @{{currency}}</h4></div>
                         <div id="chart" style="height:600px; display: none"></div>
                         <div id="tradingview_f7648" ></div>
                     </div>
@@ -249,24 +256,24 @@
 
                 <div class="card mt-3">
                     <div class="card-body">
-                        <h4>Order Book: @{{currency}}/USD</h4>
+                        <h4 class="txtHeadingColor">Order Book: @{{currency}}/USDt</h4>
                         <hr>
                         <div class="">
                             <div class="row">
                                 <div class="col orders">
                                     <table class="table">
                                         <thead>
-                                            <th>Count</th>
-                                            <th>Amount</th>
-                                            {{-- <th>Total</th> --}}
-                                            <th>Price</th>
+                                            <th class="txtWhitecolor">Count</th>
+                                            <th class="txtWhitecolor">Amount</th>
+                                            <th class="txtWhitecolor">Total</th>
+                                            <th class="txtWhitecolor">Price</th>
                                         </thead>
-                                        <tbody>
+                                        <tbody style="background-color: #1142304d;">
                                             <tr v-for="item in bids">
-                                                <td>@{{item[1]}}</td>
-                                                <td>@{{item[2]}}</td>
-                                                {{-- <td>@{{item[0]}}</td> --}}
-                                                <td>@{{item[0]}}</td>
+                                                <td class="txtWhitecolor">@{{item[1]}}</td>
+                                                <td class="txtWhitecolor">@{{item[2]}}</td>
+                                                <td class="txtWhitecolor">@{{item[1]*item[2]}}</td>
+                                                <td class="txtWhitecolor">@{{item[0]}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -274,17 +281,17 @@
                                 <div class="col orders">
                                     <table class="table">
                                         <thead>
-                                            <th>Price</th>
-                                            {{-- <th>Total</th> --}}
-                                            <th>Amount</th>
-                                            <th>Count</th>
+                                            <th class="txtWhitecolor">Price</th>
+                                            <th class="txtWhitecolor">Total</th>
+                                            <th class="txtWhitecolor">Amount</th>
+                                            <th class="txtWhitecolor">Count</th>
                                         </thead>
-                                        <tbody>
+                                        <tbody style="background-color:#942f3e6e; ">
                                             <tr v-for="item in asks">
-                                                <td>@{{item[0]}}</td>
-                                                <td>@{{Math.abs(item[2])}}</td>
-                                                {{-- <td>@{{item[0]}}</td> --}}
-                                                <td>@{{item[1]}}</td>
+                                                <td class="txtWhitecolor">@{{item[0]}}</td>
+                                                <td class="txtWhitecolor">@{{item[1]*item[2]}}</td>
+                                                <td class="txtWhitecolor">@{{Math.abs(item[2])}}</td>
+                                                <td class="txtWhitecolor">@{{item[1]}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -566,8 +573,8 @@
                     axios.post('{{route("user-trade-buy")}}', {
                         currency: that.currency,
                         buyAmount: that.amount,
-                        calcBuyAmount: that.calcAmount,
-                        leverage: $("#sliderRange").val()
+                        calcBuyAmount: that.calcAmount
+
                     })
                     .then(function (response) {
                         if(response.data.status){
@@ -634,7 +641,7 @@
                 },
                 derivativeSell(){
                     let that = this;
-                    if(that.calcAmount <= 0 || that.amount > that.balance) {
+                    if(that.calcAmount <= 0 || that.amount > that.leverageWalletAmount) {
                         toastr.error('Invalid amount !!');
                         return false;
                     }
@@ -643,7 +650,8 @@
                     axios.post('{{route("user-trade-sell")}}', {
                         currency: that.currency,
                         sellAmount: that.amount,
-                        calcSellAmount: that.calcAmount
+                        calcSellAmount: that.calcAmount,
+                        derivativeType: '0'
                     })
                         .then(function (response) {
                             if(response.data.status){
@@ -651,10 +659,12 @@
                                 window.location.href = '{{route("user-wallets")}}';
                                 return false;
                             }
-                            toastr.error('Error occured !!');
+                                toastr.error('Error occured !!');
+                                window.location.reload();
                         })
                         .catch(function (error) {
-                            toastr.error('Error occured !!');
+                                toastr.error('Error occured !!');
+                                window.location.reload();
                         });
                 },
                 getOrders(){

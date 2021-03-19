@@ -66,7 +66,7 @@ class UserController extends Controller
     public function wallets(Request $request)
     {
         $data['total'] = 0;
-        $data['wallets'] = UserWallet::where('user_id', $request->id)->with('currency')->get();
+        $data['wallets'] = UserWallet::where('user_id', $request->id)->with('currency')->orderBy('id', 'desc')->get();
         $Bitfinex = new Bitfinex();
         foreach($data['wallets'] as $item){            
             $data['total'] += $item->balance*$Bitfinex->getRate($item->currency->name);

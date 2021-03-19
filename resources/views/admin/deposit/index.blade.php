@@ -18,7 +18,7 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Amount (BTC)</th>
-                            <th>Equivalent Amount (USDT</th>
+                            <th>Equivalent Amount (USDt)</th>
                             <th>Status</th>
                             <th>Created</th>
                             <th style="min-width: 150px;">Action</th>

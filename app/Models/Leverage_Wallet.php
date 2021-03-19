@@ -15,4 +15,8 @@ class Leverage_Wallet extends Model
     {
         return $this->belongsTo(Currency::class, 'currency_id');
     }
+    public function leveragehistory()
+    {
+        return $this->belongsTo(UserWallet::class);
+    }
 }

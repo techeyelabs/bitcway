@@ -1,11 +1,16 @@
 @extends('user.layouts.main')
 
 @section('custom_css')
+    <style>
+        .txtWhitecolor{
+            color: #D3D6D8;
+        }
+    </style>
 @endsection
 
 @section('content')
 <div id="wrap" class="deposit">
-    <h2>Withdraw</h2>
+    <h3 class="txtWhitecolor">Withdraw</h3>
     <hr>
 
     <div class="row">
@@ -15,19 +20,19 @@
 
                     <template v-if='done'>
 
-                        <div class="alert alert-success alert-dismissible fade show mb-3 bg-transparent" role="alert">
+                        <div class="alert alert-success alert-dismissible fade show mb-3 bg-transparent " role="alert" style="color:#D3D6D8 !important;" >
                             Withdraw request has been sent.
                         </div>
-                        <a href="{{route('user-wallet')}}" class="btn btn-outline-danger">Exit</a>
+                        <a href="{{route('user-wallet',['id'=>1])}}" class="btn btn-outline-danger">Exit</a>
                     </template>
 
                     <template v-else>
                         <div class="form-group text-center">
-                            <h4>Available: @{{balance}} USDT</h4>
+                            <h4 class="txtWhitecolor">Available: @{{balance}} USDt</h4>
                         </div>
                         
                         <div class="form-group">
-                            <label for="">Amount (USDT)</label>
+                            <label class="txtWhitecolor" for="">Amount (USDt)</label>
                             <input type="number" class="form-control" aria-describedby="" name="amount"
                                 value="{{old('amount')}}" placeholder="Enter amount in bitcoin here..." required v-model="amount" :disabled="balance<=0">                            
                             @error('amount')

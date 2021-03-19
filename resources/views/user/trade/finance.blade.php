@@ -47,32 +47,38 @@
             margin-top: 15px;
             font-size: 15px;
         }
+        .txtWhitecolor{
+            color: #D3D6D8;
+        }
+        .txtHeadingColor{
+            color: yellow;
+        }
     </style>
 @endsection
 @section('content')
 
     <div id="wrap" class="trade">
-        <h2>Finance</h2>
+        <h3 class="txtHeadingColor">Finance</h3>
         <hr>
         <div class="card">
             <div class="card-body text-center">
-                <h4>Locked Savings Amount:  {{$total}} USD</h4>
+                <h4 class="txtHeadingColor">Locked Savings Amount:  {{$total}} USDt</h4>
             </div>
         </div>
         <div class="card mt-3">
             <div class="card-body">
                 <ul class="list-group col-md-6 offset-md-3">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span>Rate</span>
-                        <span>Duration</span>
-                        <span>Interest Per Lot</span>
-                        <span></span>
+                        <span class="txtWhitecolor">Rate</span>
+                        <span class="txtWhitecolor">Duration</span>
+                        <span class="txtWhitecolor">Interest Per Lot</span>
+                        <span class="txtWhitecolor"></span>
                     </li>
                     @foreach($settings as $item)
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>{{$item->rate}}</span>
-                            <span>{{$item->duration}}</span>
-                            <span>{{$item->interest_per_lot}}</span>
+                            <span class="txtWhitecolor">{{$item->rate}}</span>
+                            <span class="txtWhitecolor">{{$item->duration}}</span>
+                            <span class="txtWhitecolor">{{$item->interest_per_lot}}</span>
                             <span class="badge bg-primary pill cursor-pointer" onclick="changeData({{$item->id}}, {{$item->rate}}, {{$item->duration}}, {{$item->interest_per_lot}})">Transfer</span>
                         </li>
                     @endforeach
@@ -85,43 +91,43 @@
                 <div class="card-body list-group col-md-8 offset-md-2">
                    <div class="row col-md-12">
                        <div class="col-md-6 mb-5 mt-4" style="padding-left: 5%">
-                           <div>coin<br/><h4>OMG</h4></div>
-                           <div>Activity Duration <span class="day-block"><span id="days">7</span> days</span></div><br/>
-                           <div>Lot amount (Available Lot: {!! floor($dummy_coin_balance/5) !!})</div>
+                           <div class="txtWhitecolor">coin<br/><h4>OMG</h4></div>
+                           <div class="txtWhitecolor">Activity Duration <span class="day-block"><span id="days">7</span> days</span></div><br/>
+                           <div class="txtWhitecolor">Lot amount (Available Lot: {!! floor($dummy_coin_balance/5) !!})</div>
                            <div>
                                <input type="number" class="lot-input" name="lot" id="lot" onchange="setTotalInterest(this)">
                                <input type="hidden" id="ratePerLot" name="ratePerLot">
                                <input type="hidden" id="plan" name="plan">
                                <input type="hidden" id="balance" name="balance" value={{$dummy_coin_balance}}>
                            </div>
-                           <div>= <span id="total">0</span>&nbsp;<span>OMGC</span></div>
+                           <div class="txtWhitecolor">= <span id="total">0</span>&nbsp;<span>OMGC</span></div>
                        </div>
                        <div class="row col-md-6 mb-5 mt-4">
                            <div>
-                               <span style="float: left">Lot Size</span>
-                               <span style="float: right">5 OMGC</span>
+                               <span class="txtWhitecolor" style="float: left">Lot Size</span>
+                               <span class="txtWhitecolor" style="float: right">5 OMGC</span>
                            </div>
                            <div>
-                               <span style="float: left">Interest Per Lot</span>
-                               <span style="float: right" id="ipl">0.1201 (6.31% Annually)</span>
+                               <span class="txtWhitecolor" style="float: left">Interest Per Lot</span>
+                               <span class="txtWhitecolor" style="float: right" id="ipl">0.1201 (6.31% Annually)</span>
                            </div>
                            <div>
-                               <span style="float: left">Value Date</span>
-                               <span style="float: right">{!! date('Y-m-d h:i:s') !!}</span>
+                               <span class="txtWhitecolor" style="float: left">Value Date</span>
+                               <span class="txtWhitecolor" style="float: right">{!! date('Y-m-d h:i:s') !!}</span>
                            </div>
                            <div>
-                               <span style="float: left">Redemption Date</span>
-                               <span style="float: right" id="termination">2021-02-26 09:00</span>
+                               <span class="txtWhitecolor" style="float: left">Redemption Date</span>
+                               <span class="txtWhitecolor" style="float: right" id="termination">2021-02-26 09:00</span>
                            </div>
                            <div>
-                               <span style="float: left">Expected Interest</span>
-                               <span style="float: right" id="interest">0 OMGC</span>
+                               <span class="txtWhitecolor" style="float: left">Expected Interest</span>
+                               <span class="txtWhitecolor" style="float: right" id="interest">0 OMGC</span>
                            </div>
                        </div>
                    </div>
                 </div>
                 <div class="card-body list-group col-md-8 offset-md-2">
-                    <div class="row col-md-12" style="text-align: right">
+                    <div class="row col-md-12 txtWhitecolor" style="text-align: right">
                         <span>
                             <input type="checkbox" id="acceptance" name="acceptance" value="confirm" onchange="confirmButtonCheck()">
                             <label for="vehicle1"> I have read and accepted the terms and conditions of OMGCoin</label>
@@ -139,17 +145,17 @@
             <div class="card-body">
                 <ul class="list-group col-md-8 offset-md-2">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <p class="col-1">Lot</p>
-                        <p class="col-4">Value Date</p>
-                        <p class="col-4">Redemption Date</p>
-                        <p class="col-2">Expected Interest</p>
+                        <p class="col-1 txtWhitecolor">Lot</p>
+                        <p class="col-4 txtWhitecolor">Value Date</p>
+                        <p class="col-4 txtWhitecolor">Redemption Date</p>
+                        <p class="col-2 txtWhitecolor">Expected Interest</p>
                     </li>
                     @foreach($history as $item)
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <p class="col-1">{{$item->lot_count}}</p>
-                            <p class="col-4">{{$item->value_date}}</p>
-                            <p class="col-4">{{$item->redemption_date}}</p>
-                            <p class="col-2">{{$item->expected_interest}}</p>
+                            <p class="col-1 txtWhitecolor">{{$item->lot_count}}</p>
+                            <p class="col-4 txtWhitecolor">{{$item->value_date}}</p>
+                            <p class="col-4 txtWhitecolor">{{$item->redemption_date}}</p>
+                            <p class="col-2 txtWhitecolor">{{$item->expected_interest}}</p>
                         </li>
                     @endforeach
                 </ul>

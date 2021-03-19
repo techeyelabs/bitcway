@@ -23,14 +23,17 @@
         font-size: 14px;
         margin-top: 0px;
     }
+    .txtHeadingColor{
+        color: yellow;
+    }
 </style>
 @endsection
 
 @section('content')
 <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px; margin: auto;" bis_skin_checked="1">
     <div id="wrap" class="message">
-        <h2>Message List</h2>
-        <hr>
+        <h3 class="txtHeadingColor">Message List</h3>
+
         <div class="card message-list">
             <div class="card-body">
                 <div class="list-group" style="height: 650px;background-color: #081420;display:none;">

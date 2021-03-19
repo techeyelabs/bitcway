@@ -10,28 +10,34 @@
         .modalbg{
             background-color: #102331;
         }
-        .
+        .txtWhitecolor{
+            color: #D3D6D8;
+        }
+        .txtHeadingColor{
+            color: yellow;
+        }
     </style>
 @endsection
 
 @section('content')
     <div id="wrap" class="deposit">
-        <h2>Assets</h2>
+        <h3 class="txtHeadingColor">Assets</h3>
         <hr>
-        <div class="card">
-            <div class="card-body text-center">
-                <h4>Equivalent Asset Amount:  {{$total}} USDT</h4>
-            </div>
-        </div>
+{{--        <div class="card">--}}
+{{--            <div class="card-body text-center">--}}
+{{--                <h4 class="txtHeadingColor">Equivalent Asset Amount:  {{$total}} USDt</h4>--}}
+{{--            </div>--}}
+{{--        </div>--}}
         {{--Trade Wallet Start--}}
         <div class="card mt-3">
             <div class="card-body">
-                <div class="text-center"><h4>Trade Wallet</h4></div>
+
                 <ul class="list-group col-md-6 offset-md-3">
+                    <div class="text-left mb-3" style="margin-left: -15px;"><h4 class="txtHeadingColor">Trade Wallet (Equivalent Asset Amount:  {{$total}} USDt)</h4></div>
                     <li class="row list-group-item d-flex justify-content-between align-items-center">
-                        <p class="col" id="MyCoinCurrencyName" style="text-align: left; color:white;">Currency</p>
-                        <p class="col" id="MyTotalCoinAmount" style="text-align: center;color:white;">Balance</p>
-                        <p class="col" id="CoinpriceIntoMycoin" style="text-align: right;color:white;" >Current Price</p>
+                        <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">Currency</p>
+                        <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: center;">Amount</p>
+                        <p class="col txtWhitecolor" id="CoinpriceIntoMycoin" style="text-align: right;" >Current Price</p>
                     </li>
                     <?php
                     $i = 0;
@@ -40,9 +46,9 @@
                     ?>
                     {{--<span class="badge bg-primary pill" id="MyCoinCurrencyName{{$index}}">{{$item->currency->name}}</span>--}}
                     <li class="row list-group-item d-flex justify-content-between align-items-center">
-                        <p class="col" id="MyCoinCurrencyName{{$index}}" style="text-align: left; color:white;">{{$item->currency->name}}</p>
-                        <p class="col" id="MyTotalCoinAmount{{$index}}" style="text-align: center;color:white;">{{$item->balance}}</p>
-                        <p class="col" id="CoinpriceIntoMycoin{{$index}}"  style="text-align: right;color:white;"></p>
+                        <p class="col txtWhitecolor" id="MyCoinCurrencyName{{$index}}" style="text-align: left;">{{$item->currency->name}}</p>
+                        <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}" style="text-align: center;">{{$item->balance}}</p>
+                        <p class="col txtWhitecolor" id="CoinpriceIntoMycoin{{$index}}"  style="text-align: right;"></p>
                     </li>
                     <?php
                     }
@@ -56,19 +62,20 @@
         {{--Derivative Wallet Start--}}
         <div class="card mt-3">
             <div class="card-body">
-                <div class="text-center"><h4>Derivative Wallet</h4></div>
+{{--                <div class="text-center"><h4 class="txtHeadingColor">Derivative Wallet</h4></div>--}}
                 <div class="col-md-6 offset-md-3 mb-2">
+                    <div class="text-left mb-4" style="margin-left: -15px;"><h4 class="txtHeadingColor">Derivative Wallet</h4></div>
                     <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#derivativeModal" style="margin-left: -13px;width: 100px;" onclick="setFlag(1)">Deposit</button>
                     <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#derivativeModal"  style="width: 100px;" onclick="setFlag(2)">Withdraw</button>
                 </div>
 
                 <ul class="list-group col-md-6 offset-md-3">
                     <li class="row list-group-item d-flex justify-content-between align-items-center">
-                        <p class="col" id="MyCoinCurrencyName" style="text-align: left; color:white;">Currency</p>
-                        <p class="col" id="derivati8vePercent" style="text-align: left; color:white;">Leverage</p>
-                        <p class="col" id="derivati8vePercent" style="text-align: left; color:white;">Rate</p>
-                        <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">Balance</p>
-                        <p class="col" id="CoinpriceIntoMycoin2" style="text-align: right;color:white;">Current Price</p>
+                        <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left; color:white;">Currency</p>
+                        <p class="col txtWhitecolor" id="derivati8vePercent" style="text-align: left; color:white;">Leverage</p>
+                        <p class="col txtWhitecolor" id="derivati8vePercent" style="text-align: left; color:white;">Rate</p>
+                        <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: right;color:white;">Amount</p>
+                        <p class="col txtWhitecolor" id="CoinpriceIntoMycoin2" style="text-align: right;color:white;">Current Price</p>
 
                     </li>
                     <?php
@@ -78,11 +85,11 @@
                             $j++;
                         ?>
                             <li class="row list-group-item d-flex justify-content-between align-items-center">
-                                <p class="col" id="MyCoinCurrencyName2{{$j}}" style="text-align: left; color:white;">{{$item->currency->name}}</p>
-                                <p class="col" id="derivativePercent{{$j}}" style="text-align: left; color:white;">{{$item->leverage}}</p>
-                                <p class="col" id="derivativePercent{{$j}}" style="text-align: left; color:white;">{{($item->equivalent_amount / $item->leverage)}}</p>
-                                <p class="col" id="MyTotalCoinAmount2{{$j}}" style="text-align: right;color:white;">{{$item->amount}}</p>
-                                <p class="col" id="CoinpriceIntoMycoin2{{$j}}" style="text-align: right;color:white;"></p>
+                                <p class="col txtWhitecolor" id="MyCoinCurrencyName2{{$j}}" style="text-align: left; color:white;">{{$item->currencyName->name}}</p>
+                                <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: left; color:white;">{{$item->leverage}}</p>
+                                <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: left; color:white;">{{($item->equivalent_amount / $item->leverage)}}</p>
+                                <p class="col txtWhitecolor" id="MyTotalCoinAmount2{{$j}}" style="text-align: right;color:white;">{{$item->amount}}</p>
+                                <p class="col txtWhitecolor" id="CoinpriceIntoMycoin2{{$j}}" style="text-align: right;color:white;"></p>
 
                             </li>
                        <?php
@@ -98,20 +105,21 @@
         {{--Finance Wallet Start--}}
         <div class="card mt-3">
             <div class="card-body">
-                <div class="text-center"><h4>Finance Wallet</h4></div>
+{{--                <div class="text-center"><h4 class="txtHeadingColor">Finance Wallet</h4></div>--}}
                 <ul class="list-group col-md-6 offset-md-3">
+                    <div class="text-left mb-3" style="margin-left: -15px;"><h4 class="txtHeadingColor">Finance Wallet</h4></div>
                     <li class="row list-group-item d-flex justify-content-between align-items-center">
-                        <p class="col" id="MyCoinCurrencyName" style="text-align: left; color:white;">Lot</p>
-                        <p class="col" id="CoinpriceIntoMycoin" style="text-align: left;color:white;">Value Date</p>
-                        <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">Redemption Date</p>
-                        <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">Expected Interest</p>
+                        <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left; ">Lot</p>
+                        <p class="col txtWhitecolor" id="CoinpriceIntoMycoin" style="text-align: left;">Value Date</p>
+                        <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: right;">Redemption Date</p>
+                        <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: right;">Expected Interest</p>
                     </li>
                     @foreach($finances as $finance)
                     <li class="row list-group-item d-flex justify-content-between align-items-center">
-                        <p class="col" id="MyCoinCurrencyName" style="text-align: left; color:white;">{{$finance->lot_count}}</p>
-                        <p class="col" id="CoinpriceIntoMycoin" style="text-align: left;color:white;">{{$finance->value_date}}</p>
-                        <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">{{$finance->redemption_date}}</p>
-                        <p class="col" id="MyTotalCoinAmount" style="text-align: right;color:white;">{{$finance->expected_interest}}</p>
+                        <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{$finance->lot_count}}</p>
+                        <p class="col txtWhitecolor" id="CoinpriceIntoMycoin" style="text-align: left;">{{$finance->value_date}}</p>
+                        <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: right;">{{$finance->redemption_date}}</p>
+                        <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: right;">{{$finance->expected_interest}}</p>
                     </li>
                     @endforeach
                 </ul>

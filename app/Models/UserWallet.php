@@ -21,6 +21,10 @@ class UserWallet extends Model
     {
         return $this->belongsTo(TransactionHistory::class);
     }
+    public function leveragehistory()
+    {
+        return $this->belongsTo(Leverage_Wallet::class);
+    }
     public function lockedSaving()
     {
         return $this->belongsTo(LockedSaving::class);
