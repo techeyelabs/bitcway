@@ -50,8 +50,8 @@
                             @enderror
 
                         </div>
-                        <button type="submit" class="btn btn-outline-primary float-end">Change</button>
-                        <a href="{{route('user-dashboard')}}" class="btn btn-outline-danger float-end me-2">Cancel</a>
+                        <button type="submit" class="btn btn-outline-warning float-end">Change</button>
+                        <a href="{{route('user-dashboard')}}" class="btn btn-outline-info float-end me-2">Cancel</a>
 
                     </form>
                 </div>

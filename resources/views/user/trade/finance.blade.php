@@ -135,7 +135,7 @@
                     </div>
                     <div class="row col-md-12" style="text-align: right">
                         <span>
-                            <button class="confirm-button" disabled>Confirm Transaction</button>
+                            <button class="confirm-button btn-outline-warning" disabled>Confirm Transaction</button>
                         </span>
                     </div>
                 </div>

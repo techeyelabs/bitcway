@@ -27,8 +27,8 @@
                             <img :src="qrCodeLink" alt="">
                         </div>
                         <hr>
-                        <a href="{{route('user-wallet')}}" class="btn btn-outline-danger mt-2" >Cancel</a>
-                        <a href="#" class="btn btn-outline-success mt-2" v-on:click="done">Done</a>
+                        <a href="{{route('user-wallet')}}" class="btn btn-outline-info mt-2" >Cancel</a>
+                        <a href="#" class="btn btn-outline-warning mt-2" v-on:click="done">Done</a>
                     </template>
 
                     <template v-else>                            
@@ -44,7 +44,7 @@
                             <h4 class="txtWhitecolor">Equivalent: @{{(amount*rate).toFixed(2)}} (USDt)</h4>
                         </div>
 
-                        <a href="#" class="btn btn-outline-success float-end" v-on:click="deposit">Deposit</a>
+                        <a href="#" class="btn btn-outline-warning float-end" v-on:click="deposit">Deposit</a>
                     </template>
 
                     

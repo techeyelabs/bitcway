@@ -54,7 +54,7 @@ class TradeController extends Controller
     {
         $data['settings'] = LockedSavingsSetting::get();
         //dummy coin data grab
-        $id = Currency::where('name', 'DSH')->pluck('id');
+        $id = Currency::where('name', 'ADA')->pluck('id');
         $data['dummy_coin_balance'] = UserWallet::where('user_id', Auth::id())->where('currency_id', $id)->sum('balance');
         $data['history'] = LockedSaving::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->get();
         $data['total'] = 0;
@@ -100,27 +100,31 @@ class TradeController extends Controller
         if(!$currency) return response()->json(['status' => false]);
 
         $UserWallet = UserWallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->first();
-        if(!$UserWallet) {
-            $UserWallet = new UserWallet();
-            $UserWallet->balance = $request->buyAmount;
-        }else{
-            $UserWallet->balance = $UserWallet->balance+$request->buyAmount;
+
+        //For saving Trade data in User Wallet table
+        if (!isset($request->leverage)){
+            if(!$UserWallet) {
+                $UserWallet = new UserWallet();
+                $UserWallet->balance = $request->buyAmount;
+            }else{
+                $UserWallet->balance = $UserWallet->balance+$request->buyAmount;
+            }
+            $UserWallet->user_id = Auth::user()->id;
+            $UserWallet->currency_id = $currency->id;
+            $UserWallet->save();
         }
 
+        //For saving Trade & derivative Amount in User table(derivative/balance)
         $leverage = 1;
         if(isset($request->leverage)){
             $leverage = $request->leverage;
-            Auth::user()->derivative = Auth::user()->derivative - $request->calcBuyAmount/$leverage;
+            Auth::user()->derivative = Auth::user()->derivative - $request->calcBuyAmount / $leverage;
         }else{
             Auth::user()->balance = Auth::user()->balance - $request->calcBuyAmount;
         }
         Auth::user()->save();
 
         try{
-            $UserWallet->user_id = Auth::user()->id;
-            $UserWallet->currency_id = $currency->id;
-            $UserWallet->save();
-
             $TransactionHistory= new TransactionHistory();
             $TransactionHistory->amount = $request->buyAmount;
             $TransactionHistory->equivalent_amount = $request->calcBuyAmount;
@@ -143,13 +147,11 @@ class TradeController extends Controller
         } catch(Exception $e){
             return response()->json(['status' => false]);
         }
-
        return response()->json(['status' => true]);
     }
 
     public function sell(Request $request)
     {
-
         $leverageRequestSellAmount = $request->sellAmount;
         $equivalentSellAmount = $request->calcSellAmount;
 
@@ -218,13 +220,29 @@ class TradeController extends Controller
                 }
 
                 $TransactionHistory = new TransactionHistory();
-                $TransactionHistory->amount = $leverageRequestSellAmount;
-                $TransactionHistory->equivalent_amount = $equivalentSellAmount;
+                $TransactionHistory->amount = $request->sellAmount;
+                $TransactionHistory->equivalent_amount = $request->calcSellAmount;
                 $TransactionHistory->type = 2;
                 $TransactionHistory->user_id = Auth::user()->id;
                 $TransactionHistory->currency_id = $currency->id;
                 $TransactionHistory->save();
+
             }else{
+                $TransactionHistory= new TransactionHistory();
+                $TransactionHistory->amount = $request->sellAmount;
+                $TransactionHistory->equivalent_amount = $request->calcSellAmount;
+                $TransactionHistory->type = 2;
+                $TransactionHistory->user_id = Auth::user()->id;
+                $TransactionHistory->currency_id = $currency->id;
+                $TransactionHistory->save();
+//
+                $UserWallet->balance = $UserWallet->balance-$request->sellAmount;
+                $UserWallet->save();
+                if ($UserWallet->balance == 0.00000000){
+                    $UserWallet->delete();
+                }
+//                UserWallet::where('amount', '<=', 0.00000000)->delete();
+
                 Auth::user()->balance = Auth::user()->balance+$equivalentSellAmount;
                 Auth::user()->save();
             }

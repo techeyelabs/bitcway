@@ -14,8 +14,8 @@
             background-color: #081420;
         }
         .orders{
-            max-height: 500px;
-            overflow-y: scroll;
+            max-height: 417px;
+            overflow-y: clip;
         }
         .cursor-pointer{
             cursor: pointer;
@@ -105,12 +105,13 @@
                                             <label for="" class="txtWhitecolor">USDt:</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text" id="">
-                                                       <span class="text-muted">~@{{calcAmount}}</span>
-                                                    </span>
-                                                </div>
+{{--                                                <div class="input-group-append">--}}
+{{--                                                    <span class="input-group-text" id="">--}}
+{{--                                                       <span class="text-muted">~@{{calcAmount}}</span>--}}
+{{--                                                    </span>--}}
+{{--                                                </div>--}}
                                             </div>
+                                            <span class="text-muted form-control">~@{{calcAmount}}</span>
                                             <small class="txtWhitecolor">BID</small>
                                             <small class="float-end text-success cursor-pointer " v-on:click="selectedPrice=latestBid">
                                                 <i v-if="bidIncrease" class="fas fa-sort-up"></i>
@@ -162,12 +163,13 @@
                                         <label class="txtWhitecolor" for="">USDt:</label>
                                         <div class="input-group">
                                             <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="">
-                                                   <span class="text-muted">~@{{calcAmount}}</span>
-                                                </span>
-                                            </div>
+{{--                                            <div class="input-group-append">--}}
+{{--                                                <span class="input-group-text" id="">--}}
+{{--                                                   <span class="text-muted">~@{{calcAmount}}</span>--}}
+{{--                                                </span>--}}
+{{--                                            </div>--}}
                                         </div>
+                                        <span class="text-muted form-control">~@{{calcAmount}}</span>
                                         <small class="txtWhitecolor">BID</small>
                                         <small class="float-end text-success cursor-pointer" v-on:click="selectedPrice=latestBid">
                                             <i v-if="bidIncrease" class="fas fa-sort-up"></i>
@@ -180,7 +182,7 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="form-group">
+                                    <div class="form-group" style="margin-bottom: 51px;">
                                         <label class="txtWhitecolor" for="">@{{currency}}:</label>
                                         <input type="text" class="form-control mb-1" placeholder="" v-model="amount">
                                         <small class="txtWhitecolor">ASK</small>

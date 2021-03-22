@@ -15,25 +15,33 @@
 <div id="wrap">
     <h3 class="txtHeadingColor">Wallet</h3>
     <hr>
-    <div class="card">
-        <div class="card-body">
-            <div class="text-center">
-                <h4 class="txtHeadingColor">BALANCE: {{Auth::user()->balance}} USDt</h4>
-            </div>
-        </div>
-    </div>
+{{--    <div class="card">--}}
+{{--        <div class="card-body">--}}
+{{--            <div class="text-center">--}}
+{{--                <h4 class="txtHeadingColor">BALANCE: {{Auth::user()->balance}} USDt</h4>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--    <div class="card mt-3">--}}
+{{--        <div class="card-body">--}}
+{{--            <div class="text-center">--}}
+{{--                <div class="row">--}}
+{{--                    <div class="col d-grid"><a href="{{route('user-deposit')}}" class="btn btn-block btn-lg btn-outline-info">Deposit</a></div>--}}
+{{--                    <div class="col d-grid"><a href="{{route('user-withdraw')}}" class="btn btn-block btn-lg btn-outline-warning">Withdraw</a>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
     <div class="card mt-3">
-        <div class="card-body">
-            <div class="text-center">
-                <div class="row">
-                    <div class="col d-grid"><a href="{{route('user-deposit')}}" class="btn btn-block btn-lg btn-outline-info">Deposit</a></div>
-                    <div class="col d-grid"><a href="{{route('user-withdraw')}}" class="btn btn-block btn-lg btn-outline-warning">Withdraw</a>
-                    </div>
-                </div>
-            </div>
+        <div class="col-md-6 offset-md-3">
+        <div class="text-center mt-3">
+            <h4 class="txtHeadingColor">BALANCE: {{Auth::user()->balance}} USDt</h4>
         </div>
-    </div>
-    <div class="card mt-3">
+        <div class="col-md-6 mb-1 mt-3" style="margin-left: 15px;">
+            <a href="{{route('user-deposit')}}" type="button" class="btn btn-outline-info" >Deposit</a>
+            <a href="{{route('user-withdraw')}}" type="button" class="btn btn-outline-warning">Withdraw</a>
+        </div>
         @if(isset($withdrawFlag))
         <div class="card-body">
             <div class="text-center">
@@ -157,6 +165,7 @@
             </div>
         </div>
         @endif
+      </div>
     </div>
 </div>
 

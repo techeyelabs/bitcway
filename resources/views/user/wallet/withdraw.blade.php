@@ -23,7 +23,7 @@
                         <div class="alert alert-success alert-dismissible fade show mb-3 bg-transparent " role="alert" style="color:#D3D6D8 !important;" >
                             Withdraw request has been sent.
                         </div>
-                        <a href="{{route('user-wallet',['id'=>1])}}" class="btn btn-outline-danger">Exit</a>
+                        <a href="{{route('user-wallet',['id'=>1])}}" class="btn btn-outline-info">Exit</a>
                     </template>
 
                     <template v-else>
@@ -41,7 +41,7 @@
                         </div>
                         
 
-                        <a href="#" class="btn btn-outline-success float-end" v-on:click="withdraw" :class="{disabled: amount<=0}">Withdraw</a>
+                        <a href="#" class="btn btn-outline-warning float-end" v-on:click="withdraw" :class="{disabled: amount<=0}">Withdraw</a>
                     </template>
 
                     

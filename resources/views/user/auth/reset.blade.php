@@ -28,7 +28,7 @@
                         @enderror
                     </div>
                    
-                    <button type="submit" class="btn btn-primary btn-block float-right">Reset</button>
+                    <button type="submit" class="btn btn-outline-warning float-right">Reset</button>
                 </form>
             </div>
         </div>

@@ -81,7 +81,7 @@
                     <?php
                     $j = 0;
                     foreach($transactionHistory as $index =>$item ){
-                        if(($item->leverage) > 1 ){
+                        if(($item->leverage) >= 1 ){
                             $j++;
                         ?>
                             <li class="row list-group-item d-flex justify-content-between align-items-center">
@@ -148,7 +148,7 @@
                         </div>
                     </div>
                     <div class="modal-footer modalbg" >
-                        <input type="submit" class="btn btn-primary" id="btSubmit" disabled value="Submit"  onclick="var e=this;setTimeout(function(){e.disabled=true;},0);return true;">
+                        <input type="submit" class="btn btn-outline-warning" id="btSubmit" disabled value="Submit"  onclick="var e=this;setTimeout(function(){e.disabled=true;},0);return true;">
                     </div>
                 </form>
             </div>

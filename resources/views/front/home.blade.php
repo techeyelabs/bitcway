@@ -18,9 +18,9 @@
         <h1 class="card-title txtHeadingColor">Special title treatment</h1>
         <p class="card-text txtWhitecolor">With supporting text below as a natural lead-in to additional content.</p>
         <?php if(Auth::check()){?>
-            <a href="{{route('user-dashboard')}}" class="btn btn-primary btn-lg">DASHBOARD</a>
+            <a href="{{route('user-dashboard')}}" class="btn btn-outline-warning btn-lg">DASHBOARD</a>
         <?php }else{?>
-            <a href="{{route('signup')}}" class="btn btn-primary btn-lg t">JOIN NOW</a>
+            <a href="{{route('signup')}}" class="btn btn-outline-warning btn-lg t">JOIN NOW</a>
         <?php }?>
         
     </div>
