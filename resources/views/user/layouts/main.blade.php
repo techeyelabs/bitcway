@@ -25,10 +25,10 @@
     <link rel="stylesheet" href="/css/user.css">
     <style>
         .sideBar{
-            color: #D3D6D8;
+            color: #D3D6D8 !important;
         }
         .sideBar:hover{
-            color: #ffc107 !important;
+            color: yellow !important;
         }
     </style>
     @yield('custom_css')

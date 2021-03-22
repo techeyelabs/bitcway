@@ -40,7 +40,7 @@
             height: 0px;
         }
         .confirm-button{
-            background-color: lightgray;
+            background-color: #081420;
             border: 1px solid grey;
             border-radius: 4px;
             padding: 4px 25px 5px 25px;
@@ -79,7 +79,7 @@
                             <span class="txtWhitecolor">{{$item->rate}}</span>
                             <span class="txtWhitecolor">{{$item->duration}}</span>
                             <span class="txtWhitecolor">{{$item->interest_per_lot}}</span>
-                            <span class="badge bg-primary pill cursor-pointer" onclick="changeData({{$item->id}}, {{$item->rate}}, {{$item->duration}}, {{$item->interest_per_lot}})">Transfer</span>
+                            <span class="btn-outline-warning btn  cursor-pointer" onclick="changeData({{$item->id}}, {{$item->rate}}, {{$item->duration}}, {{$item->interest_per_lot}})">Transfer</span>
                         </li>
                     @endforeach
                 </ul>

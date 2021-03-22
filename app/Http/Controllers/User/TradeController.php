@@ -152,6 +152,7 @@ class TradeController extends Controller
 
     public function sell(Request $request)
     {
+        dd($request);
         $leverageRequestSellAmount = $request->sellAmount;
         $equivalentSellAmount = $request->calcSellAmount;
 
@@ -166,8 +167,8 @@ class TradeController extends Controller
         DB::beginTransaction();
         try {
             if (isset($request->derivativeType)) {
-                $UserWallet->balance = $UserWallet->balance - $leverageRequestSellAmount;
-                $UserWallet->save();
+//                $UserWallet->balance = $UserWallet->balance - $leverageRequestSellAmount;
+//                $UserWallet->save();
 
                 $leverageWalletCurrency = Leverage_Wallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->orderBy('id', 'desc')->get();
                 $leverageSellAmount = $leverageRequestSellAmount;
@@ -241,7 +242,6 @@ class TradeController extends Controller
                 if ($UserWallet->balance == 0.00000000){
                     $UserWallet->delete();
                 }
-//                UserWallet::where('amount', '<=', 0.00000000)->delete();
 
                 Auth::user()->balance = Auth::user()->balance+$equivalentSellAmount;
                 Auth::user()->save();

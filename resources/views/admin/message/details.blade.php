@@ -26,13 +26,25 @@
     .txtHeadingColor{
         color: yellow;
     }
+    .txtWhitecolor{
+        color: #D3D6D8 !important;
+    }
+    .msgHeader{
+        background-color: #102331;
+        padding: 10px 0px 10px 20px;
+        margin-bottom: 0px !important;
+        border-radius: 10px 10px 0px 0px !important;
+    }
+    .txtHeadingColor{
+        color: yellow;
+    }
 </style>
 @endsection
 
 @section('content')
 <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px; margin: auto;" bis_skin_checked="1">
     <div id="wrap" class="message">
-        <h3 class="txtHeadingColor">Message List</h3>
+        <h3 class="txtHeadingColor msgHeader">Message List</h3>
 
         <div class="card message-list">
             <div class="card-body">
@@ -43,17 +55,17 @@
                                 <div v-if="item.type == 2" style="margin-left: 50%; margin-bottom:5px;">
                                     <div class="time" style="font-size:10px; margin-left: 52%;"><i class="far fa-clock"></i> @{{new Date(item.created_at).toLocaleString()}}</div>
                                     {{-- <strong>{{$user->first_name.' '.$user->last_name}}</strong>  --}}
-                                    <div class="message" style="text-align: right; width: 100%; border-radius: 10px; border: 1px solid #d2d2d2;
+                                    <div class="message txtWhitecolor" style="text-align: right; width: 100%; border-radius: 10px; border: 1px solid #d2d2d2;
                                         padding: 10px; text-align: right; font-size: 18px;">
-                                            @{{item.message}}
+                                        <pre style="white-space: break-spaces !important;">@{{item.message}}</pre>
                                     </div>
                                 </div>
                                 <div v-else>
                                     <div class="time" style="font-size:10px;"> <i class="far fa-clock"></i> @{{new Date(item.created_at).toLocaleString()}}</div>
                                     {{-- <strong>Admin</strong> --}}
-                                    <div class="name d-flex justify-content-between message" style="text-align: left;width: 60%; border-radius: 10px; border: 1px solid #d2d2d2;
+                                    <div class="name d-flex justify-content-between message txtWhitecolor" style="text-align: left;width: 60%; border-radius: 10px; border: 1px solid #d2d2d2;
                                         padding: 10px; text-align: left; font-size: 18px;">
-                                            @{{item.message}}
+                                        <pre style="white-space: break-spaces !important;">@{{item.message}}</pre>
                                     </div>
                                 </div>
                                 {{-- <div class="message">@{{item.message}}</div> --}}
@@ -67,9 +79,9 @@
                 <form action="#" v-on:submit="send">
                     <div class="input-group">
                         
-                            <input v-model="message" type="text" class="form-control" style = "width: 283%;height: 75px;" placeholder="type your message here...">
+                        <textarea v-model="message" type="text" class="form-control" style = "width: 283%;height: 75px;" placeholder="type your message here..."></textarea>
                             <br><br>
-                            <button  class="btn btn-outline-success mt-2" type="submit" :disabled="message == ''" style="margin: auto;">Send</button>
+                            <button  class="btn btn-outline-warning mt-2" type="submit" :disabled="message == ''" style="margin: auto;">Send</button>
                         
                     </div>
                 </form>
