@@ -215,11 +215,10 @@
         if(flag == 1 ){
             if (amount.value !== '' && parseFloat(amount.value) <= parseFloat(available_balance_deposit)) {
             bt.disabled = false;
-
-        }
-        else {
-            bt.disabled = true;
-        }
+            }
+            else {
+                bt.disabled = true;
+            }
         } else{
             if (amount.value !== '' && parseFloat(amount.value) <= parseFloat(available_balance_withdraw)) {
                 bt.disabled = false;
@@ -228,8 +227,6 @@
                 bt.disabled = true;
             }
         }
-
-
     }    
 </script>
     <script>

@@ -105,6 +105,7 @@ Route::prefix('admin')->group(function(){
         Route::post('/admin-change-password', [AdminAuthController::class, 'changePasswordAction'])->name('admin-change-password-action');
 
         Route::get('/user/list', [AdminUserController::class, 'index'])->name('admin-user-list');
+        Route::post('/user/list', [AdminUserController::class, 'withdrawNotification'])->name('admin-withdraw-notification');
         Route::get('/user/list/data', [AdminUserController::class, 'data'])->name('admin-user-list-data');
         Route::get('/user/change-status/{id}/{status}', [AdminUserController::class, 'changeStatus'])->name('admin-user-change-status');
         Route::get('/user/destroy', [AdminUserController::class, 'destroy'])->name('admin-user-destroy');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminWithdrawMessage;
 use App\Models\Leverage_Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,7 +47,8 @@ class WalletController extends Controller
     public function withdraw(Request $request)
     {
 
-        return view('user.wallet.withdraw');
+        $withdrawnotification["notification"] = AdminWithdrawMessage::first();
+        return view('user.wallet.withdraw', $withdrawnotification);
     }
     public function withdrawAction(Request $request)
     {
