@@ -10,6 +10,7 @@ use App\Http\Controllers\User\WalletController;
 use App\Http\Controllers\User\BuySellController;
 use App\Http\Controllers\User\MessageController;
 use App\Http\Controllers\User\TradeController;
+use App\Http\Controllers\User\CronController;
 
 
 
@@ -92,6 +93,7 @@ Route::prefix('user')->middleware(['auth'])->group(function(){
     Route::post('/trade-buy', [TradeController::class, 'buy'])->name('user-trade-buy');
     Route::post('/trade-sell', [TradeController::class, 'sell'])->name('user-trade-sell');
     Route::get('/get-buy-orders', [TradeController::class, 'getBuyOrders'])->name('user-get-buy-orders');
+    Route::get('/locked-savings-invest', [CronController::class, 'myaction'])->name('user-locked-savings-invest');
 
 });
 
@@ -138,6 +140,7 @@ Route::prefix('admin')->group(function(){
         Route::get('/locked-savings-delete-action/{id}', [AdminLockedSavingsController::class, 'lockedSavingsDeleteAction'])->name('admin-locked-savings-delete-action');
         Route::post('/locked-savings-edit-action/{id}', [AdminLockedSavingsController::class, 'lockedSavingsEditAction'])->name('admin-locked-savings-edit-action');
         Route::get('/locked-savings-edit/{id}', [AdminLockedSavingsController::class, 'lockedSavingsEdit'])->name('admin-locked-savings-edit');
+        
 
     });
 });
