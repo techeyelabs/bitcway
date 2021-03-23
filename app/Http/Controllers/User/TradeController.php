@@ -152,10 +152,6 @@ class TradeController extends Controller
 
     public function sell(Request $request)
     {
-<<<<<<< HEAD
-        // dd($request);
-=======
->>>>>>> dev
         $leverageRequestSellAmount = $request->sellAmount;
         $equivalentSellAmount = $request->calcSellAmount;
 
