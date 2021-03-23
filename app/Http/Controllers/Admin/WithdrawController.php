@@ -70,7 +70,8 @@ class WithdrawController extends Controller
 
     public function destroy($id)
     {
-        WithdrawHistory::find($id)->delete();
+        $WithdrawHistory = WithdrawHistory::find($id);
+        $WithdrawHistory->delete();
         return redirect()->back()->with('success_message', 'Successfully Deleted.');
     }
 }

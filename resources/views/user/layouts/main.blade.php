@@ -23,6 +23,14 @@
 
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/user.css">
+    <style>
+        .sideBar{
+            color: #D3D6D8 !important;
+        }
+        .sideBar:hover{
+            color: yellow !important;
+        }
+    </style>
     @yield('custom_css')
 
     <title>{{env('APP_NAME')}}</title>
@@ -52,8 +60,8 @@
                     
                     <div class="user-info">
                         <span class="user-name">{{Auth::user()->first_name}}{{Auth::user()->last_name}}</span>
-                        <strong>BALANCE: {{Auth::user()->balance}} USDT</strong>
-                        <strong>DERIVATIVE: {{Auth::user()->derivative}} USDT</strong>
+                        <strong>BALANCE: {{Auth::user()->balance}} USDt</strong>
+                        <strong>DERIVATIVE: {{Auth::user()->derivative}} USDt</strong>
 
                     </div>
                 </div>
@@ -65,84 +73,84 @@
                         </li>
                         
                         <li>
-                            <a href="{{route('user-dashboard')}}">
-                                <i class="fa fa-tachometer-alt"></i>
-                                <span>Dashboard</span>
+                            <a  href="{{route('user-dashboard')}}">
+                                <i class="fa fa-tachometer-alt sideBar"></i>
+                                <span class="sideBar">Dashboard</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-wallet')}}">
-                                <i class="fas fa-wallet"></i>
-                                <span>Wallet</span>
+                                <i class="fas fa-wallet sideBar"></i>
+                                <span class="sideBar">Wallet</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-trade')}}">
-                                <i class="fas fa-route"></i>
-                                <span>Trade</span>
+                                <i class="fas fa-route sideBar"></i>
+                                <span class="sideBar">Trade</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-trade', ['type' => 'derivative'])}}">
-                                <i class="fas fa-route"></i>
-                                <span>Derivatives</span>
+                                <i class="fas fa-route sideBar"></i>
+                                <span class="sideBar">Derivatives</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-trade-finance')}}">
-                                <i class="fas fa-route"></i>
-                                <span>Finance</span>
+                                <i class="fas fa-route sideBar"></i>
+                                <span class="sideBar">Finance</span>
                                 {{--<span class="badge badge-pill badge-primary">Beta</span>--}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-transactions')}}">
-                                <i class="fas fa-money-bill-wave"></i>
-                                <span>Buy/Sell</span>
+                                <i class="fas fa-money-bill-wave sideBar"></i>
+                                <span class="sideBar">Buy/Sell</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-wallets')}}">
-                                <i class="fas fa-money-bill-wave"></i>
-                                <span>Assets</span>
+                                <i class="fas fa-money-bill-wave sideBar"></i>
+                                <span class="sideBar">Assets</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
 
                         <li class="header-menu">
-                            <span>Settings</span>
+                            <span class="sideBar">Settings</span>
                         </li>
 
                         <li>
                             <a href="{{route('user-message')}}">
-                                <i class="fas fa-envelope"></i>
-                                <span>Message</span>
+                                <i class="fas fa-envelope sideBar"></i>
+                                <span class="sideBar">Message</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-update-profile')}}">
-                                <i class="fa fa-user"></i>
-                                <span>Profile</span>
+                                <i class="fa fa-user sideBar"></i>
+                                <span class="sideBar">Profile</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-change-password')}}">
-                                <i class="fas fa-key"></i>
-                                <span>Change Password</span>
+                                <i class="fas fa-key sideBar"></i>
+                                <span class="sideBar">Change Password</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('logout')}}">
-                                <i class="fas fa-power-off"></i>
-                                <span>Logout</span>
+                                <i class="fas fa-power-off sideBar"></i>
+                                <span class="sideBar">Logout</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>

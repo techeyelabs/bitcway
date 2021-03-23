@@ -120,7 +120,7 @@ Route::prefix('admin')->group(function(){
         Route::get('/withdraw/list', [AdminWithdrawController::class, 'index'])->name('admin-withdraw-list');
         Route::get('/withdraw/list/data', [AdminWithdrawController::class, 'data'])->name('admin-withdraw-list-data');
         Route::get('/withdraw/change-status/{id}/{status}', [AdminWithdrawController::class, 'changeStatus'])->name('admin-withdraw-change-status');
-        Route::get('/withdraw/destroy', [AdminWithdrawController::class, 'destroy'])->name('admin-withdraw-destroy');
+        Route::get('/withdraw/destroy/{id}', [AdminWithdrawController::class, 'destroy'])->name('admin-withdraw-destroy');
 
 
         Route::get('/message', [AdminMessageController::class, 'index'])->name('admin-message-list');

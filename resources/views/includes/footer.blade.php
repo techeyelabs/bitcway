@@ -62,7 +62,7 @@
     
     <div class="mb-2">
         <small>
-            © 2020 made with <i class="fa fa-heart" style="color:red"></i> by - <a target="_blank"
+            © 2018  by - <a target="_blank"
                 rel="noopener noreferrer" href="#">
                 DMGCOIN
             </a>

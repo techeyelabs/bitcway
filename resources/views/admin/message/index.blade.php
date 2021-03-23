@@ -6,6 +6,9 @@
         width: 100%;
         display: block;
     }
+    .txtWhitecolor{
+        color: #D3D6D8;
+    }
 </style>
 @endsection
 
@@ -25,7 +28,7 @@
                             <span>
                                 {{$item->user->first_name.' '.$item->user->last_name}} at {{date('d/m/Y H:i', strtotime($item->created_at))}}
                                 <br>
-                                <small>{{$item->latestMessage()->message}}</small>
+                                <small class="txtWhitecolor">{{$item->latestMessage()->message}}</small>
                             </span>
 
                             <span class="badge bg-primary pill">{{$item->unread()}}</span>

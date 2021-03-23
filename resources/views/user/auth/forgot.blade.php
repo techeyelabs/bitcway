@@ -21,7 +21,7 @@
                         @enderror
                     </div>
                     
-                    <button type="submit" class="btn btn-primary btn-block float-right">Submit</button>
+                    <button type="submit" class="btn btn-outline-warning  float-right">Submit</button>
                 </form>
             </div>
         </div>

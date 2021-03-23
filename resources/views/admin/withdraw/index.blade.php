@@ -45,7 +45,7 @@
         window.dataTable = $('#data-table').DataTable({
             processing: true,
             serverSide: true,
-            order: [[ 4, "desc" ]],
+            order: [[ 3, "ASC" ]],
             ajax: '{!! route("admin-withdraw-list-data") !!}',
             columns: [
                 { data: 'name', name: 'name' },

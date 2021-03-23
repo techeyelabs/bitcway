@@ -20,6 +20,11 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .txtWhitecolor{
+            color: #D3D6D8 !important;
+        }
+    </style>
     @yield('custom_css')
 
     <title>{{env('APP_NAME')}}</title>
@@ -39,23 +44,27 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{{route('front-home')}}">Home</a>
+                        <a class="txtWhitecolor nav-link"  aria-current="page" href="{{route('front-home')}}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{!Auth::check()?'disabled':''}}" aria-current="page" href="{{route('user-trade')}}">Trade</a>
+                        <a class="txtWhitecolor nav-link {{!Auth::check()?'disabled':''}}" aria-current="page" href="{{route('user-trade')}}">Trade</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('front-terms')}}">Terms & conditions</a>
+                        <a class="txtWhitecolor nav-link {{!Auth::check()?'disabled':''}}" aria-current="page" href="{{route('user-trade', ['type' => 'derivative'])}}">Derivative</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('front-about')}}">About us</a>
+                        <a class="txtWhitecolor nav-link {{!Auth::check()?'disabled':''}}" aria-current="page" href="{{route('user-trade-finance')}}">Finance</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="txtWhitecolor nav-link" href="{{route('front-terms')}}">Terms & conditions</a>
+                    </li>
+
 
                 </ul>
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <?php if(Auth::check()){?>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        <a class="nav-link dropdown-toggle txtWhitecolor" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user"></i> {{Auth::user()->first_name.' '.Auth::user()->last_name}}
                         </a>
@@ -69,10 +78,10 @@
                     </li>
                     <?php }else{?>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{{route('login')}}">Login</a>
+                        <a class="txtWhitecolor nav-link" aria-current="page" href="{{route('login')}}">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('signup')}}">Sign up</a>
+                        <a class="txtWhitecolor nav-link" href="{{route('signup')}}">Sign up</a>
                     </li>
                     <?php }?>
                 </ul>

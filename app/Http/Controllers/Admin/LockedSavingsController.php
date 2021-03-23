@@ -69,7 +69,7 @@ class LockedSavingsController extends Controller
     {
         $id = \Crypt::decrypt($id);
         $data['settings'] = LockedSavingsSetting::orderBy('id', 'desc')->get();
-        $user = LockedSavingsSetting::where('id', $id)->get();
+        $user = LockedSavingsSetting::where('id', $id)->orderBy('id', 'desc')->get();
         // echo '<pre>';
         // print_r($user);
         // exit;
