@@ -152,7 +152,6 @@ class TradeController extends Controller
 
     public function sell(Request $request)
     {
-        dd($request);
         $leverageRequestSellAmount = $request->sellAmount;
         $equivalentSellAmount = $request->calcSellAmount;
 
@@ -160,9 +159,6 @@ class TradeController extends Controller
         if(!$currency){
             return response()->json(['status' => false]);
         }
-
-        $UserWallet = UserWallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->first();
-        if(!$UserWallet) return response()->json(['status' => false]);
 
         DB::beginTransaction();
         try {
@@ -236,7 +232,10 @@ class TradeController extends Controller
                 $TransactionHistory->user_id = Auth::user()->id;
                 $TransactionHistory->currency_id = $currency->id;
                 $TransactionHistory->save();
-//
+
+                $UserWallet = UserWallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->first();
+                if(!$UserWallet) return response()->json(['status' => false]);
+
                 $UserWallet->balance = $UserWallet->balance-$request->sellAmount;
                 $UserWallet->save();
                 if ($UserWallet->balance == 0.00000000){
