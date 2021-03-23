@@ -18,6 +18,12 @@
             <div class="card">
                 <div class="card-body">
 
+                    @if($notification->display_message == 1)
+                    <div class="form-group text-center">
+                        <h4 class="txtWhitecolor">{{$notification->message}}</h4>
+                    </div>
+                    @else
+
                     <template v-if='done'>
 
                         <div class="alert alert-success alert-dismissible fade show mb-3 bg-transparent " role="alert" style="color:#D3D6D8 !important;" >
@@ -43,7 +49,7 @@
 
                         <a href="#" class="btn btn-outline-warning float-end" v-on:click="withdraw" :class="{disabled: amount<=0}">Withdraw</a>
                     </template>
-
+                    @endif
                     
 
                 </div>

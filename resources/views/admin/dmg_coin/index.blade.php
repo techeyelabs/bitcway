@@ -70,11 +70,7 @@
                        <button type="button" class="btn btn-outline-success add">Add periodic price change</button>
                        <hr>
                        <button type="submit" class="btn btn-primary btn-block float-right">Update</button>
-
                    </form>
-
-                    
-
                 </div>
             </div>
 

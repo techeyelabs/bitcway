@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminWithdrawMessage;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use App\Models\User;
@@ -13,8 +14,28 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view('admin.user.index');
+        $withdrawnotification["notification"] = AdminWithdrawMessage::first();
+
+        return view('admin.user.index',$withdrawnotification);
     }
+    public function withdrawNotification(Request $request)
+        {
+
+            $withdrawmessage = AdminWithdrawMessage::first();
+            $newMessage = $request->withdrawMessage;
+            $displayNewMessage = $request->checkbox ? 1 : 0 ?? 0;
+            if(!isset($withdrawmessage)) {
+                $withdrawmessageN = new AdminWithdrawMessage();
+                $withdrawmessageN->message = $newMessage;
+                $withdrawmessageN->display_message = $displayNewMessage;
+                $withdrawmessageN->save();
+            }else{
+                $withdrawmessage->message = $newMessage;
+                $withdrawmessage->display_message = $displayNewMessage;
+                $withdrawmessage->save();
+            }
+            return redirect()->back();
+        }
 
     public function data(Request $request)
     {
