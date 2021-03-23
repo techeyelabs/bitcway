@@ -32,14 +32,14 @@
                                     @csrf
                                     <div class="form-group">
                                         <label for="">Interest Rate</label>
-                                        <input type="number" id="id-1" step="any" class="form-control" name="interest_rate" placeholder="editing " value="{{ $u->rate }}" required>
+                                        <input type="number" id="id-1" step="any" class="form-control" name="interest_rate" placeholder="Editing... " value="{{ $u->rate }}" required>
                                         @error('start_price')
                                         <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="">Duration</label>
-                                        <input type="number" id="id-2" class="form-control" name="duration" placeholder="editing " value="{{ $u->duration }}" required>
+                                        <input type="number" id="id-2" class="form-control" name="duration" placeholder="Editing... " value="{{ $u->duration }}" required>
                                         @error('start_date')
                                         <small class="text-danger">{{ $message }}</small>
                                         @enderror
