@@ -75,7 +75,7 @@ class WalletController extends Controller
         $data['finances'] = LockedSaving::where('user_id', Auth::user()->id)->where('redemption_date', '>', $currentTime)->with('LockedSaving')->orderBy('id', 'DESC')->get();
 
         foreach($data['wallets'] as $item){
-            $data['total'] += $item->balance*$Bitfinex->getRate($item->currency->name);
+            $data['total'] += $item->balance * (is_numeric($Bitfinex->getRate($item->currency->name)?$Bitfinex->getRate($item->currency->name): 1));
         }
         return view('user.wallet.wallets', $data);
     }
