@@ -25,7 +25,7 @@ class MessageController extends Controller
     }
     public function getMessages(Request $request)
     {
-        $messages = Message::where('user_id', $request->to_id)->get();
+        $messages = Message::where('user_id', $request->to_id)->with('user')->get();
         return response()->json(['status' => true, 'messages' => $messages]);
     }
     public function send(Request $request)
