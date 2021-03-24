@@ -30,7 +30,20 @@
         .sideBar:hover{
             color: yellow !important;
         }
+        .txtWhitecolor{
+            color: #D3D6D8 !important;
+        }
+        .btn-outline-warning {
+            color: #ffff00;
+            border-color: #ffff00;
+        }
+        .btn-outline-warning:hover{
+            color: black;
+            border-color: yellow;
+            background-color: yellow;
+        }
     </style>
+   
     @yield('custom_css')
 
     <title>{{env('APP_NAME')}}</title>
