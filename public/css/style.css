@@ -40,7 +40,7 @@ a:hover {
     padding-top: 30px;
     padding-bottom: 30px;
     background-color: transparent;
-    border: 1px solid rgba(173, 255, 47, .125);
+    /*border: 1px solid rgba(173, 255, 47, .125);*/
 }
 
 #trackers {

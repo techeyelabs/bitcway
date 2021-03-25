@@ -12,11 +12,9 @@
 @endsection
 
 @section('content')
-<div class="card text-center home-banner">
-   
+<div class=" text-center home-banner">
     <div class="card-body">
-        <h1 class="card-title txtHeadingColor">Special title treatment</h1>
-        <p class="card-text txtWhitecolor">With supporting text below as a natural lead-in to additional content.</p>
+        <h1 class="card-title txtHeadingColor">The Home of Digital Asset <br>Trading & Finance</h1><br>
         <?php if(Auth::check()){?>
             <a href="{{route('user-dashboard')}}" class="btn btn-outline-warning btn-lg">DASHBOARD</a>
         <?php }else{?>
@@ -33,7 +31,7 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th class="txtWhitecolor">CURRENCY</th>
+                    <th class="txtWhitecolor">SYMBOL</th>
                     <th class="txtWhitecolor">LAST PRICE</th>
                     <th class="txtWhitecolor">24H CHANGE</th>
                     <th class="txtWhitecolor">24H HIGH</th>

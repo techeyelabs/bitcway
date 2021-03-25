@@ -46,8 +46,14 @@
                     <li class="nav-item">
                         <a class="txtWhitecolor nav-link"  aria-current="page" href="{{route('front-home')}}">Home</a>
                     </li>
+{{--                    {{!Auth::check()?'disabled':''}}--}}
                     <li class="nav-item">
-                        <a class="txtWhitecolor nav-link {{!Auth::check()?'disabled':''}}" aria-current="page" href="{{route('user-trade')}}">Trade</a>
+                        <?php if(Auth::check()){?>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('user-trade')}}">Trade</a>
+                        <?php }else{?>
+                        <a class="txtWhitecolor nav-link {{!Auth::check()?'disabled':''}}" aria-current="page" href="{{route('login')}}">Trade</a>
+                        <?php }?>
+
                     </li>
                     <li class="nav-item">
                         <a class="txtWhitecolor nav-link {{!Auth::check()?'disabled':''}}" aria-current="page" href="{{route('user-trade', ['type' => 'derivative'])}}">Derivative</a>
