@@ -15,7 +15,7 @@
         }
         .orders{
             max-height: 417px;
-            overflow-y: clip;
+            overflow-y: hidden;
         }
         .cursor-pointer{
             cursor: pointer;

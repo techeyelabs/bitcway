@@ -44,7 +44,7 @@
 @section('content')
 <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px; margin: auto;" bis_skin_checked="1">
     <div id="wrap" class="message">
-        <h3 class="txtHeadingColor msgHeader">Message List</h3>
+        <h3 class="txtHeadingColor msgHeader">@{{ user }}</h3>
 
         <div class="card message-list">
             <div class="card-body">
@@ -99,6 +99,7 @@
     let message = new Vue({
         el: '.message',
         data: {
+            user: '',
             messages: [],
             message: ''
         },
@@ -150,6 +151,7 @@
                     // handle success
                     console.log(response);
                     if(response.data.status) {
+                        that.user = response.data.messages[0].user.username;
                         that.messages = response.data.messages;
                         that.$nextTick(function(){
                             $('.message-list').scrollTop($('.message-list')[0].scrollHeight);

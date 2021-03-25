@@ -45,7 +45,7 @@
 
 <div class="w3-modal-content w3-card-4 w3-animate-zoom" id="div" style="max-width:600px; margin: auto;" bis_skin_checked="1">
     <div id="wrap" class="message">
-        <h3 class="txtHeadingColor msgHeader" >Message List</h3>
+        <h3 class="txtHeadingColor msgHeader" >Admin</h3>
 
         <div class="card message-list">
             <div class="card-body">

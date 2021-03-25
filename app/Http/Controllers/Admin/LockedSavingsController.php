@@ -56,13 +56,14 @@ class LockedSavingsController extends Controller
     public function lockedSavingsDeleteAction($id)
     {
         $id = \Crypt::decrypt($id);
-        $data = LockedSavingsSetting::where('id', $id);
+        $deletedata = LockedSavingsSetting::where('id', $id);
+        $data['settings'] = LockedSavingsSetting::orderBy('id', 'desc')->get();
         // echo '<pre>';
         // print_r($data);
         // exit;
-        $data->delete();
-
-        return redirect()->back()->with('success_message', 'successfully deleted');
+        $deletedata->delete();
+        return view('admin.locked_savings.index', $data);
+        // return route('admin-locked-savings')->with('success_message', 'successfully deleted');
     }
     public function lockedSavingsEdit($id)
     {

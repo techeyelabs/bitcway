@@ -8,6 +8,7 @@
         .txtHeadingColor{
             color: yellow;
         }
+
     </style>
 @endsection
 
