@@ -47,10 +47,22 @@
         .txtHeadingColor{
             color: yellow;
         }
+
+        #loading {
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+            opacity: 2;
+            position: fixed;
+            display: block; 
+            z-index: 99;
+            /* background-color: black; */
+        }
+
     </style>
 @endsection
 @section('content')
-
     <div id="wrap" class="trade">
         @if(isset($type))
             <h3 class="txtHeadingColor">Derivatives</h3>
@@ -309,6 +321,12 @@
 
 @section('custom_js')
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+<script>
+    $window.onload = function(){ 
+        document.getElementById("loading").style.display = "none" ;
+        
+        }
+</script>
 {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.js"></script>--}}
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
