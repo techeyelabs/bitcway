@@ -14,7 +14,7 @@
             background-color: #081420;
         }
         .orders{
-            max-height: 572px;
+            max-height: 595px;
             overflow-y: hidden;
         }
         .cursor-pointer{
@@ -278,10 +278,10 @@
                                             <th class="txtWhitecolor">Price</th>
                                         </thead>
                                         <tbody style="background-color: #1142304d;">
-                                            <tr v-for="item in bids">
+                                            <tr v-for="(item, index) in bids">
                                                 <td v-cloak class="txtWhitecolor">@{{item[1]}}</td>
                                                 <td v-cloak class="txtWhitecolor">@{{item[2].toFixed(4)}}</td>
-                                                <td v-cloak class="txtWhitecolor">@{{(item[1]*item[2]).toFixed(4)}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{(itemSetBids(index)).toFixed(4)}}</td>
                                                 <td v-cloak class="txtWhitecolor">@{{item[0]}}</td>
                                             </tr>
                                         </tbody>
@@ -296,9 +296,9 @@
                                             <th class="txtWhitecolor">Count</th>
                                         </thead>
                                         <tbody style="background-color:#942f3e6e; ">
-                                            <tr v-for="item in asks">
+                                            <tr v-for="(item, index) in asks">
                                                 <td v-cloak class="txtWhitecolor">@{{item[0]}}</td>
-                                                <td v-cloak class="txtWhitecolor">@{{(item[1]*item[2]).toFixed(4)}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{(Math.abs(itemSetAsks(index))).toFixed(4)}}</td>
                                                 <td v-cloak class="txtWhitecolor">@{{(Math.abs(item[2])).toFixed(4)}}</td>
                                                 <td v-cloak class="txtWhitecolor">@{{item[1]}}</td>
                                             </tr>
@@ -316,7 +316,6 @@
 
 @section('custom_js')
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
-{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.js"></script>--}}
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script type="text/javascript">
@@ -371,13 +370,14 @@
             w = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
             w.onmessage = function(msg){
                 items = JSON.parse(msg.data);
+                // console.log(items);
                 if (items.event) return;
                 if(items[1]){
                     if(items[1].length > 3){
                         bids = [];
                         asks = [];
                         items[1].forEach(function(item){
-                            console.log(item);
+                            console.log("iTEM:", item);
                             if(item[2] > 0){
                                 bids.push(item);
                             }else{
@@ -464,6 +464,20 @@
                 }
             },
             methods: {
+                itemSetBids(index) {
+                    let result = 0;
+                    for (let i = 0; i <= index ; i++){
+                        result += this.bids[i][2];
+                    }
+                    return result;
+                },
+                itemSetAsks(index) {
+                    let result = 0;
+                    for (let i = 0; i <= index ; i++){
+                        result += this.asks[i][2];
+                    }
+                    return result;
+                },
                 splitCurrency(currency){
                     currency = currency.split('t').join('');
                     currency = currency.split('USD').join('');
