@@ -9,7 +9,7 @@
     <hr>
     <div class="card">
         <div class="card-body text-center">
-            <h4>Equivalent Asset Amount:  {{$total}} USDT</h4>
+            <h4>Equivalent Asset Amount:  {{$total}} USD</h4>
         </div>
     </div>
     <div class="card mt-3">

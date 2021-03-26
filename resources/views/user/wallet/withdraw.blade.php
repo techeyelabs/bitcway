@@ -34,11 +34,11 @@
 
                     <template v-else>
                         <div class="form-group text-center">
-                            <h4 class="txtWhitecolor">Available: @{{balance}} USDt</h4>
+                            <h4 class="txtWhitecolor">Available: @{{balance}} USD</h4>
                         </div>
                         
                         <div class="form-group">
-                            <label class="txtWhitecolor" for="">Amount (USDt)</label>
+                            <label class="txtWhitecolor" for="">Amount (USD)</label>
                             <input type="number" class="form-control" aria-describedby="" name="amount"
                                 value="{{old('amount')}}" placeholder="Enter amount in bitcoin here..." required v-model="amount" :disabled="balance<=0">                            
                             @error('amount')

@@ -21,9 +21,9 @@
             <table class="table">
                 <thead>
                     <th class="txtWhitecolor">Date</th>
-                    <th class="txtWhitecolor">Currency</th>
+                    <th class="txtWhitecolor">Symbol</th>
                     <th class="txtWhitecolor">Amount</th>
-                    <th class="txtWhitecolor">Equivalent Amount (USDt)</th>
+                    <th class="txtWhitecolor">Equivalent Amount (USD)</th>
                     <th class="txtWhitecolor">Type</th>
                 </thead>
                 <tbody>

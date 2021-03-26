@@ -62,7 +62,7 @@
         <hr>
         <div class="card">
             <div class="card-body text-center">
-                <h4 class="txtHeadingColor">Locked Savings Amount:  {{$total}} USDt</h4>
+                <h4 class="txtHeadingColor">Locked Savings Amount:  {{$total}} USD</h4>
             </div>
         </div>
         <div class="card mt-3">

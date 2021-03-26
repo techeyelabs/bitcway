@@ -62,9 +62,9 @@
     
     <div class="mb-2">
         <small>
-            © 2018  by - <a target="_blank"
+            © 2018  by  <a target="_blank"
                 rel="noopener noreferrer" href="#">
-                DMGCOIN
+                BITC-WAY
             </a>
         </small>
     </div>

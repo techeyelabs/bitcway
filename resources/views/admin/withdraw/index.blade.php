@@ -41,7 +41,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>(USDt)</th>
+                            <th>(USD)</th>
                             <th>Status</th>
                             <th>Created</th>
                             <th style="min-width: 125px;">Action</th>

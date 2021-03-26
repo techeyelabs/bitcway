@@ -25,7 +25,7 @@
         <hr>
 {{--        <div class="card">--}}
 {{--            <div class="card-body text-center">--}}
-{{--                <h4 class="txtHeadingColor">Equivalent Asset Amount:  {{$total}} USDt</h4>--}}
+{{--                <h4 class="txtHeadingColor">Equivalent Asset Amount:  {{$total}} USD</h4>--}}
 {{--            </div>--}}
 {{--        </div>--}}
         {{--Trade Wallet Start--}}
@@ -33,9 +33,9 @@
             <div class="card-body">
 
                 <ul class="list-group col-md-6 offset-md-3">
-                    <div class="text-left mb-3" style="margin-left: -15px;"><h4 class="txtHeadingColor">Trade Wallet (Equivalent Asset Amount:  {{$total}} USDt)</h4></div>
+                    <div class="text-left mb-3" style="margin-left: -15px;"><h4 class="txtHeadingColor">Trade Wallet (Equivalent Asset Amount:  {{$total}} USD)</h4></div>
                     <li class="row list-group-item d-flex justify-content-between align-items-center">
-                        <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">Currency</p>
+                        <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">Symbol</p>
                         <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: center;">Amount</p>
                         <p class="col txtWhitecolor" id="CoinpriceIntoMycoin" style="text-align: right;" >Current Price</p>
                     </li>
@@ -71,7 +71,7 @@
 
                 <ul class="list-group col-md-6 offset-md-3">
                     <li class="row list-group-item d-flex justify-content-between align-items-center">
-                        <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left; color:white;">Currency</p>
+                        <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left; color:white;">Symbol</p>
                         <p class="col txtWhitecolor" id="derivati8vePercent" style="text-align: left; color:white;">Leverage</p>
                         <p class="col txtWhitecolor" id="derivati8vePercent" style="text-align: left; color:white;">Rate</p>
                         <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: right;color:white;">Amount</p>

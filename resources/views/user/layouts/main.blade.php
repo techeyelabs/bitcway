@@ -64,7 +64,7 @@
         <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-content">
                 <div class="sidebar-brand">
-                    <a class="logo" href="{{route('front-home')}}"><strong>DMGCOIN</strong></a>
+                    <a class="logo" href="{{route('front-home')}}"><strong>BITC-WAY</strong></a>
                     <div id="close-sidebar">
                         <i class="fas fa-times"></i>
                     </div>
@@ -73,8 +73,8 @@
                     
                     <div class="user-info">
                         <span class="user-name">{{Auth::user()->first_name}}{{Auth::user()->last_name}}</span>
-                        <strong>BALANCE: {{Auth::user()->balance}} USDt</strong>
-                        <strong>DERIVATIVE: {{Auth::user()->derivative}} USDt</strong>
+                        <strong>BALANCE: {{Auth::user()->balance}} USD</strong>
+                        <strong>DERIVATIVE: {{Auth::user()->derivative}} USD</strong>
 
                     </div>
                 </div>

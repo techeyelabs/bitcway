@@ -65,7 +65,7 @@
     <div id="wrap">
         <div class="container">
             <div class="text-center mt-5">
-                <a class="logo" href="{{route('front-home')}}"><strong>DMGCOIN</strong></a>
+                <a class="logo" href="{{route('front-home')}}"><strong>BITC-WAY</strong></a>
             </div>            
             @yield('content')
         </div>

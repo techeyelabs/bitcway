@@ -27,7 +27,6 @@
 
 <div id="home">
     <div id="trackers">
-        <div class="text-center title"><h4 class="txtHeadingColor">TICKERS</h4></div>
         <table class="table trackers">
             <thead>
                 <tr>
@@ -44,7 +43,7 @@
                 <tr v-for="item in trackers">
                     <td class="txtWhitecolor"></td>
                     <td class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
-                    <td class="txtWhitecolor">@{{item[7]}} USDT</td>
+                    <td class="txtWhitecolor">@{{item[7]}} USD</td>
                     <td :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
                     <td class="txtWhitecolor">@{{item[9]}}</td>
                     <td class="txtWhitecolor">@{{item[10]}}</td>

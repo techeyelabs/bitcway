@@ -18,7 +18,7 @@
 {{--    <div class="card">--}}
 {{--        <div class="card-body">--}}
 {{--            <div class="text-center">--}}
-{{--                <h4 class="txtHeadingColor">BALANCE: {{Auth::user()->balance}} USDt</h4>--}}
+{{--                <h4 class="txtHeadingColor">BALANCE: {{Auth::user()->balance}} USD</h4>--}}
 {{--            </div>--}}
 {{--        </div>--}}
 {{--    </div>--}}
@@ -36,7 +36,7 @@
     <div class="card mt-3">
         <div class="col-md-6 offset-md-3">
         <div class="text-center mt-3">
-            <h4 class="txtHeadingColor">BALANCE: {{Auth::user()->balance}} USDt</h4>
+            <h4 class="txtHeadingColor">BALANCE: {{Auth::user()->balance}} USD</h4>
         </div>
         <div class="col-md-6 mb-1 mt-3" style="margin-left: 15px;">
             <a href="{{route('user-deposit')}}" type="button" class="btn btn-outline-info" >Deposit</a>
@@ -62,7 +62,7 @@
                             <thead>
                                 <th class="txtWhitecolor">Date</th>
                                 <th class="txtWhitecolor">Amount (BTC)</th>
-                                <th class="txtWhitecolor">Amount (USDt)</th>
+                                <th class="txtWhitecolor">Amount (USD)</th>
                                 <th class="txtWhitecolor">Status</th>
                             </thead>
                             <tbody>
@@ -123,7 +123,7 @@
                             <thead>
                                 <th class="txtWhitecolor">Date</th>
                                 <th class="txtWhitecolor">Amount (BTC)</th>
-                                <th class="txtWhitecolor">Amount (USDt)</th>
+                                <th class="txtWhitecolor">Amount (USD)</th>
                                 <th class="txtWhitecolor">Status</th>
                             </thead>
                             <tbody>

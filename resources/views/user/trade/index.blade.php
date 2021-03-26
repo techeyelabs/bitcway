@@ -14,7 +14,7 @@
             background-color: #081420;
         }
         .orders{
-            max-height: 417px;
+            max-height: 572px;
             overflow-y: hidden;
         }
         .cursor-pointer{
@@ -47,6 +47,12 @@
         .txtHeadingColor{
             color: yellow;
         }
+        .table>:not(caption)>*>* {
+            padding: 2px 20px 2px 20px !important;
+        }
+        [v-cloak] {
+            display:none;
+        }
     </style>
 @endsection
 @section('content')
@@ -68,7 +74,7 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th class="txtWhitecolor">CURRENCY</th>
+                                        <th class="txtWhitecolor">SYMBOL</th>
                                         <th class="txtWhitecolor"  style="text-align: end; padding-right: 20px;">LAST PRICE</th>
                                         <th class="txtWhitecolor">24H CHANGE</th>
                                         {{-- <th>24H HIGH</th>
@@ -80,12 +86,12 @@
 {{--                                    <tr v-for="item in trackers" v-on:click="setCurrency(item)" :class="{active: item[0] == selectedItem[0]}" >--}}
                                     <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}" v-on:click="setCurrency(item)">
                                         <td></td>
-                                        <td  class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
-                                        <td  style="text-align: end; padding-right: 20px;"><span style="color: #D3D6D8;font-size: 12px;">@{{item[7]}}</span> USDt</td>
-                                        <td :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
+                                        <td v-cloak class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
+                                        <td style="text-align: end; padding-right: 20px;"><span v-cloak style="color: #D3D6D8;font-size: 12px;">@{{item[7]}}</span> USD</td>
+                                        <td v-cloak :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
                                         {{-- <td>@{{item[3]}}</td>
                                         <td>@{{item[4]}}</td> --}}
-                                        <td class="txtWhitecolor">@{{Math.round(item[7]*item[8])}}</td>
+                                        <td v-cloak class="txtWhitecolor">@{{Math.round(item[7]*item[8])}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -96,13 +102,14 @@
                     <div class="card" >
                         @if(isset($type))
                             <div class="card-body">
-                                <h4 class="txtHeadingColor">ORDER FORM: @{{currency}}</h4>
+                                <h4 v-cloak class="txtHeadingColor " >ORDER FORM: @{{currency}}</h4>
+
                                 {{-- <small class="float-end">BALANCE: @{{usdBalance}}</small> --}}
                                 <hr>
                                 <div class="row">
                                     <div class="col ">
                                         <div class="form-group">
-                                            <label for="" class="txtWhitecolor">USDt:</label>
+                                            <label for="" class="txtWhitecolor">USD:</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
 {{--                                                <div class="input-group-append">--}}
@@ -111,9 +118,9 @@
 {{--                                                    </span>--}}
 {{--                                                </div>--}}
                                             </div>
-                                            <span class="text-muted form-control">~@{{calcAmount}}</span>
+                                            <span v-cloak class="text-muted form-control">~@{{calcAmount}}</span>
                                             <small class="txtWhitecolor">BID</small>
-                                            <small class="float-end text-success cursor-pointer " v-on:click="selectedPrice=latestBid">
+                                            <small v-cloak class="float-end text-success cursor-pointer " v-on:click="selectedPrice=latestBid">
                                                 <i v-if="bidIncrease" class="fas fa-sort-up"></i>
                                                 <i v-else class="fas fa-sort-down"></i>
                                                 @{{latestBid}}
@@ -122,10 +129,10 @@
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
-                                            <label class="txtWhitecolor" for="">@{{currency}}:</label>
+                                            <label v-cloak class="txtWhitecolor" for="">@{{currency}}:</label>
                                             <input type="number" class="form-control mb-1" placeholder="" v-model="amount">
                                             <small class="txtWhitecolor">ASK</small>
-                                            <small class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
+                                            <small v-cloak class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
                                                 <i v-if="askIncrease" class="fas fa-sort-up"></i>
                                                 <i v-else class="fas fa-sort-down"></i>
                                                 @{{latestAsk}}
@@ -154,13 +161,13 @@
                             </div>
                         @else
                             <div class="card-body">
-                            <h4 class="txtHeadingColor">ORDER FORM: @{{currency}}</h4>
+                            <h4 v-cloak class="txtHeadingColor">ORDER FORM: @{{currency}}</h4>
                             {{-- <small class="float-end">BALANCE: @{{usdBalance}}</small> --}}
                             <hr>
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label class="txtWhitecolor" for="">USDt:</label>
+                                        <label class="txtWhitecolor" for="">USD:</label>
                                         <div class="input-group">
                                             <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
 {{--                                            <div class="input-group-append">--}}
@@ -169,9 +176,9 @@
 {{--                                                </span>--}}
 {{--                                            </div>--}}
                                         </div>
-                                        <span class="text-muted form-control">~@{{calcAmount}}</span>
+                                        <span v-cloak class="text-muted form-control">~@{{calcAmount}}</span>
                                         <small class="txtWhitecolor">BID</small>
-                                        <small class="float-end text-success cursor-pointer" v-on:click="selectedPrice=latestBid">
+                                        <small v-cloak class="float-end text-success cursor-pointer" v-on:click="selectedPrice=latestBid">
                                             <i v-if="bidIncrease" class="fas fa-sort-up"></i>
                                             <i v-else class="fas fa-sort-down"></i>
                                             @{{latestBid}}
@@ -183,10 +190,10 @@
                                 </div>
                                 <div class="col">
                                     <div class="form-group" style="margin-bottom: 51px;">
-                                        <label class="txtWhitecolor" for="">@{{currency}}:</label>
+                                        <label v-cloak class="txtWhitecolor" for="">@{{currency}}:</label>
                                         <input type="text" class="form-control mb-1" placeholder="" v-model="amount">
                                         <small class="txtWhitecolor">ASK</small>
-                                        <small class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
+                                        <small v-cloak class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
                                             <i v-if="askIncrease" class="fas fa-sort-up"></i>
                                             <i v-else class="fas fa-sort-down"></i>
                                             @{{latestAsk}}
@@ -205,7 +212,7 @@
             <div class="col main-app-container">
                 <div class="card">
                     <div class="card-body">
-                        <div class="text-center title mb-2 txtHeadingColor"><h4>Showing Chart for @{{currency}}</h4></div>
+                        <div class="text-center title mb-2 txtHeadingColor"><h4 v-cloak>Showing Chart for @{{currency}}</h4></div>
                         <div id="chart" style="height:600px; display: none"></div>
                         <div id="tradingview_f7648" ></div>
                     </div>
@@ -258,7 +265,7 @@
 
                 <div class="card mt-3">
                     <div class="card-body">
-                        <h4 class="txtHeadingColor">Order Book: @{{currency}}/USDt</h4>
+                        <h4 class="txtHeadingColor" v-cloak>Order Book: @{{currency}}/USD</h4>
                         <hr>
                         <div class="">
                             <div class="row">
@@ -272,10 +279,10 @@
                                         </thead>
                                         <tbody style="background-color: #1142304d;">
                                             <tr v-for="item in bids">
-                                                <td class="txtWhitecolor">@{{item[1]}}</td>
-                                                <td class="txtWhitecolor">@{{item[2]}}</td>
-                                                <td class="txtWhitecolor">@{{item[1]*item[2]}}</td>
-                                                <td class="txtWhitecolor">@{{item[0]}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{item[1]}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{item[2].toFixed(4)}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{(item[1]*item[2]).toFixed(4)}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{item[0]}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -290,10 +297,10 @@
                                         </thead>
                                         <tbody style="background-color:#942f3e6e; ">
                                             <tr v-for="item in asks">
-                                                <td class="txtWhitecolor">@{{item[0]}}</td>
-                                                <td class="txtWhitecolor">@{{item[1]*item[2]}}</td>
-                                                <td class="txtWhitecolor">@{{Math.abs(item[2])}}</td>
-                                                <td class="txtWhitecolor">@{{item[1]}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{item[0]}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{(item[1]*item[2]).toFixed(4)}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{(Math.abs(item[2])).toFixed(4)}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{item[1]}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -370,6 +377,7 @@
                         bids = [];
                         asks = [];
                         items[1].forEach(function(item){
+                            console.log(item);
                             if(item[2] > 0){
                                 bids.push(item);
                             }else{
