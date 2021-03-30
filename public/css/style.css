@@ -1,6 +1,8 @@
+
 body {
     background-color: #081420;
     color: #818896;
+    scroll-behavior: smooth;
 }
 
 a {
@@ -416,3 +418,8 @@ input[type=number] {
         font-weight: 600
     }
 }
+table,th, td {
+    text-align: left !important;
+
+}
+

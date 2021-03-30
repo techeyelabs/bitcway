@@ -75,7 +75,7 @@
                                     <tr>
                                         <th></th>
                                         <th class="txtWhitecolor">SYMBOL</th>
-                                        <th class="txtWhitecolor"  style="text-align: end; padding-right: 20px;">LAST PRICE</th>
+                                        <th class="txtWhitecolor">LAST PRICE</th>
                                         <th class="txtWhitecolor">24H CHANGE</th>
                                         {{-- <th>24H HIGH</th>
                                         <th>24H LOW</th> --}}
@@ -87,7 +87,7 @@
                                     <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}" v-on:click="setCurrency(item)">
                                         <td></td>
                                         <td v-cloak class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
-                                        <td style="text-align: end; padding-right: 20px;"><span v-cloak style="color: #D3D6D8;font-size: 12px;">@{{item[7]}}</span> USD</td>
+                                        <td style=""><span v-cloak style="color: #D3D6D8;font-size: 12px;">@{{item[7]}}</span> USD</td>
                                         <td v-cloak :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
                                         {{-- <td>@{{item[3]}}</td>
                                         <td>@{{item[4]}}</td> --}}
@@ -343,16 +343,19 @@
         $(".page-wrapper").removeClass("toggled");
     </script>
     <script>
+        var dumCoin = ["tOMGC:USD", 3.00, 3.01111, 3.411, 311.1100000, -0.0999, -0.000222, 301.00111, 115.88027091, 372.28, 356];
         const socket = io('http://bitc-way.com:3000');
         // showLoader('Loading...');
         let loaded = false;
         socket.on('trackers', (trackers) => {
-            console.log(trackers);
             Home.trackers = trackers.trackers;
-            
+            Home.trackers.push(dumCoin);
+            // console.log(Home.trackers);
+
             if(loaded == false){
                 hideLoader();
                 Home.selectedItem = Home.trackers[0];
+                console.log(Home.selectedItem);
                 Home.getChartData();
                 setInterval(function(){
                     Home.getOrders();
@@ -377,7 +380,6 @@
                         bids = [];
                         asks = [];
                         items[1].forEach(function(item){
-                            console.log("iTEM:", item);
                             if(item[2] > 0){
                                 bids.push(item);
                             }else{
@@ -540,7 +542,7 @@
 
                     })
                     .catch(function (error) {
-                        console.log(error);
+                        // console.log(error);
                     })
                     .then(function () {
                         hideLoader();

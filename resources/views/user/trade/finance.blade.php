@@ -53,6 +53,7 @@
         .txtHeadingColor{
             color: yellow;
         }
+
     </style>
 @endsection
 @section('content')
@@ -79,7 +80,7 @@
                             <span class="txtWhitecolor">{{$item->rate}}</span>
                             <span class="txtWhitecolor">{{$item->duration}}</span>
                             <span class="txtWhitecolor">{{$item->interest_per_lot}}</span>
-                            <span class="btn-outline-warning btn  cursor-pointer" onclick="changeData({{$item->id}}, {{$item->rate}}, {{$item->duration}}, {{$item->interest_per_lot}})">Transfer</span>
+                            <span class="btn-outline-warning btn  cursor-pointer"  onclick="changeData({{$item->id}}, {{$item->rate}}, {{$item->duration}}, {{$item->interest_per_lot}})">Transfer</span>
                         </li>
                     @endforeach
                 </ul>
@@ -87,7 +88,7 @@
         </div>
         <form method="post" action="{{route('user-trade-finance-entry')}}">
             @csrf
-            <div class="card mt-3 confirmation" style="display: none">
+            <div class="card mt-3 confirmation" id="confirmation" style="display: none">
                 <div class="card-body list-group col-md-8 offset-md-2">
                    <div class="row col-md-12">
                        <div class="col-md-6 mb-5 mt-4" style="padding-left: 5%">
@@ -181,6 +182,11 @@
 
             let myDate = new Date(new Date().getTime()+(parseInt(duration)*24*60*60*1000));
             $('#termination').html(myDate.getFullYear()+'-'+("0" + myDate.getMonth()).slice(-2)+'-'+("0" + myDate.getDate()).slice(-2)+' '+myDate.getHours()+':'+myDate.getMinutes()+':'+myDate.getSeconds());
+            var elmnt = document.getElementById("confirmation");
+            elmnt.scrollIntoView();
+
+
+
         }
 
         function confirmButtonCheck()
@@ -205,5 +211,12 @@
                 $('.confirm-button').attr('disabled', true);
             }
         }
+    </script>
+    <script>
+        $("#button").click(function() {
+            $('html, body').animate({
+                scrollTop: $("#myDiv").offset().top
+            }, 2000);
+        });
     </script>
 @endsection
