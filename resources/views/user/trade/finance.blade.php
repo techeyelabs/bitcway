@@ -49,9 +49,14 @@
         }
         .txtWhitecolor{
             color: #D3D6D8;
+            text-align: left !important;
+
         }
         .txtHeadingColor{
             color: yellow;
+        }
+        li{
+            text-align: left !important;
         }
 
     </style>
@@ -68,11 +73,11 @@
         </div>
         <div class="card mt-3">
             <div class="card-body">
-                <ul class="list-group col-md-6 offset-md-3">
+                <ul class="container-fluid" style="max-width: 700px">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <span class="txtWhitecolor">Rate</span>
                         <span class="txtWhitecolor">Duration</span>
-                        <span class="txtWhitecolor">Interest Per Lot</span>
+                        <span class="txtWhitecolor" style="margin-right: 60px;">Interest Per Lot</span>
                         <span class="txtWhitecolor"></span>
                     </li>
                     @foreach($settings as $item)
@@ -92,7 +97,7 @@
                 <div class="card-body list-group col-md-8 offset-md-2">
                    <div class="row col-md-12">
                        <div class="col-md-6 mb-5 mt-4" style="padding-left: 5%">
-                           <div class="txtWhitecolor">coin<br/><h4>OMG</h4></div>
+                           <div class="txtWhitecolor">Coin<br/><h4>MAB</h4></div>
                            <div class="txtWhitecolor">Activity Duration <span class="day-block"><span id="days">7</span> days</span></div><br/>
                            <div class="txtWhitecolor">Lot amount (Available Lot: {!! floor($dummy_coin_balance/5) !!})</div>
                            <div>
@@ -101,12 +106,12 @@
                                <input type="hidden" id="plan" name="plan">
                                <input type="hidden" id="balance" name="balance" value={{$dummy_coin_balance}}>
                            </div>
-                           <div class="txtWhitecolor">= <span id="total">0</span>&nbsp;<span>OMGC</span></div>
+                           <div class="txtWhitecolor">= <span id="total">0</span>&nbsp;<span>MAB</span></div>
                        </div>
                        <div class="row col-md-6 mb-5 mt-4">
                            <div>
                                <span class="txtWhitecolor" style="float: left">Lot Size</span>
-                               <span class="txtWhitecolor" style="float: right">5 OMGC</span>
+                               <span class="txtWhitecolor" style="float: right">5 MAB</span>
                            </div>
                            <div>
                                <span class="txtWhitecolor" style="float: left">Interest Per Lot</span>
@@ -122,7 +127,7 @@
                            </div>
                            <div>
                                <span class="txtWhitecolor" style="float: left">Expected Interest</span>
-                               <span class="txtWhitecolor" style="float: right" id="interest">0 OMGC</span>
+                               <span class="txtWhitecolor" style="float: right" id="interest">0 MAB</span>
                            </div>
                        </div>
                    </div>
@@ -131,7 +136,7 @@
                     <div class="row col-md-12 txtWhitecolor" style="text-align: right">
                         <span>
                             <input type="checkbox" id="acceptance" name="acceptance" value="confirm" onchange="confirmButtonCheck()">
-                            <label for="vehicle1"> I have read and accepted the terms and conditions of OMGCoin</label>
+                            <label for="vehicle1"> I have read and accepted the terms and conditions of MABCoin</label>
                         </span>
                     </div>
                     <div class="row col-md-12" style="text-align: right">
@@ -144,9 +149,9 @@
         </form>
         <div class="card mt-3">
             <div class="card-body">
-                <ul class="list-group col-md-8 offset-md-2">
+                <ul class="container-fluid" style="max-width: 968px">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <p class="col-1 txtWhitecolor">Lot</p>
+                        <p class="col-1 txtWhitecolor ">Lot</p>
                         <p class="col-4 txtWhitecolor">Value Date</p>
                         <p class="col-4 txtWhitecolor">Redemption Date</p>
                         <p class="col-2 txtWhitecolor">Expected Interest</p>
@@ -154,8 +159,8 @@
                     @foreach($history as $item)
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <p class="col-1 txtWhitecolor">{{$item->lot_count}}</p>
-                            <p class="col-4 txtWhitecolor">{{$item->value_date}}</p>
-                            <p class="col-4 txtWhitecolor">{{$item->redemption_date}}</p>
+                            <p class="col-4 txtWhitecolor">{{date('d/m/Y ', strtotime($item->value_date))}}</p>
+                            <p class="col-4 txtWhitecolor">{{date('d/m/Y ', strtotime($item->redemption_date))}}</p>
                             <p class="col-2 txtWhitecolor">{{$item->expected_interest}}</p>
                         </li>
                     @endforeach
@@ -203,7 +208,7 @@
             console.log(value.value);
             console.log($('#balance').val());
             let totalinterest = $('#ratePerLot').val() * (value.value);
-            $('#interest').html(totalinterest+' OMGC');
+            $('#interest').html(totalinterest+' MAB');
             $('#total').html(value.value * 5);
             if (value.value > 0 && $('input[id="acceptance"]:checked').length > 0 && parseInt($('#balance').val()/5) >= value.value){
                 $('.confirm-button').attr('disabled', false);

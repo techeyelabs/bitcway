@@ -75,7 +75,7 @@
                             <tbody>
                                 <?php foreach($deposit as $item){?>
                                 <tr>
-                                    <td class="txtWhitecolor ">{{date('d/m/Y', strtotime($item->created_at))}}</td>
+                                    <td class="txtWhitecolor ">{{date('d/m/Y', strtotime($item->created_at->todatestring()))}}</td>
                                     <td class="txtWhitecolor ">{!! number_format((float)($item->amount), 5) !!}</td>
                                     <td class="txtWhitecolor ">{{$item->equivalent_amount}}</td>
                                     <td class="txtWhitecolor ">
@@ -97,7 +97,7 @@
                             <tbody>
                                 <?php foreach($withdraw as $item){?>
                                 <tr>
-                                    <td class="txtWhitecolor ">{{date('d/m/Y', strtotime($item->created_at))}}</td>
+                                    <td class="txtWhitecolor ">{{date('d/m/Y', strtotime($item->created_at->todatestring()))}}</td>
                                     <td class="txtWhitecolor ">{!! number_format((float)($item->amount), 5) !!}</td>
                                     <td class="txtWhitecolor ">
                                         <?php if($item->status == 1) echo 'Approved';elseif($item->status == 2) echo 'Declined'; else echo 'Pending';?>
@@ -136,7 +136,7 @@
                             <tbody>
                                 <?php foreach($deposit as $item){?>
                                 <tr>
-                                    <td class="txtWhitecolor">{{date('d/m/Y H:i', strtotime($item->created_at))}}</td>
+                                    <td class="txtWhitecolor">{{date('d/m/Y', strtotime($item->created_at->todatestring()))}}</td>
                                     <td class="txtWhitecolor">{!! number_format((float)($item->amount), 5) !!}</td>
                                     <td class="txtWhitecolor">{{$item->equivalent_amount}}</td>
                                     <td class="txtWhitecolor">
@@ -158,7 +158,7 @@
                             <tbody>
                                 <?php foreach($withdraw as $item){?>
                                 <tr>
-                                    <td class="txtWhitecolor">{{date('d/m/Y H:i', strtotime($item->created_at))}}</td>
+                                    <td class="txtWhitecolor">{{date('d/m/Y ', strtotime($item->created_at))}}</td>
                                     <td class="txtWhitecolor">{!! number_format((float)($item->amount), 5) !!}</td>
                                     <td class="txtWhitecolor">
                                         <?php if($item->status == 1) echo 'Approved';elseif($item->status == 2) echo 'Declined'; else echo 'Pending';?>
