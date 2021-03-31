@@ -422,4 +422,7 @@ table,th, td {
     text-align: left !important;
 
 }
+[v-cloak] {
+    display:none;
+}
 

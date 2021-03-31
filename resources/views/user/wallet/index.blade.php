@@ -50,7 +50,7 @@
             <a href="{{route('user-withdraw')}}" type="button" class="btn btn-outline-warning">Withdraw</a>
         </div>
         @if(isset($withdrawFlag))
-        <div class="card-body">
+        <div class="card-body" >
             <div class="text-center">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -159,7 +159,7 @@
                                 <?php foreach($withdraw as $item){?>
                                 <tr>
                                     <td class="txtWhitecolor">{{date('d/m/Y H:i', strtotime($item->created_at))}}</td>
-                                    <td class="txtWhitecolor">{{$item->amount}}</td>
+                                    <td class="txtWhitecolor">{!! number_format((float)($item->amount), 5) !!}</td>
                                     <td class="txtWhitecolor">
                                         <?php if($item->status == 1) echo 'Approved';elseif($item->status == 2) echo 'Declined'; else echo 'Pending';?>
                                     </td>

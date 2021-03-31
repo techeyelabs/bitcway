@@ -50,9 +50,7 @@
         .table>:not(caption)>*>* {
             padding: 2px 20px 2px 20px !important;
         }
-        [v-cloak] {
-            display:none;
-        }
+
     </style>
 @endsection
 @section('content')
@@ -86,7 +84,7 @@
 {{--                                    <tr v-for="item in trackers" v-on:click="setCurrency(item)" :class="{active: item[0] == selectedItem[0]}" >--}}
                                     <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}" v-on:click="setCurrency(item)">
                                         <td></td>
-                                        <td v-cloak class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
+                                        <td v-cloak id="currencyNameid" class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
                                         <td style=""><span v-cloak style="color: #D3D6D8;font-size: 12px;">@{{item[7]}}</span> USD</td>
                                         <td v-cloak :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
                                         {{-- <td>@{{item[3]}}</td>
@@ -343,19 +341,23 @@
         $(".page-wrapper").removeClass("toggled");
     </script>
     <script>
-        var dumCoin = ["tOMGC:USD", 3.00, 3.01111, 3.411, 311.1100000, -0.0999, -0.000222, 301.00111, 115.88027091, 372.28, 356];
+        // var dumCoin = ["tOMGC:USD", 3.00, 3.01111, 3.411, 311.1100000, -0.0999, -0.000222, 301.00111, 115.88027091, 372.28, 356];
         const socket = io('http://bitc-way.com:3000');
         // showLoader('Loading...');
         let loaded = false;
         socket.on('trackers', (trackers) => {
             Home.trackers = trackers.trackers;
-            Home.trackers.push(dumCoin);
-            // console.log(Home.trackers);
+            // Home.trackers.push(dumCoin);
+            let coinData = Home.trackers;
+            for (let i = 0; i < coinData.length; i++ ){
+                if (coinData[i][0] == "tADAUSD" ){
+                    Home.trackers[i][0] = "tMABUSD";
+                }
+            }
 
             if(loaded == false){
                 hideLoader();
                 Home.selectedItem = Home.trackers[0];
-                console.log(Home.selectedItem);
                 Home.getChartData();
                 setInterval(function(){
                     Home.getOrders();
@@ -373,7 +375,6 @@
             w = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
             w.onmessage = function(msg){
                 items = JSON.parse(msg.data);
-                // console.log(items);
                 if (items.event) return;
                 if(items[1]){
                     if(items[1].length > 3){
@@ -488,6 +489,12 @@
                 setCurrency(item){
                     let coin = item[0];
                     let symbolx = coin.substr(1);
+
+                    let currentCoin = this.splitCurrency(symbolx);
+                    if(currentCoin == "MAB"){
+                        currentCoin = "ADA";
+                        symbolx = "ADAUSD";
+                    }
                     new TradingView.widget({
                         "width": "auto",
                         "height": 515,
@@ -509,7 +516,7 @@
                     });
                     this.selectedItem = item;
                     this.getChartData();
-                    let currentCoin = this.splitCurrency(symbolx);
+
                     if(currencies[currentCoin]){
                         totalSellAmount = currencies[currentCoin]['amount'];
                     }
