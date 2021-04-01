@@ -32,24 +32,6 @@
 <div id="wrap">
     <h3 class="txtHeadingColor">Wallet</h3>
     <hr>
-{{--    <div class="card">--}}
-{{--        <div class="card-body">--}}
-{{--            <div class="text-center">--}}
-{{--                <h4 class="txtHeadingColor">BALANCE: {{Auth::user()->balance}} USD</h4>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    <div class="card mt-3">--}}
-{{--        <div class="card-body">--}}
-{{--            <div class="text-center">--}}
-{{--                <div class="row">--}}
-{{--                    <div class="col d-grid"><a href="{{route('user-deposit')}}" class="btn btn-block btn-lg btn-outline-info">Deposit</a></div>--}}
-{{--                    <div class="col d-grid"><a href="{{route('user-withdraw')}}" class="btn btn-block btn-lg btn-outline-warning">Withdraw</a>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
     <div class="card mt-3">
         <div class="">
             <div class="text-center mt-3">
@@ -190,20 +172,4 @@
 @endsection
 
 @section('custom_js')
-
-{{--    <script>--}}
-{{--        $(document).ready( function(){--}}
-{{--            let tabChanger = $('#withdrawFlagid').html();--}}
-{{--            if (typeof tabChanger !== "undefined"){--}}
-{{--                $('#deposit-history-tab').removeClass('active');--}}
-{{--                $('#deposit-history').removeClass('active');--}}
-{{--                $('#deposit-history').removeClass('show');--}}
-{{--                $('#withdraw-histoty-tab').addClass('active');--}}
-{{--                $('#withdraw-histoty').addClass('active');--}}
-{{--                $('#withdraw-histoty').addClass('show');--}}
-{{--         }--}}
-{{--        })--}}
-
-{{--    </script>--}}
-
 @endsection

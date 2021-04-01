@@ -74,7 +74,8 @@
                     <div class="user-info">
                         <span class="user-name">{{Auth::user()->first_name}}{{Auth::user()->last_name}}</span>
                         <strong>BALANCE: {{Auth::user()->balance}} USD</strong>
-                        <strong>DERIVATIVE: {{Auth::user()->derivative}} USD</strong>
+                        <strong>DERIVATIVE: {{Auth::user()->derivative}} USD</strong><br>
+                        <strong>ASSET: <span id="totalAsset">00000000.00</span> USD</strong>
 
                     </div>
                 </div>
@@ -293,7 +294,58 @@
         });
 
     </script>
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+    <script>
 
+        const socket = io('http://bitc-way.com:3000');
+        let loaded = false;
+        socket.on('trackers', (trackers) => {
+            // console.log(trackers);
+            // Home.trackers = trackers.trackers;
+            let totalValue = 0;
+            let indexNumber = $('#myCoinIndex').html();
+            for (let i = 0; i <= indexNumber; i++) {
+                let currencyName = $('#MyCoinCurrencyName' + i).html();
+                let currencyAmount = $('#MyTotalCoinAmount' + i).html();
+
+
+                let full_data = trackers.trackers;
+                full_data.forEach(async function (item) {
+                    if (item[0] === 't' + currencyName + 'USD') {
+                        $('#CoinpriceIntoMycoin' + i).html((currencyAmount * item[1]).toFixed(2));
+                    }
+                });
+            }
+            ;
+            for (let i = 0; i < indexNumber; i++) {
+                totalValue += parseFloat($('#CoinpriceIntoMycoin' + i).text());
+                $('#totalAmount').html((totalValue).toFixed(2));
+                $('#totalAsset').html((totalValue).toFixed(2));
+
+            }
+
+            let indexNumber2 = $('#myCoinIndex2').html();
+            for (let j = 1; j <= indexNumber2; j++) {
+                let currencyName = $('#MyCoinCurrencyName2' + j).html();
+                let currencyAmount = $('#MyTotalCoinAmount2' + j).html();
+
+                let full_data = trackers.trackers;
+                full_data.forEach(async function (item) {
+                    if (item[0] === 't' + currencyName + 'USD') {
+                        $('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(2));
+                    }
+                });
+            }
+            ;
+
+
+            if (loaded == false) {
+                setInterval(function () {
+                }, 1000);
+                loaded = true;
+            }
+        })
+    </script>
     @yield('custom_js')
 </body>
 
