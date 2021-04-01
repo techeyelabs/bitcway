@@ -21,7 +21,7 @@
 
 @section('content')
     <div id="wrap" class="deposit">
-        <h3 class="txtHeadingColor">Assets</h3>
+        <h3 class="txtHeadingColor">Assets0</h3>
         <hr>
 {{--        <div class="card">--}}
 {{--            <div class="card-body text-center">--}}
@@ -92,12 +92,13 @@
                                     <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: left; color:white;">{{$item->leverage}}</p>
                                 <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: left; color:white;">{{($item->equivalent_amount / $item->leverage)}}</p>
                                 <p class="col txtWhitecolor" id="MyTotalCoinAmount2{{$j}}" style="text-align: right;color:white;">{{$item->amount}}</p>
-                                <p class="col txtWhitecolor" id="CoinpriceIntoMycoin2{{$j}}" style="text-align: right;color:white;"></p>
+                                <p class="col txtWhitecolor" id="CoinpriceintoMycoin2{{$j}}" style="text-align: right;color:white;"></p>
 
                             </li>
                        <?php
                            }
                         }
+
                        ?>
                     <p style="display: none;" id="myCoinIndex2">{{$j}}</p>
                 </ul>
@@ -169,7 +170,7 @@
         const socket = io('http://bitc-way.com:3000');
         let loaded = false;
         socket.on('trackers', (trackers) => {
-            console.log(trackers);
+            // console.log(trackers);
             // Home.trackers = trackers.trackers;
             let indexNumber = $('#myCoinIndex').html();
             for(let i = 0;  i <= indexNumber; i++){
@@ -191,8 +192,8 @@
 
                 let full_data = trackers.trackers;
                 full_data.forEach(async function (item){
-                    if (item[0] === 't'+currencyName+'USD' ){
-                        $('#CoinpriceIntoMycoin2'+j).html((currencyAmount * item[1] ).toFixed(2));
+                    if (item[0] === 't'+currencyName+'USD' ){                
+                        $('#CoinpriceintoMycoin2'+j).html((currencyAmount * item[1]).toFixed(2));
                     }
                 });
             };
