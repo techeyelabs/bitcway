@@ -13,11 +13,9 @@
 @endsection
 
 @section('content')
-<div class="card text-center home-banner">
-   
+<div class=" text-center home-banner">
     <div class="card-body">
-        <h1 class="card-title txtHeadingColor">Special title treatment</h1>
-        <p class="card-text txtWhitecolor">With supporting text below as a natural lead-in to additional content.</p>
+        <h1 class="card-title txtHeadingColor">The Home of Digital Asset <br>Trading & Finance</h1><br>
         <?php if(Auth::check()){?>
             <a href="{{route('user-dashboard')}}" class="btn btn-outline-warning btn-lg">DASHBOARD</a>
         <?php }else{?>
@@ -29,12 +27,11 @@
 
 <div id="home">
     <div id="trackers">
-        <div class="text-center title"><h4 class="txtHeadingColor">TICKERS</h4></div>
         <table class="table trackers">
             <thead>
                 <tr>
                     <th></th>
-                    <th class="txtWhitecolor">CURRENCY</th>
+                    <th class="txtWhitecolor">SYMBOL</th>
                     <th class="txtWhitecolor">LAST PRICE</th>
                     <th class="txtWhitecolor">24H CHANGE</th>
                     <th class="txtWhitecolor">24H HIGH</th>
@@ -46,7 +43,7 @@
                 <tr v-for="item in trackers">
                     <td class="txtWhitecolor"></td>
                     <td class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
-                    <td class="txtWhitecolor">@{{item[7]}} USDT</td>
+                    <td class="txtWhitecolor">@{{item[7]}} USD</td>
                     <td :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
                     <td class="txtWhitecolor">@{{item[9]}}</td>
                     <td class="txtWhitecolor">@{{item[10]}}</td>

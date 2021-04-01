@@ -41,7 +41,8 @@
                             @enderror
                         </div>
                         <div class="form-group text-center">
-                            <h4 class="txtWhitecolor">Equivalent: @{{(amount*rate).toFixed(2)}} (USDt)</h4>
+{{--                            <h4 class="txtWhitecolor">Equivalent: @{{(amount*rate).toFixed(2)}} (USD)</h4>--}}
+                            <h4 class="txtWhitecolor">Equivalent: @{{amount*rate}} (USD)</h4>
                         </div>
 
                         <a href="#" class="btn btn-outline-warning float-end" v-on:click="deposit">Deposit</a>

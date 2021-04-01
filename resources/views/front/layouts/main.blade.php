@@ -44,7 +44,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{route('front-home')}}"><strong>DMGCOIN</strong></a>
+            <a class="navbar-brand" href="{{route('front-home')}}"><strong>BITC-WAY</strong></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -55,14 +55,27 @@
                     <li class="nav-item">
                         <a class="txtWhitecolor nav-link"  aria-current="page" href="{{route('front-home')}}">Home</a>
                     </li>
+                    {{--{{!Auth::check()?'disabled':''}}--}}
                     <li class="nav-item">
-                        <a class="txtWhitecolor nav-link {{!Auth::check()?'disabled':''}}" aria-current="page" href="{{route('user-trade')}}">Trade</a>
+                        <?php if(Auth::check()){?>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('user-trade')}}">Trade</a>
+                        <?php }else{?>
+                        <a class="txtWhitecolor nav-link" aria-current="page" href="{{route('login')}}">Trade</a>
+                        <?php }?>
                     </li>
                     <li class="nav-item">
-                        <a class="txtWhitecolor nav-link {{!Auth::check()?'disabled':''}}" aria-current="page" href="{{route('user-trade', ['type' => 'derivative'])}}">Derivative</a>
+                        <?php if(Auth::check()){?>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('user-trade', ['type' => 'derivative'])}}">Derivative</a>
+                        <?php }else{?>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('login')}}">Derivative</a>
+                        <?php }?>
                     </li>
                     <li class="nav-item">
-                        <a class="txtWhitecolor nav-link {{!Auth::check()?'disabled':''}}" aria-current="page" href="{{route('user-trade-finance')}}">Finance</a>
+                        <?php if(Auth::check()){?>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('user-trade-finance')}}">Finance</a>
+                        <?php }else{?>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('login')}}">Finance</a>
+                        <?php }?>
                     </li>
                     <li class="nav-item">
                         <a class="txtWhitecolor nav-link" href="{{route('front-terms')}}">Terms & conditions</a>

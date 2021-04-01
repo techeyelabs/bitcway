@@ -14,7 +14,7 @@
             background-color: #081420;
         }
         .orders{
-            max-height: 417px;
+            max-height: 595px;
             overflow-y: hidden;
         }
         .cursor-pointer{
@@ -47,17 +47,8 @@
         .txtHeadingColor{
             color: yellow;
         }
-
-        #loading {
-            width: 100%;
-            height: 100%;
-            top: 0px;
-            left: 0px;
-            opacity: 2;
-            position: fixed;
-            display: block; 
-            z-index: 99;
-            /* background-color: black; */
+        .table>:not(caption)>*>* {
+            padding: 2px 20px 2px 20px !important;
         }
 
     </style>
@@ -80,8 +71,8 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th class="txtWhitecolor">CURRENCY</th>
-                                        <th class="txtWhitecolor"  style="text-align: end; padding-right: 20px;">LAST PRICE</th>
+                                        <th class="txtWhitecolor">SYMBOL</th>
+                                        <th class="txtWhitecolor">LAST PRICE</th>
                                         <th class="txtWhitecolor">24H CHANGE</th>
                                         {{-- <th>24H HIGH</th>
                                         <th>24H LOW</th> --}}
@@ -92,12 +83,12 @@
 {{--                                    <tr v-for="item in trackers" v-on:click="setCurrency(item)" :class="{active: item[0] == selectedItem[0]}" >--}}
                                     <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}" v-on:click="setCurrency(item)">
                                         <td></td>
-                                        <td  class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
-                                        <td  style="text-align: end; padding-right: 20px;"><span style="color: #D3D6D8;font-size: 12px;">@{{item[7]}}</span> USDt</td>
-                                        <td :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
+                                        <td v-cloak id="currencyNameid" class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
+                                        <td style=""><span v-cloak style="color: #D3D6D8;font-size: 12px;">@{{item[7]}}</span> USD</td>
+                                        <td v-cloak :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
                                         {{-- <td>@{{item[3]}}</td>
                                         <td>@{{item[4]}}</td> --}}
-                                        <td class="txtWhitecolor">@{{Math.round(item[7]*item[8])}}</td>
+                                        <td v-cloak class="txtWhitecolor">@{{Math.round(item[7]*item[8])}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -108,13 +99,14 @@
                     <div class="card" >
                         @if(isset($type))
                             <div class="card-body">
-                                <h4 class="txtHeadingColor">ORDER FORM: @{{currency}}</h4>
+                                <h4 v-cloak class="txtHeadingColor " >ORDER FORM: @{{currency}}</h4>
+
                                 {{-- <small class="float-end">BALANCE: @{{usdBalance}}</small> --}}
                                 <hr>
                                 <div class="row">
                                     <div class="col ">
                                         <div class="form-group">
-                                            <label for="" class="txtWhitecolor">USDt:</label>
+                                            <label for="" class="txtWhitecolor">USD:</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
 {{--                                                <div class="input-group-append">--}}
@@ -123,9 +115,9 @@
 {{--                                                    </span>--}}
 {{--                                                </div>--}}
                                             </div>
-                                            <span class="text-muted form-control">~@{{calcAmount}}</span>
+                                            <span v-cloak class="text-muted form-control">~@{{calcAmount}}</span>
                                             <small class="txtWhitecolor">BID</small>
-                                            <small class="float-end text-success cursor-pointer " v-on:click="selectedPrice=latestBid">
+                                            <small v-cloak class="float-end text-success cursor-pointer " v-on:click="selectedPrice=latestBid">
                                                 <i v-if="bidIncrease" class="fas fa-sort-up"></i>
                                                 <i v-else class="fas fa-sort-down"></i>
                                                 @{{latestBid}}
@@ -134,10 +126,10 @@
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
-                                            <label class="txtWhitecolor" for="">@{{currency}}:</label>
+                                            <label v-cloak class="txtWhitecolor" for="">@{{currency}}:</label>
                                             <input type="number" class="form-control mb-1" placeholder="" v-model="amount">
                                             <small class="txtWhitecolor">ASK</small>
-                                            <small class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
+                                            <small v-cloak class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
                                                 <i v-if="askIncrease" class="fas fa-sort-up"></i>
                                                 <i v-else class="fas fa-sort-down"></i>
                                                 @{{latestAsk}}
@@ -147,7 +139,7 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div >
-                                        <small class="float-end text-success cursor-pointer">
+                                        <small v-cloak class="float-end text-success cursor-pointer">
                                             ~@{{derivativeRange}}
                                         </small>
                                         <input id="sliderRange" class="form-control" type="number"  min="1" value="1" max="100" oninput="rangeInput.value=sliderRange.value" v-model="derivativeValue"/><br>
@@ -166,13 +158,13 @@
                             </div>
                         @else
                             <div class="card-body">
-                            <h4 class="txtHeadingColor">ORDER FORM: @{{currency}}</h4>
+                            <h4 v-cloak class="txtHeadingColor">ORDER FORM: @{{currency}}</h4>
                             {{-- <small class="float-end">BALANCE: @{{usdBalance}}</small> --}}
                             <hr>
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label class="txtWhitecolor" for="">USDt:</label>
+                                        <label class="txtWhitecolor" for="">USD:</label>
                                         <div class="input-group">
                                             <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
 {{--                                            <div class="input-group-append">--}}
@@ -181,9 +173,9 @@
 {{--                                                </span>--}}
 {{--                                            </div>--}}
                                         </div>
-                                        <span class="text-muted form-control">~@{{calcAmount}}</span>
+                                        <span v-cloak class="text-muted form-control">~@{{calcAmount}}</span>
                                         <small class="txtWhitecolor">BID</small>
-                                        <small class="float-end text-success cursor-pointer" v-on:click="selectedPrice=latestBid">
+                                        <small v-cloak class="float-end text-success cursor-pointer" v-on:click="selectedPrice=latestBid">
                                             <i v-if="bidIncrease" class="fas fa-sort-up"></i>
                                             <i v-else class="fas fa-sort-down"></i>
                                             @{{latestBid}}
@@ -195,10 +187,10 @@
                                 </div>
                                 <div class="col">
                                     <div class="form-group" style="margin-bottom: 51px;">
-                                        <label class="txtWhitecolor" for="">@{{currency}}:</label>
+                                        <label v-cloak class="txtWhitecolor" for="">@{{currency}}:</label>
                                         <input type="text" class="form-control mb-1" placeholder="" v-model="amount">
                                         <small class="txtWhitecolor">ASK</small>
-                                        <small class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
+                                        <small v-cloak class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
                                             <i v-if="askIncrease" class="fas fa-sort-up"></i>
                                             <i v-else class="fas fa-sort-down"></i>
                                             @{{latestAsk}}
@@ -217,7 +209,7 @@
             <div class="col main-app-container">
                 <div class="card">
                     <div class="card-body">
-                        <div class="text-center title mb-2 txtHeadingColor"><h4>Showing Chart for @{{currency}}</h4></div>
+                        <div class="text-center title mb-2 txtHeadingColor"><h4 v-cloak>Showing Chart for @{{currency}}</h4></div>
                         <div id="chart" style="height:600px; display: none"></div>
                         <div id="tradingview_f7648" ></div>
                     </div>
@@ -270,7 +262,7 @@
 
                 <div class="card mt-3">
                     <div class="card-body">
-                        <h4 class="txtHeadingColor">Order Book: @{{currency}}/USDt</h4>
+                        <h4 class="txtHeadingColor" v-cloak>Order Book: @{{currency}}/USD</h4>
                         <hr>
                         <div class="">
                             <div class="row">
@@ -283,11 +275,11 @@
                                             <th class="txtWhitecolor">Price</th>
                                         </thead>
                                         <tbody style="background-color: #1142304d;">
-                                            <tr v-for="item in bids">
-                                                <td class="txtWhitecolor">@{{item[1]}}</td>
-                                                <td class="txtWhitecolor">@{{item[2]}}</td>
-                                                <td class="txtWhitecolor">@{{item[1]*item[2]}}</td>
-                                                <td class="txtWhitecolor">@{{item[0]}}</td>
+                                            <tr v-for="(item, index) in bids">
+                                                <td v-cloak class="txtWhitecolor">@{{item[1]}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{item[2].toFixed(4)}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{(itemSetBids(index)).toFixed(4)}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{item[0]}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -301,11 +293,11 @@
                                             <th class="txtWhitecolor">Count</th>
                                         </thead>
                                         <tbody style="background-color:#942f3e6e; ">
-                                            <tr v-for="item in asks">
-                                                <td class="txtWhitecolor">@{{item[0]}}</td>
-                                                <td class="txtWhitecolor">@{{item[1]*item[2]}}</td>
-                                                <td class="txtWhitecolor">@{{Math.abs(item[2])}}</td>
-                                                <td class="txtWhitecolor">@{{item[1]}}</td>
+                                            <tr v-for="(item, index) in asks">
+                                                <td v-cloak class="txtWhitecolor">@{{item[0]}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{(Math.abs(itemSetAsks(index))).toFixed(4)}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{(Math.abs(item[2])).toFixed(4)}}</td>
+                                                <td v-cloak class="txtWhitecolor">@{{item[1]}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -321,13 +313,6 @@
 
 @section('custom_js')
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
-<script>
-    $window.onload = function(){ 
-        document.getElementById("loading").style.display = "none" ;
-        
-        }
-</script>
-{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.js"></script>--}}
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script type="text/javascript">
@@ -355,13 +340,20 @@
         $(".page-wrapper").removeClass("toggled");
     </script>
     <script>
+        // var dumCoin = ["tOMGC:USD", 3.00, 3.01111, 3.411, 311.1100000, -0.0999, -0.000222, 301.00111, 115.88027091, 372.28, 356];
         const socket = io('http://bitc-way.com:3000');
         // showLoader('Loading...');
         let loaded = false;
         socket.on('trackers', (trackers) => {
-            console.log(trackers);
             Home.trackers = trackers.trackers;
-            
+            // Home.trackers.push(dumCoin);
+            let coinData = Home.trackers;
+            for (let i = 0; i < coinData.length; i++ ){
+                if (coinData[i][0] == "tADAUSD" ){
+                    Home.trackers[i][0] = "tMABUSD";
+                }
+            }
+
             if(loaded == false){
                 hideLoader();
                 Home.selectedItem = Home.trackers[0];
@@ -377,12 +369,74 @@
         var totalSellAmount = 0;
         var currencies = <?php echo json_encode($currency); ?>;
 
+        // const OrderBook Start
+        $(document).ready(function() {
+            getInitialOrder("tBTCUSD");
+        });
+        // const OrderBook End
+
+        let getInitialOrder = function (currency) {
+            let CurrencyApi = ' ';
+            if(currency == undefined){
+                CurrencyApi = 'https://api.bitfinex.com/v2/book/tBTCUSD/P0';
+            } else {
+                CurrencyApi = 'https://api.bitfinex.com/v2/book/'+currency+'/P0';
+                console.log("Else");
+            }
+            console.log(CurrencyApi);
+            axios.get(CurrencyApi, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                }
+            })
+                .then(response => {
+                    items = response.data;
+                    if(items){
+                        if(items.length > 3){
+                            bids = [];
+                            asks = [];
+                            items.forEach(function(item){
+                                if(item[2] > 0){
+                                    bids.push(item);
+                                }else{
+                                    asks.push(item);
+                                }
+                            });
+                            Home.bids = bids;
+                            Home.asks = asks;
+                        }else{
+                            item = items;
+                            // console.log("Book:", item);
+                            // if(item[2] > 0){
+                            //     if(Home.bids.length > 25) Home.bids.pop();
+                            //     Home.bids = [item].concat(Home.bids);
+                            // }else if(item[2] < 0){
+                            //     if(Home.asks.length > 25) Home.asks.pop();
+                            //     Home.asks = [item].concat(Home.asks);
+                            // }
+                        }
+                        Home.latestBid = Home.bids[0][0];
+                        Home.bidIncrease = Home.bids[0][0]>Home.bids[1][0];
+                        title = Home.bidIncrease?'▲':'▼';
+                        document.title = title+" "+Home.latestBid+" "+Home.currency+"/USD";
+
+                        Home.latestAsk = Home.asks[0][0];
+                        Home.askIncrease = Home.asks[0][0]>Home.asks[1][0];
+                    }
+                })
+                .catch(error => "404")
+
+        }
+
         let getOrders = function(currency){
+
             if(w) w.close();
             w = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
             w.onmessage = function(msg){
                 items = JSON.parse(msg.data);
+                // console.log(msg.data);
                 if (items.event) return;
+                console.log("BitBook1:", items[2]);
                 if(items[1]){
                     if(items[1].length > 3){
                         bids = [];
@@ -398,6 +452,7 @@
                         Home.asks = asks;
                     }else{
                         item = items[1];
+                        // console.log("BitBook:", item);
                         if(item[2] > 0){
                             if(Home.bids.length > 25) Home.bids.pop();
                             Home.bids = [item].concat(Home.bids);
@@ -453,6 +508,7 @@
                 derivativeValue:'1'
             },
             mounted() {
+
             },
             computed:{
                 currency(){
@@ -474,6 +530,20 @@
                 }
             },
             methods: {
+                itemSetBids(index) {
+                    let result = 0;
+                    for (let i = 0; i <= index ; i++){
+                        result += this.bids[i][2];
+                    }
+                    return result;
+                },
+                itemSetAsks(index) {
+                    let result = 0;
+                    for (let i = 0; i <= index ; i++){
+                        result += this.asks[i][2];
+                    }
+                    return result;
+                },
                 splitCurrency(currency){
                     currency = currency.split('t').join('');
                     currency = currency.split('USD').join('');
@@ -482,6 +552,12 @@
                 setCurrency(item){
                     let coin = item[0];
                     let symbolx = coin.substr(1);
+
+                    let currentCoin = this.splitCurrency(symbolx);
+                    if(currentCoin == "MAB"){
+                        currentCoin = "ADA";
+                        symbolx = "ADAUSD";
+                    }
                     new TradingView.widget({
                         "width": "auto",
                         "height": 515,
@@ -503,7 +579,7 @@
                     });
                     this.selectedItem = item;
                     this.getChartData();
-                    let currentCoin = this.splitCurrency(symbolx);
+
                     if(currencies[currentCoin]){
                         totalSellAmount = currencies[currentCoin]['amount'];
                     }
@@ -536,7 +612,7 @@
 
                     })
                     .catch(function (error) {
-                        console.log(error);
+                        // console.log(error);
                     })
                     .then(function () {
                         hideLoader();
@@ -688,11 +764,18 @@
                         });
                 },
                 getOrders(){
+
                     let that = this;
                     let currency = that.selectedItem[0];
                     getOrders(currency);
-                }
-            }
+                    getInitialOrder(currency);
+                },
+
+            },
+            beforeMount(){
+
+            },
+
         });
 
 

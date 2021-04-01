@@ -46,7 +46,7 @@
                                     <tr v-for="item in trackers" v-on:click="setCurrency(item)" :class="{active: item[0] == selectedItem[0]}">
                                         <td></td>
                                         <td>@{{splitCurrency(item[0])}}</td>
-                                        <td>@{{item[7]}} USDT</td>
+                                        <td>@{{item[7]}} USD</td>
                                         <td :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
                                         {{-- <td>@{{item[3]}}</td>
                                         <td>@{{item[4]}}</td> --}}

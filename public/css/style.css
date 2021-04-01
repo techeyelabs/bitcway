@@ -1,6 +1,8 @@
+
 body {
     background-color: #081420;
     color: #818896;
+    scroll-behavior: smooth;
 }
 
 a {
@@ -40,7 +42,7 @@ a:hover {
     padding-top: 30px;
     padding-bottom: 30px;
     background-color: transparent;
-    border: 1px solid rgba(173, 255, 47, .125);
+    /*border: 1px solid rgba(173, 255, 47, .125);*/
 }
 
 #trackers {
@@ -416,3 +418,11 @@ input[type=number] {
         font-weight: 600
     }
 }
+table,th, td {
+    text-align: left !important;
+
+}
+[v-cloak] {
+    display:none;
+}
+
