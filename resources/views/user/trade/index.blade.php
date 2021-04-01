@@ -140,7 +140,7 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div >
-                                        <small class="float-end text-success cursor-pointer">
+                                        <small v-cloak class="float-end text-success cursor-pointer">
                                             ~@{{derivativeRange}}
                                         </small>
                                         <input id="sliderRange" class="form-control" type="number"  min="1" value="1" max="100" oninput="rangeInput.value=sliderRange.value" v-model="derivativeValue"/><br>
@@ -370,12 +370,74 @@
         var totalSellAmount = 0;
         var currencies = <?php echo json_encode($currency); ?>;
 
+        // const OrderBook Start
+        $(document).ready(function() {
+            getInitialOrder("tBTCUSD");
+        });
+        // const OrderBook End
+
+        let getInitialOrder = function (currency) {
+            let CurrencyApi = ' ';
+            if(currency == undefined){
+                CurrencyApi = 'https://api.bitfinex.com/v2/book/tBTCUSD/P0';
+            } else {
+                CurrencyApi = 'https://api.bitfinex.com/v2/book/'+currency+'/P0';
+                console.log("Else");
+            }
+            console.log(CurrencyApi);
+            axios.get(CurrencyApi, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                }
+            })
+                .then(response => {
+                    items = response.data;
+                    if(items){
+                        if(items.length > 3){
+                            bids = [];
+                            asks = [];
+                            items.forEach(function(item){
+                                if(item[2] > 0){
+                                    bids.push(item);
+                                }else{
+                                    asks.push(item);
+                                }
+                            });
+                            Home.bids = bids;
+                            Home.asks = asks;
+                        }else{
+                            item = items;
+                            // console.log("Book:", item);
+                            // if(item[2] > 0){
+                            //     if(Home.bids.length > 25) Home.bids.pop();
+                            //     Home.bids = [item].concat(Home.bids);
+                            // }else if(item[2] < 0){
+                            //     if(Home.asks.length > 25) Home.asks.pop();
+                            //     Home.asks = [item].concat(Home.asks);
+                            // }
+                        }
+                        Home.latestBid = Home.bids[0][0];
+                        Home.bidIncrease = Home.bids[0][0]>Home.bids[1][0];
+                        title = Home.bidIncrease?'▲':'▼';
+                        document.title = title+" "+Home.latestBid+" "+Home.currency+"/USD";
+
+                        Home.latestAsk = Home.asks[0][0];
+                        Home.askIncrease = Home.asks[0][0]>Home.asks[1][0];
+                    }
+                })
+                .catch(error => "404")
+
+        }
+
         let getOrders = function(currency){
+
             if(w) w.close();
             w = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
             w.onmessage = function(msg){
                 items = JSON.parse(msg.data);
+                // console.log(msg.data);
                 if (items.event) return;
+                console.log("BitBook1:", items[2]);
                 if(items[1]){
                     if(items[1].length > 3){
                         bids = [];
@@ -391,6 +453,7 @@
                         Home.asks = asks;
                     }else{
                         item = items[1];
+                        // console.log("BitBook:", item);
                         if(item[2] > 0){
                             if(Home.bids.length > 25) Home.bids.pop();
                             Home.bids = [item].concat(Home.bids);
@@ -446,6 +509,7 @@
                 derivativeValue:'1'
             },
             mounted() {
+
             },
             computed:{
                 currency(){
@@ -701,13 +765,70 @@
                         });
                 },
                 getOrders(){
+
                     let that = this;
                     let currency = that.selectedItem[0];
                     getOrders(currency);
-                }
-            }
+                    getInitialOrder(currency);
+                },
+
+            },
+            beforeMount(){
+
+            },
+
         });
 
 
+    </script>
+    <script>
+        // axios.get(`https://api.bitfinex.com/v2/book/tBTCUSD/P0`, {
+        //     headers: {
+        //         'Access-Control-Allow-Origin': '*',
+        //     }
+        // })
+        //     .then(response => {
+        //         let initialBook = "[3333,[";
+        //         for (let i = 0; i<response.data.length;i++){
+        //             initialBook += "["+response.data[i]+"],";
+        //         }
+        //         initialBook += "]]";
+        //         let items = initialBook;
+        //         console.log("Book:", initialBook);
+        //         // if (items.event) return;
+        //         if(items[1]){
+        //             if(items[1].length > 3){
+        //                 bids = [];
+        //                 asks = [];
+        //                 items[1].forEach(function(item){
+        //                     if(item[2] > 0){
+        //                         bids.push(item);
+        //                     }else{
+        //                         asks.push(item);
+        //                     }
+        //                 });
+        //                 Home.bids = bids;
+        //                 Home.asks = asks;
+        //             }else{
+        //                 item = items[1];
+        //                 if(item[2] > 0){
+        //                     if(Home.bids.length > 25) Home.bids.pop();
+        //                     Home.bids = [item].concat(Home.bids);
+        //                 }else if(item[2] < 0){
+        //                     if(Home.asks.length > 25) Home.asks.pop();
+        //                     Home.asks = [item].concat(Home.asks);
+        //                 }
+        //             }
+        //             Home.latestBid = Home.bids[0][0];
+        //             Home.bidIncrease = Home.bids[0][0]>Home.bids[1][0];
+        //             title = Home.bidIncrease?'▲':'▼';
+        //             document.title = title+" "+Home.latestBid+" "+Home.currency+"/USD";
+        //
+        //             Home.latestAsk = Home.asks[0][0];
+        //             Home.askIncrease = Home.asks[0][0]>Home.asks[1][0];
+        //         }
+        //
+        //     })
+        //     .catch(error => "404")
     </script>
 @endsection
