@@ -54,7 +54,6 @@
     </style>
 @endsection
 @section('content')
-
     <div id="wrap" class="trade">
         @if(isset($type))
             <h3 class="txtHeadingColor">Derivatives</h3>
@@ -781,5 +780,4 @@
 
 
     </script>
-
 @endsection
