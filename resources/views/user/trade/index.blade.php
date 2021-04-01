@@ -781,54 +781,5 @@
 
 
     </script>
-    <script>
-        // axios.get(`https://api.bitfinex.com/v2/book/tBTCUSD/P0`, {
-        //     headers: {
-        //         'Access-Control-Allow-Origin': '*',
-        //     }
-        // })
-        //     .then(response => {
-        //         let initialBook = "[3333,[";
-        //         for (let i = 0; i<response.data.length;i++){
-        //             initialBook += "["+response.data[i]+"],";
-        //         }
-        //         initialBook += "]]";
-        //         let items = initialBook;
-        //         console.log("Book:", initialBook);
-        //         // if (items.event) return;
-        //         if(items[1]){
-        //             if(items[1].length > 3){
-        //                 bids = [];
-        //                 asks = [];
-        //                 items[1].forEach(function(item){
-        //                     if(item[2] > 0){
-        //                         bids.push(item);
-        //                     }else{
-        //                         asks.push(item);
-        //                     }
-        //                 });
-        //                 Home.bids = bids;
-        //                 Home.asks = asks;
-        //             }else{
-        //                 item = items[1];
-        //                 if(item[2] > 0){
-        //                     if(Home.bids.length > 25) Home.bids.pop();
-        //                     Home.bids = [item].concat(Home.bids);
-        //                 }else if(item[2] < 0){
-        //                     if(Home.asks.length > 25) Home.asks.pop();
-        //                     Home.asks = [item].concat(Home.asks);
-        //                 }
-        //             }
-        //             Home.latestBid = Home.bids[0][0];
-        //             Home.bidIncrease = Home.bids[0][0]>Home.bids[1][0];
-        //             title = Home.bidIncrease?'▲':'▼';
-        //             document.title = title+" "+Home.latestBid+" "+Home.currency+"/USD";
-        //
-        //             Home.latestAsk = Home.asks[0][0];
-        //             Home.askIncrease = Home.asks[0][0]>Home.asks[1][0];
-        //         }
-        //
-        //     })
-        //     .catch(error => "404")
-    </script>
+
 @endsection
