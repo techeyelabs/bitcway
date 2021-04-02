@@ -66,8 +66,6 @@
         Home.trackers = trackers.trackers;
     })
 
-
-
     let Home = new Vue({
         el: '#home',
         data: {
