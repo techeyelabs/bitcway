@@ -82,8 +82,8 @@
                         </button>
                     </div>
                 </div>
-                <div style="margin: auto">
-                    <ul class="container-fluid" style="max-width: 700px">
+                <div style="margin: auto; overflow-x: auto">
+                    <ul class="container-fluid" style="max-width: 700px; min-width: 400px;">
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left; color:white;">
                                 Symbol</p>
@@ -133,8 +133,9 @@
             <div class="card-body">
                 <div class="" style="margin: auto">
                     <ul class="container-fluid" style="max-width: 700px">
-                        <div class="text-left mb-3" style="margin-left: -15px;"><h4 class="txtHeadingColor">Finance
-                                Wallet</h4></div>
+                        <div class="text-left mb-3" style="margin-left: -15px;">
+                            <h4 class="txtHeadingColor">Finance Wallet</h4>
+                        </div>
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left; ">Lot</p>
                             <p class="col txtWhitecolor" id="CoinpriceIntoMycoin" style="text-align: left;">Value
