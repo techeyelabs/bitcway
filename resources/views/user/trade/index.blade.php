@@ -381,7 +381,6 @@
                 CurrencyApi = 'https://api.bitfinex.com/v2/book/tBTCUSD/P0';
             } else {
                 CurrencyApi = 'https://api.bitfinex.com/v2/book/'+currency+'/P0';
-                console.log("Else");
             }
             console.log(CurrencyApi);
             axios.get(CurrencyApi, {
