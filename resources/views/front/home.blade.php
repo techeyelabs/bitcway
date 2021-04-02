@@ -42,12 +42,12 @@
             <tbody>
                 <tr v-for="item in trackers">
                     <td class="txtWhitecolor"></td>
-                    <td class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
-                    <td class="txtWhitecolor">@{{item[7]}} USD</td>
-                    <td :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
-                    <td class="txtWhitecolor">@{{item[9]}}</td>
-                    <td class="txtWhitecolor">@{{item[10]}}</td>
-                    <td class="txtWhitecolor">@{{Math.round(item[7]*item[8])}}</td>
+                    <td v-cloak class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
+                    <td v-cloak class="txtWhitecolor">@{{item[7]}} USD</td>
+                    <td v-cloak :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
+                    <td v-cloak class="txtWhitecolor">@{{item[9]}}</td>
+                    <td v-cloak class="txtWhitecolor">@{{item[10]}}</td>
+                    <td v-cloak class="txtWhitecolor">@{{Math.round(item[7]*item[8])}}</td>
                 </tr>
             </tbody>
         </table>
