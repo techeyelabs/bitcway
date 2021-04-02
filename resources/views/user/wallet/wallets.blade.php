@@ -109,9 +109,9 @@
                             <p class="col txtWhitecolor" id="derivativePercent{{$j}}"
                                style="text-align: left; color:white;">{{$item->leverage}}</p>
                             <p class="col txtWhitecolor" id="derivativePercent{{$j}}"
-                               style="text-align: left; color:white;">{{($item->equivalent_amount / $item->leverage)}}</p>
+                               style="text-align: left; color:white;">{!! number_format((double)($item->equivalent_amount / $item->leverage),5) !!}</p>
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount2{{$j}}"
-                               style="text-align: right;color:white;">{{$item->amount}}</p>
+                               style="text-align: right;color:white;">{!! number_format((double)($item->amount), 5) !!}</p>
                             <p class="col txtWhitecolor" id="CoinpriceintoMycoin2{{$j}}"
                                style="text-align: right;color:white;"></p>
 
