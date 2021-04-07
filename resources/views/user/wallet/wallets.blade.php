@@ -200,7 +200,7 @@
 @section('custom_js')
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
     <script>
-        const socket = io('http://bitc-way.com:3000');
+        const socket = io('http://192.144.82.234:3000/');
         let loaded = false;
         socket.on('trackers', (trackers) => {
             // console.log(trackers);
