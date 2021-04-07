@@ -147,26 +147,26 @@
                 </div>
             </div>
         </form>
-        <div class="card mt-3">
-            <div class="card-body">
-                <ul class="container-fluid" style="max-width: 968px">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <p class="col-1 txtWhitecolor ">Lot</p>
-                        <p class="col-4 txtWhitecolor">Value Date</p>
-                        <p class="col-4 txtWhitecolor">Redemption Date</p>
-                        <p class="col-2 txtWhitecolor">Expected Interest</p>
-                    </li>
-                    @foreach($history as $item)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <p class="col-1 txtWhitecolor">{{$item->lot_count}}</p>
-                            <p class="col-4 txtWhitecolor">{{date('d/m/Y ', strtotime($item->value_date))}}</p>
-                            <p class="col-4 txtWhitecolor">{{date('d/m/Y ', strtotime($item->redemption_date))}}</p>
-                            <p class="col-2 txtWhitecolor">{{$item->expected_interest}}</p>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        </div>
+{{--        <div class="card mt-3">--}}
+{{--            <div class="card-body">--}}
+{{--                <ul class="container-fluid" style="max-width: 968px">--}}
+{{--                    <li class="list-group-item d-flex justify-content-between align-items-center">--}}
+{{--                        <p class="col-1 txtWhitecolor ">Lot</p>--}}
+{{--                        <p class="col-4 txtWhitecolor">Value Date</p>--}}
+{{--                        <p class="col-4 txtWhitecolor">Redemption Date</p>--}}
+{{--                        <p class="col-2 txtWhitecolor">Expected Interest</p>--}}
+{{--                    </li>--}}
+{{--                    @foreach($history as $item)--}}
+{{--                        <li class="list-group-item d-flex justify-content-between align-items-center">--}}
+{{--                            <p class="col-1 txtWhitecolor">{{$item->lot_count}}</p>--}}
+{{--                            <p class="col-4 txtWhitecolor">{{date('d/m/Y ', strtotime($item->value_date))}}</p>--}}
+{{--                            <p class="col-4 txtWhitecolor">{{date('d/m/Y ', strtotime($item->redemption_date))}}</p>--}}
+{{--                            <p class="col-2 txtWhitecolor">{{$item->expected_interest}}</p>--}}
+{{--                        </li>--}}
+{{--                    @endforeach--}}
+{{--                </ul>--}}
+{{--            </div>--}}
+{{--        </div>--}}
     </div>
 
 

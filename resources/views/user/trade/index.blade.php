@@ -382,7 +382,7 @@
             } else {
                 CurrencyApi = 'https://api.bitfinex.com/v2/book/'+currency+'/P0';
             }
-            console.log(CurrencyApi);
+            // console.log(CurrencyApi);
             axios.get(CurrencyApi, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -436,7 +436,7 @@
                 items = JSON.parse(msg.data);
                 // console.log(msg.data);
                 if (items.event) return;
-                console.log("BitBook1:", items[2]);
+                // console.log("BitBook1:", items[2]);
                 if(items[1]){
                     if(items[1].length > 3){
                         bids = [];

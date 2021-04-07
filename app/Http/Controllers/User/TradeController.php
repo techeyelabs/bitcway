@@ -96,6 +96,7 @@ class TradeController extends Controller
 
     public function buy(Request $request)
     {
+//        dd($request);
         $currency = Currency::where('name', $request->currency)->first();
         if(!$currency) return response()->json(['status' => false]);
 
@@ -106,8 +107,11 @@ class TradeController extends Controller
             if(!$UserWallet) {
                 $UserWallet = new UserWallet();
                 $UserWallet->balance = $request->buyAmount;
+                $UserWallet->equivalent_trade_amount = $request->calcBuyAmount;
+
             }else{
                 $UserWallet->balance = $UserWallet->balance+$request->buyAmount;
+                $UserWallet->equivalent_trade_amount = $UserWallet->equivalent_trade_amount + $request->calcBuyAmount;
             }
             $UserWallet->user_id = Auth::user()->id;
             $UserWallet->currency_id = $currency->id;
