@@ -386,6 +386,7 @@
             axios.get(CurrencyApi, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials':'true',
                     'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
                 }
             })
@@ -406,14 +407,6 @@
                             Home.asks = asks;
                         }else{
                             item = items;
-                            // console.log("Book:", item);
-                            // if(item[2] > 0){
-                            //     if(Home.bids.length > 25) Home.bids.pop();
-                            //     Home.bids = [item].concat(Home.bids);
-                            // }else if(item[2] < 0){
-                            //     if(Home.asks.length > 25) Home.asks.pop();
-                            //     Home.asks = [item].concat(Home.asks);
-                            // }
                         }
                         Home.latestBid = Home.bids[0][0];
                         Home.bidIncrease = Home.bids[0][0]>Home.bids[1][0];

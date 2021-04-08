@@ -31,10 +31,10 @@
                 <div class="" style="margin: auto">
                     <div class="container-fluid" >
                         <div class="row  text-left " style="margin-left: -15px;">
-                           <abbr title="HyperText Markup Language"  class="txtHeadingColor text-left initialism">Total Margin Balance</abbr><br>
+                           <abbr title="Your Total Margin Balance"  class="txtHeadingColor text-left initialism">Total Margin Balance</abbr><br>
                             <h4 class="txtHeadingColor text-left mb-4">00000000.00 <span style="font-size: 10px">USD</span></h4>
 
-                            <abbr title="HyperText Markup Language"  class="txtHeadingColor text-left initialism">Total Wallet Balance</abbr><br>
+                            <abbr title="Your Total Wallet Balance"  class="txtHeadingColor text-left initialism">Total Wallet Balance</abbr><br>
                             <h4 class="txtHeadingColor text-left" style="font-size: 18px">00000000.00 <span style="font-size: 10px">USD</span></h4>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                     <div class="container-fluid" >
 
                         <div class="row  text-left mb-3" style="margin-left: -15px;">
-                            <abbr title="HyperText Markup Language"  class="txtHeadingColor text-left initialism">Trade Wallet</abbr><br>
+                            <abbr title="Trade Wallet"  class="txtHeadingColor text-left initialism">Trade Wallet</abbr><br>
                             <h4 class="txtHeadingColor text-left mb-2" id="totalAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
 {{--                            <h4 class="txtHeadingColor text-left">Trade Wallet (Equivalent Asset Amount : <span id="totalAmount">00000000.00</span> USD)</h4>--}}
 {{--                            <h4 class="col-md-4 txtHeadingColor text-left" id="totalAmount"></h4>--}}
@@ -65,7 +65,7 @@
                             <p class="col txtWhitecolor" id="" style="text-align: left;">Size</p>
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: center;">Entry Price</p>
                             <p class="col txtWhitecolor" id="CoinpriceIntoMycoin" style="text-align: center;">Mark Price</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: right;">Unrealized PNL</p>
+                            <p class="col txtWhitecolor" id="unrealizedpnl" style="text-align: right;">Unrealized PNL</p>
                             <p class="col txtWhitecolor" id="" style="text-align: right;">Action</p>
                         </li>
                         <?php
@@ -76,14 +76,14 @@
                         <li class="row list-group-item d-flex justify-content-between align-items-center ">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName{{$index}}"
                                style="text-align: left;">{{$item->currency->name}}</p>
-                            <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}"
+                            <p class="col txtWhitecolor" id="MyTotalCoinSize{{$index}}"
                                style="text-align: left;">{!! number_format((double)($item->balance),5)!!}</p>
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}"
                                style="text-align: center;">{!! number_format((double)($item->equivalent_trade_amount),5)!!}</p>
                             <p class="col txtWhitecolor" id="CoinpriceIntoMycoin{{$index}}"
                                style="text-align: center;"></p>
-                            <p class="col txtWhitecolor" id=""
-                               style="text-align: right;">0.0101</p>
+                            <p class="col " id="unrealizedpnl{{$index}}"
+                               style="text-align: right;">00.000000</p>
                             <p class="col" id=""
                                style="text-align: right;"><a class="txtHeadingColor" href="">Trade</a></p>
                         </li>
@@ -147,7 +147,7 @@
                 <div class="mb-4" style="margin: auto">
                     <div class="container-fluid">
                         <div class="text-left">
-                            <abbr title="HyperText Markup Language"  class="txtHeadingColor text-left initialism">Derivative Wallet</abbr><br>
+                            <abbr title="Derivative Wallet"  class="txtHeadingColor text-left initialism">Derivative Wallet</abbr><br>
                             <h4 class="txtHeadingColor text-left mb-3" id="totalAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
 {{--                            <h4 class="txtHeadingColor">Derivative Wallet : <span id="totalAmount">00000000.00</span> USD</h4>--}}
                         </div>
@@ -161,7 +161,7 @@
                     </div>
                 </div>
                 <div style="margin: auto; overflow-x: auto">
-                    <ul class="container-fluid" style=" min-width: 400px;">
+                    <ul class="container-fluid" style=" min-width: 600px;">
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">Symbol</p>
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: left; ">Size</p>
@@ -183,9 +183,9 @@
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName2{{$j}}" style="text-align: left;">{{$item->currencyName->name}}</p>
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount2{{$j}}" style="text-align: left;">{!! number_format((double)($item->amount), 5) !!}</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: left;">10.1001</p>
-                            <p class="col txtWhitecolor" id="CoinpriceintoMycoin2{{$j}}" style="text-align: center;"></p>
-                            <p class="col txtWhitecolor" id="MyTotalCoinAmount2{{$j}}" style="text-align: right;color:white;">+0.02501</p>
+                            <p class="col txtWhitecolor" id="derivativeEntryPrice{{$j}}" style="text-align: left;">{{($item->equivalent_amount)}}</p>
+                            <p class="col txtWhitecolor" id="CoinpriceintoMycoin2{{$j}}" style="text-align: center;">00.000000</p>
+                            <p class="col " id="derivativeUnrealizedPrice{{$j}}" style="text-align: right;color:white;">00.000000</p>
                             <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: right; color:white;">{{$item->leverage}}</p>
                             <p class="col" id="" style="text-align: right;"><a class="txtHeadingColor" href="">Trade</a></p>
 {{--                            <p class="col txtWhitecolor" id="derivativePercent{{$j}}"--}}
@@ -209,7 +209,7 @@
                 <div class="" style="margin: auto">
                     <div class="container-fluid" >
                         <div class="text-left mb-3">
-                            <abbr title="HyperText Markup Language"  class="txtHeadingColor text-left initialism">Finance Wallet</abbr><br>
+                            <abbr title="Finance Wallet"  class="txtHeadingColor text-left initialism">Finance Wallet</abbr><br>
                             <h4 class="txtHeadingColor text-left mb-3" id="totalAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
 {{--                            <h4 class="txtHeadingColor">Finance Wallet : <span id="totalAmount">00000000.00</span> USD</h4>--}}
                         </div>
@@ -267,7 +267,6 @@
                             <input type="hidden" name="amount" id="amount" value="{{Auth::user()->balance}}">
                             <input type="hidden" name="amount" id="derivativeanount"
                                    value="{{Auth::user()->derivative}}">
-
                         </div>
                     </div>
                     <div class="modal-footer modalbg">
@@ -286,31 +285,43 @@
         const socket = io('http://192.144.82.234:3000/');
         let loaded = false;
         socket.on('trackers', (trackers) => {
-            // console.log(trackers);
             // Home.trackers = trackers.trackers;
             let totalValue = 0;
             let indexNumber = $('#myCoinIndex').html();
             for (let i = 0; i <= indexNumber; i++) {
                 let currencyName = $('#MyCoinCurrencyName' + i).html();
-                console.log("currencyName: ", currencyName);
                 let currencyAmount = $('#MyTotalCoinAmount' + i).html();
-                console.log("currencyAmount: ", currencyAmount);
-
+                let tradeCurrencySize = $('#MyTotalCoinSize' + i).html();
+                // console.log(tradeCurrencySize);
 
                 let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + currencyName + 'USD') {
-                       let c =  $('#CoinpriceIntoMycoin' + i).html((currencyAmount * item[1]).toFixed(2));
-                        // console.log("c: ", c);
+                       $('#CoinpriceIntoMycoin' + i).html((tradeCurrencySize * item[1]));
                     }
                 });
             }
 
             for (let i = 0; i < indexNumber; i++) {
                 totalValue += parseFloat($('#CoinpriceIntoMycoin' + i).text());
+                // console.log( totalValue);
                 $('#totalAmount').html((totalValue).toFixed(2));
-                $('#totalAsset').html((totalValue).toFixed(2));
+            }
 
+            for (let i = 0; i < indexNumber; i++) {
+               var tradeUnrealizedpnlid = document.getElementById('unrealizedpnl'+ i);
+               let tradeEntryPrice = $('#MyTotalCoinAmount' + i).html();
+               let tradeMarkPrice = $('#CoinpriceIntoMycoin' + i).html();
+               let tradeUnrealizedpnl = tradeMarkPrice-tradeEntryPrice;
+               console.log(tradeEntryPrice, tradeMarkPrice);
+
+                if (tradeUnrealizedpnl < 0){
+                    $('#unrealizedpnl'+ i ).html((tradeUnrealizedpnl).toFixed(6));
+                    tradeUnrealizedpnlid.style.color = 'red'
+                }else{
+                    $('#unrealizedpnl'+ i ).html((tradeUnrealizedpnl).toFixed(6));
+                    tradeUnrealizedpnlid.style.color = 'yellow'
+                }
             }
 
             let indexNumber2 = $('#myCoinIndex2').html();
@@ -324,6 +335,20 @@
                         $('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(2));
                     }
                 });
+            }
+            for (let j = 1; j <= indexNumber2; j++) {
+                var derivativeUnrealizedpnlid = document.getElementById('derivativeUnrealizedPrice'+ j);
+                let derivativeEntryPrice = $('#derivativeEntryPrice' + j).html();
+                let derivativeMarkPrice = $('#CoinpriceintoMycoin2' + j).html();
+                let derivativeUnrealizedpnl = derivativeMarkPrice-derivativeEntryPrice;
+                if (derivativeUnrealizedpnl < 0){
+                    $('#derivativeUnrealizedPrice'+ j ).html((derivativeUnrealizedpnl).toFixed(6));
+                    derivativeUnrealizedpnlid.style.color = 'red'
+                }else{
+                    $('#derivativeUnrealizedPrice'+ j ).html((derivativeUnrealizedpnl).toFixed(6));
+                    derivativeUnrealizedpnlid.style.color = 'yellow'
+                }
+
             }
             if (loaded == false) {
                 setInterval(function () {
@@ -360,8 +385,5 @@
                 }
             }
         }
-    </script>
-    <script>
-
     </script>
 @endsection

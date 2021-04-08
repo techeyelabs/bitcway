@@ -425,4 +425,11 @@ table,th, td {
 [v-cloak] {
     display:none;
 }
+.txtWhitecolor {
+    color: #D3D6D8;
+}
+
+.txtHeadingColor {
+    color: yellow;
+}
 
