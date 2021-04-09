@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Currency;
 use Illuminate\Http\Request;
+
 
 use App\Models\LockedSavingsSetting;
 
@@ -44,10 +46,20 @@ class LockedSavingsController extends Controller
 
     public function lockedSavingsSettings(Request $request)
     {
+        $currency = Currency::where('name', $request->selectCoinName)->first();
         $data = new LockedSavingsSetting();
-        $data->rate = $request->interest_rate;
-        $data->duration = $request->duration;
-        $data->interest_per_lot = (($request->interest_rate)*($request->duration))/365;
+        $data->currency_id = $currency->id;
+        $data->lot_size = $request->lotSize;
+        $data->duration_1 = $request->duration1;
+        $data->duration_2 = $request->duration2;
+        $data->duration_3 = $request->duration3;
+        $data->duration_4 = $request->duration4;
+        $data->rate_1 = $request->rate1;
+        $data->rate_2 = $request->rate2;
+        $data->rate_3 = $request->rate3;
+        $data->rate_4 = $request->rate4;
+
+//        $data->interest_per_lot = (($request->interest_rate)*($request->duration))/365;
         $data->save();
 
         return redirect()->back()->with('success_message', 'successfully updated');

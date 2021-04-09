@@ -53,8 +53,6 @@
                         <div class="row  text-left mb-3" style="margin-left: -15px;">
                             <abbr title="Trade Wallet"  class="txtHeadingColor text-left initialism">Trade Wallet</abbr><br>
                             <h4 class="txtHeadingColor text-left mb-2" id="totalAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
-{{--                            <h4 class="txtHeadingColor text-left">Trade Wallet (Equivalent Asset Amount : <span id="totalAmount">00000000.00</span> USD)</h4>--}}
-{{--                            <h4 class="col-md-4 txtHeadingColor text-left" id="totalAmount"></h4>--}}
                         </div>
                     </div>
                 </div>
@@ -74,18 +72,12 @@
                         $i++;
                         ?>
                         <li class="row list-group-item d-flex justify-content-between align-items-center ">
-                            <p class="col txtWhitecolor" id="MyCoinCurrencyName{{$index}}"
-                               style="text-align: left;">{{$item->currency->name}}</p>
-                            <p class="col txtWhitecolor" id="MyTotalCoinSize{{$index}}"
-                               style="text-align: left;">{!! number_format((double)($item->balance),5)!!}</p>
-                            <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}"
-                               style="text-align: center;">{!! number_format((double)($item->equivalent_trade_amount),5)!!}</p>
-                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin{{$index}}"
-                               style="text-align: center;"></p>
-                            <p class="col " id="unrealizedpnl{{$index}}"
-                               style="text-align: right;">00.000000</p>
-                            <p class="col" id=""
-                               style="text-align: right;"><a class="txtHeadingColor" href="">Trade</a></p>
+                            <p class="col txtWhitecolor" id="MyCoinCurrencyName{{$index}}" style="text-align: left;">{{$item->currency->name}}</p>
+                            <p class="col txtWhitecolor" id="MyTotalCoinSize{{$index}}" style="text-align: left;">{!! number_format((double)($item->balance),5)!!}</p>
+                            <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}" style="text-align: center;">{!! number_format((double)($item->equivalent_trade_amount),5)!!}</p>
+                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin{{$index}}" style="text-align: center;">00.000000</p>
+                            <p class="col " id="unrealizedpnl{{$index}}" style="text-align: right;">00.000000</p>
+                            <p class="col txtHeadingColor" id="assetTradeSell{{$index}}" style="text-align: right; cursor: pointer">Trade</p>
                         </li>
                         <?php
                         }
@@ -97,50 +89,6 @@
         </div>
         {{--Trade Wallet New End--}}
 
-
-        {{--Trade Wallet Start--}}
-        <div class="empty">
-{{--        <div class="card mt-3 ">--}}
-{{--            <div class="card-body">--}}
-{{--                <div class="" style="margin: auto">--}}
-{{--                    <ul class="container-fluid" >--}}
-
-{{--                        <div class="row  text-left mb-3" style="margin-left: -15px;">--}}
-{{--                            <h4 class="txtHeadingColor text-left">Trade Wallet (Equivalent Asset Amount : <span id="totalAmount">00000000.00</span> USD)</h4>--}}
-{{--                            <h4 class="col-md-4 txtHeadingColor text-left" id="totalAmount"></h4>--}}
-{{--                        </div>--}}
-
-
-{{--                        <li class="row list-group-item d-flex justify-content-between align-items-center ">--}}
-{{--                            <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">Symbol</p>--}}
-{{--                            <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: center;">Amount</p>--}}
-{{--                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin" style="text-align: right;">Current--}}
-{{--                                Price</p>--}}
-{{--                        </li>--}}
-{{--                        <?php--}}
-{{--                        $i = 0;--}}
-{{--                        foreach($wallets as $index =>$item ){--}}
-{{--                        $i++;--}}
-{{--                        ?>--}}
-{{--                        <li class="row list-group-item d-flex justify-content-between align-items-center ">--}}
-{{--                            <p class="col txtWhitecolor" id="MyCoinCurrencyName{{$index}}"--}}
-{{--                               style="text-align: left;">{{$item->currency->name}}</p>--}}
-{{--                            <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}"--}}
-{{--                               style="text-align: center;">{{$item->balance}}</p>--}}
-{{--                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin{{$index}}"--}}
-{{--                               style="text-align: right;"></p>--}}
-{{--                        </li>--}}
-{{--                        <?php--}}
-{{--                        }--}}
-{{--                        ?>--}}
-{{--                        <p style="display: none;" id="myCoinIndex">{{$i}}</p>--}}
-{{--                    </ul>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-        </div>
-        {{--Trade Wallet End--}}
-
         {{--Derivative Wallet Start--}}
         <div class="card mt-3">
             <div class="card-body">
@@ -149,7 +97,6 @@
                         <div class="text-left">
                             <abbr title="Derivative Wallet"  class="txtHeadingColor text-left initialism">Derivative Wallet</abbr><br>
                             <h4 class="txtHeadingColor text-left mb-3" id="totalAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
-{{--                            <h4 class="txtHeadingColor">Derivative Wallet : <span id="totalAmount">00000000.00</span> USD</h4>--}}
                         </div>
                         <button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
                                 data-bs-target="#derivativeModal" style="width: 100px;"
@@ -169,9 +116,6 @@
                             <p class="col txtWhitecolor" id="CoinpriceIntoMycoin2" style="text-align: center;">Mark Price</p>
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: right;">Unrealized PNL</p>
                             <p class="col txtWhitecolor" id="derivati8vePercent" style="text-align: right;">Leverage</p>
-{{--                            <p class="col txtWhitecolor" id="derivati8vePercent" style="text-align: left; color:white;">Rate</p>--}}
-{{--                            <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: right;color:white;">Amount</p>--}}
-{{--                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin2" style="text-align: right;color:white;">Current Price</p>--}}
                             <p class="col txtWhitecolor" id="" style="text-align: right;">Action</p>
                         </li>
                         <?php
@@ -180,6 +124,7 @@
                         if(($item->leverage) >= 1 ){
                         $j++;
                         ?>
+                        {{--{!! number_format((double)($item->equivalent_amount / $item->leverage),5) !!}--}}
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName2{{$j}}" style="text-align: left;">{{$item->currencyName->name}}</p>
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount2{{$j}}" style="text-align: left;">{!! number_format((double)($item->amount), 5) !!}</p>
@@ -187,9 +132,7 @@
                             <p class="col txtWhitecolor" id="CoinpriceintoMycoin2{{$j}}" style="text-align: center;">00.000000</p>
                             <p class="col " id="derivativeUnrealizedPrice{{$j}}" style="text-align: right;color:white;">00.000000</p>
                             <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: right; color:white;">{{$item->leverage}}</p>
-                            <p class="col" id="" style="text-align: right;"><a class="txtHeadingColor" href="">Trade</a></p>
-{{--                            <p class="col txtWhitecolor" id="derivativePercent{{$j}}"--}}
-{{--                               style="text-align: left; color:white;">{!! number_format((double)($item->equivalent_amount / $item->leverage),5) !!}</p>--}}
+                            <p class="col txtHeadingColor" id="assetDerivativeSell{{$j}}" style="text-align: right;cursor: pointer">Trade</p>
                         </li>
                         <?php
                         }
@@ -211,7 +154,6 @@
                         <div class="text-left mb-3">
                             <abbr title="Finance Wallet"  class="txtHeadingColor text-left initialism">Finance Wallet</abbr><br>
                             <h4 class="txtHeadingColor text-left mb-3" id="totalAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
-{{--                            <h4 class="txtHeadingColor">Finance Wallet : <span id="totalAmount">00000000.00</span> USD</h4>--}}
                         </div>
                     </div>
                 </div>
@@ -220,25 +162,17 @@
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
                             <p class="col txtWhitecolor" id="" style="text-align: left; ">Symbol</p>
                             <p class="col txtWhitecolor" id="" style="text-align: left; ">Lot</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: center;">Value
-                                Date</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: right;">Redemption
-                                Date</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: right;">Expected
-                                Interest</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: center;">Value Date</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">Redemption Date</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">Expected Interest</p>
                         </li>
                         @foreach($finances as $finance)
                             <li class="row list-group-item d-flex justify-content-between align-items-center">
-                                <p class="col txtWhitecolor" id=""
-                                   style="text-align: left;">MAB</p>
-                                <p class="col txtWhitecolor" id=""
-                                   style="text-align: left;">{{$finance->lot_count}}</p>
-                                <p class="col txtWhitecolor" id=""
-                                   style="text-align: center;">{{date('d/m/Y', strtotime($finance->value_date))}}</p>
-                                <p class="col txtWhitecolor" id=""
-                                   style="text-align: right;">{{date('d/m/Y', strtotime($finance->redemption_date))}}</p>
-                                <p class="col txtWhitecolor" id=""
-                                   style="text-align: right;">{{$finance->expected_interest}}</p>
+                                <p class="col txtWhitecolor" id="" style="text-align: left;">MAB</p>
+                                <p class="col txtWhitecolor" id="" style="text-align: left;">{{$finance->lot_count}}</p>
+                                <p class="col txtWhitecolor" id="" style="text-align: center;">{{date('d/m/Y', strtotime($finance->value_date))}}</p>
+                                <p class="col txtWhitecolor" id="" style="text-align: right;">{{date('d/m/Y', strtotime($finance->redemption_date))}}</p>
+                                <p class="col txtWhitecolor" id="" style="text-align: right;">{{$finance->expected_interest}}</p>
                             </li>
                         @endforeach
                     </ul>
@@ -281,18 +215,22 @@
 
 @section('custom_js')
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         const socket = io('http://192.144.82.234:3000/');
         let loaded = false;
         socket.on('trackers', (trackers) => {
+            console.log(trackers);
             // Home.trackers = trackers.trackers;
             let totalValue = 0;
             let indexNumber = $('#myCoinIndex').html();
-            for (let i = 0; i <= indexNumber; i++) {
+            for (let i = 0; i < indexNumber; i++) {
                 let currencyName = $('#MyCoinCurrencyName' + i).html();
                 let currencyAmount = $('#MyTotalCoinAmount' + i).html();
                 let tradeCurrencySize = $('#MyTotalCoinSize' + i).html();
-                // console.log(tradeCurrencySize);
+                let tradeMarkPrice = $('#CoinpriceIntoMycoin' + i).html();
+
+                // console.log("Name:",currencyName," Size:", tradeCurrencySize, " MarkPrice:", tradeMarkPrice);
 
                 let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
@@ -304,7 +242,6 @@
 
             for (let i = 0; i < indexNumber; i++) {
                 totalValue += parseFloat($('#CoinpriceIntoMycoin' + i).text());
-                // console.log( totalValue);
                 $('#totalAmount').html((totalValue).toFixed(2));
             }
 
@@ -313,7 +250,7 @@
                let tradeEntryPrice = $('#MyTotalCoinAmount' + i).html();
                let tradeMarkPrice = $('#CoinpriceIntoMycoin' + i).html();
                let tradeUnrealizedpnl = tradeMarkPrice-tradeEntryPrice;
-               console.log(tradeEntryPrice, tradeMarkPrice);
+               // console.log(tradeUnrealizedpnl);
 
                 if (tradeUnrealizedpnl < 0){
                     $('#unrealizedpnl'+ i ).html((tradeUnrealizedpnl).toFixed(6));
@@ -322,6 +259,33 @@
                     $('#unrealizedpnl'+ i ).html((tradeUnrealizedpnl).toFixed(6));
                     tradeUnrealizedpnlid.style.color = 'yellow'
                 }
+            }
+            for (let i = 0; i < indexNumber; i++) {
+                let currencyName = $('#MyCoinCurrencyName' + i).html();
+                let currencyAmount = $('#MyTotalCoinAmount' + i).html();
+                let tradeCurrencySize = $('#MyTotalCoinSize' + i).html();
+                let tradeMarkPrice = $('#CoinpriceIntoMycoin' + i).html();
+
+                $( "#assetTradeSell" + i ).click(function() {
+                    axios.post('{{route("user-trade-sell")}}',{
+                        currency: currencyName,
+                        sellAmount: tradeCurrencySize,
+                        calcSellAmount: tradeMarkPrice
+                    })
+                        .then(function (response) {
+                            if(response.data.status){
+                                toastr.success('Sell successfull');
+                                window.location.href = '{{route("user-wallets")}}';
+                                return false;
+                            }
+                            // toastr.error('Error occured !!');
+                        })
+                        .catch(function (error) {
+                            toastr.error('Error occured !!');
+                        });
+                });
+
+                // console.log("Name:",currencyName," Size:", tradeCurrencySize, " MarkPrice:", tradeMarkPrice);
             }
 
             let indexNumber2 = $('#myCoinIndex2').html();
@@ -336,6 +300,7 @@
                     }
                 });
             }
+
             for (let j = 1; j <= indexNumber2; j++) {
                 var derivativeUnrealizedpnlid = document.getElementById('derivativeUnrealizedPrice'+ j);
                 let derivativeEntryPrice = $('#derivativeEntryPrice' + j).html();
@@ -348,7 +313,34 @@
                     $('#derivativeUnrealizedPrice'+ j ).html((derivativeUnrealizedpnl).toFixed(6));
                     derivativeUnrealizedpnlid.style.color = 'yellow'
                 }
+            }
+            for (let j = 1; j <= indexNumber2; j++) {
+                let derivativeCurrencyName = $('#MyCoinCurrencyName2' + j).html();
+                let derivativeCurrencySize = $('#MyTotalCoinAmount2' + j).html();
+                let derivativeMarkPrice = $('#CoinpriceintoMycoin2' + j).html();
 
+                $( "#assetDerivativeSell" + j ).click(function() {
+                    // console.log("in");
+                    axios.post('{{route("user-trade-sell")}}',{
+                        currency: derivativeCurrencyName,
+                        sellAmount: derivativeCurrencySize,
+                        calcSellAmount: derivativeMarkPrice,
+                        derivativeType: '0'
+                    })
+                        .then(function (response) {
+                            if(response.data.status){
+                                toastr.success('Sell successfull');
+                                window.location.href = '{{route("user-wallets")}}';
+                                return false;
+                            }
+                            // toastr.error('Error occured !!');
+                        })
+                        .catch(function (error) {
+                            toastr.error('Error occured !!');
+                        });
+                });
+
+                // console.log("Name:",derivativeCurrencyName," Size:", derivativeCurrencySize, " MarkPrice:", derivativeMarkPrice);
             }
             if (loaded == false) {
                 setInterval(function () {
@@ -370,7 +362,6 @@
             var available_balance_deposit = document.getElementById('amount').value;
             var available_balance_withdraw = document.getElementById('derivativeanount').value;
             var flag = document.getElementById('flag').value;
-            // console.log(flag);
             if (flag == 1) {
                 if (amount.value !== '' && parseFloat(amount.value) <= parseFloat(available_balance_deposit)) {
                     bt.disabled = false;

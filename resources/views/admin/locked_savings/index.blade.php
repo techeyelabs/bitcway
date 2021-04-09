@@ -32,42 +32,40 @@
             <div class="col-md-6 offset-md-3">
                 <div class="card">
                     <div class="card-body">
-                        <form action="" method="post">
+                        <form action="{{ route('admin-locked-savings-settings') }}" method="post">
+                            @csrf
                             <div class="form-group">
                                 <label for="" class="txtWhitecolor">Coin Select</label>
-                                <select class="form-control lockedSavingInputFroup" aria-label="Default select example" >
-                                    <option selected>MAB</option>
-                                    <option value="1">BTC</option>
-                                    <option value="2">ETH</option>
-                                    <option value="3">DSH</option>
+                                <select id="coinOptions" class="form-control form-select lockedSavingInputFroup" name="selectCoinName" aria-label="Default select example" >
+                                    <option selected>Select Currency</option>
                                 </select>
                                 <small class="text-danger"></small>
                             </div>
 
                             <div class="form-group">
                                 <label for="" class="txtWhitecolor">Lot Size</label>
-                                <input type="number" id="id-1" step="any" class="form-control lockedSavingInputFroup" name="interest_rate" placeholder="100" value="" required>
+                                <input type="number" id="lotSize" step="any" class="form-control lockedSavingInputFroup" name="lotSize" placeholder="100" value="" required>
                                 <small class="text-danger"></small>
                             </div>
                             <div class="form-group row">
                                 <label for="" class="txtWhitecolor">Duration</label>
-                                <input type="number" id="id-2" class="form-control col inputGroupDiv" name="duration" placeholder="0" value="" required>
-                                <input type="number" id="id-2" class="form-control col inputGroupDiv" name="duration" placeholder="0" value="" required>
-                                <input type="number" id="id-2" class="form-control col inputGroupDiv" name="duration" placeholder="0" value="" required>
-                                <input type="number" id="id-2" class="form-control col inputGroupDiv" name="duration" placeholder="0" value="" required>
+                                <input type="number" id="duration1" class="form-control col inputGroupDiv" name="duration1" placeholder="0" value="" required>
+                                <input type="number" id="duration2" class="form-control col inputGroupDiv" name="duration2" placeholder="0" value="" required>
+                                <input type="number" id="duration3" class="form-control col inputGroupDiv" name="duration3" placeholder="0" value="" required>
+                                <input type="number" id="duration4" class="form-control col inputGroupDiv" name="duration4" placeholder="0" value="" required>
                                 <small class="text-danger"></small>
                             </div>
                             <div class="form-group row">
                                 <label for="" class="txtWhitecolor">Annual Interest</label>
-                                <input type="number" id="id-2" class="form-control col inputGroupDiv" name="duration" placeholder="0.00" value="" required>
-                                <input type="number" id="id-2" class="form-control col inputGroupDiv" name="duration" placeholder="0.00" value="" required>
-                                <input type="number" id="id-2" class="form-control col inputGroupDiv" name="duration" placeholder="0.00" value="" required>
-                                <input type="number" id="id-2" class="form-control col inputGroupDiv" name="duration" placeholder="0.00" value="" required>
+                                <input type="number" id="rate1" class="form-control col inputGroupDiv" name="rate1" placeholder="0.00" value="" required>
+                                <input type="number" id="rate2" class="form-control col inputGroupDiv" name="rate2" placeholder="0.00" value="" required>
+                                <input type="number" id="rate3" class="form-control col inputGroupDiv" name="rate3" placeholder="0.00" value="" required>
+                                <input type="number" id="rate4" class="form-control col inputGroupDiv" name="rate4" placeholder="0.00" value="" required>
                                 <small class="text-danger"></small>
                             </div>
                             <hr>
                             <div class=" gap-2 col-6 mx-auto text-center">
-                                <button type="submit" id="Submit" disabled="disabled" class="btn btn-primary btn-block text-center" style="width: 80px; color: white;">Submit</button>
+                                <button type="submit" id="Submit" class="btn btn-primary  text-center" style="width: 80px; color: white;">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -78,7 +76,7 @@
 
 
         {{--Previous locked Saving Setting Start--}}
-        <div class="row mt-5" style="display: none">
+        <div class="row mt-5" style="display: block">
             <div class="col-md-6 offset-md-3">
                 <div class="card">
                     <div class="card-body">
@@ -155,7 +153,7 @@
         {{--Previous locked Saving Setting End--}}
         <hr>
         {{--Previous locked Saving Setting Div2 Start--}}
-        <div class="row" style="display: none">
+        <div class="row" style="display: block">
             <div class="col-md-8 offset-md-2">
                 <div class="card" style="max-width: 74%;margin-left: 13%;">
                     <div class="card-body">
@@ -259,6 +257,29 @@
 @endsection
 
 @section('custom_js')
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+    <script>
+
+        const socket = io('http://192.144.82.234:3000/');
+        let response = 0;
+        socket.on('trackers', (trackers) => {
+            response++;
+            if (response == 1){
+                let options = "";
+                for (let i = 0; i < trackers.trackers.length; i++){
+                    let c = trackers.trackers[i][0];
+                    let name = splitCurrency(c);
+                    options += "<option value ="+name+">"+name+"</option>";
+                }
+                $('#coinOptions').html(options);
+            }
+        });
+        function splitCurrency(currency){
+            currency = currency.split('t').join('');
+            currency = currency.split('USD').join('');
+            return currency;
+        }
+    </script>
     <script>
         $(function () {
             $('.add').on('click', function () {
@@ -272,7 +293,6 @@
             })
         })
     </script>
-
     <script>
         $(function () {
             $("#id-1, #id-2").keyup(function () {
@@ -292,11 +312,11 @@
                     }
                 });
 
-                if (empty) {
-                    $('#Submit').attr('disabled', 'disabled');
-                } else {
-                    $('#Submit').removeAttr('disabled');
-                }
+                // if (empty) {
+                //     $('#Submit').attr('disabled', 'disabled');
+                // } else {
+                //     $('#Submit').removeAttr('disabled');
+                // }
             });
         });
     </script>
