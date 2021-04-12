@@ -43,7 +43,8 @@ class TradeController extends Controller
 
             }
             $data['currency'] = $currency;
-//            dd($data);
+
+            dd($data);
             return view('user.trade.index', $data);
         }
 
@@ -54,10 +55,17 @@ class TradeController extends Controller
     {
         $data['settings'] = LockedSavingsSetting::get();
         //dummy coin data grab
-        $id = Currency::where('name', 'ADA')->pluck('id');
-        $data['dummy_coin_balance'] = UserWallet::where('user_id', Auth::id())->where('currency_id', $id)->sum('balance');
+        //$id = Currency::where('name', 'ADA')->pluck('id');
+        $wallet = UserWallet::where('user_id', Auth::id())->groupBy('currency_id')->get();
+        $coinBalance = array();
+        for ($i = 0; $i<count($wallet); $i++){
+            $coinBalance[$wallet[$i]->currency_id] = $wallet[$i]->balance;
+        }
+        $data['dummy_coin_balance'] = $coinBalance;
         $data['history'] = LockedSaving::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->get();
         $data['total'] = 0;
+        $data['lockedFinanceSettings'] = LockedSavingsSetting::with('currency')->get();
+//        dd( $data['lockedFinanceSettings']);
 
         return view('user.trade.finance', $data);
     }

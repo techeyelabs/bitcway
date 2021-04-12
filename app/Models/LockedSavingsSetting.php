@@ -9,6 +9,11 @@ class LockedSavingsSetting extends Model
 {
     use HasFactory;
 
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

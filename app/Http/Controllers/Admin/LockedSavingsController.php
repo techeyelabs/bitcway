@@ -14,6 +14,7 @@ class LockedSavingsController extends Controller
     public function index()
     {
         $data['settings'] = LockedSavingsSetting::orderBy('id', 'desc')->get();
+//        dd(  $data['settings']);
         return view('admin.locked_savings.index', $data);
     }
 
@@ -74,8 +75,9 @@ class LockedSavingsController extends Controller
         // print_r($data);
         // exit;
         $deletedata->delete();
-        return view('admin.locked_savings.index', $data);
-        // return route('admin-locked-savings')->with('success_message', 'successfully deleted');
+//        return view('admin.locked_savings.index', $data);
+//         return route('admin-locked-savings')->with('success_message', 'successfully deleted');
+        return redirect()->back();
     }
     public function lockedSavingsEdit($id)
     {
@@ -86,15 +88,25 @@ class LockedSavingsController extends Controller
         // print_r($user);
         // exit;
         return view('admin.locked_savings.index', $data)->with('user', $user);
-        
+//        return redirect()->back()->with('user', $user);
+
     }
     public function lockedSavingsEditAction(Request $request, $id)
     {
         $id = \Crypt::decrypt($id);
+        $currency = Currency::where('name', $request->selectCoinName)->first();
 
         LockedSavingsSetting::where('id', $id)
-                ->update(['rate' => $request->interest_rate,
-                         'duration'=> $request->duration,
+                ->update(['currency_id'=>  $currency->id,
+                        'lot_size' => $request->lotSize,
+                         'duration_1'=> $request->duration1,
+                         'duration_2'=> $request->duration2,
+                         'duration_3'=> $request->duration3,
+                         'duration_4'=> $request->duration4,
+                         'rate_1'=> $request->rate1,
+                         'rate_2'=> $request->rate2,
+                         'rate_3'=> $request->rate3,
+                         'rate_4'=> $request->rate4,
                          'interest_per_lot'=> (($request->interest_rate)*($request->duration))/365]
                         );
         
