@@ -15,9 +15,15 @@ class LockedSavingsSetting extends Model
      * @var array
      */
     protected $fillable = [
-        'rate',
-        'duration',
-        'interest_per_lot',
+        'lot_size',
+        'rate_1',
+        'rate_2',
+        'rate_3',
+        'rate_4',
+        'duration_1',
+        'duration_2',
+        'duration_3',
+        'duration_4',
     ];
 
     /**

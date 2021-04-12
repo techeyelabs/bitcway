@@ -49,7 +49,7 @@
         }
         .txtWhitecolor{
             color: #D3D6D8;
-            text-align: left !important;
+            /*text-align: left !important;*/
 
         }
         .txtHeadingColor{
@@ -71,6 +71,7 @@
                 <h4 class="txtHeadingColor">Locked Savings Amount:  {{$total}} USD</h4>
             </div>
         </div>
+
         <div class="card mt-3">
             <div class="card-body">
                 <ul class="container-fluid" style="max-width: 700px">
@@ -85,12 +86,51 @@
                             <span class="txtWhitecolor">{{$item->rate}}</span>
                             <span class="txtWhitecolor">{{$item->duration}}</span>
                             <span class="txtWhitecolor">{{$item->interest_per_lot}}</span>
-                            <span class="btn-outline-warning btn  cursor-pointer"  onclick="changeData({{$item->id}}, {{$item->rate}}, {{$item->duration}}, {{$item->interest_per_lot}})">Transfer</span>
+{{--                            <span class="btn-outline-warning btn  cursor-pointer"  onclick="changeData({{$item->id}}, {{$item->rate}}, {{$item->duration}}, {{$item->interest_per_lot}})">Transfer</span>--}}
+                            <span class="btn-outline-warning btn  cursor-pointer"  onclick="changeData({{$item->id}}, 6.31, 14, {{$item->interest_per_lot}})">Transfer</span>
                         </li>
                     @endforeach
                 </ul>
             </div>
         </div>
+
+        {{--Finance locked Saving Setting Div2 End--}}
+        <div class="card mt-3">
+            <div class="card-body">
+
+                <div style="margin: auto; overflow-x: auto">
+                    <ul class="container-fluid" style=" min-width: 600px;">
+                        <li class="row list-group-item d-flex justify-content-between align-items-center">
+                            <p class="col txtWhitecolor" id="" style="text-align: left; ">Symbol</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: left; ">Annualized Interest Rate</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: center;">Duration (Days)</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">Lot Size</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">Action</p>
+                        </li>
+                        <li class="row list-group-item d-flex justify-content-between align-items-center">
+                            <p class="col txtWhitecolor" id="" style="text-align: left;">MAB</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: left;">6.31%</p>
+                            <p class="col btn-group" role="group" aria-label="Basic outlined example" style="width: 10px !important; text-align: center">
+                                <button type="button" class="btn btn-outline-primary">7</button>
+                                <button type="button" class="btn btn-outline-primary">14</button>
+                                <button type="button" class="btn btn-outline-primary">30</button>
+                                <button type="button" class="btn btn-outline-primary">90</button>
+                            </p>
+                            <p class="col txtWhitecolor" id=""
+                               style="text-align: right;">100</p>
+                            <p class="col txtWhitecolor" id=""
+                               style="text-align: right;">
+                                <a style="margin-right: 20px" class="txtHeadingColor" href=""><i class="fas fa-edit"></i></a>
+                                <a class="txtHeadingColor" href=""><i class="fas fa-trash-alt"></i></a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {{--Finance Wallet End--}}
+        </div>
+        {{--Finance locked Saving Setting Div2 End--}}
+
         <form method="post" action="{{route('user-trade-finance-entry')}}">
             @csrf
             <div class="card mt-3 confirmation" id="confirmation" style="display: none">
@@ -147,26 +187,28 @@
                 </div>
             </div>
         </form>
-{{--        <div class="card mt-3">--}}
-{{--            <div class="card-body">--}}
-{{--                <ul class="container-fluid" style="max-width: 968px">--}}
-{{--                    <li class="list-group-item d-flex justify-content-between align-items-center">--}}
-{{--                        <p class="col-1 txtWhitecolor ">Lot</p>--}}
-{{--                        <p class="col-4 txtWhitecolor">Value Date</p>--}}
-{{--                        <p class="col-4 txtWhitecolor">Redemption Date</p>--}}
-{{--                        <p class="col-2 txtWhitecolor">Expected Interest</p>--}}
-{{--                    </li>--}}
-{{--                    @foreach($history as $item)--}}
-{{--                        <li class="list-group-item d-flex justify-content-between align-items-center">--}}
-{{--                            <p class="col-1 txtWhitecolor">{{$item->lot_count}}</p>--}}
-{{--                            <p class="col-4 txtWhitecolor">{{date('d/m/Y ', strtotime($item->value_date))}}</p>--}}
-{{--                            <p class="col-4 txtWhitecolor">{{date('d/m/Y ', strtotime($item->redemption_date))}}</p>--}}
-{{--                            <p class="col-2 txtWhitecolor">{{$item->expected_interest}}</p>--}}
-{{--                        </li>--}}
-{{--                    @endforeach--}}
-{{--                </ul>--}}
-{{--            </div>--}}
-{{--        </div>--}}
+        <div class="card mt-3">
+            <div class="card-body">
+                <ul class="container-fluid" style="max-width: 968px">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <p class="col-1 txtWhitecolor ">Lot</p>
+                        <p class="col-4 txtWhitecolor">Value Date</p>
+                        <p class="col-4 txtWhitecolor">Redemption Date</p>
+                        <p class="col-2 txtWhitecolor">Expected Interest</p>
+                    </li>
+                    @foreach($history as $item)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <p class="col-1 txtWhitecolor">{{$item->lot_count}}</p>
+                            <p class="col-4 txtWhitecolor">{{date('d/m/Y ', strtotime($item->value_date))}}</p>
+                            <p class="col-4 txtWhitecolor">{{date('d/m/Y ', strtotime($item->redemption_date))}}</p>
+                            <p class="col-2 txtWhitecolor">{{$item->expected_interest}}</p>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+
+
     </div>
 
 
