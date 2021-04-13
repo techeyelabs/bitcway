@@ -14,7 +14,6 @@ class LockedSavingsController extends Controller
     public function index()
     {
         $data['settings'] = LockedSavingsSetting::orderBy('id', 'desc')->get();
-//        dd(  $data['settings']);
         return view('admin.locked_savings.index', $data);
     }
 
@@ -34,7 +33,7 @@ class LockedSavingsController extends Controller
         $DmgCoin->save();
 
         DmgCoinPriceUpdate::truncate();
-        foreach($request->pstart_date as $key => $value){
+        foreach ($request->pstart_date as $key => $value) {
             $DmgCoinPriceUpdate = new DmgCoinPriceUpdate();
             $DmgCoinPriceUpdate->start_date = $value;
             $DmgCoinPriceUpdate->end_date = $request->pend_date[$key];
@@ -71,46 +70,43 @@ class LockedSavingsController extends Controller
         $id = \Crypt::decrypt($id);
         $deletedata = LockedSavingsSetting::where('id', $id);
         $data['settings'] = LockedSavingsSetting::orderBy('id', 'desc')->get();
-        // echo '<pre>';
-        // print_r($data);
-        // exit;
         $deletedata->delete();
 //        return view('admin.locked_savings.index', $data);
 //         return route('admin-locked-savings')->with('success_message', 'successfully deleted');
         return redirect()->back();
     }
+
     public function lockedSavingsEdit($id)
     {
         $id = \Crypt::decrypt($id);
         $data['settings'] = LockedSavingsSetting::orderBy('id', 'desc')->get();
-        $user = LockedSavingsSetting::where('id', $id)->orderBy('id', 'desc')->get();
-        // echo '<pre>';
-        // print_r($user);
-        // exit;
+        $user = LockedSavingsSetting::where('id', $id)->with('currency')->orderBy('id', 'desc')->get();
+//        dd($user);
         return view('admin.locked_savings.index', $data)->with('user', $user);
 //        return redirect()->back()->with('user', $user);
 
     }
+
     public function lockedSavingsEditAction(Request $request, $id)
     {
         $id = \Crypt::decrypt($id);
         $currency = Currency::where('name', $request->selectCoinName)->first();
 
         LockedSavingsSetting::where('id', $id)
-                ->update(['currency_id'=>  $currency->id,
-                        'lot_size' => $request->lotSize,
-                         'duration_1'=> $request->duration1,
-                         'duration_2'=> $request->duration2,
-                         'duration_3'=> $request->duration3,
-                         'duration_4'=> $request->duration4,
-                         'rate_1'=> $request->rate1,
-                         'rate_2'=> $request->rate2,
-                         'rate_3'=> $request->rate3,
-                         'rate_4'=> $request->rate4,
-                         'interest_per_lot'=> (($request->interest_rate)*($request->duration))/365]
-                        );
-        
+            ->update(['currency_id' => $currency->id,
+                    'lot_size' => $request->lotSize,
+                    'duration_1' => $request->duration1,
+                    'duration_2' => $request->duration2,
+                    'duration_3' => $request->duration3,
+                    'duration_4' => $request->duration4,
+                    'rate_1' => $request->rate1,
+                    'rate_2' => $request->rate2,
+                    'rate_3' => $request->rate3,
+                    'rate_4' => $request->rate4,
+                    'interest_per_lot' => (($request->interest_rate) * ($request->duration)) / 365]
+            );
+
         return redirect()->back()->with('success_message', 'successfully edited');
-        
+
     }
 }

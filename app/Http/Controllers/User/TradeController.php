@@ -72,16 +72,18 @@ class TradeController extends Controller
 
     public function insertFinance(Request $request)
     {
+//        dd($request);
         try {
             $date = date('Y-m-d');
-            $plan = LockedSavingsSetting::where('id', $request->plan)->first();
+//            $plan = LockedSavingsSetting::where('id', $request->plan)->first();
             $lockedInvest = new LockedSaving();
             $lockedInvest->user_id = Auth::user()->id;
             $lockedInvest->plan_id = $request->plan;
             $lockedInvest->lot_count = $request->lot;
             $lockedInvest->value_date = $date;
-            $lockedInvest->redemption_date = date('Y-m-d', strtotime($date . ' + ' . $plan->duration . ' days'));
-            $lockedInvest->expected_interest = $plan->interest_per_lot * $request->lot;
+            $lockedInvest->redemption_date = date('Y-m-d', strtotime($date . ' + ' . $request->redemptionTime . ' days'));
+            $lockedInvest->expected_interest = $request->expected_interest;
+            $lockedInvest->currency_id = $request->coinId;
             $lockedInvest->save();
         } catch (Exception $e){
             return route('user-trade-finance');

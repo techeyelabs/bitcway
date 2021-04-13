@@ -39,8 +39,8 @@
 
                                     <div class="form-group">
                                         <label for="" class="txtWhitecolor">Coin Select</label>
-                                        <select id="coinOptions" class="form-control form-select lockedSavingInputFroup" name="selectCoinName" aria-label="Default select example" >
-                                            <option selected>{{$u->currency_id}}</option>
+                                        <select id="coinOption" class="form-control form-select lockedSavingInputFroup" name="selectCoinName" aria-label="Default select example" >
+                                            <option value="{{$u->currency->name}}">{{$u->currency->name}}</option>
                                         </select>
                                         <small class="text-danger"></small>
                                     </div>
@@ -52,18 +52,18 @@
                                     </div>
                                     <div class="form-group row">
                                         <label for="" class="txtWhitecolor">Duration</label>
-                                        <input type="number" id="duration1" class="form-control col inputGroupDiv" name="duration1" placeholder="{{$u->duration_1}}" value="" required>
-                                        <input type="number" id="duration2" class="form-control col inputGroupDiv" name="duration2" placeholder="{{$u->duration_2}}" value="" required>
-                                        <input type="number" id="duration3" class="form-control col inputGroupDiv" name="duration3" placeholder="{{$u->duration_3}}" value="" required>
-                                        <input type="number" id="duration4" class="form-control col inputGroupDiv" name="duration4" placeholder="{{$u->duration_4}}" value="" required>
+                                        <input type="number" id="duration1" class="form-control col inputGroupDiv" name="duration1" placeholder="" value="{{$u->duration_1}}" required>
+                                        <input type="number" id="duration2" class="form-control col inputGroupDiv" name="duration2" placeholder="" value="{{$u->duration_2}}" required>
+                                        <input type="number" id="duration3" class="form-control col inputGroupDiv" name="duration3" placeholder="" value="{{$u->duration_3}}" required>
+                                        <input type="number" id="duration4" class="form-control col inputGroupDiv" name="duration4" placeholder="" value="{{$u->duration_4}}" required>
                                         <small class="text-danger"></small>
                                     </div>
                                     <div class="form-group row">
                                         <label for="" class="txtWhitecolor">Annual Interest</label>
-                                        <input type="number" step="any" id="rate1" class="form-control col inputGroupDiv" name="rate1" placeholder="{{$u->rate_1}}" value="" required>
-                                        <input type="number" step="any" id="rate2" class="form-control col inputGroupDiv" name="rate2" placeholder="{{$u->rate_2}}" value="" required>
-                                        <input type="number" step="any" id="rate3" class="form-control col inputGroupDiv" name="rate3" placeholder="{{$u->rate_3}}" value="" required>
-                                        <input type="number" step="any" id="rate4" class="form-control col inputGroupDiv" name="rate4" placeholder="{{$u->rate_4}}" value="" required>
+                                        <input type="number" step="any" id="rate1" class="form-control col inputGroupDiv" name="rate1" placeholder="" value="{{$u->rate_1}}" required>
+                                        <input type="number" step="any" id="rate2" class="form-control col inputGroupDiv" name="rate2" placeholder="" value="{{$u->rate_2}}" required>
+                                        <input type="number" step="any" id="rate3" class="form-control col inputGroupDiv" name="rate3" placeholder="" value="{{$u->rate_3}}" required>
+                                        <input type="number" step="any" id="rate4" class="form-control col inputGroupDiv" name="rate4" placeholder="" value="{{$u->rate_4}}" required>
                                         <small class="text-danger"></small>
                                     </div>
                                     <hr>
@@ -193,7 +193,6 @@
 {{--            </div>--}}
 {{--        </div>--}}
         {{--Previous locked Saving Setting End--}}
-        <hr>
         {{--Previous locked Saving Setting Div2 Start--}}
 {{--        <div class="row" style="display: block">--}}
 {{--            <div class="col-md-8 offset-md-2">--}}
@@ -249,24 +248,26 @@
                             <p class="col txtWhitecolor" id="" style="text-align: right;">Lot Size</p>
                             <p class="col txtWhitecolor" id="" style="text-align: right;">Action</p>
                         </li>
-                        @foreach($settings as $index => $FinanceSetting)
-                            <li class="row list-group-item d-flex justify-content-between align-items-center">
-                                <p class="col txtWhitecolor" id="currencyName{{$index}}" style="text-align: left;">{{$FinanceSetting->currency->name}}</p>
-                                <p class="col txtWhitecolor" id="selectedRate{{$index}}" style="text-align: left;">{{$FinanceSetting->rate_1}}%</p>
-                                <p style="display: none" id="selectedDuration"></p>
-                                <p class="col btn-group" role="group" aria-label="Basic outlined example" style="width: 10px !important; text-align: center">
-                                    <button type="button" class="btn btn-outline-primary" onclick="rateFun({{$FinanceSetting->rate_1}}, {{ $index}}); rateDuration({{$FinanceSetting->duration_1}})">{{$FinanceSetting->duration_1}}</button>
-                                    <button type="button" class="btn btn-outline-primary" onclick="rateFun({{$FinanceSetting->rate_2}}, {{ $index}}); rateDuration({{$FinanceSetting->duration_2}})">{{$FinanceSetting->duration_2}}</button>
-                                    <button type="button" class="btn btn-outline-primary" onclick="rateFun({{$FinanceSetting->rate_3}}, {{ $index}}); rateDuration({{$FinanceSetting->duration_3}})">{{$FinanceSetting->duration_3}}</button>
-                                    <button type="button" class="btn btn-outline-primary" onclick="rateFun({{$FinanceSetting->rate_4}}, {{ $index}}); rateDuration({{$FinanceSetting->duration_4}})">{{$FinanceSetting->duration_4}}</button>
-                                </p>
-                                <p class="col txtWhitecolor" id="lotSize{{$index}}" style="text-align: right;">{{$FinanceSetting->lot_size}}</p>
-                                <p class="col txtWhitecolor" id="" style="text-align: right;">
-                                    <a style="margin-right: 20px" class="txtHeadingColor" href="{{route('admin-locked-savings-edit', \Crypt::encrypt($FinanceSetting->id))}}"><i class="fas fa-edit"></i></a>
-                                    <a class="txtHeadingColor" href="{{route('admin-locked-savings-delete-action', \Crypt::encrypt($FinanceSetting->id))}}"><i class="fas fa-trash-alt"></i></a>
-                                </p>
-                            </li>
-                        @endforeach
+                        <div id="btnDurationId">
+                            @foreach($settings as $index => $FinanceSetting)
+                                <li class="row list-group-item d-flex justify-content-between align-items-center">
+                                    <p class="col txtWhitecolor" id="currencyName{{$index}}" style="text-align: left;">{{$FinanceSetting->currency->name}}</p>
+                                    <p class="col txtWhitecolor" id="selectedRate{{$index}}" style="text-align: left;">{{$FinanceSetting->rate_1}}%</p>
+                                    <p style="display: none" id="selectedDuration"></p>
+                                    <p class="col btn-group"  role="group" aria-label="Basic outlined example" style="width: 10px !important; text-align: center">
+                                            <button type="button" class="btn btnDuration btn-outline-primary " onclick="rateFun({{$FinanceSetting->rate_1}}, {{ $index}}); rateDuration({{$FinanceSetting->duration_1}})">{{$FinanceSetting->duration_1}}</button>
+                                            <button type="button" class="btn btnDuration btn-outline-primary " onclick="rateFun({{$FinanceSetting->rate_2}}, {{ $index}}); rateDuration({{$FinanceSetting->duration_2}})">{{$FinanceSetting->duration_2}}</button>
+                                            <button type="button" class="btn btnDuration btn-outline-primary" onclick="rateFun({{$FinanceSetting->rate_3}}, {{ $index}}); rateDuration({{$FinanceSetting->duration_3}})">{{$FinanceSetting->duration_3}}</button>
+                                            <button type="button" class="btn btnDuration btn-outline-primary" onclick="rateFun({{$FinanceSetting->rate_4}}, {{ $index}}); rateDuration({{$FinanceSetting->duration_4}})">{{$FinanceSetting->duration_4}}</button>
+                                    </p>
+                                    <p class="col txtWhitecolor" id="lotSize{{$index}}" style="text-align: right;">{{$FinanceSetting->lot_size}}</p>
+                                    <p class="col txtWhitecolor" id="" style="text-align: right;">
+                                        <a style="margin-right: 20px" class="txtHeadingColor" href="{{route('admin-locked-savings-edit', \Crypt::encrypt($FinanceSetting->id))}}"><i class="fas fa-edit"></i></a>
+                                        <a class="txtHeadingColor" href="{{route('admin-locked-savings-delete-action', \Crypt::encrypt($FinanceSetting->id))}}"><i class="fas fa-trash-alt"></i></a>
+                                    </p>
+                                </li>
+                            @endforeach
+                        </div>
                     </ul>
                 </div>
             </div>
@@ -369,5 +370,20 @@
                 // }
             });
         });
+    </script>
+
+    <script>
+        // Add active class to the current button (highlight it)
+        var header = document.getElementById("btnDurationId");
+        var btns = header.getElementsByClassName("btnDuration");
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+                var current = document.getElementsByClassName("active");
+                if (current.length > 0) {
+                    current[0].className = current[0].className.replace(" active", "");
+                }
+                this.className += " active";
+            });
+        }
     </script>
 @endsection

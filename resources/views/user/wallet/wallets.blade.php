@@ -168,7 +168,7 @@
                         </li>
                         @foreach($finances as $finance)
                             <li class="row list-group-item d-flex justify-content-between align-items-center">
-                                <p class="col txtWhitecolor" id="" style="text-align: left;">MAB</p>
+                                <p class="col txtWhitecolor" id="" style="text-align: left;">{{$finance->currency->name}}</p>
                                 <p class="col txtWhitecolor" id="" style="text-align: left;">{{$finance->lot_count}}</p>
                                 <p class="col txtWhitecolor" id="" style="text-align: center;">{{date('d/m/Y', strtotime($finance->value_date))}}</p>
                                 <p class="col txtWhitecolor" id="" style="text-align: right;">{{date('d/m/Y', strtotime($finance->redemption_date))}}</p>

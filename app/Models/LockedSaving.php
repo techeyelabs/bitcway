@@ -17,6 +17,10 @@ class LockedSaving extends Model
     {
         return $this->belongsTo(UserWallet::class);
     }
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
 
 
     /**
