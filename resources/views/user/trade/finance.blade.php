@@ -196,7 +196,7 @@
                     </div>
                     <div class="row col-md-12" style="text-align: right">
                         <span>
-                            <button class="confirm-button btn-outline-warning" >Confirm Transaction</button>
+                            <button class="confirm-button btn-outline-warning" disabled>Confirm Transaction</button>
                         </span>
                     </div>
                 </div>
@@ -235,7 +235,6 @@
 
     <script>
         function rateDuration(val, index) {
-            // console.log(val, index);
             $('#selectedDuration'+ index).html(val);
         }
         function rateFun(value, index) {
@@ -244,13 +243,11 @@
         function interestPerLotFun(interestRate, duration, index) {
             let InterestPerLot = ((interestRate/365)*duration);
             $('#interestPerLot'+ index).html((InterestPerLot).toFixed(4));
-            // console.log(InterestPerLot);
         }
         function changeData(index)
         {
             let availableLot = 0;
             let planId = $('#planId' + index).html();
-            console.log(planId);
             let currencyId = $('#currencyId'+ index).html();
             let currencyName = $('#currencyName'+ index).html();
             let selectedRate = $('#selectedRate'+ index).html();
@@ -297,11 +294,12 @@
 
         function confirmButtonCheck()
         {
-            // if ($('input[class="lot-input"]').val() > 0 && $('input[id="acceptance"]:checked').length > 0 && $('#balance').val()/5 >= $('input[class="lot-input"]').val()){
-            //     $('.confirm-button').attr('disabled', false);
-            // } else {
-            //     $('.confirm-button').attr('disabled', true);
-            // }
+            let availableLot = $('#lotCurrency').html();
+            if ($('input[class="lot-input"]').val() > 0 && $('input[id="acceptance"]:checked').length > 0 && availableLot >= $('input[class="lot-input"]').val()){
+                $('.confirm-button').attr('disabled', false);
+            } else {
+                $('.confirm-button').attr('disabled', true);
+            }
         }
 
         function setTotalInterest(value)

@@ -255,8 +255,8 @@
                                     <p class="col txtWhitecolor" id="selectedRate{{$index}}" style="text-align: left;">{{$FinanceSetting->rate_1}}%</p>
                                     <p style="display: none" id="selectedDuration"></p>
                                     <p class="col btn-group"  role="group" aria-label="Basic outlined example" style="width: 10px !important; text-align: center">
-                                            <button type="button" class="btn btnDuration btn-outline-primary " onclick="rateFun({{$FinanceSetting->rate_1}}, {{ $index}}); rateDuration({{$FinanceSetting->duration_1}})">{{$FinanceSetting->duration_1}}</button>
-                                            <button type="button" class="btn btnDuration btn-outline-primary " onclick="rateFun({{$FinanceSetting->rate_2}}, {{ $index}}); rateDuration({{$FinanceSetting->duration_2}})">{{$FinanceSetting->duration_2}}</button>
+                                            <button type="button" class="btn btnDuration btn-outline-primary" onclick="rateFun({{$FinanceSetting->rate_1}}, {{ $index}}); rateDuration({{$FinanceSetting->duration_1}})">{{$FinanceSetting->duration_1}}</button>
+                                            <button type="button" class="btn btnDuration btn-outline-primary" onclick="rateFun({{$FinanceSetting->rate_2}}, {{ $index}}); rateDuration({{$FinanceSetting->duration_2}})">{{$FinanceSetting->duration_2}}</button>
                                             <button type="button" class="btn btnDuration btn-outline-primary" onclick="rateFun({{$FinanceSetting->rate_3}}, {{ $index}}); rateDuration({{$FinanceSetting->duration_3}})">{{$FinanceSetting->duration_3}}</button>
                                             <button type="button" class="btn btnDuration btn-outline-primary" onclick="rateFun({{$FinanceSetting->rate_4}}, {{ $index}}); rateDuration({{$FinanceSetting->duration_4}})">{{$FinanceSetting->duration_4}}</button>
                                     </p>

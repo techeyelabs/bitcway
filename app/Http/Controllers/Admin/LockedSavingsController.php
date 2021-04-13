@@ -81,7 +81,6 @@ class LockedSavingsController extends Controller
         $id = \Crypt::decrypt($id);
         $data['settings'] = LockedSavingsSetting::orderBy('id', 'desc')->get();
         $user = LockedSavingsSetting::where('id', $id)->with('currency')->orderBy('id', 'desc')->get();
-//        dd($user);
         return view('admin.locked_savings.index', $data)->with('user', $user);
 //        return redirect()->back()->with('user', $user);
 
