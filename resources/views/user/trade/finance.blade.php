@@ -118,17 +118,16 @@
                                 <p class="d-none" id="currencyId{{$index}}">{{$FinanceSetting->currency_id}}</p>
                                 <p class="d-none" id="lotSize{{$index}}">{{$FinanceSetting->lot_size}}</p>
                                 <p class="col btn-group" role="group" aria-label="Basic outlined example" style="width: 10px !important; text-align: center">
-                                    <button type="button" class="btn btn-outline-primary btnDuration" onclick="rateFun({{$FinanceSetting->rate_1}}, {{$index}}); rateDuration({{$FinanceSetting->duration_1}}, {{$index}}); interestPerLotFun({{$FinanceSetting->rate_1}}, {{$FinanceSetting->duration_1}}, {{$index}})">{{$FinanceSetting->duration_1}}</button>
-                                    <button type="button" class="btn btn-outline-primary btnDuration" onclick="rateFun({{$FinanceSetting->rate_2}}, {{$index}}); rateDuration({{$FinanceSetting->duration_2}}, {{$index}}); interestPerLotFun({{$FinanceSetting->rate_2}}, {{$FinanceSetting->duration_2}}, {{$index}})">{{$FinanceSetting->duration_2}}</button>
-                                    <button type="button" class="btn btn-outline-primary btnDuration" onclick="rateFun({{$FinanceSetting->rate_3}}, {{$index}}); rateDuration({{$FinanceSetting->duration_3}}, {{$index}}); interestPerLotFun({{$FinanceSetting->rate_3}}, {{$FinanceSetting->duration_3}}, {{$index}})">{{$FinanceSetting->duration_3}}</button>
-                                    <button type="button" class="btn btn-outline-primary btnDuration" onclick="rateFun({{$FinanceSetting->rate_4}}, {{$index}}); rateDuration({{$FinanceSetting->duration_4}}, {{$index}}); interestPerLotFun({{$FinanceSetting->rate_4}}, {{$FinanceSetting->duration_4}}, {{$index}})">{{$FinanceSetting->duration_4}}</button>
+                                    <button type="button" class="btn btn-outline-primary btnDuration shadow-none" id="durationBtn1{{$index}}" onclick="rateFun({{$FinanceSetting->rate_1}}, {{$index}}); rateDuration({{$FinanceSetting->duration_1}}, {{$index}}); interestPerLotFun({{$FinanceSetting->rate_1}}, {{$FinanceSetting->duration_1}}, {{$index}}); transerButFun({{$index}});">{{$FinanceSetting->duration_1}}</button>
+                                    <button type="button" class="btn btn-outline-primary btnDuration shadow-none" id="durationBtn2{{$index}}" onclick="rateFun({{$FinanceSetting->rate_2}}, {{$index}}); rateDuration({{$FinanceSetting->duration_2}}, {{$index}}); interestPerLotFun({{$FinanceSetting->rate_2}}, {{$FinanceSetting->duration_2}}, {{$index}}); transerButFun({{$index}});">{{$FinanceSetting->duration_2}}</button>
+                                    <button type="button" class="btn btn-outline-primary btnDuration shadow-none" id="durationBtn3{{$index}}" onclick="rateFun({{$FinanceSetting->rate_3}}, {{$index}}); rateDuration({{$FinanceSetting->duration_3}}, {{$index}}); interestPerLotFun({{$FinanceSetting->rate_3}}, {{$FinanceSetting->duration_3}}, {{$index}}); transerButFun({{$index}});">{{$FinanceSetting->duration_3}}</button>
+                                    <button type="button" class="btn btn-outline-primary btnDuration shadow-none" id="durationBtn4{{$index}}" onclick="rateFun({{$FinanceSetting->rate_4}}, {{$index}}); rateDuration({{$FinanceSetting->duration_4}}, {{$index}}); interestPerLotFun({{$FinanceSetting->rate_4}}, {{$FinanceSetting->duration_4}}, {{$index}}); transerButFun({{$index}});">{{$FinanceSetting->duration_4}}</button>
                                 </p>
                                 <p class="col txtWhitecolor" id="interestPerLot{{$index}}" style="text-align: right;">{!! number_format((float)(($FinanceSetting->rate_1/365)*$FinanceSetting->duration_1), 4) !!}</p>
                                 <p class="col txtWhitecolor" id="" style="text-align: right;">
-                                    <span class="btn-outline-warning btn  cursor-pointer"  onclick="changeData({{$index}})">Transfer</span>
+                                    <button class="btn-outline-warning btn cursor-pointer" id="transferBtn{{$index}}"  onclick="changeData({{$index}});" disabled>Transfer</button>
 
-                                    <span style="display: none" id="lotCurrencyAmount{{$index}}">{{isset($dummy_coin_balance[$FinanceSetting->currency_id]) ? $dummy_coin_balance[$FinanceSetting->currency_id]:0}}
-                                    </span>
+                                    <span style="display: none" id="lotCurrencyAmount{{$index}}">{{isset($dummy_coin_balance[$FinanceSetting->currency_id]) ? $dummy_coin_balance[$FinanceSetting->currency_id]:0}}</span>
                                 </p>
                             </li>
                             @endforeach
@@ -154,10 +153,11 @@
                                <input type="number" class="lot-input" name="lot" id="lot" onkeyup="setTotalInterest(this)">
                                <input type="hidden" id="ratePerLot" name="ratePerLot" value="">
                                <input type="hidden" id="plan" name="plan" value="">
-                               <input type="hidden" id="coiId" name="coinId" value="">
+                               <input class="d-none" type="number" id="coiId" name="coinId" value="">
 {{--                               <input type="hidden" id="balance" name="balance" value="">--}}
                            </div>
                            <div class="txtWhitecolor">= <span id="total">0</span>&nbsp;<span id="totalCoinName">Coin</span></div>
+                           <input type="hidden" id="totalCoin" name="totalCoin" value="">
                        </div>
                        <div class="row col-md-6 mb-5 mt-4">
                            <div>
@@ -191,7 +191,7 @@
                     <div class="row col-md-12 txtWhitecolor" style="text-align: right">
                         <span>
                             <input type="checkbox" id="acceptance" name="acceptance" value="confirm" onchange="confirmButtonCheck()">
-                            <label for="vehicle1"> I have read and accepted the terms and conditions of MABCoin</label>
+                            <label for="vehicle1"> I have read and accepted the terms and conditions of <span id="termCoinName">MAB</span> Coin</label>
                         </span>
                     </div>
                     <div class="row col-md-12" style="text-align: right">
@@ -234,6 +234,15 @@
 @section('custom_js')
 
     <script>
+        function transerButFun(index) {
+            $('#transferBtn'+index).prop("disabled",false);
+            for(let a = 0; a <4; a++){
+                if (a == parseInt(index))
+                    continue
+                else
+                    $('#transferBtn'+a).prop("disabled",true);
+            }
+        }
         function rateDuration(val, index) {
             $('#selectedDuration'+ index).html(val);
         }
@@ -255,6 +264,8 @@
             let lotSize = $('#lotSize'+ index).html();
             let lotCoinAmount = $('#lotCurrencyAmount'+ index).html();
             let perLotInterest = $('#interestPerLot' + index).html();
+            let transferButton = $('transferBtn' + index).html();
+
 
             availableLot = Math.floor(lotCoinAmount/lotSize);
 
@@ -264,6 +275,7 @@
             $('#plan').val(planId);
             $('#coiId').val(currencyId);
             $('#redemptionTimeId').val(selectedDuration);
+            $('#termCoinName').html(currencyName);
 
 
             $('.confirmation').show();
@@ -280,6 +292,8 @@
             }else{
                 $('#lotCurrency').html("Invalid Amount");
             }
+
+
             // $('#days').html(duration);
             // $('#ratePerLot').val(interest);
             // $('#plan').val(id);
@@ -313,6 +327,7 @@
             let hiddenLotSize = $('#lotSizeId_hidden').html();
             $('#total').html(hiddenLotSize * value.value);
             $('#totalCoinName').html(currencyName);
+            $('#totalCoin').val(hiddenLotSize * value.value);
 
 
             // let totalinterest = $('#ratePerLot').val() * (value.value);
@@ -343,5 +358,9 @@
                 this.className += " active";
             });
         }
+
+    </script>
+    <script>
+
     </script>
 @endsection

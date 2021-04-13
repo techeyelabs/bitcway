@@ -74,10 +74,15 @@ class TradeController extends Controller
     {
 //        dd($request);
         try {
+
             $date = date('Y-m-d');
-//            $plan = LockedSavingsSetting::where('id', $request->plan)->first();
+            $authUserId = Auth::user()->id;
+            $currency = Currency::where('id', $request->coinId)->first();
+            $UserWallet = UserWallet::where('user_id', $authUserId)->where('currency_id', $currency->id)->first();
+            $UserWalletBalance = UserWallet::select('balance', 'currency_id')->where('user_id', $authUserId)->where('currency_id', $currency->id)->first();
+
             $lockedInvest = new LockedSaving();
-            $lockedInvest->user_id = Auth::user()->id;
+            $lockedInvest->user_id = $authUserId;
             $lockedInvest->plan_id = $request->plan;
             $lockedInvest->lot_count = $request->lot;
             $lockedInvest->value_date = $date;
@@ -85,6 +90,10 @@ class TradeController extends Controller
             $lockedInvest->expected_interest = $request->expected_interest;
             $lockedInvest->currency_id = $request->coinId;
             $lockedInvest->save();
+
+            $UserWallet->balance = $UserWalletBalance->balance - $request->totalCoin;
+            $UserWallet->save();
+
         } catch (Exception $e){
             return route('user-trade-finance');
         }
@@ -106,12 +115,9 @@ class TradeController extends Controller
 
     public function buy(Request $request)
     {
-//        dd($request);
         $currency = Currency::where('name', $request->currency)->first();
         if(!$currency) return response()->json(['status' => false]);
-
         $UserWallet = UserWallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->first();
-
         //For saving Trade data in User Wallet table
         if (!isset($request->leverage)){
             if(!$UserWallet) {
