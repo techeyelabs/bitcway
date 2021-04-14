@@ -44,7 +44,7 @@ class TradeController extends Controller
             }
             $data['currency'] = $currency;
 
-            dd($data);
+            // dd($data);
             return view('user.trade.index', $data);
         }
 
@@ -72,7 +72,7 @@ class TradeController extends Controller
 
     public function insertFinance(Request $request)
     {
-//        dd($request);
+    //    dd($request);
         try {
 
             $date = date('Y-m-d');
@@ -89,6 +89,7 @@ class TradeController extends Controller
             $lockedInvest->redemption_date = date('Y-m-d', strtotime($date . ' + ' . $request->redemptionTime . ' days'));
             $lockedInvest->expected_interest = $request->expected_interest;
             $lockedInvest->currency_id = $request->coinId;
+            $lockedInvest->lot_size = $request->coinLotSize;
             $lockedInvest->save();
 
             $UserWallet->balance = $UserWalletBalance->balance - $request->totalCoin;

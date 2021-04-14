@@ -164,6 +164,7 @@
                                <span class="txtWhitecolor" style="float: left">Lot Size</span>
                                <span class="txtWhitecolor" id="lotSizeId" style="float: right">5 MAB</span>
                                <span class="d-none" id="lotSizeId_hidden"></span>
+                               <input class="d-none" type="number" id="coinLotSize" name="coinLotSize" value="">
                            </div>
                            <div>
                                <span class="txtWhitecolor" style="float: left">Interest Per Lot</span>
@@ -276,6 +277,7 @@
             $('#coiId').val(currencyId);
             $('#redemptionTimeId').val(selectedDuration);
             $('#termCoinName').html(currencyName);
+            $('#coinLotSize').val(lotSize);
 
 
             $('.confirmation').show();

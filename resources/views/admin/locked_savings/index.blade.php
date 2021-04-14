@@ -324,7 +324,6 @@
     </script>
     <script>
         function rateDuration(val) {
-            // console.log(val);
             $('#selectedDuration').html(val);
         }
         function rateFun(value, index) {

@@ -35,7 +35,7 @@
                             <h4 class="txtHeadingColor text-left mb-4">00000000.00 <span style="font-size: 10px">USD</span></h4>
 
                             <abbr title="Your Total Wallet Balance"  class="txtHeadingColor text-left initialism">Total Wallet Balance</abbr><br>
-                            <h4 class="txtHeadingColor text-left" style="font-size: 18px">00000000.00 <span style="font-size: 10px">USD</span></h4>
+                            <h4 class="txtHeadingColor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                     <div class="container-fluid">
                         <div class="text-left">
                             <abbr title="Derivative Wallet"  class="txtHeadingColor text-left initialism">Derivative Wallet</abbr><br>
-                            <h4 class="txtHeadingColor text-left mb-3" id="totalAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
+                            <h4 class="txtHeadingColor text-left mb-3" id="totalDerivativeAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
                         </div>
                         <button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
                                 data-bs-target="#derivativeModal" style="width: 100px;"
@@ -153,7 +153,7 @@
                     <div class="container-fluid" >
                         <div class="text-left mb-3">
                             <abbr title="Finance Wallet"  class="txtHeadingColor text-left initialism">Finance Wallet</abbr><br>
-                            <h4 class="txtHeadingColor text-left mb-3" id="totalAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
+                            <h4 class="txtHeadingColor text-left mb-3" id="totalFinanceAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
                         </div>
                     </div>
                 </div>
@@ -166,15 +166,24 @@
                             <p class="col txtWhitecolor" id="" style="text-align: right;">Redemption Date</p>
                             <p class="col txtWhitecolor" id="" style="text-align: right;">Expected Interest</p>
                         </li>
-                        @foreach($finances as $finance)
+                        <?php
+                        $k = 0;
+                        foreach($finances as $index=>$finance){
+                        $k++;
+                        ?>
                             <li class="row list-group-item d-flex justify-content-between align-items-center">
-                                <p class="col txtWhitecolor" id="" style="text-align: left;">{{$finance->currency->name}}</p>
-                                <p class="col txtWhitecolor" id="" style="text-align: left;">{{$finance->lot_count}}</p>
-                                <p class="col txtWhitecolor" id="" style="text-align: center;">{{date('d/m/Y', strtotime($finance->value_date))}}</p>
-                                <p class="col txtWhitecolor" id="" style="text-align: right;">{{date('d/m/Y', strtotime($finance->redemption_date))}}</p>
-                                <p class="col txtWhitecolor" id="" style="text-align: right;">{{$finance->expected_interest}}</p>
+                                <p class="col txtWhitecolor" id="currencyName{{$k}}" style="text-align: left;">{{$finance->currency->name}}</p>
+                                <p class="col txtWhitecolor" id="lot{{$k}}" style="text-align: left;">{{$finance->lot_count}}</p>
+                                <p class="col txtWhitecolor" id="valueDate{{$k}}" style="text-align: center;">{{date('d/m/Y', strtotime($finance->value_date))}}</p>
+                                <p class="col txtWhitecolor" id="redeamDate{{$k}}" style="text-align: right;">{{date('d/m/Y', strtotime($finance->redemption_date))}}</p>
+                                <p class="col txtWhitecolor" id="expectedInterest{{$k}}" style="text-align: right;">{{$finance->expected_interest}}</p>
+                                <p class="d-none" id="lotSize{{$k}}" style="text-align: left;">{{$finance->lot_size}}</p>
+                                <p class="" id="coinWithInterest{{$k}}" style="text-align: left;"></p>
                             </li>
-                        @endforeach
+                        <?php
+                            }
+                        ?>
+                        <p style="display: none;" id="myCoinIndex3">{{$k}}</p>
                     </ul>
                 </div>
         </div>
@@ -220,9 +229,10 @@
         const socket = io('http://192.144.82.234:3000/');
         let loaded = false;
         socket.on('trackers', (trackers) => {
-            console.log(trackers);
+            // console.log(trackers);
             // Home.trackers = trackers.trackers;
             let totalValue = 0;
+            let totalDerivativeValue = 0
             let indexNumber = $('#myCoinIndex').html();
             for (let i = 0; i < indexNumber; i++) {
                 let currencyName = $('#MyCoinCurrencyName' + i).html();
@@ -302,6 +312,11 @@
             }
 
             for (let j = 1; j <= indexNumber2; j++) {
+                    totalDerivativeValue += parseFloat($('#CoinpriceintoMycoin2' + j).text());
+                    $('#totalDerivativeAmount').html((totalDerivativeValue).toFixed(4));
+                }
+
+            for (let j = 1; j <= indexNumber2; j++) {
                 var derivativeUnrealizedpnlid = document.getElementById('derivativeUnrealizedPrice'+ j);
                 let derivativeEntryPrice = $('#derivativeEntryPrice' + j).html();
                 let derivativeMarkPrice = $('#CoinpriceintoMycoin2' + j).html();
@@ -341,6 +356,34 @@
                 });
 
                 // console.log("Name:",derivativeCurrencyName," Size:", derivativeCurrencySize, " MarkPrice:", derivativeMarkPrice);
+            }
+
+            let totalFinanceValue = 0;
+            let indexNumber3 = $('#myCoinIndex3').html();
+        
+            for (let k = 1; k <= indexNumber3; k++) {
+                let currencyName = $('#currencyName' + k).html();
+                let coinLot = parseFloat($('#lot' + k).html());
+                let coinLotSize = parseFloat($('#lotSize'+ k).html());
+                let coinExpectedInterest = parseFloat($('#expectedInterest' + k).html());
+                let totalCoinValue  = ((coinLot*coinLotSize) + coinExpectedInterest);
+
+                console.log(coinLot, coinLotSize, coinExpectedInterest);
+               
+                // let totalFinanceWallet = (coinLot*coinLotSize) + coinExpectedInterest;
+               
+                let full_data = trackers.trackers;
+                full_data.forEach(async function (item) {
+                    if (item[0] === 't' + currencyName + 'USD') {
+                       $('#coinWithInterest' + k).html((totalCoinValue * item[1]).toFixed(4));
+                    }
+                });
+                for (let k = 0; k < indexNumber3; k++) {
+                    totalFinanceValue += parseFloat($('#coinWithInterest' + k).text());
+                    console.log(totalFinanceValue);
+                    $('#totalFinanceAmount').html((totalFinanceValue).toFixed(4));
+                }
+              
             }
             if (loaded == false) {
                 setInterval(function () {
