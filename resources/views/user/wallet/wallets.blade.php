@@ -255,18 +255,18 @@
                 $('#totalAmount').html((totalValue).toFixed(2));
             }
 
-            for (let i = 0; i < indexNumber; i++) {
-               var tradeUnrealizedpnlid = document.getElementById('unrealizedpnl'+ i);
-               let tradeEntryPrice = $('#MyTotalCoinAmount' + i).html();
-               let tradeMarkPrice = $('#CoinpriceIntoMycoin' + i).html();
+            for (let u = 0; u < indexNumber; u++) {
+               var tradeUnrealizedpnlid = document.getElementById('unrealizedpnl'+ u);
+               let tradeEntryPrice = parseFloat($('#MyTotalCoinAmount' + u).html());
+               let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + u).html());
                let tradeUnrealizedpnl = tradeMarkPrice-tradeEntryPrice;
                // console.log(tradeUnrealizedpnl);
 
                 if (tradeUnrealizedpnl < 0){
-                    $('#unrealizedpnl'+ i ).html((tradeUnrealizedpnl).toFixed(6));
+                    parseFloat($('#unrealizedpnl'+ u ).html((tradeUnrealizedpnl).toFixed(6)));
                     tradeUnrealizedpnlid.style.color = 'red'
                 }else{
-                    $('#unrealizedpnl'+ i ).html((tradeUnrealizedpnl).toFixed(6));
+                    parseFloat($('#unrealizedpnl'+ u ).html((tradeUnrealizedpnl).toFixed(6)));
                     tradeUnrealizedpnlid.style.color = 'yellow'
                 }
             }
