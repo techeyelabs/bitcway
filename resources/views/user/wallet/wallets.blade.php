@@ -32,7 +32,7 @@
                     <div class="container-fluid" >
                         <div class="row  text-left " style="margin-left: -15px;">
                            <abbr title="Your Total Margin Balance"  class="txtHeadingColor text-left initialism">Total Margin Balance</abbr><br>
-                            <h4 class="txtHeadingColor text-left mb-4">00000000.00 <span style="font-size: 10px">USD</span></h4>
+                            <h4 class="txtHeadingColor text-left mb-4" id="totalMArginBalanceId">00000000.00 <span style="font-size: 10px">USD</span></h4>
 
                             <abbr title="Your Total Wallet Balance"  class="txtHeadingColor text-left initialism">Total Wallet Balance</abbr><br>
                             <h4 class="txtHeadingColor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
@@ -178,7 +178,7 @@
                                 <p class="col txtWhitecolor" id="redeamDate{{$k}}" style="text-align: right;">{{date('d/m/Y', strtotime($finance->redemption_date))}}</p>
                                 <p class="col txtWhitecolor" id="expectedInterest{{$k}}" style="text-align: right;">{{$finance->expected_interest}}</p>
                                 <p class="d-none" id="lotSize{{$k}}" style="text-align: left;">{{$finance->lot_size}}</p>
-                                <p class="" id="coinWithInterest{{$k}}" style="text-align: left;"></p>
+                                <p class="d-none" id="coinWithInterest{{$k}}" style="text-align: left;"></p>
                             </li>
                         <?php
                             }
@@ -390,6 +390,12 @@
                 }, 1000);
                 loaded = true;
             }
+
+            let tradeMargin = parseFloat($('#').html());
+            let derivativeMargin = parseFloat($('#').html()); 
+            let financeMargin = parseFloat($('#').html());
+            totalMargin = tradeMargin + derivativeMargin + financeMargin;
+            $('#totalMArginBalanceId').html(totalMargin);
         })
     </script>
 
