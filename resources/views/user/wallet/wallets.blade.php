@@ -368,7 +368,7 @@
                 let coinExpectedInterest = parseFloat($('#expectedInterest' + k).html());
                 let totalCoinValue  = ((coinLot*coinLotSize) + coinExpectedInterest);
 
-                console.log(coinLot, coinLotSize, coinExpectedInterest);
+                // console.log(coinLot, coinLotSize, coinExpectedInterest);
                
                 // let totalFinanceWallet = (coinLot*coinLotSize) + coinExpectedInterest;
                
@@ -378,9 +378,8 @@
                        $('#coinWithInterest' + k).html((totalCoinValue * item[1]).toFixed(4));
                     }
                 });
-                for (let k = 0; k < indexNumber3; k++) {
-                    totalFinanceValue += parseFloat($('#coinWithInterest' + k).text());
-                    console.log(totalFinanceValue);
+                for (let a = 1; a <= indexNumber3; a++) {
+                    totalFinanceValue += parseFloat($('#coinWithInterest' + a).text());
                     $('#totalFinanceAmount').html((totalFinanceValue).toFixed(4));
                 }
               
@@ -391,10 +390,11 @@
                 loaded = true;
             }
 
-            let tradeMargin = parseFloat($('#').html());
-            let derivativeMargin = parseFloat($('#').html()); 
-            let financeMargin = parseFloat($('#').html());
-            totalMargin = tradeMargin + derivativeMargin + financeMargin;
+            let tradeMargin = parseFloat($('#totalAmount').html());
+            let derivativeMargin = parseFloat($('#totalDerivativeAmount').html()); 
+            let financeMargin = parseFloat($('#totalFinanceAmount').html());
+            totalMargin = parseFloat(tradeMargin + derivativeMargin + financeMargin);
+            console.log(totalMargin);
             $('#totalMArginBalanceId').html(totalMargin);
         })
     </script>
