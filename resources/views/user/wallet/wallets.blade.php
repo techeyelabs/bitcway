@@ -393,7 +393,7 @@
             let tradeMargin = parseFloat($('#totalAmount').html());
             let derivativeMargin = parseFloat($('#totalDerivativeAmount').html()); 
             let financeMargin = parseFloat($('#totalFinanceAmount').html());
-            totalMargin = parseFloat(tradeMargin + derivativeMargin + financeMargin);
+            totalMargin = parseFloat(tradeMargin + derivativeMargin + financeMargin);   
             parseFloat($('#totalMArginBalanceId').html(totalMargin));
         })
     </script>
