@@ -376,7 +376,7 @@
                         parseFloat($('#coinWithInterest' + k).html((totalCoinValue * item[1]).toFixed(5)));
                     }
                 });
-                for (let a = 1; a <= indexNumber3; a++) {git pull
+                for (let a = 1; a <= indexNumber3; a++) {
                     totalFinanceValue += parseFloat($('#coinWithInterest' + a).text());
                     parseFloat($('#totalFinanceAmount').html((totalFinanceValue).toFixed(5)));
                 }
