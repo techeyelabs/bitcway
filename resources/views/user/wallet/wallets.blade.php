@@ -32,7 +32,7 @@
                     <div class="container-fluid" >
                         <div class="row  text-left " style="margin-left: -15px;">
                            <abbr title="Your Total Margin Balance"  class="txtHeadingColor text-left initialism">Total Margin Balance</abbr><br>
-                            <h4 class="txtHeadingColor text-left mb-4" id="totalMArginBalanceId">00000000.00 <span style="font-size: 10px">USD</span></h4>
+                            <h4 class="txtHeadingColor text-left mb-4" ><span id="totalMArginBalanceId">00.000000</span><span style="font-size: 10px">USD</span></h4>
 
                             <abbr title="Your Total Wallet Balance"  class="txtHeadingColor text-left initialism">Total Wallet Balance</abbr><br>
                             <h4 class="txtHeadingColor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
@@ -245,38 +245,37 @@
                 let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + currencyName + 'USD') {
-                        parseFloat($('#CoinpriceIntoMycoin' + i).html((tradeCurrencySize * item[1])));
+                        parseFloat($('#CoinpriceIntoMycoin' + i).html((tradeCurrencySize * item[1]).toFixed(5)));
                     }
                 });
             }
 
-            for (let i = 0; i < indexNumber; i++) {
-                totalValue += parseFloat($('#CoinpriceIntoMycoin' + i).text());
-                parseFloat($('#totalAmount').html((totalValue).toFixed(2)));
+            for (let t = 0; t < indexNumber; t++) {
+                totalValue += parseFloat($('#CoinpriceIntoMycoin' + t).text());
+                parseFloat($('#totalAmount').html((totalValue).toFixed(5)));
             }
 
-            for (let u = 0; u < indexNumber; u++) {
-               var tradeUnrealizedpnlid = document.getElementById('unrealizedpnl'+ u);
-               let tradeEntryPrice = parseFloat($('#MyTotalCoinAmount' + u).html());
-               let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + u).html());
-               let tradeUnrealizedpnl = parseFloat(tradeMarkPrice-tradeEntryPrice);
-               // console.log(tradeUnrealizedpnl);
+            for (let tupnl = 0; tupnl < indexNumber; tupnl++) {
+               var tradeUnrealizedpnlid = document.getElementById('unrealizedpnl'+ tupnl);
+               let tradeEntryPrice = parseFloat($('#MyTotalCoinAmount' + tupnl).text().replace(',', ''));
+               let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + tupnl).html());
+               let tradeUnrealizedpnl = tradeMarkPrice - tradeEntryPrice;
 
                 if (tradeUnrealizedpnl < 0){
-                    parseFloat($('#unrealizedpnl'+ u ).html((tradeUnrealizedpnl).toFixed(6)));
+                    parseFloat($('#unrealizedpnl'+ tupnl).html((tradeUnrealizedpnl).toFixed(5)));
                     tradeUnrealizedpnlid.style.color = 'red'
                 }else{
-                    parseFloat($('#unrealizedpnl'+ u ).html((tradeUnrealizedpnl).toFixed(6)));
+                    parseFloat($('#unrealizedpnl'+ tupnl).html((tradeUnrealizedpnl).toFixed(5)));
                     tradeUnrealizedpnlid.style.color = 'yellow'
                 }
             }
-            for (let i = 0; i < indexNumber; i++) {
-                let currencyName = $('#MyCoinCurrencyName' + i).html();
-                let currencyAmount = parseFloat($('#MyTotalCoinAmount' + i).html());
-                let tradeCurrencySize = parseFloat($('#MyTotalCoinSize' + i).html());
-                let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + i).html());
+            for (let s = 0; s < indexNumber; s++) {
+                let currencyName = $('#MyCoinCurrencyName' + s).html();
+                let currencyAmount = parseFloat($('#MyTotalCoinAmount' + s).html());
+                let tradeCurrencySize = parseFloat($('#MyTotalCoinSize' + s).html());
+                let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + s).html());
 
-                $( "#assetTradeSell" + i ).click(function() {
+                $( "#assetTradeSell" + s ).click(function() {
                     axios.post('{{route("user-trade-sell")}}',{
                         currency: currencyName,
                         sellAmount: tradeCurrencySize,
@@ -306,35 +305,35 @@
                 let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + currencyName + 'USD') {
-                        parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(2)));
+                        parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
                     }
                 });
             }
 
-            for (let j = 1; j <= indexNumber2; j++) {
-                    totalDerivativeValue += parseFloat($('#CoinpriceintoMycoin2' + j).text());
-                    parseFloat($('#totalDerivativeAmount').html((totalDerivativeValue).toFixed(4)));
+            for (let dv = 1; dv <= indexNumber2; dv++) {
+                    totalDerivativeValue += parseFloat($('#CoinpriceintoMycoin2' + dv).text());
+                    parseFloat($('#totalDerivativeAmount').html((totalDerivativeValue).toFixed(5)));
                 }
 
-            for (let j = 1; j <= indexNumber2; j++) {
-                var derivativeUnrealizedpnlid = document.getElementById('derivativeUnrealizedPrice'+ j);
-                let derivativeEntryPrice = parseFloat($('#derivativeEntryPrice' + j).html());
-                let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + j).html());
+            for (let dupnl = 1; dupnl <= indexNumber2; dupnl++) {
+                var derivativeUnrealizedpnlid = document.getElementById('derivativeUnrealizedPrice'+ dupnl);
+                let derivativeEntryPrice = parseFloat($('#derivativeEntryPrice' + dupnl).html().replace(',',''));
+                let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + dupnl).html());
                 let derivativeUnrealizedpnl = parseFloat(derivativeMarkPrice-derivativeEntryPrice);
                 if (derivativeUnrealizedpnl < 0){
-                    parseFloat($('#derivativeUnrealizedPrice'+ j ).html((derivativeUnrealizedpnl).toFixed(6)));
+                    parseFloat($('#derivativeUnrealizedPrice'+ dupnl ).html((derivativeUnrealizedpnl).toFixed(5)));
                     derivativeUnrealizedpnlid.style.color = 'red'
                 }else{
-                    parseFloat($('#derivativeUnrealizedPrice'+ j ).html((derivativeUnrealizedpnl).toFixed(6)));
+                    parseFloat($('#derivativeUnrealizedPrice'+ dupnl ).html((derivativeUnrealizedpnl).toFixed(5)));
                     derivativeUnrealizedpnlid.style.color = 'yellow'
                 }
             }
-            for (let j = 1; j <= indexNumber2; j++) {
-                let derivativeCurrencyName = $('#MyCoinCurrencyName2' + j).html();
-                let derivativeCurrencySize = parseFloat($('#MyTotalCoinAmount2' + j).html());
-                let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + j).html());
+            for (let ds = 1; ds <= indexNumber2; ds++) {
+                let derivativeCurrencyName = $('#MyCoinCurrencyName2' + ds).html();
+                let derivativeCurrencySize = parseFloat($('#MyTotalCoinAmount2' + ds).html());
+                let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + ds).html());
 
-                $( "#assetDerivativeSell" + j ).click(function() {
+                $( "#assetDerivativeSell" + ds ).click(function() {
                     // console.log("in");
                     axios.post('{{route("user-trade-sell")}}',{
                         currency: derivativeCurrencyName,
@@ -370,17 +369,16 @@
 
                 // console.log(coinLot, coinLotSize, coinExpectedInterest);
                
-                // let totalFinanceWallet = (coinLot*coinLotSize) + coinExpectedInterest;
                
                 let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + currencyName + 'USD') {
-                        parseFloat($('#coinWithInterest' + k).html((totalCoinValue * item[1]).toFixed(4)));
+                        parseFloat($('#coinWithInterest' + k).html((totalCoinValue * item[1]).toFixed(5)));
                     }
                 });
                 for (let a = 1; a <= indexNumber3; a++) {git pull
                     totalFinanceValue += parseFloat($('#coinWithInterest' + a).text());
-                    parseFloat($('#totalFinanceAmount').html((totalFinanceValue).toFixed(4)));
+                    parseFloat($('#totalFinanceAmount').html((totalFinanceValue).toFixed(5)));
                 }
               
             }
@@ -393,8 +391,13 @@
             let tradeMargin = parseFloat($('#totalAmount').html());
             let derivativeMargin = parseFloat($('#totalDerivativeAmount').html()); 
             let financeMargin = parseFloat($('#totalFinanceAmount').html());
-            totalMargin = parseFloat(tradeMargin + derivativeMargin + financeMargin);   
-            parseFloat($('#totalMArginBalanceId').html(totalMargin));
+            totalMargin = parseFloat(tradeMargin + derivativeMargin + financeMargin);
+            if (isNaN(totalMargin)) {
+                $('#totalMArginBalanceId').html("00.000000");
+            }
+            else{
+                parseFloat($('#totalMArginBalanceId').html((totalMargin).toFixed(5)));
+            }
         })
     </script>
 
