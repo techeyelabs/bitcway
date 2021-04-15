@@ -342,9 +342,11 @@
     <script>
         // var dumCoin = ["tOMGC:USD", 3.00, 3.01111, 3.411, 311.1100000, -0.0999, -0.000222, 301.00111, 115.88027091, 372.28, 356];
         const socket = io('http://192.144.82.234:3000/');
+        // const socket = io('http://192.168.0.106:3000/');
         // showLoader('Loading...');
         let loaded = false;
         socket.on('trackers', (trackers) => {
+            console.log(trackers);
             Home.trackers = trackers.trackers;
             // Home.trackers.push(dumCoin);
             let coinData = Home.trackers;
