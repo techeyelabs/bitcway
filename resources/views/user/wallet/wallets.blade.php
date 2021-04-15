@@ -255,18 +255,17 @@
                 parseFloat($('#totalAmount').html((totalValue).toFixed(5)));
             }
 
-            for (let u = 0; u < indexNumber; u++) {
-               var tradeUnrealizedpnlid = document.getElementById('unrealizedpnl'+ u);
-               let tradeEntryPrice = parseFloat($('#MyTotalCoinAmount' + u).html());
-               let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + u).html());
-               let tradeUnrealizedpnl = parseFloat(tradeMarkPrice-tradeEntryPrice);
-               // console.log(tradeUnrealizedpnl);
+            for (let tupnl = 0; tupnl < indexNumber; tupnl++) {
+               var tradeUnrealizedpnlid = document.getElementById('unrealizedpnl'+ tupnl);
+               let tradeEntryPrice = parseFloat($('#MyTotalCoinAmount' + tupnl).text().replace(',', ''));
+               let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + tupnl).html());
+               let tradeUnrealizedpnl = tradeMarkPrice - tradeEntryPrice;
 
                 if (tradeUnrealizedpnl < 0){
-                    parseFloat($('#unrealizedpnl'+ u ).html((tradeUnrealizedpnl).toFixed(5)));
+                    parseFloat($('#unrealizedpnl'+ tupnl).html((tradeUnrealizedpnl).toFixed(5)));
                     tradeUnrealizedpnlid.style.color = 'red'
                 }else{
-                    parseFloat($('#unrealizedpnl'+ u ).html((tradeUnrealizedpnl).toFixed(5)));
+                    parseFloat($('#unrealizedpnl'+ tupnl).html((tradeUnrealizedpnl).toFixed(5)));
                     tradeUnrealizedpnlid.style.color = 'yellow'
                 }
             }
@@ -318,7 +317,7 @@
 
             for (let dupnl = 1; dupnl <= indexNumber2; dupnl++) {
                 var derivativeUnrealizedpnlid = document.getElementById('derivativeUnrealizedPrice'+ dupnl);
-                let derivativeEntryPrice = parseFloat($('#derivativeEntryPrice' + dupnl).html());
+                let derivativeEntryPrice = parseFloat($('#derivativeEntryPrice' + dupnl).html().replace(',',''));
                 let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + dupnl).html());
                 let derivativeUnrealizedpnl = parseFloat(derivativeMarkPrice-derivativeEntryPrice);
                 if (derivativeUnrealizedpnl < 0){
