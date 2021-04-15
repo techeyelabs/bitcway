@@ -358,7 +358,7 @@
                 // console.log("Name:",derivativeCurrencyName," Size:", derivativeCurrencySize, " MarkPrice:", derivativeMarkPrice);
             }
 
-            let totalFinanceValue = 0;
+            let totalFinanceValue = 0.00;
             let indexNumber3 = $('#myCoinIndex3').html();
         
             for (let k = 1; k <= indexNumber3; k++) {
@@ -378,9 +378,9 @@
                        $('#coinWithInterest' + k).html((totalCoinValue * item[1]).toFixed(4));
                     }
                 });
-                for (let k = 0; k < indexNumber3; k++) {
-                    totalFinanceValue += parseFloat($('#coinWithInterest' + k).text());
-                    console.log(totalFinanceValue);
+                for (let a = 0; a < indexNumber3; a++) {
+                    console.log(parseFloat($('#coinWithInterest' + a).text()));
+                    totalFinanceValue += parseFloat($('#coinWithInterest' + a).text());
                     $('#totalFinanceAmount').html((totalFinanceValue).toFixed(4));
                 }
               
