@@ -121,21 +121,21 @@
                         <?php
                         $j = 0;
                         foreach($transactionHistory as $index =>$item ){
-                        if(($item->leverage) >= 1 ){
-                        $j++;
-                        ?>
-                        {{--{!! number_format((double)($item->equivalent_amount / $item->leverage),5) !!}--}}
-                        <li class="row list-group-item d-flex justify-content-between align-items-center">
-                            <p class="col txtWhitecolor" id="MyCoinCurrencyName2{{$j}}" style="text-align: left;">{{$item->currencyName->name}}</p>
-                            <p class="col txtWhitecolor" id="MyTotalCoinAmount2{{$j}}" style="text-align: left;">{!! number_format((double)($item->amount), 5) !!}</p>
-                            <p class="col txtWhitecolor" id="derivativeEntryPrice{{$j}}" style="text-align: left;">{{($item->equivalent_amount)}}</p>
-                            <p class="col txtWhitecolor" id="CoinpriceintoMycoin2{{$j}}" style="text-align: center;">00.000000</p>
-                            <p class="col " id="derivativeUnrealizedPrice{{$j}}" style="text-align: right;color:white;">00.000000</p>
-                            <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: right; color:white;">{{$item->leverage}}</p>
-                            <p class="col txtHeadingColor" id="assetDerivativeSell{{$j}}" style="text-align: right;cursor: pointer">Trade</p>
-                        </li>
-                        <?php
-                        }
+                            if(($item->leverage) >= 1 ){
+                                $j++;
+                            ?>
+                            {{--{!! number_format((double)($item->equivalent_amount / $item->leverage),5) !!}--}}
+                            <li class="row list-group-item d-flex justify-content-between align-items-center">
+                                <p class="col txtWhitecolor" id="MyCoinCurrencyName2{{$j}}" style="text-align: left;">{{$item->currencyName->name}}</p>
+                                <p class="col txtWhitecolor" id="MyTotalCoinAmount2{{$j}}" style="text-align: left;">{!! number_format((double)($item->amount), 5) !!}</p>
+                                <p class="col txtWhitecolor" id="derivativeEntryPrice{{$j}}" style="text-align: left;">{{($item->equivalent_amount)}}</p>
+                                <p class="col txtWhitecolor" id="CoinpriceintoMycoin2{{$j}}" style="text-align: center;">00.000000</p>
+                                <p class="col " id="derivativeUnrealizedPrice{{$j}}" style="text-align: right;color:white;">00.000000</p>
+                                <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: right; color:white;">{{$item->leverage}}</p>
+                                <p class="col txtHeadingColor" id="assetDerivativeSell{{$j}}" style="text-align: right;cursor: pointer">Trade</p>
+                            </li>
+                            <?php
+                            }
                         }
 
                         ?>
@@ -169,7 +169,7 @@
                         <?php
                         $k = 0;
                         foreach($finances as $index=>$finance){
-                        $k++;
+                            $k++;
                         ?>
                             <li class="row list-group-item d-flex justify-content-between align-items-center">
                                 <p class="col txtWhitecolor" id="currencyName{{$k}}" style="text-align: left;">{{$finance->currency->name}}</p>
@@ -378,7 +378,7 @@
                         parseFloat($('#coinWithInterest' + k).html((totalCoinValue * item[1]).toFixed(4)));
                     }
                 });
-                for (let a = 1; a <= indexNumber3; a++) {
+                for (let a = 1; a <= indexNumber3; a++) {git pull
                     totalFinanceValue += parseFloat($('#coinWithInterest' + a).text());
                     parseFloat($('#totalFinanceAmount').html((totalFinanceValue).toFixed(4)));
                 }
