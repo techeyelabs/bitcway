@@ -664,7 +664,9 @@
                     axios.post('{{route("user-trade-buy")}}', {
                         currency: that.currency,
                         buyAmount: that.amount,
-                        calcBuyAmount: that.calcAmount
+                        calcBuyAmount: that.calcAmount,
+                        derivativeUserMoney: 0,
+                        derivativeLoan: 0
 
                     })
                     .then(function (response) {
@@ -716,7 +718,8 @@
                         currency: that.currency,
                         buyAmount: that.amount,
                         calcBuyAmount: that.calcAmount,
-                        leverage: $("#sliderRange").val()
+                        leverage: $("#sliderRange").val(),
+                        derivativeUserMoney: that.derivativeRange
                     })
                         .then(function (response) {
                             if(response.data.status){

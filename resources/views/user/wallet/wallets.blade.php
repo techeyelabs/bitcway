@@ -129,7 +129,9 @@
                                 <p class="col txtWhitecolor" id="MyCoinCurrencyName2{{$j}}" style="text-align: left;">{{$item->currencyName->name}}</p>
                                 <p class="col txtWhitecolor" id="MyTotalCoinAmount2{{$j}}" style="text-align: left;">{!! number_format((double)($item->amount), 5) !!}</p>
                                 <p class="col txtWhitecolor" id="derivativeEntryPrice{{$j}}" style="text-align: left;">{{($item->equivalent_amount)}}</p>
+                                <p class="d-none" id="derivativeLoan{{$j}}" >{{($item->derivativeLoan)}}</p>
                                 <p class="col txtWhitecolor" id="CoinpriceintoMycoin2{{$j}}" style="text-align: center;">00.000000</p>
+                                <p class="d-none" id="derivativeAmountWithPNL{{$j}}">00.000000</p>
                                 <p class="col " id="derivativeUnrealizedPrice{{$j}}" style="text-align: right;color:white;">00.000000</p>
                                 <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: right; color:white;">{{$item->leverage}}</p>
                                 <p class="col txtHeadingColor" id="assetDerivativeSell{{$j}}" style="text-align: right;cursor: pointer">Trade</p>
@@ -311,9 +313,17 @@
             }
 
             for (let dv = 1; dv <= indexNumber2; dv++) {
-                    totalDerivativeValue += parseFloat($('#CoinpriceintoMycoin2' + dv).text());
+                    totalDerivativeValue += parseFloat($('#derivativeAmountWithPNL' + dv).text());
                     parseFloat($('#totalDerivativeAmount').html((totalDerivativeValue).toFixed(5)));
-                }
+            }
+            for (let dbPNL = 1; dbPNL<=indexNumber2; dbPNL++){
+                let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + dbPNL).html().replace(',',''));
+                let derivativeLoan = parseFloat($('#derivativeLoan' + dbPNL).html().replace(',',''));
+                derivativePNL = parseFloat(derivativeMarkPrice - derivativeLoan);
+                parseFloat($('#derivativeAmountWithPNL' + dbPNL).html(derivativePNL));
+
+
+            }
 
             for (let dupnl = 1; dupnl <= indexNumber2; dupnl++) {
                 var derivativeUnrealizedpnlid = document.getElementById('derivativeUnrealizedPrice'+ dupnl);
@@ -377,8 +387,15 @@
                     }
                 });
                 for (let a = 1; a <= indexNumber3; a++) {
-                    totalFinanceValue += parseFloat($('#coinWithInterest' + a).text());
+                    totalFinanceValue += parseFloat($('#coinWithInterest' + a).html());
+                    console.log(totalFinanceValue);
+                    if (isNaN(totalFinanceValue)){
+                        console.log("if");
+                    parseFloat($('#totalFinanceAmount').html("00.00000"));
+                    }else{
+                        console.log("Else");
                     parseFloat($('#totalFinanceAmount').html((totalFinanceValue).toFixed(5)));
+                    }
                 }
               
             }
@@ -389,11 +406,11 @@
             }
 
             let tradeMargin = parseFloat($('#totalAmount').html());
-            let derivativeMargin = parseFloat($('#totalDerivativeAmount').html()); 
+            let derivativeMargin = parseFloat($('#totalDerivativeAmount').html());
             let financeMargin = parseFloat($('#totalFinanceAmount').html());
             totalMargin = parseFloat(tradeMargin + derivativeMargin + financeMargin);
             if (isNaN(totalMargin)) {
-                $('#totalMArginBalanceId').html("00.000000");
+                parseFloat($('#totalMArginBalanceId').html("00.000000"));
             }
             else{
                 parseFloat($('#totalMArginBalanceId').html((totalMargin).toFixed(5)));

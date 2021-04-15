@@ -144,11 +144,17 @@ class TradeController extends Controller
             Auth::user()->balance = Auth::user()->balance - $request->calcBuyAmount;
         }
         Auth::user()->save();
-
+//        derivativeLoan
         try{
             $TransactionHistory= new TransactionHistory();
             $TransactionHistory->amount = $request->buyAmount;
             $TransactionHistory->equivalent_amount = $request->calcBuyAmount;
+            $TransactionHistory->derivativeUserMoney = $request->derivativeUserMoney;
+            if ($request->derivativeLoan == 0){
+                $TransactionHistory->derivativeLoan = 0;
+            }else{
+                $TransactionHistory->derivativeLoan = $request->calcBuyAmount - $request->derivativeUserMoney;
+            }
             $TransactionHistory->type = 1;
             $TransactionHistory->leverage = $leverage;
             $TransactionHistory->user_id = Auth::user()->id;
@@ -159,6 +165,8 @@ class TradeController extends Controller
                 $LeverageWallet = new Leverage_Wallet();
                 $LeverageWallet->amount = $request->buyAmount;
                 $LeverageWallet->equivalent_amount = $request->calcBuyAmount;
+                $LeverageWallet->derivativeUserMoney = $request->derivativeUserMoney;
+                $LeverageWallet->derivativeLoan = $request->calcBuyAmount - $request->derivativeUserMoney;
                 $LeverageWallet->type = 1;
                 $LeverageWallet->leverage = $leverage;
                 $LeverageWallet->user_id = Auth::user()->id;
