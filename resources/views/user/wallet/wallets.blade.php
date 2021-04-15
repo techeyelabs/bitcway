@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div style="margin: auto; overflow-x: auto">
-                    <ul class="container-fluid" style=" min-width: 500px;">
+                    <ul class="container-fluid" style=" min-width: 600px;">
                         <li class="row list-group-item d-flex justify-content-between align-items-center ">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">Symbol</p>
                             <p class="col txtWhitecolor" id="" style="text-align: left;">Size</p>
