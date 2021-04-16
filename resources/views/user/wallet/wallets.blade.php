@@ -29,13 +29,20 @@
         <div class="card mt-3 " style="width: 400px">
             <div class="card-body">
                 <div class="" style="margin: auto">
-                    <div class="container-fluid" >
-                        <div class="row  text-left " style="margin-left: -15px;">
+                    <div class="row container-fluid" >
+                        <div>
+                            <div class="  text-left " style="margin-left: -15px;">
                            <abbr title="Your Total Margin Balance"  class="txtWhitecolor text-left initialism">Total Margin Balance</abbr><br>
                             <h4 class="txtWhitecolor text-left mb-4" ><span id="totalMArginBalanceId">00.000000</span><span style="font-size: 10px">USD</span></h4>
-
-                            <abbr title="Your Total Wallet Balance"  class="txtWhitecolor text-left initialism">Total Wallet Balance</abbr><br>
-                            <h4 class="txtWhitecolor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
+{{--                                <div class="row">--}}
+{{--                                    <div class="tex-left" style="width: 180px;">--}}
+                                        <abbr title="Your Total Wallet Balance"  class="txtWhitecolor text-left initialism">Total Wallet Balance</abbr><br>
+                                        <h4 class="txtWhitecolor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
+{{--                                    </div>--}}
+{{--                                    <div class="tex-right">--}}
+{{--                                        <button>hi</button>--}}
+{{--                                    </div>--}}
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -77,7 +84,7 @@
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}" style="text-align: center;">{!! number_format((double)($item->equivalent_trade_amount),5)!!}</p>
                             <p class="col txtWhitecolor" id="CoinpriceIntoMycoin{{$index}}" style="text-align: center;">00.000000</p>
                             <p class="col " id="unrealizedpnl{{$index}}" style="text-align: right;">00.000000</p>
-                            <p class="col txtHeadingColor" id="assetTradeSell{{$index}}" style="text-align: right; cursor: pointer">Trade</p>
+                            <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetTradeSell{{$index}}" style="cursor: pointer;">Trade</span></p>
                         </li>
                         <?php
                         }
@@ -134,7 +141,7 @@
                                 <p class="d-none" id="derivativeAmountWithPNL{{$j}}">00.000000</p>
                                 <p class="col " id="derivativeUnrealizedPrice{{$j}}" style="text-align: right;color:white;">00.000000</p>
                                 <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: right; color:white;">{{$item->leverage}}</p>
-                                <p class="col txtHeadingColor" id="assetDerivativeSell{{$j}}" style="text-align: right;cursor: pointer">Trade</p>
+                                <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetDerivativeSell{{$j}}" style="cursor: pointer;">Trade</span></p>
                             </li>
                             <?php
                             }
