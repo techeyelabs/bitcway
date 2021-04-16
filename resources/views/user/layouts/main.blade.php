@@ -25,13 +25,10 @@
     <link rel="stylesheet" href="/css/user.css">
     <style>
         .sideBar{
-            color: #D3D6D8 !important;
+            color: white !important;
         }
         .sideBar:hover{
             color: yellow !important;
-        }
-        .txtWhitecolor{
-            color: #D3D6D8 !important;
         }
         .btn-outline-warning {
             color: #ffff00;
@@ -51,11 +48,7 @@
 
 <body>
 
-
-
-
     @include('includes.loader')
-
 
     <div class="page-wrapper chiller-theme toggled">
         <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
@@ -223,10 +216,10 @@
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 
     {{-- vue dev version --}}
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+{{--    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>--}}
 
     {{-- vue production version --}}
-    {{-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script> --}}
+     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
 
     {{-- axios --}}
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

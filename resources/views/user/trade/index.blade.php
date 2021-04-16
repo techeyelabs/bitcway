@@ -42,7 +42,7 @@
             min-width: 0;
         }
         .txtWhitecolor{
-            color: #D3D6D8;
+            color: white;
         }
         .txtHeadingColor{
             color: yellow;
@@ -84,7 +84,7 @@
                                     <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}" v-on:click="setCurrency(item)">
                                         <td></td>
                                         <td v-cloak id="currencyNameid" class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
-                                        <td style=""><span v-cloak style="color: #D3D6D8;font-size: 12px;">@{{item[7]}}</span> USD</td>
+                                        <td style=""><span v-cloak style="color: white;font-size: 12px;">@{{item[7]}}</span> USD</td>
                                         <td v-cloak :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
                                         {{-- <td>@{{item[3]}}</td>
                                         <td>@{{item[4]}}</td> --}}

@@ -68,14 +68,14 @@
             </a>
         </small>
     </div>
-    <div>
-        <a href="#" target="_blank">
-            <img alt="GitHub followers"
-                src="https://img.shields.io/github/followers/azouaoui-med?label=github&style=social" />
-        </a>
-        <a href="#" target="_blank">
-            <img alt="Twitter Follow"
-                src="https://img.shields.io/twitter/follow/azouaoui_med?label=twitter&style=social" />
-        </a>
-    </div>
+{{--    <div>--}}
+{{--        <a href="#" target="_blank">--}}
+{{--            <img alt="GitHub followers"--}}
+{{--                src="https://img.shields.io/github/followers/azouaoui-med?label=github&style=social" />--}}
+{{--        </a>--}}
+{{--        <a href="#" target="_blank">--}}
+{{--            <img alt="Twitter Follow"--}}
+{{--                src="https://img.shields.io/twitter/follow/azouaoui_med?label=twitter&style=social" />--}}
+{{--        </a>--}}
+{{--    </div>--}}
 </footer>

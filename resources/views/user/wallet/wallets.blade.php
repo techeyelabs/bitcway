@@ -11,7 +11,7 @@
         }
 
         .txtWhitecolor {
-            color: #D3D6D8;
+            color: white !important;
         }
 
         .txtHeadingColor {
@@ -31,11 +31,11 @@
                 <div class="" style="margin: auto">
                     <div class="container-fluid" >
                         <div class="row  text-left " style="margin-left: -15px;">
-                           <abbr title="Your Total Margin Balance"  class="txtHeadingColor text-left initialism">Total Margin Balance</abbr><br>
-                            <h4 class="txtHeadingColor text-left mb-4" ><span id="totalMArginBalanceId">00.000000</span><span style="font-size: 10px">USD</span></h4>
+                           <abbr title="Your Total Margin Balance"  class="txtWhitecolor text-left initialism">Total Margin Balance</abbr><br>
+                            <h4 class="txtWhitecolor text-left mb-4" ><span id="totalMArginBalanceId">00.000000</span><span style="font-size: 10px">USD</span></h4>
 
-                            <abbr title="Your Total Wallet Balance"  class="txtHeadingColor text-left initialism">Total Wallet Balance</abbr><br>
-                            <h4 class="txtHeadingColor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
+                            <abbr title="Your Total Wallet Balance"  class="txtWhitecolor text-left initialism">Total Wallet Balance</abbr><br>
+                            <h4 class="txtWhitecolor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
                         </div>
                     </div>
                 </div>
@@ -51,8 +51,8 @@
                     <div class="container-fluid" >
 
                         <div class="row  text-left mb-3" style="margin-left: -15px;">
-                            <abbr title="Trade Wallet"  class="txtHeadingColor text-left initialism">Trade Wallet</abbr><br>
-                            <h4 class="txtHeadingColor text-left mb-2" id="totalAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
+                            <abbr title="Trade Wallet"  class="txtWhitecolor text-left initialism">Trade Wallet</abbr><br>
+                            <h4 class="txtWhitecolor text-left mb-2" id="totalAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
                         </div>
                     </div>
                 </div>
@@ -95,8 +95,8 @@
                 <div class="mb-4" style="margin: auto">
                     <div class="container-fluid">
                         <div class="text-left">
-                            <abbr title="Derivative Wallet"  class="txtHeadingColor text-left initialism">Derivative Wallet</abbr><br>
-                            <h4 class="txtHeadingColor text-left mb-3" id="totalDerivativeAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
+                            <abbr title="Derivative Wallet"  class="txtWhitecolor text-left initialism">Derivative Wallet</abbr><br>
+                            <h4 class="txtWhitecolor text-left mb-3" id="totalDerivativeAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
                         </div>
                         <button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
                                 data-bs-target="#derivativeModal" style="width: 100px;"
@@ -154,8 +154,8 @@
                 <div class="" style="margin: auto">
                     <div class="container-fluid" >
                         <div class="text-left mb-3">
-                            <abbr title="Finance Wallet"  class="txtHeadingColor text-left initialism">Finance Wallet</abbr><br>
-                            <h4 class="txtHeadingColor text-left mb-3" id="totalFinanceAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
+                            <abbr title="Finance Wallet"  class="txtWhitecolor text-left initialism">Finance Wallet</abbr><br>
+                            <h4 class="txtWhitecolor text-left mb-3" id="totalFinanceAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
                         </div>
                     </div>
                 </div>
@@ -265,10 +265,10 @@
 
                 if (tradeUnrealizedpnl < 0){
                     parseFloat($('#unrealizedpnl'+ tupnl).html((tradeUnrealizedpnl).toFixed(5)));
-                    tradeUnrealizedpnlid.style.color = 'red'
+                    tradeUnrealizedpnlid.style.color = '#dc3545'
                 }else{
                     parseFloat($('#unrealizedpnl'+ tupnl).html((tradeUnrealizedpnl).toFixed(5)));
-                    tradeUnrealizedpnlid.style.color = 'yellow'
+                    tradeUnrealizedpnlid.style.color = '#198754'
                 }
             }
             for (let s = 0; s < indexNumber; s++) {
@@ -330,10 +330,10 @@
                 let derivativeUnrealizedpnl = parseFloat(derivativeMarkPrice-derivativeEntryPrice);
                 if (derivativeUnrealizedpnl < 0){
                     parseFloat($('#derivativeUnrealizedPrice'+ dupnl ).html((derivativeUnrealizedpnl).toFixed(5)));
-                    derivativeUnrealizedpnlid.style.color = 'red'
+                    derivativeUnrealizedpnlid.style.color = '#dc3545'
                 }else{
                     parseFloat($('#derivativeUnrealizedPrice'+ dupnl ).html((derivativeUnrealizedpnl).toFixed(5)));
-                    derivativeUnrealizedpnlid.style.color = 'yellow'
+                    derivativeUnrealizedpnlid.style.color = '#198754'
                 }
             }
             for (let ds = 1; ds <= indexNumber2; ds++) {

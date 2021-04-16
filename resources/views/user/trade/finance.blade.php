@@ -48,7 +48,7 @@
             font-size: 15px;
         }
         .txtWhitecolor{
-            color: #D3D6D8;
+            color: white;
             /*text-align: left !important;*/
 
         }

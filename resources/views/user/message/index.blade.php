@@ -24,7 +24,7 @@
         margin-top: 0px;
     }
     .txtWhitecolor{
-        color: #D3D6D8;
+        color: white;
     }
     .msgHeader{
         background-color: #102331;

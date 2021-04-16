@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <style>
         .txtWhitecolor{
-            color: #D3D6D8 !important;
+            color: white !important;
         }
         .btn-outline-warning {
             color: #ffff00;
@@ -91,11 +91,11 @@
                             <i class="fas fa-user"></i> {{Auth::user()->first_name.' '.Auth::user()->last_name}}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{{route('user-dashboard')}}">Dashboard</a></li>
+                            <li><a class="dropdown-item txtWhitecolor" href="{{route('user-dashboard')}}">Dashboard</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="{{route('logout')}}">Logout</a></li>
+                            <li><a class="dropdown-item txtWhitecolor" href="{{route('logout')}}">Logout</a></li>
                         </ul>
                     </li>
                     <?php }else{?>
