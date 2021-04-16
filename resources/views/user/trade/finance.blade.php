@@ -292,7 +292,7 @@
             if (availableLot > 0){
                 $('#lotCurrency').html(availableLot);
             }else{
-                $('#lotCurrency').html("Invalid Amount");
+                $('#lotCurrency').html(0);
             }
 
 

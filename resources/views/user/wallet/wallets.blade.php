@@ -321,8 +321,6 @@
                 let derivativeLoan = parseFloat($('#derivativeLoan' + dbPNL).html().replace(',',''));
                 derivativePNL = parseFloat(derivativeMarkPrice - derivativeLoan);
                 parseFloat($('#derivativeAmountWithPNL' + dbPNL).html(derivativePNL));
-
-
             }
 
             for (let dupnl = 1; dupnl <= indexNumber2; dupnl++) {
