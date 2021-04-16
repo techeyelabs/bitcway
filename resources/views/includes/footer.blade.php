@@ -61,8 +61,8 @@
 <footer class="text-center pb-3">
     
     <div class="mb-2">
-        <small>
-            © 2018  by  <a target="_blank"
+        <small class="txtWhitecolor">
+            © 2018  by  <a class="txtWhitecolor" target="_blank"
                 rel="noopener noreferrer" href="#">
                 BITC-WAY
             </a>
