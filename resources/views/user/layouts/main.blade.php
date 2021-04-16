@@ -57,7 +57,7 @@
         <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-content">
                 <div class="sidebar-brand">
-                    <a class="logo" href="{{route('front-home')}}"><strong>BITC-WAY</strong></a>
+                    <a class="logo txtWhitecolor" href="{{route('front-home')}}"><strong>BITC-WAY</strong></a>
                     <div id="close-sidebar">
                         <i class="fas fa-times"></i>
                     </div>
@@ -65,8 +65,8 @@
                 <div class="sidebar-header">
                     
                     <div class="user-info">
-                        <span class="user-name">{{Auth::user()->first_name}}{{Auth::user()->last_name}}</span>
-                        <strong>BALANCE: {{Auth::user()->balance}} USD</strong>
+                        <span class="user-name txtWhitecolor">{{Auth::user()->first_name}}{{Auth::user()->last_name}}</span>
+                        <strong class="txtWhitecolor">BALANCE: {{Auth::user()->balance}} USD</strong>
 {{--                        <strong>DERIVATIVE: {{Auth::user()->derivative}} USD</strong><br>--}}
 {{--                        <strong>ASSET: <span id="totalAsset">00000000.00</span> USD</strong>--}}
 
@@ -76,7 +76,7 @@
                 <div class="sidebar-menu">
                     <ul>
                         <li class="header-menu">
-                            <span>General</span>
+                            <span class="txtWhitecolor">General</span>
                         </li>
                         
                         <li>
