@@ -4,7 +4,9 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\DerivativeSell;
+use App\Models\LimitBuySell;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -289,6 +291,34 @@ class TradeController extends Controller
     {
         $Bitfinex = new Bitfinex();
         return $Bitfinex->getOrderBook($request->currency);
+    }
+    public function limitBuy(Request $request){
+//        dd($request);
+        $currency = Currency::where('name', $request->currency)->first();
+        $limitBuy = new LimitBuySell();
+        $limitBuy->limitType = $request->limitType;
+        $limitBuy->priceLimit = $request->priceLimit;
+        $limitBuy->currencyAmount = $request->currencyAmount;
+        $limitBuy->transactionStatus = $request->transactionStatus;
+        $limitBuy->user_id = Auth::user()->id;
+        $limitBuy->currency_id = $currency->id;
+        $limitBuy->save();
+        return response()->json(['status' => true]);
+
+
+    }
+    public function limitSell(Request $request){
+//        dd($request);
+        $currency = Currency::where('name', $request->currency)->first();
+        $limitSell = new LimitBuySell();
+        $limitSell->limitType = $request->limitType;
+        $limitSell->priceLimit = $request->priceLimit;
+        $limitSell->currencyAmount = $request->currencyAmount;
+        $limitSell->transactionStatus = $request->transactionStatus;
+        $limitSell->user_id = Auth::user()->id;
+        $limitSell->currency_id = $currency->id;
+        $limitSell->save();
+        return response()->json(['status' => true]);
     }
 
 }

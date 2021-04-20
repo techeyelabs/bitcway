@@ -249,7 +249,6 @@
                 let tradeCurrencySize = parseFloat($('#MyTotalCoinSize' + i).html());
                 let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + i).html());
 
-                // console.log("Name:",currencyName," Size:", tradeCurrencySize, " MarkPrice:", tradeMarkPrice);
 
                 let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
@@ -302,8 +301,6 @@
                             toastr.error('Error occured !!');
                         });
                 });
-
-                // console.log("Name:",currencyName," Size:", tradeCurrencySize, " MarkPrice:", tradeMarkPrice);
             }
 
             let indexNumber2 = $('#myCoinIndex2').html();
@@ -349,7 +346,6 @@
                 let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + ds).html());
 
                 $( "#assetDerivativeSell" + ds ).click(function() {
-                    // console.log("in");
                     axios.post('{{route("user-trade-sell")}}',{
                         currency: derivativeCurrencyName,
                         sellAmount: derivativeCurrencySize,
@@ -368,8 +364,6 @@
                             toastr.error('Error occured !!');
                         });
                 });
-
-                // console.log("Name:",derivativeCurrencyName," Size:", derivativeCurrencySize, " MarkPrice:", derivativeMarkPrice);
             }
 
             let totalFinanceValue = 0.00;
@@ -381,8 +375,6 @@
                 let coinLotSize = parseFloat($('#lotSize'+ k).html());
                 let coinExpectedInterest = parseFloat($('#expectedInterest' + k).html());
                 let totalCoinValue  = parseFloat(((coinLot*coinLotSize) + coinExpectedInterest));
-
-                // console.log(coinLot, coinLotSize, coinExpectedInterest);
                
                
                 let full_data = trackers.trackers;
@@ -393,12 +385,9 @@
                 });
                 for (let a = 1; a <= indexNumber3; a++) {
                     totalFinanceValue += parseFloat($('#coinWithInterest' + a).html());
-                    console.log(totalFinanceValue);
                     if (isNaN(totalFinanceValue)){
-                        console.log("if");
                     parseFloat($('#totalFinanceAmount').html("00.00000"));
                     }else{
-                        console.log("Else");
                     parseFloat($('#totalFinanceAmount').html((totalFinanceValue).toFixed(5)));
                     }
                 }
@@ -449,5 +438,12 @@
                 }
             }
         }
+    </script>
+    <script>
+        function autoRefreshPage()
+        {
+            window.location = window.location.href;
+        }
+        setInterval('autoRefreshPage()', 600000);
     </script>
 @endsection

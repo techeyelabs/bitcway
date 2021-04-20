@@ -155,15 +155,15 @@
                             <hr>
                             <div class="row">
                                 <div class="col">
-                                    <select class="form-select selectClass" aria-label="Default select example">
-                                        <option selected>Market</option>
+                                    <select class="form-select selectClass" aria-label="Default select example" id="choseOrderType" onchange="choseOrderType()">
+                                        <option value="0" selected>Market</option>
                                         <option value="1">Limit</option>
                                     </select>
                                     <div class="form-group">
-                                        <div id="limitDiv"  style="display: block">
+                                        <div id="limitDiv"  style="display: none">
                                             <label class="txtWhitecolor" for="" style="margin-top: 10px;">Limit:</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control mb-1" placeholder="" >
+                                                <input type="text" class="form-control mb-1" placeholder="" v-model="limitAmount">
                                             </div>
                                         </div>
                                         <label class="txtWhitecolor" for="" style="margin-top: 10px;">USD:</label>
@@ -186,21 +186,21 @@
 
                                     <div class="">
                                         <div class="form-check form-check-inline" id="limitBuyId" >
-                                            <input class="form-check-input " type="checkbox" id="limitBuyInput" value="option1" onclick="ShowLimitField()">
+                                            <input class="form-check-input " type="checkbox" id="limitBuyInput" value="limitBuy"  v-on:change="limitBuy" disabled>
                                             <label class="form-check-label txtWhitecolor" for="inlineCheckbox1">Buy</label>
                                         </div>
                                         <div class="form-check form-check-inline" id="limitSellId" >
-                                            <input class="form-check-input" type="checkbox" id="limitSellInput" value="option2" onclick="ShowLimitField()">
+                                            <input class="form-check-input" type="checkbox" id="limitSellInput" value="limitSell" v-on:change="limitSell"  disabled>
                                             <label class="form-check-label txtWhitecolor" for="inlineCheckbox2">Sell</label>
                                         </div>
                                     </div>
-                                    <div id="coinDiv" style="display: block">
+                                    <div id="coinDiv" style="display: none">
                                         <label class="txtWhitecolor" for="" style="margin-top: 20px; margin-bottom: 5px">Coin:</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control mb-1" placeholder=""  v-model="selectedPrice">
+                                            <input type="text" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
                                         </div>
                                     </div>
-                                    <div class="form-group" style="margin-bottom: 54px; margin-top: 10px;">
+                                    <div class="form-group" id="tradeCoinForm" style="margin-bottom: 54px; margin-top: 19px;">
                                         <label v-cloak class="txtWhitecolor" for="">@{{currency}}:</label>
                                         <input type="text" class="form-control mb-1" placeholder="" v-model="amount">
                                     </div>
@@ -280,6 +280,30 @@
 @endsection
 
 @section('custom_js')
+    <script>
+        function choseOrderType() {
+            var buyCheckBox = document.getElementById("limitBuyInput");
+            var sellCheckBox = document.getElementById("limitSellInput");
+            var limitDiv = document.getElementById("limitDiv");
+            var coinDiv = document.getElementById("coinDiv");
+            var tradeCoinForm = document.getElementById("tradeCoinForm");
+            let type = $("#choseOrderType").val();
+            if (type == 1){
+                buyCheckBox.disabled = false;
+                sellCheckBox.disabled = false;
+                limitDiv.style.display = "block";
+                coinDiv.style.display = "block";
+                tradeCoinForm.style.marginTop = "10px";
+            }else{
+                buyCheckBox.disabled = true;
+                sellCheckBox.disabled = true;
+                limitDiv.style.display = "none";
+                coinDiv.style.display = "none";
+                tradeCoinForm.style.marginTop = "19px";
+            }
+        }
+
+    </script>
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
@@ -314,7 +338,7 @@
         // showLoader('Loading...');
         let loaded = false;
         socket.on('trackers', (trackers) => {
-            console.log(trackers);
+            // console.log(trackers);
             Home.trackers = trackers.trackers;
             // Home.trackers.push(dumCoin);
             let coinData = Home.trackers;
@@ -468,7 +492,9 @@
                 latestAsk: 0,
                 askIncrease: false,
                 selectedPrice: '',
-                derivativeValue:'1'
+                derivativeValue:'1',
+                limitAmount:'',
+                totalLimitCurrency:''
             },
             mounted() {
 
@@ -729,6 +755,61 @@
                                 window.location.reload();
                         });
                 },
+                limitBuy(){
+                    let that = this;
+                    if(that.limitAmount <= 0 || that.limitAmount > that.usdBalance) {
+                        toastr.error('Invalid limit amount !!');
+                        return false;
+                    }
+                    showLoader('Processing...');
+                    axios.post('{{route("user-limit-buy")}}', {
+                        currency: that.currency,
+                        limitType: 1,
+                        priceLimit : that.limitAmount,
+                        currencyAmount: that.totalLimitCurrency,
+                        transactionStatus: 1
+
+                    })
+                        .then(function (response) {
+                            if(response.data.status){
+                                toastr.success('Limit Buy successfull');
+                                window.location.href = '{{route("user-wallets")}}';
+                                return false;
+                            }
+                            toastr.error('Error occured(Limit) !!');
+                        })
+                        .catch(function (error) {
+                            toastr.error('Error occured(Limit) !!');
+                        });
+                },
+                limitSell(){
+                    let that = this;
+                    if(that.limitAmount <= 0) {
+                        toastr.error('Invalid Limit Sell amount !!');
+                        return false;
+                    }
+
+                    showLoader('Processing...');
+                    axios.post('{{route("user-limit-sell")}}', {
+                        currency: that.currency,
+                        limitType: 2,
+                        priceLimit : that.limitAmount,
+                        currencyAmount: that.totalLimitCurrency,
+                        transactionStatus: 1
+
+                    })
+                        .then(function (response) {
+                            if(response.data.status){
+                                toastr.success('Limit Sell successfull');
+                                window.location.href = '{{route("user-wallets")}}';
+                                return false;
+                            }
+                            toastr.error('Error occured(Limit Sell) !!');
+                        })
+                        .catch(function (error) {
+                            toastr.error('Error occured(Limit Sell) !!');
+                        });
+                },
                 getOrders(){
 
                     let that = this;
@@ -743,22 +824,24 @@
             },
 
         });
-    function ShowLimitField() {
-        var buyCheckBox = document.getElementById("limitBuyInput");
-        var sellCheckBox = document.getElementById("limitSellInput");
-        var limitDiv = document.getElementById("limitDiv");
-        var coinDiv = document.getElementById("coinDiv");
-
-        if (buyCheckBox.checked == true || sellCheckBox.checked == true){
-            console.log("1");
-            limitDiv.style.display = "none";
-            coinDiv.style.display = "none";
-        }else{
-            console.log("2");
-            limitDiv.style.display = "block";
-            coinDiv.style.display = "block";
-        }
-    }
+    // function ShowLimitField() {
+    //     var buyCheckBox = document.getElementById("limitBuyInput");
+    //     var sellCheckBox = document.getElementById("limitSellInput");
+    //     var limitDiv = document.getElementById("limitDiv");
+    //     var coinDiv = document.getElementById("coinDiv");
+    //     var tradeCoinForm = document.getElementById("tradeCoinForm");
+    //
+    //
+    //     if (buyCheckBox.checked == true || sellCheckBox.checked == true){
+    //         limitDiv.style.display = "block";
+    //         coinDiv.style.display = "block";
+    //         tradeCoinForm.style.marginTop = "10px";
+    //     }else{
+    //         limitDiv.style.display = "none";
+    //         coinDiv.style.display = "none";
+    //         tradeCoinForm.style.marginTop = "19px";
+    //     }
+    // }
 
     </script>
 @endsection
