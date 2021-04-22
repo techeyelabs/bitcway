@@ -302,7 +302,6 @@
                 tradeCoinForm.style.marginTop = "19px";
             }
         }
-
     </script>
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
@@ -412,18 +411,15 @@
                     }
                 })
                 .catch(error => "404")
-
         }
 
         let getOrders = function(currency){
-
             if(w) w.close();
             w = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
             w.onmessage = function(msg){
                 items = JSON.parse(msg.data);
                 // console.log(msg.data);
                 if (items.event) return;
-                // console.log("BitBook1:", items[2]);
                 if(items[1]){
                     if(items[1].length > 3){
                         bids = [];
@@ -439,7 +435,6 @@
                         Home.asks = asks;
                     }else{
                         item = items[1];
-                        // console.log("BitBook:", item);
                         if(item[2] > 0){
                             if(Home.bids.length > 25) Home.bids.pop();
                             Home.bids = [item].concat(Home.bids);
@@ -469,7 +464,6 @@
                 w.send(msg);
             }
         };
-
 
         let Home = new Vue({
             el: '.trade',
@@ -796,7 +790,6 @@
                         priceLimit : that.limitAmount,
                         currencyAmount: that.totalLimitCurrency,
                         transactionStatus: 1
-
                     })
                         .then(function (response) {
                             if(response.data.status){
@@ -811,37 +804,14 @@
                         });
                 },
                 getOrders(){
-
                     let that = this;
                     let currency = that.selectedItem[0];
                     getOrders(currency);
                     getInitialOrder(currency);
                 },
-
             },
             beforeMount(){
-
             },
-
         });
-    // function ShowLimitField() {
-    //     var buyCheckBox = document.getElementById("limitBuyInput");
-    //     var sellCheckBox = document.getElementById("limitSellInput");
-    //     var limitDiv = document.getElementById("limitDiv");
-    //     var coinDiv = document.getElementById("coinDiv");
-    //     var tradeCoinForm = document.getElementById("tradeCoinForm");
-    //
-    //
-    //     if (buyCheckBox.checked == true || sellCheckBox.checked == true){
-    //         limitDiv.style.display = "block";
-    //         coinDiv.style.display = "block";
-    //         tradeCoinForm.style.marginTop = "10px";
-    //     }else{
-    //         limitDiv.style.display = "none";
-    //         coinDiv.style.display = "none";
-    //         tradeCoinForm.style.marginTop = "19px";
-    //     }
-    // }
-
     </script>
 @endsection

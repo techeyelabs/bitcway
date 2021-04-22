@@ -2,9 +2,139 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\Bitfinex;
+use App\Models\Currency;
+use App\Models\Leverage_Wallet;
+use App\Models\LimitBuySell;
+use App\Models\TransactionHistory;
+use App\Models\User;
+use App\Models\UserWallet;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use mysql_xdevapi\Exception;
 
 class LimitCronController extends Controller
 {
+    public function limitCronJob(){
+        $Bitfinex = new Bitfinex();
+        $limitBuy = LimitBuySell::where("limitType", 1)->get();
+        $limitPrice = LimitBuySell::where("transactionStatus", 1)->with("currency")->get();
+        for ($i = 0 ; $i < count($limitPrice); $i++){
+            $data = $limitPrice[$i];
+            $getCurrentRate = $Bitfinex->getRate($data->currency->name);
 
+            //For Buy
+            if (isset($limitBuy)){
+                if($getCurrentRate <= $data->priceLimit){
+                    $this->updateLimitBuyTable($data->currency->id, $data->id, $data->user_id);
+                }
+            //For Sell
+            }else{
+                if($getCurrentRate >= $data->priceLimit){
+                $this->updateLimitSellTable($data->currency->id, $data->id, $data->user_id);
+                }
+            }
+        }
+    }
+
+    public function updateLimitBuyTable($currencyId, $id, $userId){
+        $updateLimitTable = LimitBuySell::where('id', $id)->where('currency_id', $currencyId)->first();
+        $UserWallet = UserWallet::where('user_id', $userId)->where('currency_id', $currencyId)->first();
+        $userBalance = User::where('id', $userId)->first();
+        $trade_amount_limit = $updateLimitTable->priceLimit;
+        $equivalent_trade_balance_limit = $updateLimitTable->currencyAmount;
+        $equivalent_trade_amount_limit = ($trade_amount_limit * $equivalent_trade_balance_limit);
+        $limit_user_id = $userId;
+        $limit_currency_id  = $currencyId;
+
+        if(!$UserWallet) {
+            $UserWallet = new UserWallet();
+            $UserWallet->balance = $equivalent_trade_balance_limit;
+            $UserWallet->equivalent_trade_amount = $equivalent_trade_amount_limit;
+
+        }else{
+            $UserWallet->balance = $UserWallet->balance + $equivalent_trade_balance_limit;
+            $UserWallet->equivalent_trade_amount = $UserWallet->equivalent_trade_amount + $equivalent_trade_amount_limit;
+        }
+        $UserWallet->user_id = $limit_user_id;
+        $UserWallet->currency_id = $limit_currency_id;
+        $UserWallet->save();
+
+        $userBalance->balance = $userBalance->balance - $equivalent_trade_amount_limit;
+        $userBalance->save();
+
+        try{
+            $TransactionHistory= new TransactionHistory();
+            $TransactionHistory->amount = $equivalent_trade_balance_limit;
+            $TransactionHistory->equivalent_amount = $equivalent_trade_amount_limit;
+            $TransactionHistory->derivativeUserMoney = 0;
+            $TransactionHistory->derivativeLoan = 0;
+            $TransactionHistory->type = 1;
+            $TransactionHistory->status = 1;
+            $TransactionHistory->leverage = 1;
+            $TransactionHistory->user_id = $limit_user_id;
+            $TransactionHistory->currency_id = $limit_currency_id;
+            $TransactionHistory->save();
+
+        } catch(Exception $e){
+            return response()->json(['status' => false]);
+        }
+
+        $updateLimitTable->transactionStatus = 2;
+        $updateLimitTable->save();
+    }
+
+
+    public function updateLimitSellTable($currencyId = 98, $id  = 7, $userId = 7){
+        $updateLimitTable = LimitBuySell::where('id', $id)->where('currency_id', $currencyId)->first();
+        $UserWallet = UserWallet::where('user_id', $userId)->where('currency_id', $currencyId)->first();
+        $userBalance = User::where('id', $userId)->first();
+        $trade_amount_limit = $updateLimitTable->priceLimit;
+        $equivalent_trade_balance_limit = $updateLimitTable->currencyAmount;
+        $equivalent_trade_amount_limit = ($trade_amount_limit * $equivalent_trade_balance_limit);
+        $limit_user_id = $userId;
+        $limit_currency_id  = $currencyId;
+
+        if(!$UserWallet) {
+            $UserWallet = new UserWallet();
+            $UserWallet->balance = $equivalent_trade_balance_limit;
+            $UserWallet->equivalent_trade_amount = $equivalent_trade_amount_limit;
+
+        }else{
+            $UserWallet->balance = $UserWallet->balance - $equivalent_trade_balance_limit;
+            $UserWallet->equivalent_trade_amount = $UserWallet->equivalent_trade_amount - $equivalent_trade_amount_limit;
+        }
+        $UserWallet->user_id = $limit_user_id;
+        $UserWallet->currency_id = $limit_currency_id;
+        $UserWallet->save();
+
+        $userBalance->balance = $userBalance->balance + $equivalent_trade_amount_limit;
+
+        $userBalance->save();
+        if ($UserWallet->balance == 0.00000000){
+            $UserWallet->delete();
+        }
+
+
+        try{
+            $TransactionHistory= new TransactionHistory();
+            $TransactionHistory->amount = $equivalent_trade_balance_limit;
+            $TransactionHistory->equivalent_amount = $equivalent_trade_amount_limit;
+            $TransactionHistory->derivativeUserMoney = 0;
+            $TransactionHistory->derivativeLoan = 0;
+            $TransactionHistory->type = 2;
+            $TransactionHistory->status = 1;
+            $TransactionHistory->leverage = 1;
+            $TransactionHistory->user_id = $limit_user_id;
+            $TransactionHistory->currency_id = $limit_currency_id;
+            $TransactionHistory->save();
+
+        } catch(Exception $e){
+            return response()->json(['status' => false]);
+        }
+
+        $updateLimitTable->transactionStatus = 2;
+        $updateLimitTable->save();
+    }
 }
