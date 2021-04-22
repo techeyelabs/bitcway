@@ -10,6 +10,7 @@ use App\Http\Controllers\User\WalletController;
 use App\Http\Controllers\User\BuySellController;
 use App\Http\Controllers\User\MessageController;
 use App\Http\Controllers\User\TradeController;
+use App\Http\Controllers\User\CronController;
 
 
 
@@ -20,6 +21,7 @@ use App\Http\Controllers\Admin\DepositController as AdminDepositController;
 use App\Http\Controllers\Admin\WithdrawController as AdminWithdrawController;
 use App\Http\Controllers\Admin\MessageController as AdminMessageController;
 use App\Http\Controllers\Admin\DmgCoinController as AdminDmgCoinController;
+use App\Http\Controllers\Admin\LockedSavingsController as AdminLockedSavingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,6 +93,7 @@ Route::prefix('user')->middleware(['auth'])->group(function(){
     Route::post('/trade-buy', [TradeController::class, 'buy'])->name('user-trade-buy');
     Route::post('/trade-sell', [TradeController::class, 'sell'])->name('user-trade-sell');
     Route::get('/get-buy-orders', [TradeController::class, 'getBuyOrders'])->name('user-get-buy-orders');
+    Route::get('/locked-savings-invest', [CronController::class, 'myaction'])->name('user-locked-savings-invest');
 
 });
 
@@ -104,6 +107,7 @@ Route::prefix('admin')->group(function(){
         Route::post('/admin-change-password', [AdminAuthController::class, 'changePasswordAction'])->name('admin-change-password-action');
 
         Route::get('/user/list', [AdminUserController::class, 'index'])->name('admin-user-list');
+        Route::post('/user/list', [AdminUserController::class, 'withdrawNotification'])->name('admin-withdraw-notification');
         Route::get('/user/list/data', [AdminUserController::class, 'data'])->name('admin-user-list-data');
         Route::get('/user/change-status/{id}/{status}', [AdminUserController::class, 'changeStatus'])->name('admin-user-change-status');
         Route::get('/user/destroy', [AdminUserController::class, 'destroy'])->name('admin-user-destroy');
@@ -119,7 +123,7 @@ Route::prefix('admin')->group(function(){
         Route::get('/withdraw/list', [AdminWithdrawController::class, 'index'])->name('admin-withdraw-list');
         Route::get('/withdraw/list/data', [AdminWithdrawController::class, 'data'])->name('admin-withdraw-list-data');
         Route::get('/withdraw/change-status/{id}/{status}', [AdminWithdrawController::class, 'changeStatus'])->name('admin-withdraw-change-status');
-        Route::get('/withdraw/destroy', [AdminWithdrawController::class, 'destroy'])->name('admin-withdraw-destroy');
+        Route::get('/withdraw/destroy/{id}', [AdminWithdrawController::class, 'destroy'])->name('admin-withdraw-destroy');
 
 
         Route::get('/message', [AdminMessageController::class, 'index'])->name('admin-message-list');
@@ -129,6 +133,14 @@ Route::prefix('admin')->group(function(){
 
         Route::get('/dmg-coin', [AdminDmgCoinController::class, 'index'])->name('admin-dmg-coin');
         Route::post('/dmg-coin', [AdminDmgCoinController::class, 'action'])->name('admin-dmg-coin-action');
+
+        Route::get('/locked-savings', [AdminLockedSavingsController::class, 'index'])->name('admin-locked-savings');
+        Route::post('/locked-savings', [AdminLockedSavingsController::class, 'action'])->name('admin-locked-savings-action');
+        Route::post('/locked-savings-settings', [AdminLockedSavingsController::class, 'lockedSavingsSettings'])->name('admin-locked-savings-settings');
+        Route::get('/locked-savings-delete-action/{id}', [AdminLockedSavingsController::class, 'lockedSavingsDeleteAction'])->name('admin-locked-savings-delete-action');
+        Route::post('/locked-savings-edit-action/{id}', [AdminLockedSavingsController::class, 'lockedSavingsEditAction'])->name('admin-locked-savings-edit-action');
+        Route::get('/locked-savings-edit/{id}', [AdminLockedSavingsController::class, 'lockedSavingsEdit'])->name('admin-locked-savings-edit');
+        
 
     });
 });

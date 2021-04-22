@@ -45,7 +45,7 @@
         <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-content">
                 <div class="sidebar-brand">
-                    <a class="logo" href="{{route('front-home')}}"><strong>DMGCOIN</strong></a>
+                    <a class="logo" href="{{route('front-home')}}"><strong>BITC-WAY</strong></a>
                     <div id="close-sidebar">
                         <i class="fas fa-times"></i>
                     </div>
@@ -95,6 +95,14 @@
                             <a href="{{route('admin-dmg-coin')}}">
                                 <i class="fas fa-coins"></i>
                                 <span>DMG Coin</span>
+                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{route('admin-locked-savings')}}">
+                                <i class="fas fa-coins"></i>
+                                <span>Locked Savings Settings</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>

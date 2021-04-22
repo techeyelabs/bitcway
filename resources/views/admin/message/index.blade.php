@@ -6,6 +6,9 @@
         width: 100%;
         display: block;
     }
+    .txtWhitecolor{
+        color: #D3D6D8;
+    }
 </style>
 @endsection
 
@@ -19,12 +22,13 @@
             <ul class="list-group">
                 <?php foreach($messages as $item){?>
                 <a class="item" href="{{route('admin-message-details', ['to_id' => $item->user_id])}}">
+                    {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Open modal for @mdo</button> --}}
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         
                             <span>
                                 {{$item->user->first_name.' '.$item->user->last_name}} at {{date('d/m/Y H:i', strtotime($item->created_at))}}
                                 <br>
-                                <small>{{$item->latestMessage()->message}}</small>
+                                <small class="txtWhitecolor">{{$item->latestMessage()->message}}</small>
                             </span>
 
                             <span class="badge bg-primary pill">{{$item->unread()}}</span>

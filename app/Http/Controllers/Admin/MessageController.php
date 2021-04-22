@@ -21,10 +21,11 @@ class MessageController extends Controller
         Message::where('user_id', $request->to_id)->update(['read_by_admin' => true]);
         $data['user'] = User::find($request->to_id);
         return view('admin.message.details', $data);
+        // return view('admin.message.index', $data);
     }
     public function getMessages(Request $request)
     {
-        $messages = Message::where('user_id', $request->to_id)->get();
+        $messages = Message::where('user_id', $request->to_id)->with('user')->get();
         return response()->json(['status' => true, 'messages' => $messages]);
     }
     public function send(Request $request)

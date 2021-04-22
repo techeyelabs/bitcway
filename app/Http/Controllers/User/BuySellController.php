@@ -12,7 +12,7 @@ class BuySellController extends Controller
 {
     public function index()
     {
-        $data['transactions'] = TransactionHistory::where('user_id', Auth::user()->id)->with('currency')->get();
+        $data['transactions'] = TransactionHistory::where('user_id', Auth::user()->id)->with('currency')->orderBy('id', 'DESC')->get();
         return view('user.buysell.index', $data);
     }
 }

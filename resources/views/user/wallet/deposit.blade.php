@@ -1,11 +1,16 @@
 @extends('user.layouts.main')
 
 @section('custom_css')
+    <style>
+        .txtWhitecolor{
+            color: #D3D6D8;
+        }
+    </style>
 @endsection
 
 @section('content')
 <div id="wrap" class="deposit">
-    <h2>Deposit</h2>
+    <h3 class="txtWhitecolor">Deposit</h3>
     <hr>
 
     <div class="row">
@@ -15,20 +20,20 @@
 
                     <template v-if='qrCode'>
                         <div class="text-center">
-                            <h5>Scan following QR code from your wallet app to complete deposit</h5>
+                            <h5 class="txtWhitecolor">Scan following QR code from your wallet app to complete deposit</h5>
                             <hr>
-                            <h6 class="">Pay: @{{parseFloat(amount).toFixed(8)}} BTC </h6>
-                            <h6 class="mb-3">To: @{{wallet}}</h6>
+                            <h6 class="txtWhitecolor">Pay: @{{parseFloat(amount).toFixed(8)}} BTC </h6>
+                            <h6 class="mb-3 txtWhitecolor">To: @{{wallet}}</h6>
                             <img :src="qrCodeLink" alt="">
                         </div>
                         <hr>
-                        <a href="{{route('user-wallet')}}" class="btn btn-outline-danger mt-2" >Cancel</a>
-                        <a href="#" class="btn btn-outline-success mt-2" v-on:click="done">Done</a>
+                        <a href="{{route('user-wallet')}}" class="btn btn-outline-info mt-2" >Cancel</a>
+                        <a href="#" class="btn btn-outline-warning mt-2" v-on:click="done">Done</a>
                     </template>
 
                     <template v-else>                            
                         <div class="form-group">
-                            <label for="">Amount (BTC)</label>
+                            <label class="txtWhitecolor" for="">Amount (BTC)</label>
                             <input type="number" class="form-control" aria-describedby="" name="amount"
                                 value="{{old('amount')}}" placeholder="Enter amount in bitcoin here..." required v-model="amount">                            
                             @error('amount')
@@ -36,10 +41,11 @@
                             @enderror
                         </div>
                         <div class="form-group text-center">
-                            <h4>Equivalent: @{{(amount*rate).toFixed(2)}} (USDT</h4>
+{{--                            <h4 class="txtWhitecolor">Equivalent: @{{(amount*rate).toFixed(2)}} (USD)</h4>--}}
+                            <h4 class="txtWhitecolor">Equivalent: @{{amount*rate}} (USD)</h4>
                         </div>
 
-                        <a href="#" class="btn btn-outline-success float-end" v-on:click="deposit">Deposit</a>
+                        <a href="#" class="btn btn-outline-warning float-end" v-on:click="deposit">Deposit</a>
                     </template>
 
                     

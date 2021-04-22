@@ -20,6 +20,20 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .txtWhitecolor{
+            color: #D3D6D8 !important;
+        }
+        .btn-outline-warning {
+            color: #ffff00;
+            border-color: #ffff00;
+        }
+        .btn-outline-warning:hover{
+            color: black;
+            border-color: yellow;
+            background-color: yellow;
+        }
+    </style>
     @yield('custom_css')
 
     <title>{{env('APP_NAME')}}</title>
@@ -30,7 +44,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{route('front-home')}}"><strong>DMGCOIN</strong></a>
+            <a class="navbar-brand" href="{{route('front-home')}}"><strong>BITC-WAY</strong></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -39,23 +53,40 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{{route('front-home')}}">Home</a>
+                        <a class="txtWhitecolor nav-link"  aria-current="page" href="{{route('front-home')}}">Home</a>
+                    </li>
+                    {{--{{!Auth::check()?'disabled':''}}--}}
+                    <li class="nav-item">
+                        <?php if(Auth::check()){?>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('user-trade')}}">Trade</a>
+                        <?php }else{?>
+                        <a class="txtWhitecolor nav-link" aria-current="page" href="{{route('login')}}">Trade</a>
+                        <?php }?>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{!Auth::check()?'disabled':''}}" aria-current="page" href="{{route('user-trade')}}">Trade</a>
+                        <?php if(Auth::check()){?>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('user-trade', ['type' => 'derivative'])}}">Derivative</a>
+                        <?php }else{?>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('login')}}">Derivative</a>
+                        <?php }?>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('front-terms')}}">Terms & conditions</a>
+                        <?php if(Auth::check()){?>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('user-trade-finance')}}">Finance</a>
+                        <?php }else{?>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('login')}}">Finance</a>
+                        <?php }?>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('front-about')}}">About us</a>
+                        <a class="txtWhitecolor nav-link" href="{{route('front-terms')}}">Terms & conditions</a>
                     </li>
+
 
                 </ul>
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <?php if(Auth::check()){?>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        <a class="nav-link dropdown-toggle txtWhitecolor" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user"></i> {{Auth::user()->first_name.' '.Auth::user()->last_name}}
                         </a>
@@ -69,10 +100,10 @@
                     </li>
                     <?php }else{?>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{{route('login')}}">Login</a>
+                        <a class="txtWhitecolor nav-link" aria-current="page" href="{{route('login')}}">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('signup')}}">Sign up</a>
+                        <a class="txtWhitecolor nav-link" href="{{route('signup')}}">Sign up</a>
                     </li>
                     <?php }?>
                 </ul>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminWithdrawMessage;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use App\Models\WithdrawHistory;
@@ -12,7 +13,8 @@ class WithdrawController extends Controller
 {
     public function index()
     {
-        return view('admin.withdraw.index');
+        $withdrawnotification["notification"] = AdminWithdrawMessage::first();
+        return view('admin.withdraw.index', $withdrawnotification);
     }
 
     public function data(Request $request)
@@ -70,7 +72,8 @@ class WithdrawController extends Controller
 
     public function destroy($id)
     {
-        WithdrawHistory::find($id)->delete();
+        $WithdrawHistory = WithdrawHistory::find($id);
+        $WithdrawHistory->delete();
         return redirect()->back()->with('success_message', 'Successfully Deleted.');
     }
 }

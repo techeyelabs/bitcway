@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminWithdrawMessage;
+use App\Models\Leverage_Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\Bitfinex;
@@ -12,13 +14,18 @@ use App\Models\WithdrawHistory;
 use App\Models\UserWallet;
 use App\Models\TransactionHistory;
 use App\Models\User;
+use App\Models\LockedSaving;
+use Carbon;
 
 class WalletController extends Controller
 {
     public function index(Request $request)
     {
-        $data['deposit'] = DepositHistory::where('user_id', Auth::user()->id)->get();
-        $data['withdraw'] = WithdrawHistory::where('user_id', Auth::user()->id)->get();
+        if (isset($request->id)){
+            $data['withdrawFlag'] = 1;
+        }
+        $data['deposit'] = DepositHistory::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
+        $data['withdraw'] = WithdrawHistory::where('user_id', Auth::user()->id)->orderBy('id','desc')->get();
         return view('user.wallet.index', $data);
     }
     public function deposit(Request $request)
@@ -39,7 +46,9 @@ class WalletController extends Controller
     }
     public function withdraw(Request $request)
     {
-        return view('user.wallet.withdraw');
+
+        $withdrawnotification["notification"] = AdminWithdrawMessage::first();
+        return view('user.wallet.withdraw', $withdrawnotification);
     }
     public function withdrawAction(Request $request)
     {
@@ -58,11 +67,15 @@ class WalletController extends Controller
     {
         $Bitfinex = new Bitfinex();
         $data['total'] = 0;
-        $data['wallets'] = UserWallet::where('user_id', Auth::user()->id)->with('currency')->get();
-        $data['user'] = UserWallet::where('user_id', Auth::user()->id)->with('user')->get();
-        $data['transactionHistory'] = TransactionHistory::where('user_id', Auth::user()->id)->where('leverage','>',0)->with('transactionhistory')->get();
+        $data['wallets'] = UserWallet::where('user_id', Auth::user()->id)->with('currency')->orderBy('id', 'DESC')->get();
+        $data['user'] = UserWallet::where('user_id', Auth::user()->id)->with('user')->orderBy('id', 'DESC')->get();
+        $data['leverage_wallets'] = Leverage_Wallet::where('user_id', Auth::user()->id)->with('currencyName')->orderBy('id', 'DESC')->get();
+        $data['transactionHistory'] = Leverage_Wallet::where('user_id', Auth::user()->id)->where('leverage','>',0)->with('leveragehistory')->orderBy('id', 'DESC')->get();
+        $currentTime = Carbon\Carbon::now();
+        $data['finances'] = LockedSaving::where('user_id', Auth::user()->id)->where('redemption_date', '>', $currentTime)->with('LockedSaving')->orderBy('id', 'DESC')->get();
+
         foreach($data['wallets'] as $item){
-            $data['total'] += $item->balance*$Bitfinex->getRate($item->currency->name);
+            $data['total'] += $item->balance * (is_numeric($Bitfinex->getRate($item->currency->name)?$Bitfinex->getRate($item->currency->name): 1));
         }
         return view('user.wallet.wallets', $data);
     }

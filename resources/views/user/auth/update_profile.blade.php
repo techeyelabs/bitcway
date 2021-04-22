@@ -1,11 +1,19 @@
 @extends('user.layouts.main')
 
 @section('custom_css')
+    <style>
+        .txtWhitecolor{
+            color: #D3D6D8;
+        }
+        .txtHeadingColor{
+            color: yellow;
+        }
+    </style>
 @endsection
 @section('content')
 
 <div id="wrap">
-    <h2>Update Profile Information</h2>
+    <h3 class="txtHeadingColor">Update Profile Information</h3>
     <hr>
 
     <div class="row">
@@ -20,7 +28,7 @@
 
 
                         <div class="form-group">
-                            <label for="">First Name</label>
+                            <label for="" class="txtWhitecolor">First Name</label>
                             <input type="text" class="form-control" aria-describedby="" name="first_name"
                                 value="{{Auth::user()->first_name}}" placeholder="Enter first name here..." required>
                             @error('first_name')
@@ -31,7 +39,7 @@
 
 
                         <div class="form-group">
-                            <label for="">Last Name</label>
+                            <label for="" class="txtWhitecolor">Last Name</label>
                             <input type="text" class="form-control" aria-describedby="" name="last_name"
                                 value="{{Auth::user()->last_name}}" placeholder="Enter last name here..." required>
                             @error('last_name')
@@ -41,7 +49,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="">Furigana</label>
+                            <label for="" class="txtWhitecolor">Furigana</label>
                             <input type="text" class="form-control" aria-describedby="" name="furigana"
                                 value="{{Auth::user()->furigana}}" placeholder="Enter furigana here..." required>
                             @error('furigana')
@@ -51,7 +59,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="">Username</label>
+                            <label for="" class="txtWhitecolor">Username</label>
                             <input type="text" class="form-control" aria-describedby="" name="username"
                                 value="{{Auth::user()->username}}" placeholder="Enter username here..." readonly>
                             @error('username')
@@ -61,7 +69,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="">Phone No</label>
+                            <label for="" class="txtWhitecolor">Phone No</label>
                             <input type="text" class="form-control" aria-describedby="" name="phone"
                                 value="{{Auth::user()->phone}}" placeholder="Enter phone no here...">
                             @error('phone')
@@ -71,7 +79,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="">Email</label>
+                            <label for="" class="txtWhitecolor">Email</label>
                             <input type="email" class="form-control" aria-describedby="" name="email"
                                 value="{{Auth::user()->email}}" placeholder="Enter email here..." readonly>
                             @error('email')
@@ -82,8 +90,8 @@
 
 
 
-                        <button type="submit" class="btn btn-outline-primary float-end">Change</button>
-                        <a href="{{route('user-dashboard')}}" class="btn btn-outline-danger float-end me-2">Cancel</a>
+                        <button type="submit" class="btn btn-outline-warning float-end">Change</button>
+                        <a href="{{route('user-dashboard')}}" class="btn btn-outline-info float-end me-2">Cancel</a>
 
                     </form>
                 </div>

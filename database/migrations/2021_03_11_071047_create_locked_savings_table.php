@@ -21,6 +21,7 @@ class CreateLockedSavingsTable extends Migration
             $table->dateTime('value_date');
             $table->dateTime('redemption_date');
             $table->integer('expected_interest');
+            $table->integer('status')->default('1');
             $table->timestamps();
         });
     }

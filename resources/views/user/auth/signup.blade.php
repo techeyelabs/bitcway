@@ -93,7 +93,7 @@
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block float-right">Sign up</button>
+                    <button type="submit" class="btn btn-outline-warning float-right">Sign up</button>
 
                     <div class="sign-up">
                         Already have an account? <a href="{{route('login')}}">Log in</a>

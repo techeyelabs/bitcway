@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminWithdrawMessage;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use App\Models\User;
@@ -13,8 +14,28 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view('admin.user.index');
+        $withdrawnotification["notification"] = AdminWithdrawMessage::first();
+
+        return view('admin.user.index',$withdrawnotification);
     }
+    public function withdrawNotification(Request $request)
+        {
+
+            $withdrawmessage = AdminWithdrawMessage::first();
+            $newMessage = $request->withdrawMessage;
+            $displayNewMessage = $request->checkbox ? 1 : 0 ?? 0;
+            if(!isset($withdrawmessage)) {
+                $withdrawmessageN = new AdminWithdrawMessage();
+                $withdrawmessageN->message = $newMessage;
+                $withdrawmessageN->display_message = $displayNewMessage;
+                $withdrawmessageN->save();
+            }else{
+                $withdrawmessage->message = $newMessage;
+                $withdrawmessage->display_message = $displayNewMessage;
+                $withdrawmessage->save();
+            }
+            return redirect()->back();
+        }
 
     public function data(Request $request)
     {
@@ -66,7 +87,7 @@ class UserController extends Controller
     public function wallets(Request $request)
     {
         $data['total'] = 0;
-        $data['wallets'] = UserWallet::where('user_id', $request->id)->with('currency')->get();
+        $data['wallets'] = UserWallet::where('user_id', $request->id)->with('currency')->orderBy('id', 'desc')->get();
         $Bitfinex = new Bitfinex();
         foreach($data['wallets'] as $item){            
             $data['total'] += $item->balance*$Bitfinex->getRate($item->currency->name);
