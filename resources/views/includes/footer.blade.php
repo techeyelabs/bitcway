@@ -61,21 +61,21 @@
 <footer class="text-center pb-3">
     
     <div class="mb-2">
-        <small>
-            © 2018  by  <a target="_blank"
+        <small class="txtWhitecolor">
+            © 2018  by  <a class="txtWhitecolor" target="_blank"
                 rel="noopener noreferrer" href="#">
                 BITC-WAY
             </a>
         </small>
     </div>
-    <div>
-        <a href="#" target="_blank">
-            <img alt="GitHub followers"
-                src="https://img.shields.io/github/followers/azouaoui-med?label=github&style=social" />
-        </a>
-        <a href="#" target="_blank">
-            <img alt="Twitter Follow"
-                src="https://img.shields.io/twitter/follow/azouaoui_med?label=twitter&style=social" />
-        </a>
-    </div>
+{{--    <div>--}}
+{{--        <a href="#" target="_blank">--}}
+{{--            <img alt="GitHub followers"--}}
+{{--                src="https://img.shields.io/github/followers/azouaoui-med?label=github&style=social" />--}}
+{{--        </a>--}}
+{{--        <a href="#" target="_blank">--}}
+{{--            <img alt="Twitter Follow"--}}
+{{--                src="https://img.shields.io/twitter/follow/azouaoui_med?label=twitter&style=social" />--}}
+{{--        </a>--}}
+{{--    </div>--}}
 </footer>

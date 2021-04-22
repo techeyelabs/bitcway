@@ -3,7 +3,7 @@
 @section('custom_css')
     <style>
         .txtWhitecolor{
-            color: #D3D6D8;
+            color: white;
         }
     </style>
 @endsection
@@ -26,7 +26,7 @@
 
                     <template v-if='done'>
 
-                        <div class="alert alert-success alert-dismissible fade show mb-3 bg-transparent " role="alert" style="color:#D3D6D8 !important;" >
+                        <div class="alert alert-success alert-dismissible fade show mb-3 bg-transparent " role="alert" style="color:white !important;" >
                             Withdraw request has been sent.
                         </div>
                         <a href="{{route('user-wallet',['id'=>1])}}" class="btn btn-outline-info">Exit</a>

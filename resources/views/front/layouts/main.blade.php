@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <style>
         .txtWhitecolor{
-            color: #D3D6D8 !important;
+            color: white !important;
         }
         .btn-outline-warning {
             color: #ffff00;

@@ -27,7 +27,7 @@
         color: yellow;
     }
     .txtWhitecolor{
-        color: #D3D6D8 !important;
+        color: white !important;
     }
     .msgHeader{
         background-color: #102331;

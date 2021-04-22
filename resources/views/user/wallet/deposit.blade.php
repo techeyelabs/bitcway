@@ -3,7 +3,7 @@
 @section('custom_css')
     <style>
         .txtWhitecolor{
-            color: #D3D6D8;
+            color: white;
         }
     </style>
 @endsection

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\DerivativeSell;
+use App\Models\LimitBuySell;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +45,8 @@ class TradeController extends Controller
 
             }
             $data['currency'] = $currency;
-//            dd($data);
+
+            // dd($data);
             return view('user.trade.index', $data);
         }
 
@@ -54,27 +57,46 @@ class TradeController extends Controller
     {
         $data['settings'] = LockedSavingsSetting::get();
         //dummy coin data grab
-        $id = Currency::where('name', 'ADA')->pluck('id');
-        $data['dummy_coin_balance'] = UserWallet::where('user_id', Auth::id())->where('currency_id', $id)->sum('balance');
+        //$id = Currency::where('name', 'ADA')->pluck('id');
+        $wallet = UserWallet::where('user_id', Auth::id())->groupBy('currency_id')->get();
+        $coinBalance = array();
+        for ($i = 0; $i<count($wallet); $i++){
+            $coinBalance[$wallet[$i]->currency_id] = $wallet[$i]->balance;
+        }
+        $data['dummy_coin_balance'] = $coinBalance;
         $data['history'] = LockedSaving::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->get();
         $data['total'] = 0;
+        $data['lockedFinanceSettings'] = LockedSavingsSetting::with('currency')->get();
+//        dd( $data['lockedFinanceSettings']);
 
         return view('user.trade.finance', $data);
     }
 
     public function insertFinance(Request $request)
     {
+    //    dd($request);
         try {
+
             $date = date('Y-m-d');
-            $plan = LockedSavingsSetting::where('id', $request->plan)->first();
+            $authUserId = Auth::user()->id;
+            $currency = Currency::where('id', $request->coinId)->first();
+            $UserWallet = UserWallet::where('user_id', $authUserId)->where('currency_id', $currency->id)->first();
+            $UserWalletBalance = UserWallet::select('balance', 'currency_id')->where('user_id', $authUserId)->where('currency_id', $currency->id)->first();
+
             $lockedInvest = new LockedSaving();
-            $lockedInvest->user_id = Auth::user()->id;
+            $lockedInvest->user_id = $authUserId;
             $lockedInvest->plan_id = $request->plan;
             $lockedInvest->lot_count = $request->lot;
             $lockedInvest->value_date = $date;
-            $lockedInvest->redemption_date = date('Y-m-d', strtotime($date . ' + ' . $plan->duration . ' days'));
-            $lockedInvest->expected_interest = $plan->interest_per_lot * $request->lot;
+            $lockedInvest->redemption_date = date('Y-m-d', strtotime($date . ' + ' . $request->redemptionTime . ' days'));
+            $lockedInvest->expected_interest = $request->expected_interest;
+            $lockedInvest->currency_id = $request->coinId;
+            $lockedInvest->lot_size = $request->coinLotSize;
             $lockedInvest->save();
+
+            $UserWallet->balance = $UserWalletBalance->balance - $request->totalCoin;
+            $UserWallet->save();
+
         } catch (Exception $e){
             return route('user-trade-finance');
         }
@@ -98,16 +120,17 @@ class TradeController extends Controller
     {
         $currency = Currency::where('name', $request->currency)->first();
         if(!$currency) return response()->json(['status' => false]);
-
         $UserWallet = UserWallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->first();
-
         //For saving Trade data in User Wallet table
         if (!isset($request->leverage)){
             if(!$UserWallet) {
                 $UserWallet = new UserWallet();
                 $UserWallet->balance = $request->buyAmount;
+                $UserWallet->equivalent_trade_amount = $request->calcBuyAmount;
+
             }else{
                 $UserWallet->balance = $UserWallet->balance+$request->buyAmount;
+                $UserWallet->equivalent_trade_amount = $UserWallet->equivalent_trade_amount + $request->calcBuyAmount;
             }
             $UserWallet->user_id = Auth::user()->id;
             $UserWallet->currency_id = $currency->id;
@@ -123,11 +146,17 @@ class TradeController extends Controller
             Auth::user()->balance = Auth::user()->balance - $request->calcBuyAmount;
         }
         Auth::user()->save();
-
+//        derivativeLoan
         try{
             $TransactionHistory= new TransactionHistory();
             $TransactionHistory->amount = $request->buyAmount;
             $TransactionHistory->equivalent_amount = $request->calcBuyAmount;
+            $TransactionHistory->derivativeUserMoney = $request->derivativeUserMoney;
+            if ($request->derivativeLoan == 0){
+                $TransactionHistory->derivativeLoan = 0;
+            }else{
+                $TransactionHistory->derivativeLoan = $request->calcBuyAmount - $request->derivativeUserMoney;
+            }
             $TransactionHistory->type = 1;
             $TransactionHistory->leverage = $leverage;
             $TransactionHistory->user_id = Auth::user()->id;
@@ -138,6 +167,8 @@ class TradeController extends Controller
                 $LeverageWallet = new Leverage_Wallet();
                 $LeverageWallet->amount = $request->buyAmount;
                 $LeverageWallet->equivalent_amount = $request->calcBuyAmount;
+                $LeverageWallet->derivativeUserMoney = $request->derivativeUserMoney;
+                $LeverageWallet->derivativeLoan = $request->calcBuyAmount - $request->derivativeUserMoney;
                 $LeverageWallet->type = 1;
                 $LeverageWallet->leverage = $leverage;
                 $LeverageWallet->user_id = Auth::user()->id;
@@ -152,6 +183,7 @@ class TradeController extends Controller
 
     public function sell(Request $request)
     {
+//        dd($request->all());
         $leverageRequestSellAmount = $request->sellAmount;
         $equivalentSellAmount = $request->calcSellAmount;
 
@@ -259,6 +291,34 @@ class TradeController extends Controller
     {
         $Bitfinex = new Bitfinex();
         return $Bitfinex->getOrderBook($request->currency);
+    }
+    public function limitBuy(Request $request){
+//        dd($request);
+        $currency = Currency::where('name', $request->currency)->first();
+        $limitBuy = new LimitBuySell();
+        $limitBuy->limitType = $request->limitType;
+        $limitBuy->priceLimit = $request->priceLimit;
+        $limitBuy->currencyAmount = $request->currencyAmount;
+        $limitBuy->transactionStatus = $request->transactionStatus;
+        $limitBuy->user_id = Auth::user()->id;
+        $limitBuy->currency_id = $currency->id;
+        $limitBuy->save();
+        return response()->json(['status' => true]);
+
+
+    }
+    public function limitSell(Request $request){
+//        dd($request);
+        $currency = Currency::where('name', $request->currency)->first();
+        $limitSell = new LimitBuySell();
+        $limitSell->limitType = $request->limitType;
+        $limitSell->priceLimit = $request->priceLimit;
+        $limitSell->currencyAmount = $request->currencyAmount;
+        $limitSell->transactionStatus = $request->transactionStatus;
+        $limitSell->user_id = Auth::user()->id;
+        $limitSell->currency_id = $currency->id;
+        $limitSell->save();
+        return response()->json(['status' => true]);
     }
 
 }
