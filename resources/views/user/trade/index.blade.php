@@ -186,11 +186,12 @@
 
                                     <div class="">
                                         <div class="form-check form-check-inline" id="limitBuyId" >
-                                            <input class="form-check-input " type="checkbox" id="limitBuyInput" value="limitBuy"  v-on:change="limitBuy" disabled>
+                                            <input class="form-check-input " type="checkbox" id="limitBuyInput" value="1"  v-on:click="limitBuy" disabled>
+{{--                                            <input class="form-check-input " type="checkbox" id="limitBuyInput" value="1"  onclick="limb()" disabled>--}}
                                             <label class="form-check-label txtWhitecolor" for="inlineCheckbox1">Buy</label>
                                         </div>
                                         <div class="form-check form-check-inline" id="limitSellId" >
-                                            <input class="form-check-input" type="checkbox" id="limitSellInput" value="limitSell" v-on:change="limitSell"  disabled>
+                                            <input class="form-check-input" type="checkbox" id="limitSellInput" value="2" v-on:click="limitSell"  disabled>
                                             <label class="form-check-label txtWhitecolor" for="inlineCheckbox2">Sell</label>
                                         </div>
                                     </div>
@@ -281,6 +282,9 @@
 @endsection
 
 @section('custom_js')
+    <script>
+
+    </script>
     <script>
         function choseOrderType() {
             var buyCheckBox = document.getElementById("limitBuyInput");
@@ -754,59 +758,70 @@
                         });
                 },
                 limitBuy(){
-                    let that = this;
-                    // let calcLimit = that.calcLimitAmount;
-                    if(that.calcLimitAmount <= 0 || that.calcLimitAmount > that.usdBalance) {
-                        toastr.error('Invalid limit amount !!');
-                        return false;
-                    }
-                    showLoader('Processing...');
-                    axios.post('{{route("user-limit-buy")}}', {
-                        currency: that.currency,
-                        limitType: 1,
-                        priceLimit : that.limitAmount,
-                        currencyAmount: that.totalLimitCurrency,
-                        transactionStatus: 1
+                    let sellCheckBox = document.getElementById("limitSellInput");
+                    let buyCheckedValue = $('#limitBuyInput:checked').val();
+                    if (buyCheckedValue == 1){
+                        sellCheckBox.disabled = true;
+                        let that = this;
+                        // let calcLimit = that.calcLimitAmount;
+                        if(that.calcLimitAmount <= 0 || that.calcLimitAmount > that.usdBalance) {
+                            toastr.error('Invalid limit amount !!');
+                            return false;
+                        }
+                        showLoader('Processing...');
+                        axios.post('{{route("user-limit-buy")}}', {
+                            currency: that.currency,
+                            limitType: 1,
+                            priceLimit : that.limitAmount,
+                            currencyAmount: that.totalLimitCurrency,
+                            transactionStatus: 1
 
-                    })
-                        .then(function (response) {
-                            if(response.data.status){
-                                toastr.success('Limit Buy successfull');
-                                window.location.href = '{{route("user-wallets")}}';
-                                return false;
-                            }
-                            toastr.error('Error occured(Limit) !!');
                         })
-                        .catch(function (error) {
-                            toastr.error('Error occured(Limit) !!');
-                        });
+                            .then(function (response) {
+                                if(response.data.status){
+                                    toastr.success('Limit Buy successfull');
+                                    window.location.href = '{{route("user-wallets")}}';
+                                    return false;
+                                }
+                                toastr.error('Error occured(Limit) !!');
+                            })
+                            .catch(function (error) {
+                                toastr.error('Error occured(Limit) !!');
+                            });
+                    }
+
                 },
                 limitSell(){
-                    let that = this;
-                    if(that.calcLimitAmount <= 0 ) {
-                        toastr.error('Invalid Limit Sell amount !!');
-                        return false;
-                    }
+                    let buyCheckBox = document.getElementById("limitBuyInput");
+                    let sellCheckedValue = $('#limitBuySellInput:checked').val();
+                    if (sellCheckedValue == 2){
+                        buyCheckBox.disabled = true;
+                        let that = this;
+                        if(that.calcLimitAmount <= 0 ) {
+                            toastr.error('Invalid Limit Sell amount !!');
+                            return false;
+                        }
 
-                    showLoader('Processing...');
-                    axios.post('{{route("user-limit-sell")}}', {
-                        currency: that.currency,
-                        limitType: 2,
-                        priceLimit : that.limitAmount,
-                        currencyAmount: that.totalLimitCurrency,
-                        transactionStatus: 1
-                    })
-                        .then(function (response) {
-                            if(response.data.status){
-                                toastr.success('Limit Sell successfull');
-                                window.location.href = '{{route("user-wallets")}}';
-                                return false;
-                            }
-                            toastr.error('Error occured(Limit Sell) !!');
+                        showLoader('Processing...');
+                        axios.post('{{route("user-limit-sell")}}', {
+                            currency: that.currency,
+                            limitType: 2,
+                            priceLimit : that.limitAmount,
+                            currencyAmount: that.totalLimitCurrency,
+                            transactionStatus: 1
                         })
-                        .catch(function (error) {
-                            toastr.error('Error occured(Limit Sell) !!');
-                        });
+                            .then(function (response) {
+                                if(response.data.status){
+                                    toastr.success('Limit Sell successfull');
+                                    window.location.href = '{{route("user-wallets")}}';
+                                    return false;
+                                }
+                                toastr.error('Error occured(Limit Sell) !!');
+                            })
+                            .catch(function (error) {
+                                toastr.error('Error occured(Limit Sell) !!');
+                            });
+                    }
                 },
                 getOrders(){
                     let that = this;
