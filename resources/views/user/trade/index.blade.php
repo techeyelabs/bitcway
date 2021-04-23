@@ -163,7 +163,8 @@
                                         <div id="limitDiv"  style="display: none">
                                             <label class="txtWhitecolor" for="" style="margin-top: 10px;">Limit:</label>
                                             <div class="input-group">
-                                                <input type="text" id="limitAmountId" class="form-control mb-1" placeholder="" v-model="limitAmount">
+                                                <input type="text" id="limitAmountId" onkeyup="limitLength()" class="form-control mb-1" placeholder="" v-model="limitAmount">
+                                                <span v-if="limitAmount.length" id="limitAmountInputLength" class="input-count d-none">@{{limitAmount.length}}</span>
                                             </div>
                                         </div>
                                         <label class="txtWhitecolor" for="" style="margin-top: 10px;">USD:</label>
@@ -187,7 +188,6 @@
                                     <div class="">
                                         <div class="form-check form-check-inline" id="limitBuyId" >
                                             <input class="form-check-input "  type="checkbox" id="limitBuyInput" value="1"  v-on:click="limitBuy" disabled>
-{{--                                            <input class="form-check-input" :disabled="limitAmount<=0 || totalLimitCurrency <= 0" type="checkbox" id="limitBuyInput" value="1"  onclick="limb()" disabled>--}}
                                             <label class="form-check-label txtWhitecolor" for="inlineCheckbox1">Buy</label>
                                         </div>
                                         <div class="form-check form-check-inline" id="limitSellId" >
@@ -198,7 +198,8 @@
                                     <div id="coinDiv" style="display: none">
                                         <label class="txtWhitecolor" for="" style="margin-top: 20px; margin-bottom: 5px">Coin:</label>
                                         <div class="input-group">
-                                            <input type="text" id="totalLimitCurrencyId" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
+                                            <input type="text" id="totalLimitCurrencyId" onkeyup="limitLength()" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
+                                            <span v-if="totalLimitCurrency.length" id="totalLimitCurrencyInputLength" class="input-count ">@{{totalLimitCurrency.length}}</span>
                                         </div>
                                         <p class="d-none" id="calcLimitAmountId">@{{ calcLimitAmount }}</p>
                                     </div>
@@ -283,23 +284,17 @@
 
 @section('custom_js')
     <script>
-        function countLimit() {
-            let count = $('#limitAmountId input:text').html().length;
-            console.log(count);
+        function limitLength() {
+            var buyCheckBox = document.getElementById("limitBuyInput");
+            var sellCheckBox = document.getElementById("limitSellInput");
+            let cLimit = parseInt($('#totalLimitCurrencyInputLength').html());
+            let aLimit = parseInt($('#limitAmountInputLength').html());
+            if (aLimit > 0 && cLimit > 0){
+                buyCheckBox.disabled = false;
+                sellCheckBox.disabled = false;
+            }
 
         }
-        // $("#limitAmountId input:text").on("keyup", function(){
-        // $('#limitAmountId').keyup(function() {
-        //     console.log("1");
-        //     let count = $(this).val().length;
-        //     console.log(count);
-        //     if (count > 0){
-        //         console.log("2");
-        //         var buyCheckBox = document.getElementById("limitBuyInput");
-        //         buyCheckBox.disabled = false;
-        //     }
-        // });
-        // totalLimitCurrencyId
     </script>
     <script>
         function choseOrderType() {
