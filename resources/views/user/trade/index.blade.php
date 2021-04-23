@@ -50,6 +50,11 @@
         .table>:not(caption)>*>* {
             padding: 2px 20px 2px 20px !important;
         }
+        .selectClass{
+            background-color: #081420 !important;
+            color: darkgray !important;
+            border: none;
+        }
 
     </style>
 @endsection
@@ -74,20 +79,15 @@
                                         <th class="txtWhitecolor">SYMBOL</th>
                                         <th class="txtWhitecolor">LAST PRICE</th>
                                         <th class="txtWhitecolor">24H CHANGE</th>
-                                        {{-- <th>24H HIGH</th>
-                                        <th>24H LOW</th> --}}
                                         <th class="txtWhitecolor">VOLUME</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-{{--                                    <tr v-for="item in trackers" v-on:click="setCurrency(item)" :class="{active: item[0] == selectedItem[0]}" >--}}
                                     <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}" v-on:click="setCurrency(item)">
                                         <td></td>
                                         <td v-cloak id="currencyNameid" class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
                                         <td style=""><span v-cloak style="color: white;font-size: 12px;">@{{item[7]}}</span> USD</td>
                                         <td v-cloak :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
-                                        {{-- <td>@{{item[3]}}</td>
-                                        <td>@{{item[4]}}</td> --}}
                                         <td v-cloak class="txtWhitecolor">@{{Math.round(item[7]*item[8])}}</td>
                                     </tr>
                                 </tbody>
@@ -100,8 +100,6 @@
                         @if(isset($type))
                             <div class="card-body">
                                 <h4 v-cloak class="txtHeadingColor " >ORDER FORM: @{{currency}}</h4>
-
-                                {{-- <small class="float-end">BALANCE: @{{usdBalance}}</small> --}}
                                 <hr>
                                 <div class="row">
                                     <div class="col ">
@@ -109,11 +107,6 @@
                                             <label for="" class="txtWhitecolor">USD:</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
-{{--                                                <div class="input-group-append">--}}
-{{--                                                    <span class="input-group-text" id="">--}}
-{{--                                                       <span class="text-muted">~@{{calcAmount}}</span>--}}
-{{--                                                    </span>--}}
-{{--                                                </div>--}}
                                             </div>
                                             <span v-cloak class="text-muted form-control">~@{{calcAmount}}</span>
                                             <small class="txtWhitecolor">BID</small>
@@ -159,21 +152,27 @@
                         @else
                             <div class="card-body">
                             <h4 v-cloak class="txtHeadingColor">ORDER FORM: @{{currency}}</h4>
-                            {{-- <small class="float-end">BALANCE: @{{usdBalance}}</small> --}}
                             <hr>
                             <div class="row">
                                 <div class="col">
+                                    <select class="form-select selectClass" aria-label="Default select example" id="choseOrderType" onchange="choseOrderType()">
+                                        <option value="0" selected>Market</option>
+                                        <option value="1">Limit</option>
+                                    </select>
                                     <div class="form-group">
-                                        <label class="txtWhitecolor" for="">USD:</label>
+                                        <div id="limitDiv"  style="display: none">
+                                            <label class="txtWhitecolor" for="" style="margin-top: 10px;">Limit:</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control mb-1" placeholder="" v-model="limitAmount">
+                                            </div>
+                                        </div>
+                                        <label class="txtWhitecolor" for="" style="margin-top: 10px;">USD:</label>
                                         <div class="input-group">
                                             <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
-{{--                                            <div class="input-group-append">--}}
-{{--                                                <span class="input-group-text" id="">--}}
-{{--                                                   <span class="text-muted">~@{{calcAmount}}</span>--}}
-{{--                                                </span>--}}
-{{--                                            </div>--}}
                                         </div>
                                         <span v-cloak class="text-muted form-control">~@{{calcAmount}}</span>
+                                    </div>
+                                    <div class="" style="margin-bottom: 15px;">
                                         <small class="txtWhitecolor">BID</small>
                                         <small v-cloak class="float-end text-success cursor-pointer" v-on:click="selectedPrice=latestBid">
                                             <i v-if="bidIncrease" class="fas fa-sort-up"></i>
@@ -181,14 +180,31 @@
                                             @{{latestBid}}
                                         </small>
                                     </div>
-                                    <div class="d-grid">
-                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy">Exchange Buy</button>
-                                    </div>
+                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy" style="width: 100%;">Exchange Buy</button>
                                 </div>
                                 <div class="col">
-                                    <div class="form-group" style="margin-bottom: 51px;">
+
+                                    <div class="">
+                                        <div class="form-check form-check-inline" id="limitBuyId" >
+                                            <input class="form-check-input " type="checkbox" id="limitBuyInput" value="limitBuy"  v-on:change="limitBuy" disabled>
+                                            <label class="form-check-label txtWhitecolor" for="inlineCheckbox1">Buy</label>
+                                        </div>
+                                        <div class="form-check form-check-inline" id="limitSellId" >
+                                            <input class="form-check-input" type="checkbox" id="limitSellInput" value="limitSell" v-on:change="limitSell"  disabled>
+                                            <label class="form-check-label txtWhitecolor" for="inlineCheckbox2">Sell</label>
+                                        </div>
+                                    </div>
+                                    <div id="coinDiv" style="display: none">
+                                        <label class="txtWhitecolor" for="" style="margin-top: 20px; margin-bottom: 5px">Coin:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="tradeCoinForm" style="margin-bottom: 54px; margin-top: 19px;">
                                         <label v-cloak class="txtWhitecolor" for="">@{{currency}}:</label>
                                         <input type="text" class="form-control mb-1" placeholder="" v-model="amount">
+                                    </div>
+                                    <div class="" style="margin-bottom: 15px;">
                                         <small class="txtWhitecolor">ASK</small>
                                         <small v-cloak class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
                                             <i v-if="askIncrease" class="fas fa-sort-up"></i>
@@ -196,9 +212,7 @@
                                             @{{latestAsk}}
                                         </small>
                                     </div>
-                                    <div class="d-grid">
-                                        <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell">Exchange SELL</button>
-                                    </div>
+                                        <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell" style="width: 100%;">Exchange Sell</button>
                                 </div>
                             </div>
                         </div>
@@ -214,52 +228,6 @@
                         <div id="tradingview_f7648" ></div>
                     </div>
                 </div>
-                {{-- <div class="mt-3">
-                    <div class="">
-                        <div class="row">
-                            <div class="col">
-
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4>Buy @{{currency}}</h4> <small class="float-end">BALANCE: @{{usdBalance}}</small>
-                                        <hr>
-                                        <div class="form-group">
-                                            <label for="">Price:</label>
-                                            <input type="text" class="form-control" placeholder="Coin exchange proce.." :value="selectedItem[7]">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="">Amount:</label> <small class="float-end" :class="{'text-danger': calcAmount>usdBalance, 'text-success': calcAmount<=usdBalance}">TOTAL: @{{calcAmount}}</small>
-                                            <input type="number" class="form-control" placeholder="Enter buy amount..." v-model="buyAmount">
-                                        </div>
-                                        <div class="d-grid">
-                                            <button class="btn btn-block btn-success" :disabled="buyAmount<=0 || calcAmount > usdBalance" v-on:click="buy">BUY</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4>Sell @{{currency}}</h4> <small class="float-end">BALANCE: @{{balance}}</small>
-                                        <hr>
-                                        <div class="form-group">
-                                            <label for="">Price:</label>
-                                            <input type="text" class="form-control" placeholder="Coin exchange proce.." :value="selectedItem[7]">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="">Amount:</label> <small class="float-end" :class="{'text-danger': sellAmount>balance, 'text-success': sellAmount<=balance}">TOTAL: @{{calcSellAmount}}</small>
-                                            <input type="number" class="form-control" placeholder="Enter sell amount..." v-model="sellAmount">
-                                        </div>
-                                        <div class="d-grid">
-                                            <button class="btn btn-block btn-danger" :disabled="sellAmount<=0 || sellAmount > balance" v-on:click="sell">SELL</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-
                 <div class="card mt-3">
                     <div class="card-body">
                         <h4 class="txtHeadingColor" v-cloak>Order Book: @{{currency}}/USD</h4>
@@ -312,6 +280,29 @@
 @endsection
 
 @section('custom_js')
+    <script>
+        function choseOrderType() {
+            var buyCheckBox = document.getElementById("limitBuyInput");
+            var sellCheckBox = document.getElementById("limitSellInput");
+            var limitDiv = document.getElementById("limitDiv");
+            var coinDiv = document.getElementById("coinDiv");
+            var tradeCoinForm = document.getElementById("tradeCoinForm");
+            let type = $("#choseOrderType").val();
+            if (type == 1){
+                buyCheckBox.disabled = false;
+                sellCheckBox.disabled = false;
+                limitDiv.style.display = "block";
+                coinDiv.style.display = "block";
+                tradeCoinForm.style.marginTop = "10px";
+            }else{
+                buyCheckBox.disabled = true;
+                sellCheckBox.disabled = true;
+                limitDiv.style.display = "none";
+                coinDiv.style.display = "none";
+                tradeCoinForm.style.marginTop = "19px";
+            }
+        }
+    </script>
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
@@ -346,7 +337,7 @@
         // showLoader('Loading...');
         let loaded = false;
         socket.on('trackers', (trackers) => {
-            console.log(trackers);
+            // console.log(trackers);
             Home.trackers = trackers.trackers;
             // Home.trackers.push(dumCoin);
             let coinData = Home.trackers;
@@ -420,18 +411,15 @@
                     }
                 })
                 .catch(error => "404")
-
         }
 
         let getOrders = function(currency){
-
             if(w) w.close();
             w = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
             w.onmessage = function(msg){
                 items = JSON.parse(msg.data);
                 // console.log(msg.data);
                 if (items.event) return;
-                // console.log("BitBook1:", items[2]);
                 if(items[1]){
                     if(items[1].length > 3){
                         bids = [];
@@ -447,7 +435,6 @@
                         Home.asks = asks;
                     }else{
                         item = items[1];
-                        // console.log("BitBook:", item);
                         if(item[2] > 0){
                             if(Home.bids.length > 25) Home.bids.pop();
                             Home.bids = [item].concat(Home.bids);
@@ -478,7 +465,6 @@
             }
         };
 
-
         let Home = new Vue({
             el: '.trade',
             data: {
@@ -500,7 +486,9 @@
                 latestAsk: 0,
                 askIncrease: false,
                 selectedPrice: '',
-                derivativeValue:'1'
+                derivativeValue:'1',
+                limitAmount:'',
+                totalLimitCurrency:''
             },
             mounted() {
 
@@ -761,21 +749,69 @@
                                 window.location.reload();
                         });
                 },
-                getOrders(){
+                limitBuy(){
+                    let that = this;
+                    if(that.limitAmount <= 0 || that.limitAmount > that.usdBalance) {
+                        toastr.error('Invalid limit amount !!');
+                        return false;
+                    }
+                    showLoader('Processing...');
+                    axios.post('{{route("user-limit-buy")}}', {
+                        currency: that.currency,
+                        limitType: 1,
+                        priceLimit : that.limitAmount,
+                        currencyAmount: that.totalLimitCurrency,
+                        transactionStatus: 1
 
+                    })
+                        .then(function (response) {
+                            if(response.data.status){
+                                toastr.success('Limit Buy successfull');
+                                window.location.href = '{{route("user-wallets")}}';
+                                return false;
+                            }
+                            toastr.error('Error occured(Limit) !!');
+                        })
+                        .catch(function (error) {
+                            toastr.error('Error occured(Limit) !!');
+                        });
+                },
+                limitSell(){
+                    let that = this;
+                    if(that.limitAmount <= 0) {
+                        toastr.error('Invalid Limit Sell amount !!');
+                        return false;
+                    }
+
+                    showLoader('Processing...');
+                    axios.post('{{route("user-limit-sell")}}', {
+                        currency: that.currency,
+                        limitType: 2,
+                        priceLimit : that.limitAmount,
+                        currencyAmount: that.totalLimitCurrency,
+                        transactionStatus: 1
+                    })
+                        .then(function (response) {
+                            if(response.data.status){
+                                toastr.success('Limit Sell successfull');
+                                window.location.href = '{{route("user-wallets")}}';
+                                return false;
+                            }
+                            toastr.error('Error occured(Limit Sell) !!');
+                        })
+                        .catch(function (error) {
+                            toastr.error('Error occured(Limit Sell) !!');
+                        });
+                },
+                getOrders(){
                     let that = this;
                     let currency = that.selectedItem[0];
                     getOrders(currency);
                     getInitialOrder(currency);
                 },
-
             },
             beforeMount(){
-
             },
-
         });
-
-
     </script>
 @endsection

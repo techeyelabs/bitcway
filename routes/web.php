@@ -11,6 +11,7 @@ use App\Http\Controllers\User\BuySellController;
 use App\Http\Controllers\User\MessageController;
 use App\Http\Controllers\User\TradeController;
 use App\Http\Controllers\User\CronController;
+use App\Http\Controllers\LimitCronController;
 use App\Libraries\test;
 
 
@@ -95,6 +96,13 @@ Route::prefix('user')->middleware(['auth'])->group(function(){
     Route::post('/trade-sell', [TradeController::class, 'sell'])->name('user-trade-sell');
     Route::get('/get-buy-orders', [TradeController::class, 'getBuyOrders'])->name('user-get-buy-orders');
     Route::get('/locked-savings-invest', [CronController::class, 'myaction'])->name('user-locked-savings-invest');
+    Route::post('/limit-buy', [TradeController::class, 'limitBuy'])->name('user-limit-buy');
+    Route::post('/limit-sell', [TradeController::class, 'limitSell'])->name('user-limit-sell');
+
+    //Limit BuySell Cron Job
+    Route::get('/limitcronjob', [LimitCronController::class, 'limitCronJob'])->name('limit-buysell-cronjob');
+    Route::get('/testjobbuy', [LimitCronController::class, 'updateLimitBuyTable']);
+    Route::get('/testjobsell', [LimitCronController::class, 'updateLimitSellTable']);
 
 });
 

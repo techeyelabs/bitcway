@@ -29,13 +29,20 @@
         <div class="card mt-3 " style="width: 400px">
             <div class="card-body">
                 <div class="" style="margin: auto">
-                    <div class="container-fluid" >
-                        <div class="row  text-left " style="margin-left: -15px;">
+                    <div class="row container-fluid" >
+                        <div>
+                            <div class="  text-left " style="margin-left: -15px;">
                            <abbr title="Your Total Margin Balance"  class="txtWhitecolor text-left initialism">Total Margin Balance</abbr><br>
                             <h4 class="txtWhitecolor text-left mb-4" ><span id="totalMArginBalanceId">00.000000</span><span style="font-size: 10px">USD</span></h4>
-
-                            <abbr title="Your Total Wallet Balance"  class="txtWhitecolor text-left initialism">Total Wallet Balance</abbr><br>
-                            <h4 class="txtWhitecolor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
+{{--                                <div class="row">--}}
+{{--                                    <div class="tex-left" style="width: 180px;">--}}
+                                        <abbr title="Your Total Wallet Balance"  class="txtWhitecolor text-left initialism">Total Wallet Balance</abbr><br>
+                                        <h4 class="txtWhitecolor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
+{{--                                    </div>--}}
+{{--                                    <div class="tex-right">--}}
+{{--                                        <button>hi</button>--}}
+{{--                                    </div>--}}
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -77,7 +84,7 @@
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}" style="text-align: center;">{!! number_format((double)($item->equivalent_trade_amount),5)!!}</p>
                             <p class="col txtWhitecolor" id="CoinpriceIntoMycoin{{$index}}" style="text-align: center;">00.000000</p>
                             <p class="col " id="unrealizedpnl{{$index}}" style="text-align: right;">00.000000</p>
-                            <p class="col txtHeadingColor" id="assetTradeSell{{$index}}" style="text-align: right; cursor: pointer">Trade</p>
+                            <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetTradeSell{{$index}}" style="cursor: pointer;">Trade</span></p>
                         </li>
                         <?php
                         }
@@ -134,7 +141,7 @@
                                 <p class="d-none" id="derivativeAmountWithPNL{{$j}}">00.000000</p>
                                 <p class="col " id="derivativeUnrealizedPrice{{$j}}" style="text-align: right;color:white;">00.000000</p>
                                 <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: right; color:white;">{{$item->leverage}}</p>
-                                <p class="col txtHeadingColor" id="assetDerivativeSell{{$j}}" style="text-align: right;cursor: pointer">Trade</p>
+                                <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetDerivativeSell{{$j}}" style="cursor: pointer;">Trade</span></p>
                             </li>
                             <?php
                             }
@@ -242,7 +249,6 @@
                 let tradeCurrencySize = parseFloat($('#MyTotalCoinSize' + i).html());
                 let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + i).html());
 
-                // console.log("Name:",currencyName," Size:", tradeCurrencySize, " MarkPrice:", tradeMarkPrice);
 
                 let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
@@ -295,8 +301,6 @@
                             toastr.error('Error occured !!');
                         });
                 });
-
-                // console.log("Name:",currencyName," Size:", tradeCurrencySize, " MarkPrice:", tradeMarkPrice);
             }
 
             let indexNumber2 = $('#myCoinIndex2').html();
@@ -342,7 +346,6 @@
                 let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + ds).html());
 
                 $( "#assetDerivativeSell" + ds ).click(function() {
-                    // console.log("in");
                     axios.post('{{route("user-trade-sell")}}',{
                         currency: derivativeCurrencyName,
                         sellAmount: derivativeCurrencySize,
@@ -361,8 +364,6 @@
                             toastr.error('Error occured !!');
                         });
                 });
-
-                // console.log("Name:",derivativeCurrencyName," Size:", derivativeCurrencySize, " MarkPrice:", derivativeMarkPrice);
             }
 
             let totalFinanceValue = 0.00;
@@ -374,8 +375,6 @@
                 let coinLotSize = parseFloat($('#lotSize'+ k).html());
                 let coinExpectedInterest = parseFloat($('#expectedInterest' + k).html());
                 let totalCoinValue  = parseFloat(((coinLot*coinLotSize) + coinExpectedInterest));
-
-                // console.log(coinLot, coinLotSize, coinExpectedInterest);
                
                
                 let full_data = trackers.trackers;
@@ -386,12 +385,9 @@
                 });
                 for (let a = 1; a <= indexNumber3; a++) {
                     totalFinanceValue += parseFloat($('#coinWithInterest' + a).html());
-                    console.log(totalFinanceValue);
                     if (isNaN(totalFinanceValue)){
-                        console.log("if");
                     parseFloat($('#totalFinanceAmount').html("00.00000"));
                     }else{
-                        console.log("Else");
                     parseFloat($('#totalFinanceAmount').html((totalFinanceValue).toFixed(5)));
                     }
                 }
@@ -442,5 +438,12 @@
                 }
             }
         }
+    </script>
+    <script>
+        function autoRefreshPage()
+        {
+            window.location = window.location.href;
+        }
+        setInterval('autoRefreshPage()', 600000);
     </script>
 @endsection
