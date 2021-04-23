@@ -199,10 +199,11 @@
                                         <div class="input-group">
                                             <input type="text" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
                                         </div>
+                                        <p class="d-none" id="calcLimitAmountId">@{{ calcLimitAmount }}</p>
                                     </div>
                                     <div class="form-group" id="tradeCoinForm" style="margin-bottom: 54px; margin-top: 19px;">
                                         <label v-cloak class="txtWhitecolor" for="">@{{currency}}:</label>
-                                        <input type="text" class="form-control mb-1" placeholder="" v-model="amount">
+                                        <input type="text" class="form-control mb-1" placeholder=" " v-model="amount">
                                     </div>
                                     <div class="" style="margin-bottom: 15px;">
                                         <small class="txtWhitecolor">ASK</small>
@@ -510,6 +511,9 @@
                 },
                 derivativeRange(){
                     return (this.amount*this.selectedPrice)/this.derivativeValue;
+                },
+                calcLimitAmount(){
+                    return this.totalLimitCurrency*this.limitAmount;
                 }
             },
             methods: {
@@ -751,7 +755,8 @@
                 },
                 limitBuy(){
                     let that = this;
-                    if(that.limitAmount <= 0 || that.limitAmount > that.usdBalance) {
+                    // let calcLimit = that.calcLimitAmount;
+                    if(that.calcLimitAmount <= 0 || that.calcLimitAmount > that.usdBalance) {
                         toastr.error('Invalid limit amount !!');
                         return false;
                     }
@@ -778,7 +783,7 @@
                 },
                 limitSell(){
                     let that = this;
-                    if(that.limitAmount <= 0) {
+                    if(that.calcLimitAmount <= 0 ) {
                         toastr.error('Invalid Limit Sell amount !!');
                         return false;
                     }
