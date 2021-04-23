@@ -793,7 +793,7 @@
                 },
                 limitSell(){
                     let buyCheckBox = document.getElementById("limitBuyInput");
-                    let sellCheckedValue = $('#limitBuySellInput:checked').val();
+                    let sellCheckedValue = $('#limitSellInput:checked').val();
                     if (sellCheckedValue == 2){
                         buyCheckBox.disabled = true;
                         let that = this;
