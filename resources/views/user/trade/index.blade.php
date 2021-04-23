@@ -163,7 +163,7 @@
                                         <div id="limitDiv"  style="display: none">
                                             <label class="txtWhitecolor" for="" style="margin-top: 10px;">Limit:</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control mb-1" placeholder="" v-model="limitAmount">
+                                                <input type="text" id="limitAmountId" class="form-control mb-1" placeholder="" v-model="limitAmount">
                                             </div>
                                         </div>
                                         <label class="txtWhitecolor" for="" style="margin-top: 10px;">USD:</label>
@@ -186,19 +186,19 @@
 
                                     <div class="">
                                         <div class="form-check form-check-inline" id="limitBuyId" >
-                                            <input class="form-check-input " type="checkbox" id="limitBuyInput" value="1"  v-on:click="limitBuy" disabled>
-{{--                                            <input class="form-check-input " type="checkbox" id="limitBuyInput" value="1"  onclick="limb()" disabled>--}}
+                                            <input class="form-check-input "  type="checkbox" id="limitBuyInput" value="1"  v-on:click="limitBuy" disabled>
+{{--                                            <input class="form-check-input" :disabled="limitAmount<=0 || totalLimitCurrency <= 0" type="checkbox" id="limitBuyInput" value="1"  onclick="limb()" disabled>--}}
                                             <label class="form-check-label txtWhitecolor" for="inlineCheckbox1">Buy</label>
                                         </div>
                                         <div class="form-check form-check-inline" id="limitSellId" >
-                                            <input class="form-check-input" type="checkbox" id="limitSellInput" value="2" v-on:click="limitSell"  disabled>
+                                            <input class="form-check-input"  type="checkbox" id="limitSellInput" value="2" v-on:click="limitSell"  disabled>
                                             <label class="form-check-label txtWhitecolor" for="inlineCheckbox2">Sell</label>
                                         </div>
                                     </div>
                                     <div id="coinDiv" style="display: none">
                                         <label class="txtWhitecolor" for="" style="margin-top: 20px; margin-bottom: 5px">Coin:</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
+                                            <input type="text" id="totalLimitCurrencyId" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
                                         </div>
                                         <p class="d-none" id="calcLimitAmountId">@{{ calcLimitAmount }}</p>
                                     </div>
@@ -283,7 +283,23 @@
 
 @section('custom_js')
     <script>
+        function countLimit() {
+            let count = $('#limitAmountId input:text').html().length;
+            console.log(count);
 
+        }
+        // $("#limitAmountId input:text").on("keyup", function(){
+        // $('#limitAmountId').keyup(function() {
+        //     console.log("1");
+        //     let count = $(this).val().length;
+        //     console.log(count);
+        //     if (count > 0){
+        //         console.log("2");
+        //         var buyCheckBox = document.getElementById("limitBuyInput");
+        //         buyCheckBox.disabled = false;
+        //     }
+        // });
+        // totalLimitCurrencyId
     </script>
     <script>
         function choseOrderType() {
@@ -294,8 +310,8 @@
             var tradeCoinForm = document.getElementById("tradeCoinForm");
             let type = $("#choseOrderType").val();
             if (type == 1){
-                buyCheckBox.disabled = false;
-                sellCheckBox.disabled = false;
+                buyCheckBox.disabled = true;
+                sellCheckBox.disabled = true;
                 limitDiv.style.display = "block";
                 coinDiv.style.display = "block";
                 tradeCoinForm.style.marginTop = "10px";
