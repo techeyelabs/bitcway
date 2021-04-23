@@ -7,6 +7,7 @@ use App\Models\DerivativeSell;
 use App\Models\LimitBuySell;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,8 @@ class TradeController extends Controller
 {
     public function index(Request $request)
     {
+        $data['userInfo'] = UserWallet::where('user_id', Auth::user()->id)->get();
+//        dd($data['userInfo'] );
         $currency = array();
         $data['currency'] = 0;
         if(isset($request->type)){
@@ -45,6 +48,7 @@ class TradeController extends Controller
 
             }
             $data['currency'] = $currency;
+
 
             // dd($data);
             return view('user.trade.index', $data);

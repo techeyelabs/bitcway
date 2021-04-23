@@ -60,6 +60,7 @@
 @endsection
 @section('content')
     <div id="wrap" class="trade">
+{{--        <p>{{$userInfo->balance}}</p>--}}
         @if(isset($type))
             <h3 class="txtHeadingColor">Derivatives</h3>
         @else
@@ -808,7 +809,8 @@
                     if (sellCheckedValue == 2){
                         buyCheckBox.disabled = true;
                         let that = this;
-                        if(that.calcLimitAmount <= 0 ) {
+                        // if(that.calcLimitAmount <= 0 ) {
+                        if(that.calcLimitAmount <= 0 || that.totalLimitCurrency > that.balance) {
                             toastr.error('Invalid Limit Sell amount !!');
                             return false;
                         }
