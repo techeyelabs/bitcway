@@ -24,12 +24,12 @@ class LimitCronController extends Controller
             $getCurrentRate = $Bitfinex->getRate($data->currency->name);
 
             //For Buy
-            if (isset($limitBuy)){
+            if ($limitPrice->limitType == 1){
                 if($getCurrentRate <= $data->priceLimit){
                     $this->updateLimitBuyTable($data->currency->id, $data->id, $data->user_id);
                 }
             //For Sell
-            }else{
+            }else if($limitPrice->limitType == 2){
                 if($getCurrentRate >= $data->priceLimit){
                 $this->updateLimitSellTable($data->currency->id, $data->id, $data->user_id);
                 }
