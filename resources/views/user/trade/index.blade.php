@@ -199,7 +199,7 @@
                                         <label class="txtWhitecolor" for="" style="margin-top: 20px; margin-bottom: 5px">Coin:</label>
                                         <div class="input-group">
                                             <input type="text" id="totalLimitCurrencyId" onkeyup="limitLength()" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
-                                            <span v-if="totalLimitCurrency.length" id="totalLimitCurrencyInputLength" class="input-count ">@{{totalLimitCurrency.length}}</span>
+                                            <span v-if="totalLimitCurrency.length" id="totalLimitCurrencyInputLength" class="input-count d-none">@{{totalLimitCurrency.length}}</span>
                                         </div>
                                         <p class="d-none" id="calcLimitAmountId">@{{ calcLimitAmount }}</p>
                                     </div>
