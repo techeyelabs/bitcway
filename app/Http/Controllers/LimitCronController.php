@@ -86,7 +86,7 @@ class LimitCronController extends Controller
     }
 
 
-    public function updateLimitSellTable($currencyId = 98, $id  = 7, $userId = 7){
+    public function updateLimitSellTable($currencyId, $id, $userId){
         $updateLimitTable = LimitBuySell::where('id', $id)->where('currency_id', $currencyId)->first();
         $UserWallet = UserWallet::where('user_id', $userId)->where('currency_id', $currencyId)->first();
         $userBalance = User::where('id', $userId)->first();
