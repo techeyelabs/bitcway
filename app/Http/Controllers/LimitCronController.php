@@ -18,19 +18,18 @@ class LimitCronController extends Controller
 {
     public function limitCronJob(){
         $Bitfinex = new Bitfinex();
-        $limitBuy = LimitBuySell::where("limitType", 1)->get();
         $limitPrice = LimitBuySell::where("transactionStatus", 1)->with("currency")->get();
         for ($i = 0 ; $i < count($limitPrice); $i++){
             $data = $limitPrice[$i];
             $getCurrentRate = $Bitfinex->getRate($data->currency->name);
 
             //For Buy
-            if (isset($limitBuy)){
+            if ($limitPrice->limitType == 1){
                 if($getCurrentRate <= $data->priceLimit){
                     $this->updateLimitBuyTable($data->currency->id, $data->id, $data->user_id);
                 }
             //For Sell
-            }else{
+            }else if($limitPrice->limitType == 2){
                 if($getCurrentRate >= $data->priceLimit){
                 $this->updateLimitSellTable($data->currency->id, $data->id, $data->user_id);
                 }
@@ -96,18 +95,17 @@ class LimitCronController extends Controller
         $limit_user_id = $userId;
         $limit_currency_id  = $currencyId;
 
-        if(!$UserWallet) {
-            $UserWallet = new UserWallet();
-            $UserWallet->balance = $equivalent_trade_balance_limit;
-            $UserWallet->equivalent_trade_amount = $equivalent_trade_amount_limit;
+        if($UserWallet) {
+            if ($UserWallet->balance < $equivalent_trade_balance_limit){
+                $equivalent_trade_balance_limit = $UserWallet->balance;
+                $equivalent_trade_amount_limit = ($trade_amount_limit * $equivalent_trade_balance_limit);
+            }
 
-        }else{
-            $UserWallet->balance = $UserWallet->balance - $equivalent_trade_balance_limit;
+            $UserWallet->balance =  $UserWallet->balance - $equivalent_trade_balance_limit;
             $UserWallet->equivalent_trade_amount = $UserWallet->equivalent_trade_amount - $equivalent_trade_amount_limit;
+            $UserWallet->save();
         }
-        $UserWallet->user_id = $limit_user_id;
-        $UserWallet->currency_id = $limit_currency_id;
-        $UserWallet->save();
+
 
         $userBalance->balance = $userBalance->balance + $equivalent_trade_amount_limit;
 

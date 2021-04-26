@@ -60,6 +60,7 @@
 @endsection
 @section('content')
     <div id="wrap" class="trade">
+{{--        <p>{{$userInfo->balance}}</p>--}}
         @if(isset($type))
             <h3 class="txtHeadingColor">Derivatives</h3>
         @else
@@ -199,7 +200,7 @@
                                         <label class="txtWhitecolor" for="" style="margin-top: 20px; margin-bottom: 5px">Coin:</label>
                                         <div class="input-group">
                                             <input type="text" id="totalLimitCurrencyId" onkeyup="limitLength()" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
-                                            <span v-if="totalLimitCurrency.length" id="totalLimitCurrencyInputLength" class="input-count ">@{{totalLimitCurrency.length}}</span>
+                                            <span v-if="totalLimitCurrency.length" id="totalLimitCurrencyInputLength" class="input-count d-none">@{{totalLimitCurrency.length}}</span>
                                         </div>
                                         <p class="d-none" id="calcLimitAmountId">@{{ calcLimitAmount }}</p>
                                     </div>
@@ -808,7 +809,8 @@
                     if (sellCheckedValue == 2){
                         buyCheckBox.disabled = true;
                         let that = this;
-                        if(that.calcLimitAmount <= 0 ) {
+                        // if(that.calcLimitAmount <= 0 ) {
+                        if(that.calcLimitAmount <= 0 || that.totalLimitCurrency > that.balance) {
                             toastr.error('Invalid Limit Sell amount !!');
                             return false;
                         }

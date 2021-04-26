@@ -66,7 +66,7 @@
                     
                     <div class="user-info">
                         <span class="user-name txtWhitecolor">{{Auth::user()->first_name}}{{Auth::user()->last_name}}</span>
-                        <strong class="txtWhitecolor">BALANCE: {{Auth::user()->balance}} USD</strong>
+{{--                        <strong class="txtWhitecolor">BALANCE: {{Auth::user()->balance}} USD</strong>--}}
 {{--                        <strong>DERIVATIVE: {{Auth::user()->derivative}} USD</strong><br>--}}
 {{--                        <strong>ASSET: <span id="totalAsset">00000000.00</span> USD</strong>--}}
 
