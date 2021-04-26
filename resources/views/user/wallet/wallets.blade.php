@@ -30,19 +30,11 @@
             <div class="card-body">
                 <div class="" style="margin: auto">
                     <div class="row container-fluid" >
-                        <div>
-                            <div class="  text-left " style="margin-left: -15px;">
-                           <abbr title="Your Total Margin Balance"  class="txtWhitecolor text-left initialism">Total Margin Balance</abbr><br>
+                        <div class="  text-left " style="margin-left: -15px;">
+                            <abbr title="Your Total Margin Balance"  class="txtWhitecolor text-left initialism">Total Margin Balance</abbr><br>
                             <h4 class="txtWhitecolor text-left mb-4" ><span id="totalMArginBalanceId">00.000000</span><span style="font-size: 10px">USD</span></h4>
-{{--                                <div class="row">--}}
-{{--                                    <div class="tex-left" style="width: 180px;">--}}
-                                        <abbr title="Your Total Wallet Balance"  class="txtWhitecolor text-left initialism">Total Wallet Balance</abbr><br>
-                                        <h4 class="txtWhitecolor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
-{{--                                    </div>--}}
-{{--                                    <div class="tex-right">--}}
-{{--                                        <button>hi</button>--}}
-{{--                                    </div>--}}
-                                </div>
+                            <abbr title="Your Total Wallet Balance"  class="txtWhitecolor text-left initialism">Total Wallet Balance</abbr><br>
+                            <h4 class="txtWhitecolor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
                         </div>
                     </div>
                 </div>
