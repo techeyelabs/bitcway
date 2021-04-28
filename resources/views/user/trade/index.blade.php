@@ -105,7 +105,7 @@
                                 <div class="row">
                                     <div class="col ">
                                         <div class="form-group">
-                                            <label for="" class="txtWhitecolor">USD:</label>
+                                            <label for="" class="txtWhitecolor" id="tradeCurrencyName">USD:</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
                                             </div>
@@ -168,11 +168,14 @@
                                                 <span v-if="limitAmount.length" id="limitAmountInputLength" class="input-count d-none">@{{limitAmount.length}}</span>
                                             </div>
                                         </div>
-                                        <label class="txtWhitecolor" for="" style="margin-top: 10px;">USD:</label>
-                                        <div class="input-group">
+                                        <label class="txtWhitecolor d-none" for="" style="margin-top: 10px;">USD:</label>
+                                        <div class="input-group d-none">
                                             <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
                                         </div>
-                                        <span v-cloak class="text-muted form-control">~@{{calcAmount}}</span>
+                                        <div id="totalAmountDiv">
+                                            <label class="txtWhitecolor"  for="" style="margin-top: 10px;">Total:</label>
+                                            <span v-cloak class="text-muted form-control" style="">~@{{calcAmount}}</span>
+                                        </div>
                                     </div>
                                     <div class="" style="margin-bottom: 15px;">
                                         <small class="txtWhitecolor">BID</small>
@@ -186,29 +189,29 @@
                                 </div>
                                 <div class="col">
 
-                                    <div class="">
+                                    <div id="selectType" style="">
                                         <div class="form-check form-check-inline" id="limitBuyId" >
-                                            <input class="form-check-input "  type="checkbox" id="limitBuyInput" value="1"  v-on:click="limitBuy" disabled>
-                                            <label class="form-check-label txtWhitecolor" for="inlineCheckbox1">Buy</label>
+                                            <input class="form-check-input"  type="checkbox" id="limitBuyInput" value="1"  v-on:click="limitBuy" disabled style="display:none;">
+                                            <label class="form-check-label txtWhitecolor" id="limitBuyInputLevel" for="inlineCheckbox1" style="display:none;">Buy</label>
                                         </div>
                                         <div class="form-check form-check-inline" id="limitSellId" >
-                                            <input class="form-check-input"  type="checkbox" id="limitSellInput" value="2" v-on:click="limitSell"  disabled>
-                                            <label class="form-check-label txtWhitecolor" for="inlineCheckbox2">Sell</label>
+                                            <input class="form-check-input "  type="checkbox" id="limitSellInput" value="2" v-on:click="limitSell"  disabled style="display:none;">
+                                            <label class="form-check-label txtWhitecolor" id="limitSellInputLevel" for="inlineCheckbox2" style="display:none;">Sell</label>
                                         </div>
                                     </div>
                                     <div id="coinDiv" style="display: none">
-                                        <label class="txtWhitecolor" for="" style="margin-top: 20px; margin-bottom: 5px">Coin:</label>
+                                        <label class="txtWhitecolor" id="coinId" for="" style="margin-top: 20px; margin-bottom: 5px">Coin:</label>
                                         <div class="input-group">
                                             <input type="text" id="totalLimitCurrencyId" onkeyup="limitLength()" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
                                             <span v-if="totalLimitCurrency.length" id="totalLimitCurrencyInputLength" class="input-count d-none">@{{totalLimitCurrency.length}}</span>
                                         </div>
                                         <p class="d-none" id="calcLimitAmountId">@{{ calcLimitAmount }}</p>
                                     </div>
-                                    <div class="form-group" id="tradeCoinForm" style="margin-bottom: 54px; margin-top: 19px;">
+                                    <div class="form-group" id="tradeCoinForm" style="margin-top: 14px">
                                         <label v-cloak class="txtWhitecolor" for="">@{{currency}}:</label>
                                         <input type="text" class="form-control mb-1" placeholder=" " v-model="amount">
                                     </div>
-                                    <div class="" style="margin-bottom: 15px;">
+                                    <div id="askDiv" style="margin-bottom: 15px;">
                                         <small class="txtWhitecolor">ASK</small>
                                         <small v-cloak class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
                                             <i v-if="askIncrease" class="fas fa-sort-up"></i>
@@ -299,24 +302,44 @@
     </script>
     <script>
         function choseOrderType() {
+            var buyCheckBoxLevel = document.getElementById("limitBuyInputLevel");
+            var sellCheckBoxLevel = document.getElementById("limitSellInputLevel");
             var buyCheckBox = document.getElementById("limitBuyInput");
             var sellCheckBox = document.getElementById("limitSellInput");
             var limitDiv = document.getElementById("limitDiv");
+            var selectType = document.getElementById("selectType");
             var coinDiv = document.getElementById("coinDiv");
             var tradeCoinForm = document.getElementById("tradeCoinForm");
+            var askDiv = document.getElementById("askDiv");
+            var totalAmountDiv = document.getElementById("totalAmountDiv");
+            var coinId = document.getElementById("coinId");
             let type = $("#choseOrderType").val();
             if (type == 1){
+                coinId.style.marginTop = "5px";
+                askDiv.style.marginTop = "14px";
                 buyCheckBox.disabled = true;
                 sellCheckBox.disabled = true;
+                buyCheckBox.style.display = "block";
+                sellCheckBox.style.display = "block";
                 limitDiv.style.display = "block";
                 coinDiv.style.display = "block";
-                tradeCoinForm.style.marginTop = "10px";
+                tradeCoinForm.style.display = "none";
+                totalAmountDiv.style.display = "none";
+                buyCheckBoxLevel.style.display = "block";
+                sellCheckBoxLevel.style.display = "block";
+                selectType.style.marginBottom = "15px";
             }else{
+                buyCheckBox.style.display = "none";
+                sellCheckBox.style.display = "none";
                 buyCheckBox.disabled = true;
                 sellCheckBox.disabled = true;
                 limitDiv.style.display = "none";
                 coinDiv.style.display = "none";
-                tradeCoinForm.style.marginTop = "19px";
+                selectType.style.marginBottom = "15px";
+                buyCheckBoxLevel.style.display = "none";
+                sellCheckBoxLevel.style.display = "none";
+                totalAmountDiv.style.display = "block";
+                tradeCoinForm.style.display = "block";
             }
         }
     </script>
