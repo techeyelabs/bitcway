@@ -85,6 +85,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}" v-on:click="setCurrency(item)">
+
                                         <td></td>
                                         <td v-cloak id="currencyNameid" class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
                                         <td style=""><span v-cloak style="color: white;font-size: 12px;">@{{item[7]}}</span> USD</td>
@@ -95,6 +96,7 @@
                             </table>
                         </div>
                     </div>
+
                 </div>
                 <div class="card mt-3" >
                     <div class="card" >
@@ -377,8 +379,31 @@
         // showLoader('Loading...');
         let loaded = false;
         socket.on('trackers', (trackers) => {
-            // console.log(trackers);
             Home.trackers = trackers.trackers;
+            console.log(Home.trackers);
+            let volumeIndex = Home.trackers;
+            for (let i = 0; i<volumeIndex.length; i++){
+                let volume = trackers.trackers[i][7] * trackers.trackers[i][8];
+                trackers.trackers[i][11] = volume;
+                console.log(volume);
+            }
+            // var arr = trackers.trackers;
+            //
+            // console.log('1st : ',arr);
+            // for(let i = 0 ; i < arr.length; i++){
+            //     console.log('2st : ',arr[i]);
+            // // sortIndex7.sort(sortFunction);
+            // arr.sort(function(a, b) {
+            //     var keyA = new Date(a.arr[i][7]);
+            //         keyB = new Date(b.arr[i][7]);
+            //     // Compare the 2 dates
+            //     if (keyA < keyB) return -1;
+            //     if (keyA > keyB) return 1;
+            //     return 0;
+            // });
+            // }
+            // console.log(arr);
+
             // Home.trackers.push(dumCoin);
             let coinData = Home.trackers;
             for (let i = 0; i < coinData.length; i++ ){
@@ -553,6 +578,9 @@
                 },
                 calcLimitAmount(){
                     return this.totalLimitCurrency*this.limitAmount;
+                },
+                volumeArr(){
+
                 }
             },
             methods: {
