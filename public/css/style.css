@@ -433,4 +433,37 @@ table,th, td {
 .txtHeadingColor {
     color: yellow;
 }
+.th1{
+    width: 15% !important
+}
+.th2{
+    width: 40% !important;
+    text-align: center !important;
+}
+.th3{
+    width: 15% !important;
+    text-align: center !important;
+}
+.th4{
+    width: 30% !important;
+    text-align: right !important;
+}
+.td1{
+    width: 15% !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.td2{
+    width: 40% !important;
+    text-align: right !important;
+}
+.td3{
+    width: 15% !important;
+    text-align: right !important;
+}
+.td4{
+    width: 30% !important;
+    text-align: right !important;
+}
 

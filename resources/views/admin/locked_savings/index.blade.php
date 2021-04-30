@@ -47,7 +47,7 @@
 
                                     <div class="form-group">
                                         <label for="" class="txtWhitecolor">Lot Size</label>
-                                        <input type="number" id="lotSize" step="any" class="form-control lockedSavingInputFroup" name="lotSize" placeholder="100" value="{{$u->lot_size}}" required>
+                                        <input type="number" id="lotSize" step="any" class="form-control lockedSavingInputFroup" name="lotSize" placeholder="0" value="{{$u->lot_size}}" required>
                                         <small class="text-danger"></small>
                                     </div>
                                     <div class="form-group row">
@@ -85,7 +85,7 @@
 
                             <div class="form-group">
                                 <label for="" class="txtWhitecolor">Lot Size</label>
-                                <input type="number" id="lotSize" step="any" class="form-control lockedSavingInputFroup" name="lotSize" placeholder="100" value="" required>
+                                <input type="number" id="lotSize" step="any" class="form-control lockedSavingInputFroup" name="lotSize" placeholder="0" value="" required>
                                 <small class="text-danger"></small>
                             </div>
                             <div class="form-group row">

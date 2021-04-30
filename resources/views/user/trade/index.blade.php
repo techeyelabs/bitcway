@@ -41,12 +41,6 @@
             flex-grow: 1;
             min-width: 0;
         }
-        .txtWhitecolor{
-            color: white;
-        }
-        .txtHeadingColor{
-            color: yellow;
-        }
         .table>:not(caption)>*>* {
             padding: 2px 20px 2px 20px !important;
         }
@@ -55,6 +49,7 @@
             color: darkgray !important;
             border: none;
         }
+
 
     </style>
 @endsection
@@ -73,24 +68,21 @@
                     <div class="card-body">
                         <div id="trackers">
                             <div class="text-center title txtHeadingColor"><h4>TICKERS</h4></div>
-                            <table class="tables trackers">
+                            <table class="tables trackers" style="width: 100%; table-layout: fixed">
                                 <thead>
                                     <tr>
-                                        <th></th>
-                                        <th class="txtWhitecolor">SYMBOL</th>
-                                        <th class="txtWhitecolor">LAST PRICE</th>
-                                        <th class="txtWhitecolor">24H CHANGE</th>
-                                        <th class="txtWhitecolor">VOLUME</th>
+                                        <th class="txtWhitecolor th1">SYMBOL</th>
+                                        <th class="txtWhitecolor th2">LAST</th>
+                                        <th class="txtWhitecolor th3">24H</th>
+                                        <th class="txtWhitecolor th4">VOL <u>USD</u></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}" v-on:click="setCurrency(item)">
-
-                                        <td></td>
-                                        <td v-cloak id="currencyNameid" class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
-                                        <td style=""><span v-cloak style="color: white;font-size: 12px;">@{{item[7]}}</span> USD</td>
-                                        <td v-cloak :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
-                                        <td v-cloak class="txtWhitecolor">@{{Math.round(item[7]*item[8])}}</td>
+                                        <td v-cloak id="currencyNameid" class="txtWhitecolor td1">@{{splitCurrency(item[0])}}</td>
+                                        <td class="td2" ><span v-cloak style="color: white;font-size: 12px;">@{{item[7]}}</span> USD</td>
+                                        <td class="td3"  v-cloak :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
+                                        <td v-cloak class="txtWhitecolor td4">@{{Math.round(item[7]*item[8])}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -202,7 +194,7 @@
                                         </div>
                                     </div>
                                     <div id="coinDiv" style="display: none">
-                                        <label class="txtWhitecolor" id="coinId" for="" style="margin-top: 20px; margin-bottom: 5px">Coin:</label>
+                                        <label v-cloak class="txtWhitecolor" id="coinId" for="" style="margin-bottom: 5px">@{{currency}}:</label>
                                         <div class="input-group">
                                             <input type="text" id="totalLimitCurrencyId" onkeyup="limitLength()" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
                                             <span v-if="totalLimitCurrency.length" id="totalLimitCurrencyInputLength" class="input-count d-none">@{{totalLimitCurrency.length}}</span>
@@ -380,30 +372,12 @@
         let loaded = false;
         socket.on('trackers', (trackers) => {
             Home.trackers = trackers.trackers;
-            console.log(Home.trackers);
+            // console.log(Home.trackers);
             let volumeIndex = Home.trackers;
             for (let i = 0; i<volumeIndex.length; i++){
                 let volume = trackers.trackers[i][7] * trackers.trackers[i][8];
                 trackers.trackers[i][11] = volume;
-                console.log(volume);
             }
-            // var arr = trackers.trackers;
-            //
-            // console.log('1st : ',arr);
-            // for(let i = 0 ; i < arr.length; i++){
-            //     console.log('2st : ',arr[i]);
-            // // sortIndex7.sort(sortFunction);
-            // arr.sort(function(a, b) {
-            //     var keyA = new Date(a.arr[i][7]);
-            //         keyB = new Date(b.arr[i][7]);
-            //     // Compare the 2 dates
-            //     if (keyA < keyB) return -1;
-            //     if (keyA > keyB) return 1;
-            //     return 0;
-            // });
-            // }
-            // console.log(arr);
-
             // Home.trackers.push(dumCoin);
             let coinData = Home.trackers;
             for (let i = 0; i < coinData.length; i++ ){
@@ -428,55 +402,58 @@
         var currencies = <?php echo json_encode($currency); ?>;
 
         // const OrderBook Start
-        $(document).ready(function() {
-            getInitialOrder("tBTCUSD");
-        });
+        // $(document).ready(function() {
+        //     getInitialOrder("tBTCUSD");
+        // });
         // const OrderBook End
 
-        let getInitialOrder = function (currency) {
-            let CurrencyApi = ' ';
-            if(currency == undefined){
-                CurrencyApi = 'https://api.bitfinex.com/v2/book/tBTCUSD/P0';
-            } else {
-                CurrencyApi = 'https://api.bitfinex.com/v2/book/'+currency+'/P0';
-            }
-            // console.log(CurrencyApi);
-            axios.get(CurrencyApi, {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Credentials':'true',
-                    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                }
-            })
-                .then(response => {
-                    items = response.data;
-                    if(items){
-                        if(items.length > 3){
-                            bids = [];
-                            asks = [];
-                            items.forEach(function(item){
-                                if(item[2] > 0){
-                                    bids.push(item);
-                                }else{
-                                    asks.push(item);
-                                }
-                            });
-                            Home.bids = bids;
-                            Home.asks = asks;
-                        }else{
-                            item = items;
-                        }
-                        Home.latestBid = Home.bids[0][0];
-                        Home.bidIncrease = Home.bids[0][0]>Home.bids[1][0];
-                        title = Home.bidIncrease?'▲':'▼';
-                        document.title = title+" "+Home.latestBid+" "+Home.currency+"/USD";
-
-                        Home.latestAsk = Home.asks[0][0];
-                        Home.askIncrease = Home.asks[0][0]>Home.asks[1][0];
-                    }
-                })
-                .catch(error => "404")
-        }
+        // let getInitialOrder = function (currency) {
+        //     let CurrencyApi = ' ';
+        //     if(currency == undefined){
+        //         CurrencyApi = 'https://api.bitfinex.com/v2/book/tBTCUSD/P0';
+        //     } else {
+        //         CurrencyApi = 'https://api.bitfinex.com/v2/book/'+currency+'/P0';
+        //     }
+        //     // console.log(CurrencyApi);
+        //     axios.get(CurrencyApi, {
+        //         headers: {
+        //             'Access-Control-Allow-Origin': '*',
+        //             'Access-Control-Allow-Credentials':'true',
+        //             'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        //         }
+        //     })
+        //         .then(response => {
+        //             items = response.data;
+        //             if(items){
+        //                 if(items.length > 3){
+        //                     bids = [];
+        //                     asks = [];
+        //                     items.forEach(function(item){
+        //                         if(item[2] > 0){
+        //                             bids.push(item);
+        //                         }else{
+        //                             asks.push(item);
+        //                         }
+        //                     });
+        //                     Home.bids = bids;
+        //                     Home.asks = asks;
+        //                 }else{
+        //                     item = items;
+        //                 }
+        //                 Home.latestBid = Home.bids[0][0];
+        //                 Home.bidIncrease = Home.bids[0][0]>Home.bids[1][0];
+        //                 title = Home.bidIncrease?'▲':'▼';
+        //                 document.title = title+" "+Home.latestBid+" "+Home.currency+"/USD";
+        //
+        //                 Home.latestAsk = Home.asks[0][0];
+        //                 Home.askIncrease = Home.asks[0][0]>Home.asks[1][0];
+        //
+        //                 console.log(Home.asks[0][0]);
+        //                 console.log(Home.asks[1][0]);
+        //             }
+        //         })
+        //         .catch(error => "404")
+        // }
 
         let getOrders = function(currency){
             if(w) w.close();
@@ -512,9 +489,9 @@
                     Home.bidIncrease = Home.bids[0][0]>Home.bids[1][0];
                     title = Home.bidIncrease?'▲':'▼';
                     document.title = title+" "+Home.latestBid+" "+Home.currency+"/USD";
-
                     Home.latestAsk = Home.asks[0][0];
                     Home.askIncrease = Home.asks[0][0]>Home.asks[1][0];
+
                 }
             }
 
@@ -891,7 +868,7 @@
                     let that = this;
                     let currency = that.selectedItem[0];
                     getOrders(currency);
-                    getInitialOrder(currency);
+                    // getInitialOrder(currency);
                 },
             },
             beforeMount(){
