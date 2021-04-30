@@ -439,6 +439,7 @@ table,th, td {
 .th2{
     width: 40% !important;
     text-align: center !important;
+    padding-left: 40px !important;
 }
 .th3{
     width: 15% !important;
