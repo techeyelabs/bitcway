@@ -41,12 +41,6 @@
             flex-grow: 1;
             min-width: 0;
         }
-        .txtWhitecolor{
-            color: white;
-        }
-        .txtHeadingColor{
-            color: yellow;
-        }
         .table>:not(caption)>*>* {
             padding: 2px 20px 2px 20px !important;
         }
@@ -55,6 +49,7 @@
             color: darkgray !important;
             border: none;
         }
+
 
     </style>
 @endsection
@@ -73,28 +68,27 @@
                     <div class="card-body">
                         <div id="trackers">
                             <div class="text-center title txtHeadingColor"><h4>TICKERS</h4></div>
-                            <table class="tables trackers">
+                            <table class="tables trackers" style="width: 100%; table-layout: fixed">
                                 <thead>
                                     <tr>
-                                        <th></th>
-                                        <th class="txtWhitecolor">SYMBOL</th>
-                                        <th class="txtWhitecolor">LAST PRICE</th>
-                                        <th class="txtWhitecolor">24H CHANGE</th>
-                                        <th class="txtWhitecolor">VOLUME</th>
+                                        <th class="txtWhitecolor th1">SYMBOL</th>
+                                        <th class="txtWhitecolor th2">LAST</th>
+                                        <th class="txtWhitecolor th3">24H</th>
+                                        <th class="txtWhitecolor th4">VOL <u>USD</u></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}" v-on:click="setCurrency(item)">
-                                        <td></td>
-                                        <td v-cloak id="currencyNameid" class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
-                                        <td style=""><span v-cloak style="color: white;font-size: 12px;">@{{item[7]}}</span> USD</td>
-                                        <td v-cloak :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
-                                        <td v-cloak class="txtWhitecolor">@{{Math.round(item[7]*item[8])}}</td>
+                                        <td v-cloak id="currencyNameid" class="txtWhitecolor td1">@{{splitCurrency(item[0])}}</td>
+                                        <td class="td2" ><span v-cloak style="color: white;font-size: 12px;">@{{item[7]}}</span> USD</td>
+                                        <td class="td3"  v-cloak :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
+                                        <td v-cloak class="txtWhitecolor td4">@{{Math.round(item[7]*item[8])}}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
+
                 </div>
                 <div class="card mt-3" >
                     <div class="card" >
@@ -105,7 +99,7 @@
                                 <div class="row">
                                     <div class="col ">
                                         <div class="form-group">
-                                            <label for="" class="txtWhitecolor">USD:</label>
+                                            <label for="" class="txtWhitecolor" id="tradeCurrencyName">USD:</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
                                             </div>
@@ -168,11 +162,14 @@
                                                 <span v-if="limitAmount.length" id="limitAmountInputLength" class="input-count d-none">@{{limitAmount.length}}</span>
                                             </div>
                                         </div>
-                                        <label class="txtWhitecolor" for="" style="margin-top: 10px;">USD:</label>
-                                        <div class="input-group">
+                                        <label class="txtWhitecolor d-none" for="" style="margin-top: 10px;">USD:</label>
+                                        <div class="input-group d-none">
                                             <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
                                         </div>
-                                        <span v-cloak class="text-muted form-control">~@{{calcAmount}}</span>
+                                        <div id="totalAmountDiv">
+                                            <label class="txtWhitecolor"  for="" style="margin-top: 10px;">Total:</label>
+                                            <span v-cloak class="text-muted form-control" style="">~@{{calcAmount}}</span>
+                                        </div>
                                     </div>
                                     <div class="" style="margin-bottom: 15px;">
                                         <small class="txtWhitecolor">BID</small>
@@ -186,29 +183,29 @@
                                 </div>
                                 <div class="col">
 
-                                    <div class="">
+                                    <div id="selectType" style="">
                                         <div class="form-check form-check-inline" id="limitBuyId" >
-                                            <input class="form-check-input "  type="checkbox" id="limitBuyInput" value="1"  v-on:click="limitBuy" disabled>
-                                            <label class="form-check-label txtWhitecolor" for="inlineCheckbox1">Buy</label>
+                                            <input class="form-check-input"  type="checkbox" id="limitBuyInput" value="1"  v-on:click="limitBuy" disabled style="display:none;">
+                                            <label class="form-check-label txtWhitecolor" id="limitBuyInputLevel" for="inlineCheckbox1" style="display:none;">Buy</label>
                                         </div>
                                         <div class="form-check form-check-inline" id="limitSellId" >
-                                            <input class="form-check-input"  type="checkbox" id="limitSellInput" value="2" v-on:click="limitSell"  disabled>
-                                            <label class="form-check-label txtWhitecolor" for="inlineCheckbox2">Sell</label>
+                                            <input class="form-check-input "  type="checkbox" id="limitSellInput" value="2" v-on:click="limitSell"  disabled style="display:none;">
+                                            <label class="form-check-label txtWhitecolor" id="limitSellInputLevel" for="inlineCheckbox2" style="display:none;">Sell</label>
                                         </div>
                                     </div>
                                     <div id="coinDiv" style="display: none">
-                                        <label class="txtWhitecolor" for="" style="margin-top: 20px; margin-bottom: 5px">Coin:</label>
+                                        <label v-cloak class="txtWhitecolor" id="coinId" for="" style="margin-bottom: 5px">@{{currency}}:</label>
                                         <div class="input-group">
                                             <input type="text" id="totalLimitCurrencyId" onkeyup="limitLength()" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
                                             <span v-if="totalLimitCurrency.length" id="totalLimitCurrencyInputLength" class="input-count d-none">@{{totalLimitCurrency.length}}</span>
                                         </div>
                                         <p class="d-none" id="calcLimitAmountId">@{{ calcLimitAmount }}</p>
                                     </div>
-                                    <div class="form-group" id="tradeCoinForm" style="margin-bottom: 54px; margin-top: 19px;">
+                                    <div class="form-group" id="tradeCoinForm" style="margin-top: 14px">
                                         <label v-cloak class="txtWhitecolor" for="">@{{currency}}:</label>
                                         <input type="text" class="form-control mb-1" placeholder=" " v-model="amount">
                                     </div>
-                                    <div class="" style="margin-bottom: 15px;">
+                                    <div id="askDiv" style="margin-bottom: 15px;">
                                         <small class="txtWhitecolor">ASK</small>
                                         <small v-cloak class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
                                             <i v-if="askIncrease" class="fas fa-sort-up"></i>
@@ -299,24 +296,44 @@
     </script>
     <script>
         function choseOrderType() {
+            var buyCheckBoxLevel = document.getElementById("limitBuyInputLevel");
+            var sellCheckBoxLevel = document.getElementById("limitSellInputLevel");
             var buyCheckBox = document.getElementById("limitBuyInput");
             var sellCheckBox = document.getElementById("limitSellInput");
             var limitDiv = document.getElementById("limitDiv");
+            var selectType = document.getElementById("selectType");
             var coinDiv = document.getElementById("coinDiv");
             var tradeCoinForm = document.getElementById("tradeCoinForm");
+            var askDiv = document.getElementById("askDiv");
+            var totalAmountDiv = document.getElementById("totalAmountDiv");
+            var coinId = document.getElementById("coinId");
             let type = $("#choseOrderType").val();
             if (type == 1){
+                coinId.style.marginTop = "5px";
+                askDiv.style.marginTop = "14px";
                 buyCheckBox.disabled = true;
                 sellCheckBox.disabled = true;
+                buyCheckBox.style.display = "block";
+                sellCheckBox.style.display = "block";
                 limitDiv.style.display = "block";
                 coinDiv.style.display = "block";
-                tradeCoinForm.style.marginTop = "10px";
+                tradeCoinForm.style.display = "none";
+                totalAmountDiv.style.display = "none";
+                buyCheckBoxLevel.style.display = "block";
+                sellCheckBoxLevel.style.display = "block";
+                selectType.style.marginBottom = "15px";
             }else{
+                buyCheckBox.style.display = "none";
+                sellCheckBox.style.display = "none";
                 buyCheckBox.disabled = true;
                 sellCheckBox.disabled = true;
                 limitDiv.style.display = "none";
                 coinDiv.style.display = "none";
-                tradeCoinForm.style.marginTop = "19px";
+                selectType.style.marginBottom = "15px";
+                buyCheckBoxLevel.style.display = "none";
+                sellCheckBoxLevel.style.display = "none";
+                totalAmountDiv.style.display = "block";
+                tradeCoinForm.style.display = "block";
             }
         }
     </script>
@@ -354,8 +371,13 @@
         // showLoader('Loading...');
         let loaded = false;
         socket.on('trackers', (trackers) => {
-            // console.log(trackers);
             Home.trackers = trackers.trackers;
+            // console.log(Home.trackers);
+            let volumeIndex = Home.trackers;
+            for (let i = 0; i<volumeIndex.length; i++){
+                let volume = trackers.trackers[i][7] * trackers.trackers[i][8];
+                trackers.trackers[i][11] = volume;
+            }
             // Home.trackers.push(dumCoin);
             let coinData = Home.trackers;
             for (let i = 0; i < coinData.length; i++ ){
@@ -380,55 +402,58 @@
         var currencies = <?php echo json_encode($currency); ?>;
 
         // const OrderBook Start
-        $(document).ready(function() {
-            getInitialOrder("tBTCUSD");
-        });
+        // $(document).ready(function() {
+        //     getInitialOrder("tBTCUSD");
+        // });
         // const OrderBook End
 
-        let getInitialOrder = function (currency) {
-            let CurrencyApi = ' ';
-            if(currency == undefined){
-                CurrencyApi = 'https://api.bitfinex.com/v2/book/tBTCUSD/P0';
-            } else {
-                CurrencyApi = 'https://api.bitfinex.com/v2/book/'+currency+'/P0';
-            }
-            // console.log(CurrencyApi);
-            axios.get(CurrencyApi, {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Credentials':'true',
-                    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                }
-            })
-                .then(response => {
-                    items = response.data;
-                    if(items){
-                        if(items.length > 3){
-                            bids = [];
-                            asks = [];
-                            items.forEach(function(item){
-                                if(item[2] > 0){
-                                    bids.push(item);
-                                }else{
-                                    asks.push(item);
-                                }
-                            });
-                            Home.bids = bids;
-                            Home.asks = asks;
-                        }else{
-                            item = items;
-                        }
-                        Home.latestBid = Home.bids[0][0];
-                        Home.bidIncrease = Home.bids[0][0]>Home.bids[1][0];
-                        title = Home.bidIncrease?'▲':'▼';
-                        document.title = title+" "+Home.latestBid+" "+Home.currency+"/USD";
-
-                        Home.latestAsk = Home.asks[0][0];
-                        Home.askIncrease = Home.asks[0][0]>Home.asks[1][0];
-                    }
-                })
-                .catch(error => "404")
-        }
+        // let getInitialOrder = function (currency) {
+        //     let CurrencyApi = ' ';
+        //     if(currency == undefined){
+        //         CurrencyApi = 'https://api.bitfinex.com/v2/book/tBTCUSD/P0';
+        //     } else {
+        //         CurrencyApi = 'https://api.bitfinex.com/v2/book/'+currency+'/P0';
+        //     }
+        //     // console.log(CurrencyApi);
+        //     axios.get(CurrencyApi, {
+        //         headers: {
+        //             'Access-Control-Allow-Origin': '*',
+        //             'Access-Control-Allow-Credentials':'true',
+        //             'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        //         }
+        //     })
+        //         .then(response => {
+        //             items = response.data;
+        //             if(items){
+        //                 if(items.length > 3){
+        //                     bids = [];
+        //                     asks = [];
+        //                     items.forEach(function(item){
+        //                         if(item[2] > 0){
+        //                             bids.push(item);
+        //                         }else{
+        //                             asks.push(item);
+        //                         }
+        //                     });
+        //                     Home.bids = bids;
+        //                     Home.asks = asks;
+        //                 }else{
+        //                     item = items;
+        //                 }
+        //                 Home.latestBid = Home.bids[0][0];
+        //                 Home.bidIncrease = Home.bids[0][0]>Home.bids[1][0];
+        //                 title = Home.bidIncrease?'▲':'▼';
+        //                 document.title = title+" "+Home.latestBid+" "+Home.currency+"/USD";
+        //
+        //                 Home.latestAsk = Home.asks[0][0];
+        //                 Home.askIncrease = Home.asks[0][0]>Home.asks[1][0];
+        //
+        //                 console.log(Home.asks[0][0]);
+        //                 console.log(Home.asks[1][0]);
+        //             }
+        //         })
+        //         .catch(error => "404")
+        // }
 
         let getOrders = function(currency){
             if(w) w.close();
@@ -464,9 +489,9 @@
                     Home.bidIncrease = Home.bids[0][0]>Home.bids[1][0];
                     title = Home.bidIncrease?'▲':'▼';
                     document.title = title+" "+Home.latestBid+" "+Home.currency+"/USD";
-
                     Home.latestAsk = Home.asks[0][0];
                     Home.askIncrease = Home.asks[0][0]>Home.asks[1][0];
+
                 }
             }
 
@@ -530,6 +555,9 @@
                 },
                 calcLimitAmount(){
                     return this.totalLimitCurrency*this.limitAmount;
+                },
+                volumeArr(){
+
                 }
             },
             methods: {
@@ -840,7 +868,7 @@
                     let that = this;
                     let currency = that.selectedItem[0];
                     getOrders(currency);
-                    getInitialOrder(currency);
+                    // getInitialOrder(currency);
                 },
             },
             beforeMount(){
