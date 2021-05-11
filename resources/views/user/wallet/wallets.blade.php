@@ -33,8 +33,18 @@
                         <div class="  text-left " style="margin-left: -15px;">
                             <abbr title="Your Total Margin Balance"  class="txtWhitecolor text-left initialism">Total Margin Balance</abbr><br>
                             <h4 class="txtWhitecolor text-left mb-4" ><span id="totalMArginBalanceId">00.000000</span><span style="font-size: 10px">USD</span></h4>
-                            <abbr title="Your Total Wallet Balance"  class="txtWhitecolor text-left initialism">Total Wallet Balance</abbr><br>
-                            <h4 class="txtWhitecolor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
+                            <div class="col-md-12 row">
+                                <div class="col-md-8">
+                                    <abbr title="Your Total Wallet Balance"  class="txtWhitecolor text-left initialism">Total Wallet Balance</abbr><br>
+                                    <h4 class="txtWhitecolor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
+                                </div>
+                                <div class="col-md-4" style="margin-top: 3px;">
+                                    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
+                                            data-bs-target="#derivativeModal" style="width: 100px;"
+                                            onclick="setFlag(1)">Transfer
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -97,12 +107,8 @@
                             <abbr title="Derivative Wallet"  class="txtWhitecolor text-left initialism">Derivative Wallet</abbr><br>
                             <h4 class="txtWhitecolor text-left mb-3" id="totalDerivativeAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
                         </div>
-                        <button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
-                                data-bs-target="#derivativeModal" style="width: 100px;"
-                                onclick="setFlag(1)">Deposit
-                        </button>
                         <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal"
-                                data-bs-target="#derivativeModal" style="width: 100px;" onclick="setFlag(2)">Withdraw
+                                data-bs-target="#derivativeModal" style="width: 100px;" onclick="setFlag(2)">Transfer
                         </button>
                     </div>
                 </div>
@@ -406,7 +412,6 @@
 
     <script>
         function setFlag(type) {
-
             $('#flag').val(type);
         }
     </script>
