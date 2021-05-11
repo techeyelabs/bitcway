@@ -55,7 +55,6 @@
 @endsection
 @section('content')
     <div id="wrap" class="trade">
-{{--        <p>{{$userInfo->balance}}</p>--}}
         @if(isset($type))
             <h3 class="txtHeadingColor">Derivatives</h3>
         @else
@@ -78,7 +77,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}" v-on:click="setCurrency(item)">
+                                    <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}"  v-on:click="setCurrency(item);">
                                         <td v-cloak id="currencyNameid" class="txtWhitecolor td1">@{{splitCurrency(item[0])}}</td>
                                         <td class="td2" ><span v-cloak style="color: white;font-size: 12px;">@{{item[7]}}</span> USD</td>
                                         <td class="td3"  v-cloak :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
@@ -98,30 +97,75 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col ">
+                                        <select class="form-select selectClass" aria-label="Default select example" id="choseOrderType" onchange="choseOrderType('derivative')">
+                                            <option value="0" selected>Market</option>
+                                            <option value="1">Limit</option>
+                                        </select>
                                         <div class="form-group">
-                                            <label for="" class="txtWhitecolor" id="tradeCurrencyName">USD:</label>
-                                            <div class="input-group">
+                                            <div id="limitDiv"  style="display: none">
+                                                <label class="txtWhitecolor" for="" style="margin-top: 10px;">Limit:</label>
+                                                <div class="input-group">
+                                                    <input type="text" id="limitAmountId" onkeyup="limitLength()" class="form-control mb-1" placeholder=""  v-model="limitAmount">
+                                                    <span v-if="limitAmount.length" id="limitAmountInputLength" class="input-count d-none">@{{limitAmount.length}}</span>
+                                                </div>
+                                            </div>
+                                            <label class="txtWhitecolor d-none" for="" style="margin-top: 10px;">USD:</label>
+                                            <div class="input-group d-none">
                                                 <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
                                             </div>
-                                            <span v-cloak class="text-muted form-control">~@{{calcAmount}}</span>
+                                            <div id="totalAmountDiv">
+                                                <label class="txtWhitecolor"  for="" style="margin-top: 10px;">Total:</label>
+                                                <span v-cloak class="text-muted form-control"  style="">~@{{calcAmount}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+{{--                                            <label for="" class="txtWhitecolor" id="tradeCurrencyName">USD:</label>--}}
+{{--                                            <div class="input-group">--}}
+{{--                                                <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">--}}
+{{--                                            </div>--}}
+{{--                                            <span v-cloak class="text-muted form-control"  id="bidbox" style="margin-top: 10px;">~@{{calcAmount}}</span>--}}
                                             <small class="txtWhitecolor">BID</small>
-                                            <small v-cloak class="float-end text-success cursor-pointer " v-on:click="selectedPrice=latestBid">
-                                                <i v-if="bidIncrease" class="fas fa-sort-up"></i>
+                                            <small v-cloak class="float-end text-success cursor-pointer " id="bidval" v-on:click="selectedPrice=latestBid">
+                                                <i v-if="bidincreased == 'increased'" class="fas fa-sort-up"></i>
                                                 <i v-else class="fas fa-sort-down"></i>
                                                 @{{latestBid}}
                                             </small>
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div class="form-group">
+                                        <div id="selectType" style="">
+                                            <div class="form-check form-check-inline" id="limitBuyId" >
+                                                <input class="form-check-input"  type="checkbox" id="limitBuyInput" value="1"  onclick="enableLimitBuy('derivative')" disabled style="display:none;">
+                                                <label class="form-check-label txtWhitecolor" id="limitBuyInputLevel" for="inlineCheckbox1"  style="display:none;">Buy</label>
+                                            </div>
+                                            <div class="form-check form-check-inline" id="limitSellId" >
+                                                <input class="form-check-input "  type="checkbox" id="limitSellInput" value="2"  disabled onclick="enableLimitSell('derivative')" style="display:none;" >
+                                                <label class="form-check-label txtWhitecolor" id="limitSellInputLevel" for="inlineCheckbox2" style="display:none;">Sell</label>
+                                            </div>
+                                        </div>
+                                        <div id="coinDiv" style="display: none">
+                                            <label v-cloak class="txtWhitecolor" id="coinId" for="" style="margin-bottom: 5px">@{{currency}}:</label>
+                                            <div class="input-group">
+                                                <input type="text" id="totalLimitCurrencyId" onkeyup="limitLength()" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
+                                                <span v-if="totalLimitCurrency.length" id="totalLimitCurrencyInputLength" class="input-count d-none">@{{totalLimitCurrency.length}}</span>
+                                            </div>
+                                            <p class="d-none" id="calcLimitAmountId">@{{ calcLimitAmount }}</p>
+                                        </div>
+                                        <div class="form-group" id="tradeCoinForm" style="margin-top: 14px">
                                             <label v-cloak class="txtWhitecolor" for="">@{{currency}}:</label>
-                                            <input type="number" class="form-control mb-1" placeholder="" v-model="amount">
-                                            <small class="txtWhitecolor">ASK</small>
-                                            <small v-cloak class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
-                                                <i v-if="askIncrease" class="fas fa-sort-up"></i>
-                                                <i v-else class="fas fa-sort-down"></i>
-                                                @{{latestAsk}}
-                                            </small>
+                                            <input type="text" class="form-control mb-1" placeholder=" " v-model="amount">
+                                        </div>
+                                        <div class="form-group">
+{{--                                            <label v-cloak class="txtWhitecolor"  id="askboxlabel" for="" style="margin-top: 20px;">@{{currency}}:</label>--}}
+{{--                                            <input type="number" class="form-control mb-1" id="askbox" placeholder="" v-model="amount">--}}
+                                            <div id="askDiv" style="margin-bottom: 15px;">
+                                                <small class="txtWhitecolor">ASK</small>
+                                                <small v-cloak class="float-end text-danger cursor-pointer" id="askval" v-on:click="selectedPrice=latestAsk">
+                                                    <i v-if="askincreased == 'askincreased'" class="fas fa-sort-up"></i>
+                                                    <i v-else class="fas fa-sort-down"></i>
+                                                    @{{latestAsk}}
+                                                </small>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -135,14 +179,17 @@
                                         <input id="derivativeType" type="hidden" name="derivativeType" />
                                     </div>
                                 </div>
-                                <div class="row mt-5">
+                                <div class="row mt-5" id="marketbutton" >
                                     <div class="col d-grid">
-                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || derivativeRange > derivativeBalance" v-on:click="derivativeBuy">Derivative Buy</button>
+                                        <button id='derivativeNormalBuy'class="btn btn-block btn-success" :disabled="amount<=0 || derivativeRange > derivativeBalance" v-on:click="derivativeBuy">Derivative Buy</button>
+                                        <button id='derivativeLimitBuy' class="btn btn-block btn-success" disabled style="display:none;" v-on:click="limitBuy">Derivative Buy</button>
                                     </div>
                                     <div class="col d-grid">
-                                        <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > leverageWalletAmount" v-on:click="derivativeSell">Derivative Sell</button>
+                                        <button id='derivativeNormalSell' class="btn btn-block btn-danger" :disabled="amount<=0 || amount > leverageWalletAmount" v-on:click="derivativeSell">Derivative Sell</button>
+                                        <button id='derivativeLimitSell' class="btn btn-block btn-danger" disabled  style="display:none;" v-on:click="limitSell">Derivative Sell</button>
                                     </div>
                                 </div>
+
                             </div>
                         @else
                             <div class="card-body">
@@ -173,24 +220,25 @@
                                     </div>
                                     <div class="" style="margin-bottom: 15px;">
                                         <small class="txtWhitecolor">BID</small>
-                                        <small v-cloak class="float-end text-success cursor-pointer" v-on:click="selectedPrice=latestBid">
-                                            <i v-if="bidIncrease" class="fas fa-sort-up"></i>
+                                        <small v-cloak class="float-end text-success cursor-pointer" id="bidval" v-on:click="selectedPrice=latestBid">
+                                            <i v-if="bidincreased == 'increased'" :load="log(bidincreased)"  class="fas fa-sort-up"></i>
                                             <i v-else class="fas fa-sort-down"></i>
                                             @{{latestBid}}
                                         </small>
                                     </div>
-                                        <button class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy" style="width: 100%;">Exchange Buy</button>
+                                        <button id="normalBuy" class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy" style="width: 100%;">Exchange Buy</button>
+                                        <button id="normalLimitBuyButton" class="btn btn-block btn-success" disabled v-on:click="limitBuy" style="display:none;width: 100%;">Exchange Buy</button>
                                 </div>
                                 <div class="col">
 
                                     <div id="selectType" style="">
                                         <div class="form-check form-check-inline" id="limitBuyId" >
-                                            <input class="form-check-input"  type="checkbox" id="limitBuyInput" value="1"  v-on:click="limitBuy" disabled style="display:none;">
+                                            <input class="form-check-input"  type="checkbox" id="limitBuyInput" value="1"   disabled  onclick="enableLimitBuy()" style="display:none;">
                                             <label class="form-check-label txtWhitecolor" id="limitBuyInputLevel" for="inlineCheckbox1" style="display:none;">Buy</label>
                                         </div>
                                         <div class="form-check form-check-inline" id="limitSellId" >
-                                            <input class="form-check-input "  type="checkbox" id="limitSellInput" value="2" v-on:click="limitSell"  disabled style="display:none;">
-                                            <label class="form-check-label txtWhitecolor" id="limitSellInputLevel" for="inlineCheckbox2" style="display:none;">Sell</label>
+                                            <input class="form-check-input "  type="checkbox" id="limitSellInput" value="2" disabled onclick="enableLimitSell()"  style="display:none;">
+                                            <label class="form-check-label txtWhitecolor" id="limitSellInputLevel" for="inlineCheckbox2"  style="display:none;">Sell</label>
                                         </div>
                                     </div>
                                     <div id="coinDiv" style="display: none">
@@ -207,17 +255,30 @@
                                     </div>
                                     <div id="askDiv" style="margin-bottom: 15px;">
                                         <small class="txtWhitecolor">ASK</small>
-                                        <small v-cloak class="float-end text-danger cursor-pointer" v-on:click="selectedPrice=latestAsk">
-                                            <i v-if="askIncrease" class="fas fa-sort-up"></i>
+                                        <small v-cloak class="float-end text-danger cursor-pointer" id="askval" v-on:click="selectedPrice=latestAsk">
+                                            <i v-if="askincreased =='increased'" :load="log(askincreased)" class="fas fa-sort-up"></i>
                                             <i v-else class="fas fa-sort-down"></i>
                                             @{{latestAsk}}
                                         </small>
                                     </div>
-                                        <button class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell" style="width: 100%;">Exchange Sell</button>
+                                        <button id="normalSell" class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell" style="width: 100%;">Exchange Sell</button>
+                                        <button id="normalLimitSellButton" class="btn btn-block btn-danger" disabled v-on:click="limitSell" style="display:none;width: 100%;">Exchange Sell</button>
                                 </div>
                             </div>
                         </div>
                         @endif
+                    </div>
+
+                </div>
+                <div class="card mt-3" >
+                    <div class="card">
+                        <div class="card-body buyselldata">
+                            <h4 v-cloak class="txtHeadingColor " >Pending Trade: @{{currency}}</h4>
+                            <hr>
+                            <table class="tables" id="tabledata">
+
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -295,7 +356,7 @@
         }
     </script>
     <script>
-        function choseOrderType() {
+        function choseOrderType( limitype) {
             var buyCheckBoxLevel = document.getElementById("limitBuyInputLevel");
             var sellCheckBoxLevel = document.getElementById("limitSellInputLevel");
             var buyCheckBox = document.getElementById("limitBuyInput");
@@ -308,7 +369,21 @@
             var totalAmountDiv = document.getElementById("totalAmountDiv");
             var coinId = document.getElementById("coinId");
             let type = $("#choseOrderType").val();
+            var normalSellButton=document.getElementById("normalSell");
+            var normalBuyButton=document.getElementById("normalBuy");
+            var normalLimitSellButton=document.getElementById("normalLimitSellButton");
+            var normalLimitBuyButton=document.getElementById("normalLimitBuyButton");
+            // var bidbox=document.getElementById("bidbox");
+            // var askbox=document.getElementById("askbox");
+            // var askboxlabel=document.getElementById("askboxlabel");
             if (type == 1){
+                if (limitype==="derivative"){
+                    document.getElementById("derivativeNormalSell").style.display='none';
+                    document.getElementById("derivativeNormalBuy").style.display='none';
+                    document.getElementById("derivativeLimitBuy").style.display='block';
+                    document.getElementById("derivativeLimitSell").style.display='block';
+
+                }
                 coinId.style.marginTop = "5px";
                 askDiv.style.marginTop = "14px";
                 buyCheckBox.disabled = true;
@@ -322,6 +397,12 @@
                 buyCheckBoxLevel.style.display = "block";
                 sellCheckBoxLevel.style.display = "block";
                 selectType.style.marginBottom = "15px";
+                normalLimitBuyButton.style.display="block";
+                normalLimitSellButton.style.display="block";
+                normalSellButton.style.display="none";
+                normalBuyButton.style.display="none";
+
+
             }else{
                 buyCheckBox.style.display = "none";
                 sellCheckBox.style.display = "none";
@@ -334,6 +415,18 @@
                 sellCheckBoxLevel.style.display = "none";
                 totalAmountDiv.style.display = "block";
                 tradeCoinForm.style.display = "block";
+                normalLimitBuyButton.style.display="none";
+                normalLimitSellButton.style.display="none";
+                normalSellButton.style.display="block";
+                normalBuyButton.style.display="block";
+                if (limitype==="derivative"){
+                    document.getElementById("derivativeNormalSell").style.display='block';
+                    document.getElementById("derivativeNormalBuy").style.display='block';
+                    document.getElementById("derivativeLimitBuy").style.display='none';
+                    document.getElementById("derivativeLimitSell").style.display='none';
+
+                }
+
             }
         }
     </script>
@@ -462,35 +555,84 @@
                 items = JSON.parse(msg.data);
                 // console.log(msg.data);
                 if (items.event) return;
-                if(items[1]){
-                    if(items[1].length > 3){
+                var title;
+                if (items[1]) {
+                    if (items[1].length > 3) {
                         bids = [];
                         asks = [];
-                        items[1].forEach(function(item){
-                            if(item[2] > 0){
+                        items[1].forEach(function (item) {
+                            if (item[2] > 0) {
                                 bids.push(item);
-                            }else{
+                            } else {
                                 asks.push(item);
                             }
                         });
                         Home.bids = bids;
                         Home.asks = asks;
-                    }else{
+                    } else {
                         item = items[1];
-                        if(item[2] > 0){
-                            if(Home.bids.length > 25) Home.bids.pop();
+                        if (item[2] > 0) {
+                            if (Home.bids.length > 25) Home.bids.pop();
                             Home.bids = [item].concat(Home.bids);
-                        }else if(item[2] < 0){
-                            if(Home.asks.length > 25) Home.asks.pop();
+                        } else if (item[2] < 0) {
+                            if (Home.asks.length > 25) Home.asks.pop();
                             Home.asks = [item].concat(Home.asks);
                         }
                     }
+                    /***** code for bid price arrow ***/
+                    //Home.latestBid = Home.bids[0][0];
+                    var getlatestval = document.getElementById("bidval").textContent;
+                    if(getlatestval === 0){
+                        Home.latestBid = Home.bids[0][0];
+                    }
+                    else{
+                        Home.latestBid = getlatestval;
+                    }
+
+                    // console.log(getlatestval);
+                    Home.bidIncrease = Home.bids[0][0] > Home.bids[1][0];
+                    //Home.bidIncrease = Home.latestBid>Home.bids[0][0] > Home.bids[1][0];
+                    if (Home.bids[0][0] > Home.latestBid)
+                    {
+                        console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("bid increased");
+                        //Home.bidIncrease=Home.bids[0][0] > Home.latestBid;
+                        Home.bidincreased = 'increased';
+                    }
+                    else
+                    {
+                        Home.bidincreased = 'decreased';
+                        console.log("bid decreased");
+                    }
+                    /*** end ****/
+
                     Home.latestBid = Home.bids[0][0];
-                    Home.bidIncrease = Home.bids[0][0]>Home.bids[1][0];
-                    title = Home.bidIncrease?'▲':'▼';
-                    document.title = title+" "+Home.latestBid+" "+Home.currency+"/USD";
+                    title = Home.bidIncrease ? '▲' : '▼';
+
+                    /*** code for ask price arrow**/
+                    document.title = title + " " + Home.latestBid + " " + Home.currency + "/USD";
+                    var getaskval= document.getElementById('askval').textContent;
+                    if(getaskval === 0)
+                    {
+                        Home.latestAsk = Home.bids[0][0];
+                    }
+                    else
+                    {
+                        Home.latestAsk=getaskval;
+                    }
+                    if (Home.asks[0][0] > Home.latestAsk)
+                    {
+                        console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("ask increased");
+                        Home.askincreased = 'increased';
+                    }
+                    else
+                    {
+                        Home.askincreased = 'decreased';
+                        console.log("ask decreased");
+                    }
+                    /*** end****/
+
                     Home.latestAsk = Home.asks[0][0];
-                    Home.askIncrease = Home.asks[0][0]>Home.asks[1][0];
+                    Home.askIncrease = Home.asks[0][0] > Home.asks[1][0];
 
                 }
             }
@@ -530,7 +672,9 @@
                 selectedPrice: '',
                 derivativeValue:'1',
                 limitAmount:'',
-                totalLimitCurrency:''
+                totalLimitCurrency: '',
+                bidincreased:  '',
+                askincreased: ''
             },
             mounted() {
 
@@ -551,7 +695,15 @@
                     return this.amount*this.selectedPrice;
                 },
                 derivativeRange(){
-                    return (this.amount*this.selectedPrice)/this.derivativeValue;
+                    if(document.getElementById("limitAmountId").value !=""){
+                        var limitval=document.getElementById("limitAmountId").value;
+                        console.log("amount:"+this.limitAmount+"selectedPrice:"+this.selectedPrice+"DerivativeVal:"+this.derivativeValue);
+                        return (this.limitAmount)/this.derivativeValue;
+                    }
+                    else{
+                        return (this.amount*this.selectedPrice)/this.derivativeValue;
+                    }
+
                 },
                 calcLimitAmount(){
                     return this.totalLimitCurrency*this.limitAmount;
@@ -561,6 +713,12 @@
                 }
             },
             methods: {
+                log(bidincreased) {
+                    console.log(bidincreased+"bid")
+                },
+                log(askincreased) {
+                    console.log(askincreased+"ask")
+                },
                 itemSetBids(index) {
                     let result = 0;
                     for (let i = 0; i <= index ; i++){
@@ -585,29 +743,30 @@
                     let symbolx = coin.substr(1);
 
                     let currentCoin = this.splitCurrency(symbolx);
-                    if(currentCoin == "MAB"){
+                    get_buy_sell_data(currentCoin);
+                    if(currentCoin == "MAB") {
                         currentCoin = "ADA";
                         symbolx = "ADAUSD";
                     }
-                    new TradingView.widget({
-                        "width": "auto",
-                        "height": 515,
-                        "symbol": symbolx,
-                        "timezone": "Etc/UTC",
-                        "theme": "dark",
-                        "style": "1",
-                        "locale": "en",
-                        "toolbar_bg": "#f1f3f6",
-                        "enable_publishing": false,
-                        "withdateranges": true,
-                        "range": "YTD",
-                        "hide_side_toolbar": true,
-                        "allow_symbol_change": true,
-                        "details": false,
-                        "hotlist": false,
-                        "calendar": false,
-                        "container_id": "tradingview_f7648"
-                    });
+                        new TradingView.widget({
+                            "width": "auto",
+                            "height": 515,
+                            "symbol": symbolx,
+                            "timezone": "Etc/UTC",
+                            "theme": "dark",
+                            "style": "1",
+                            "locale": "en",
+                            "toolbar_bg": "#f1f3f6",
+                            "enable_publishing": false,
+                            "withdateranges": true,
+                            "range": "YTD",
+                            "hide_side_toolbar": true,
+                            "allow_symbol_change": true,
+                            "details": false,
+                            "hotlist": false,
+                            "calendar": false,
+                            "container_id": "tradingview_f7648"
+                        });
                     this.selectedItem = item;
                     this.getChartData();
 
@@ -692,10 +851,11 @@
                 buy(){
 
                     let that = this;
-                    if(that.calcAmount <= 0 || that.calcAmount > that.usdBalance) {
+                    //remove commented code to check invalid amount
+                    /*if(that.calcAmount <= 0 || that.calcAmount > that.usdBalance) {
                         toastr.error('Invalid amount !!');
                         return false;
-                    }
+                    }*/
                     showLoader('Processing...');
                     axios.post('{{route("user-trade-buy")}}', {
                         currency: that.currency,
@@ -708,7 +868,8 @@
                     .then(function (response) {
                         if(response.data.status){
                             toastr.success('Buy successfull');
-                            window.location.href = '{{route("user-wallets")}}';
+                            //window.location.href = '{{route("user-wallets")}}';
+                            window.location.href = '{{route("user-trade")}}';
                             return false;
                         }
                         toastr.error('Error occured !!');
@@ -719,10 +880,11 @@
                 },
                 sell(){
                     let that = this;
-                    if(that.calcAmount <= 0 || that.amount > that.balance) {
+                    //remove commented code to check invalid amount
+                    /*if(that.calcAmount <= 0 || that.amount > that.balance) {
                         toastr.error('Invalid amount !!');
                         return false;
-                    }
+                    }*/
 
                     showLoader('Processing...');
                     axios.post('{{route("user-trade-sell")}}', {
@@ -733,7 +895,8 @@
                     .then(function (response) {
                         if(response.data.status){
                             toastr.success('Sell successfull');
-                            window.location.href = '{{route("user-wallets")}}';
+                            {{--window.location.href = '{{route("user-wallets")}}';--}}
+                            window.location.href = '{{route("user-trade")}}';
                             return false;
                         }
                         toastr.error('Error occured !!');
@@ -760,7 +923,8 @@
                         .then(function (response) {
                             if(response.data.status){
                                 toastr.success('Buy successfull');
-                                window.location.href = '{{route("user-wallets")}}';
+                                {{--window.location.href = '{{route("user-wallets")}}';--}}
+                                window.location.href = '{{route("user-trade-derivative")}}';
                                 return false;
                             }
                             toastr.error('Error occured !!');
@@ -786,7 +950,8 @@
                         .then(function (response) {
                             if(response.data.status){
                                 toastr.success('Sell successfull');
-                                window.location.href = '{{route("user-wallets")}}';
+                                {{--window.location.href = '{{route("user-wallets")}}';--}}
+                                window.location.href = '{{route("user-trade-derivative")}}';
                                 return false;
                             }
                                 toastr.error('Error occured !!');
@@ -799,6 +964,15 @@
                 },
                 limitBuy(){
                     let sellCheckBox = document.getElementById("limitSellInput");
+                    //for Derivative buy/sell
+                    var chk_derivative = document.getElementById("rangeInput");
+                    if(chk_derivative){
+                        var derivative=chk_derivative.value;
+                    }
+                    else{
+                        var derivative=0;
+                    }
+
                     let buyCheckedValue = $('#limitBuyInput:checked').val();
                     if (buyCheckedValue == 1){
                         sellCheckBox.disabled = true;
@@ -814,13 +988,24 @@
                             limitType: 1,
                             priceLimit : that.limitAmount,
                             currencyAmount: that.totalLimitCurrency,
-                            transactionStatus: 1
+                            transactionStatus: 1,
+                            derivative:derivative
 
                         })
                             .then(function (response) {
                                 if(response.data.status){
                                     toastr.success('Limit Buy successfull');
-                                    window.location.href = '{{route("user-wallets")}}';
+                                    {{--window.location.href = '{{route("user-wallets")}}';--}}
+
+
+                                    //if derivative buy/sell
+                                    if(chk_derivative){
+                                        window.location.href = '{{route("user-trade-derivative")}}';
+                                    }
+                                    else{
+                                        window.location.href = '{{route("user-trade")}}';
+                                    }
+
                                     return false;
                                 }
                                 toastr.error('Error occured(Limit) !!');
@@ -833,6 +1018,13 @@
                 },
                 limitSell(){
                     let buyCheckBox = document.getElementById("limitBuyInput");
+                    var chk_derivative = document.getElementById("rangeInput");
+                    if(chk_derivative){
+                        var derivative = chk_derivative.value;
+                    }
+                    else{
+                        var derivative = 0;
+                    }
                     let sellCheckedValue = $('#limitSellInput:checked').val();
                     if (sellCheckedValue == 2){
                         buyCheckBox.disabled = true;
@@ -849,12 +1041,20 @@
                             limitType: 2,
                             priceLimit : that.limitAmount,
                             currencyAmount: that.totalLimitCurrency,
-                            transactionStatus: 1
+                            transactionStatus: 1,
+                            derivative:derivative
                         })
                             .then(function (response) {
                                 if(response.data.status){
                                     toastr.success('Limit Sell successfull');
-                                    window.location.href = '{{route("user-wallets")}}';
+                                    {{--window.location.href = '{{route("user-wallets")}}';--}}
+                                    if(chk_derivative){
+                                        window.location.href = '{{route("user-trade-derivative")}}';
+                                    }
+                                    else{
+                                        window.location.href = '{{route("user-trade")}}';
+                                    }
+
                                     return false;
                                 }
                                 toastr.error('Error occured(Limit Sell) !!');
@@ -874,5 +1074,113 @@
             beforeMount(){
             },
         });
+
+        function enableLimitBuy(type){
+            if(type === 'derivative'){
+                var bt = document.getElementById('derivativeLimitBuy');
+                bt.disabled = document.getElementById('limitBuyInput').checked ? false : true;
+                document.getElementById('limitSellInput').checked = false;
+                document.getElementById('derivativeLimitSell').disabled = true;
+            }
+            else{
+                var bt = document.getElementById('normalLimitBuyButton');
+                bt.disabled=document.getElementById('limitBuyInput').checked ? false : true;
+                document.getElementById('limitSellInput').checked = false;
+                document.getElementById('normalLimitSellButton').disabled = true;
+            }
+        };
+       function enableLimitSell(type){
+           if(type==='derivative'){
+               var bt = document.getElementById('derivativeLimitSell');
+               bt.disabled = document.getElementById('limitSellInput').checked ? false : true;
+               document.getElementById('limitBuyInput').checked = false;
+               document.getElementById('derivativeLimitBuy').disabled = true;
+           }
+           else{
+               var bt = document.getElementById('normalLimitSellButton');
+               bt.disabled = document.getElementById('limitSellInput').checked ? false : true;
+               document.getElementById('limitBuyInput').checked = false;
+               document.getElementById('normalLimitBuyButton').disabled = true;
+           }
+        };
+        /**
+         * Generates HTML table for Buy/Sell Pending
+         * @param string coin name
+         * @author Mahbub (mahbub.benri@gmail.com)
+         */
+        function get_buy_sell_data(coin){
+            var type = "{{ Request::get('type') }}";
+            if(type){
+                type = 'derivative';
+            }
+            else{
+                   type = "trade";
+            }
+            $("#tabledata").html("");
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: '{{route("get-buy-sell-pending-data")}}',
+                type: "Get",
+                data:{coin:coin, type:type}, // the value of input
+                success: function(response){ // What to do if we succeed
+                    var data = "";
+                    if(response.length < 0 || response === "no data"){
+                        $("#tabledata").html("<div>No Pending Buy/Sell Data Found.</div>");
+                    }
+                  else{
+                        data+="<thead>" +
+                                "<tr>" +
+                                    "<th class='txtWhitecolor th5'>LIMIT</th>" +
+                                    "<th class='txtWhitecolor th6'>AMOUNT</th>" +
+                                    "<th class='txtWhitecolor th7'>POSITION</th>" +
+                                     "<th class='txtWhitecolor th8'>ACTION</th>"
+                                " </tr>" +
+                              "</thead>";
+                        data+="<tbody>";
+                        for (var i = 0; i < response.length; i++)
+                        {
+                            if(response[i].limitType==1)
+                            {
+                                var position="Buy";
+                                var classname='text-success';
+                            }
+                            else
+                            {
+                                var position="Sell";
+                                var classname='text-danger';
+                            }
+                            var num = response[i].currencyAmount;
+                            var decimal_count = num.toString().split('.');
+
+                            //decimal[1] is the number of digits after the decimal point
+
+                            if (decimal_count.length>1 && decimal_count[1].length >5)
+                            {
+                                var amount = response[i].currencyAmount;
+                            }
+                            else
+                            {
+                                var amount = response[i].currencyAmount.toFixed(5);
+                            }
+                            data+="<tr>" +
+                                    "<td class='txtWhitecolor tdlimit'>"+response[i].priceLimit+"</td>" +
+                                    "<td class='txtWhitecolor tdamount'>"+amount+"</td>" +
+                                    "<td class='tdposition "+ classname +"'>" + position + "</td>" +
+                                    "<td class='tdposition'><button type='button' class='btn btn-secondary btn-sm'>Edit</button</td>"+
+                                   "</tr>";
+                        }
+                        data+="</tbody>";
+                        $("#tabledata").html(data);
+                    }
+                }
+            });
+        }
+
+        /***Load data for first time***/
+        get_buy_sell_data('BTC');
     </script>
 @endsection

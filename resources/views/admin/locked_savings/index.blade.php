@@ -38,7 +38,7 @@
                                     @csrf
 
                                     <div class="form-group">
-                                        <label for="" class="txtWhitecolor">Coin Select</label>
+                                        <label for="" class="txtWhitecolor">Select Currency</label>
                                         <select id="coinOption" class="form-control form-select lockedSavingInputFroup" name="selectCoinName" aria-label="Default select example" >
                                             <option value="{{$u->currency->name}}">{{$u->currency->name}}</option>
                                         </select>
@@ -76,9 +76,9 @@
                                 <form action="{{ route('admin-locked-savings-settings') }}" method="post">
                             @csrf
                             <div class="form-group">
-                                <label for="" class="txtWhitecolor">Coin Select</label>
+                                <label for="" class="txtWhitecolor">Select Currency</label>
                                 <select id="coinOptions" class="form-control form-select lockedSavingInputFroup" name="selectCoinName" aria-label="Default select example" >
-                                    <option selected>Select Currency</option>
+                                    <option value="MAB" selected>MAB</option>
                                 </select>
                                 <small class="text-danger"></small>
                             </div>
@@ -117,122 +117,6 @@
         {{--New locked Saving Setting End--}}
 
 
-        {{--Previous locked Saving Setting Start--}}
-{{--        <div class="row mt-5" style="display: block">--}}
-{{--            <div class="col-md-6 offset-md-3">--}}
-{{--                <div class="card">--}}
-{{--                    <div class="card-body">--}}
-{{--                        --}}{{-- @include('includes.message') --}}
-{{--                        @if(isset($user))--}}
-{{--                            @foreach ($user as $u)--}}
-{{--                                <form action="{{ route('admin-locked-savings-edit-action', \Crypt::encrypt($u->id)) }}"--}}
-{{--                                      method="post">--}}
-{{--                                    --}}{{-- <form action="" method="post"> --}}
-{{--                                    @csrf--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="">Interest Rate</label>--}}
-{{--                                        <input type="number" id="id-1" step="any" class="form-control"--}}
-{{--                                               name="interest_rate" placeholder="Editing... " value="{{ $u->rate }}"--}}
-{{--                                               required>--}}
-{{--                                        @error('start_price')--}}
-{{--                                        <small class="text-danger">{{ $message }}</small>--}}
-{{--                                        @enderror--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="">Duration</label>--}}
-{{--                                        <input type="number" id="id-2" class="form-control" name="duration"--}}
-{{--                                               placeholder="Editing... " value="{{ $u->duration }}" required>--}}
-{{--                                        @error('start_date')--}}
-{{--                                        <small class="text-danger">{{ $message }}</small>--}}
-{{--                                        @enderror--}}
-{{--                                    </div>--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="">Interest Per Lot</label>--}}
-{{--                                        <input type="number" id="id-3" class="form-control" name="interest_per_lot"--}}
-{{--                                               value="" required readonly>--}}
-{{--                                    </div>--}}
-{{--                                    <hr>--}}
-{{--                                    <button type="submit" id="Submit" disabled="disabled"--}}
-{{--                                            class="btn btn-primary btn-block float-right">Send--}}
-{{--                                    </button>--}}
-{{--                                </form>--}}
-{{--                            @endforeach--}}
-
-{{--                        @else--}}
-{{--                            <form action="{{ route('admin-locked-savings-settings') }}" method="post">--}}
-{{--                                @csrf--}}
-{{--                                <div class="form-group">--}}
-{{--                                    <label for="">Interest Rate</label>--}}
-{{--                                    <input type="number" id="id-1" step="any" class="form-control" name="interest_rate"--}}
-{{--                                           placeholder="Enter Interest Rate..." value="" required>--}}
-{{--                                    @error('start_price')--}}
-{{--                                    <small class="text-danger">{{ $message }}</small>--}}
-{{--                                    @enderror--}}
-{{--                                </div>--}}
-{{--                                <div class="form-group">--}}
-{{--                                    <label for="">Duration</label>--}}
-{{--                                    <input type="number" id="id-2" class="form-control" name="duration"--}}
-{{--                                           placeholder="Enter Duration..." value="" required>--}}
-{{--                                    @error('start_date')--}}
-{{--                                    <small class="text-danger">{{ $message }}</small>--}}
-{{--                                    @enderror--}}
-{{--                                </div>--}}
-{{--                                <div class="form-group">--}}
-{{--                                    <label for="">Interest Per Lot</label>--}}
-{{--                                    <input type="number" id="id-3" class="form-control" name="interest_per_lot" value=""--}}
-{{--                                           required readonly>--}}
-{{--                                </div>--}}
-{{--                                <hr>--}}
-{{--                                <button type="submit" id="Submit" disabled="disabled"--}}
-{{--                                        class="btn btn-primary btn-block float-right">Send--}}
-{{--                                </button>--}}
-{{--                            </form>--}}
-{{--                        @endif--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-        {{--Previous locked Saving Setting End--}}
-        {{--Previous locked Saving Setting Div2 Start--}}
-{{--        <div class="row" style="display: block">--}}
-{{--            <div class="col-md-8 offset-md-2">--}}
-{{--                <div class="card" style="max-width: 74%;margin-left: 13%;">--}}
-{{--                    <div class="card-body">--}}
-{{--                        @include('includes.message')--}}
-{{--                        <table style="width: 100%">--}}
-{{--                            <tr class="row">--}}
-{{--                                <th class="col-md-2 customClass1">Rate</th>--}}
-{{--                                <th class="col-md-4 customClass1" style="text-align: center;">Duration</th>--}}
-{{--                                <th class="col-md-3 customClass1">Interest Per Lot</th>--}}
-{{--                                <th class="col-md-3 customClass1" style="text-align: center;">Action</th>--}}
-{{--                            </tr>--}}
-{{--                            @foreach($settings as $key => $value)--}}
-{{--                                <tr class="row">--}}
-{{--                                    <td class="col-md-2 customClass2">{{$value->rate}}</td>--}}
-{{--                                    <td class="col-md-4 customClass2"--}}
-{{--                                        style="text-align: center;">{{$value->duration}}</td>--}}
-{{--                                    <td class="col-md-3 customClass2"--}}
-{{--                                        style="text-align: center;">{{$value->interest_per_lot}}</td>--}}
-{{--                                    <td class="col-md-3 customClass1" style="text-align: center;">--}}
-{{--                                        <a href="{{route('admin-locked-savings-edit', \Crypt::encrypt($value->id))}}">--}}
-{{--                                            <img src="/assets/1024px-OOjs_UI_icon_edit-ltr-progressive.svg.png"--}}
-{{--                                                 width="25" height="25">--}}
-
-{{--                                        </a>--}}
-{{--                                        <a onclick="return confirm('Are you sure?')"--}}
-{{--                                           href="{{route('admin-locked-savings-delete-action', \Crypt::encrypt($value->id))}}">--}}
-{{--                                            <i class="fa fa-trash" aria-hidden="true" width="20" height="20"></i>--}}
-{{--                                        </a>--}}
-{{--                                    </td>--}}
-{{--                                </tr>--}}
-{{--                            @endforeach--}}
-{{--                        </table>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-        {{--Previous locked Saving Setting Div2 End--}}
 
 
         {{--New locked Saving Setting Div2 End--}}
@@ -309,7 +193,11 @@
             if (response == 1){
                 let options = "";
                 for (let i = 0; i < trackers.trackers.length; i++){
+                    if (trackers.trackers[i][0] == "tADAUSD" ){
+                        trackers.trackers[i][0] = "tMABUSD";
+                    }
                     let c = trackers.trackers[i][0];
+
                     let name = splitCurrency(c);
                     options += "<option value ="+name+">"+name+"</option>";
                 }

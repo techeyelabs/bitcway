@@ -215,8 +215,38 @@ form {
     font-size: 13px;
     margin-top: 20px;
 }
+.buyselldata{
+    padding-left:30px!important;
+}
 
-
+.th5{
+    text-align: left!important;
+    width:20%!important;
+}
+.th6{
+    text-align: center!important;
+    width:2%!important;
+}
+.th7{
+    text-align: right!important;
+    width:15%!important;
+}
+.th8{
+    text-align: right!important;
+    width:20%!important;
+}
+.tdlimit{
+    /*width:35%!important;*/
+    text-align: left!important;
+}
+.tdamount{
+    /*width:35%!important;*/
+    text-align: right!important;
+}
+.tdposition{
+    /*width:35%!important;*/
+    text-align:right!important;
+}
 
 @media (max-width:1024px) {
     .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
@@ -442,11 +472,11 @@ table,th, td {
     padding-left: 40px !important;
 }
 .th3{
-    width: 15% !important;
-    text-align: center !important;
+    width: 18% !important;
+    text-align: right !important;
 }
 .th4{
-    width: 30% !important;
+    width: 27% !important;
     text-align: right !important;
 }
 .td1{
@@ -460,11 +490,11 @@ table,th, td {
     text-align: right !important;
 }
 .td3{
-    width: 15% !important;
+    width: 18% !important;
     text-align: right !important;
 }
 .td4{
-    width: 30% !important;
+    width: 27% !important;
     text-align: right !important;
 }
 
