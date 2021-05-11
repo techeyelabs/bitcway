@@ -1170,7 +1170,7 @@
                                     "<td class='txtWhitecolor tdlimit'>"+response[i].priceLimit+"</td>" +
                                     "<td class='txtWhitecolor tdamount'>"+amount+"</td>" +
                                     "<td class='tdposition "+ classname +"'>" + position + "</td>" +
-                                    "<td class='tdposition'><button type='button' class='btn btn-secondary btn-sm'>Edit</button</td>"+
+                                    "<td class='tdposition td8'><i class='fas fa-pen' ></i></td>"+
                                    "</tr>";
                         }
                         data+="</tbody>";
