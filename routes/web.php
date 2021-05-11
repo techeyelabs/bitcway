@@ -89,6 +89,7 @@ Route::prefix('user')->middleware(['auth'])->group(function(){
     Route::get('/get-message', [MessageController::class, 'getMessages'])->name('user-get-message');
 
     Route::get('/trade', [TradeController::class, 'index'])->name('user-trade');
+    Route::get('/trade?type=derivative', [TradeController::class, 'index'])->name('user-trade-derivative');
     Route::get('/trade-finance', [TradeController::class, 'finance'])->name('user-trade-finance');
     Route::post('/trade-finance-entry', [TradeController::class, 'insertFinance'])->name('user-trade-finance-entry');
     Route::get('/get-chart-data', [TradeController::class, 'getChartData'])->name('user-get-chart-data');
@@ -98,6 +99,7 @@ Route::prefix('user')->middleware(['auth'])->group(function(){
     Route::get('/locked-savings-invest', [CronController::class, 'myaction'])->name('user-locked-savings-invest');
     Route::post('/limit-buy', [TradeController::class, 'limitBuy'])->name('user-limit-buy');
     Route::post('/limit-sell', [TradeController::class, 'limitSell'])->name('user-limit-sell');
+    Route::get('/getBuySellPendingData', [TradeController::class, 'getBuySellPendingData'])->name('get-buy-sell-pending-data');
 
     //Limit BuySell Cron Job
     Route::get('/limitcronjob', [LimitCronController::class, 'limitCronJob'])->name('limit-buysell-cronjob');
