@@ -297,7 +297,6 @@ class TradeController extends Controller
         return $Bitfinex->getOrderBook($request->currency);
     }
     public function limitBuy(Request $request){
-
         $currency = Currency::where('name', $request->currency)->first();
         $limitBuy = new LimitBuySell();
         $limitBuy->limitType = $request->limitType;
@@ -306,13 +305,15 @@ class TradeController extends Controller
         $limitBuy->transactionStatus = $request->transactionStatus;
         $limitBuy->user_id = Auth::user()->id;
         $limitBuy->currency_id = $currency->id;
+        if($request->derivative){
+            $limitBuy->derivative = $request->derivative;
+        }
         $limitBuy->save();
         return response()->json(['status' => true]);
 
 
     }
     public function limitSell(Request $request){
-//        dd($request);
         $currency = Currency::where('name', $request->currency)->first();
         $limitSell = new LimitBuySell();
         $limitSell->limitType = $request->limitType;
@@ -321,8 +322,40 @@ class TradeController extends Controller
         $limitSell->transactionStatus = $request->transactionStatus;
         $limitSell->user_id = Auth::user()->id;
         $limitSell->currency_id = $currency->id;
+        if($request->derivative){
+
+            $limitSell->derivative = $request->derivative;
+        }
         $limitSell->save();
+
         return response()->json(['status' => true]);
+    }
+
+    public function getBuySellPendingData(Request $coinid){
+        $currency = Currency::where('name', $coinid->coin)->first();
+        if($coinid->type === 'derivative')
+        {
+            $data = limitBuySell::select('id','priceLimit','currencyAmount','limitType')->where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->where('transactionStatus', 1)->where('derivative','>', 0)->orderBy('created_at', 'DESC')->get();
+        }
+        else
+        {
+            $data = limitBuySell::select('id','priceLimit','currencyAmount','limitType')->where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->where('transactionStatus', 1)->orderBy('created_at', 'DESC')->get();
+        }
+        if($data && count($data) > 0)
+        {
+            foreach ($data as $key => $val)
+            {
+                $table_data[$key] = $val;
+            }
+            return response()->json($table_data);
+        }
+        else
+        {
+           return "no data";
+
+        }
+
+
     }
 
 }
