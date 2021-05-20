@@ -49,6 +49,12 @@
             color: darkgray !important;
             border: none;
         }
+        .coloredbid{
+            background-color: #1142304d;;
+        }
+        .coloredask{
+            background-color: #942f3e6e;;
+        }
 
 
     </style>
@@ -304,8 +310,9 @@
                                             <th class="txtWhitecolor">Total</th>
                                             <th class="txtWhitecolor">Price</th>
                                         </thead>
-                                        <tbody style="background-color: #1142304d;">
-                                            <tr v-for="(item, index) in bids">
+                                        {{--<tbody style="background-color: #1142304d;">--}}
+                                        <tbody>
+                                            <tr v-for="(item, index) in bids" :class="{ 'coloredbid': bidsprev.length > 0 && bidsprev[index][2] != bids[index][2] }">
                                                 <td v-cloak class="txtWhitecolor">@{{item[1]}}</td>
                                                 <td v-cloak class="txtWhitecolor">@{{item[2].toFixed(4)}}</td>
                                                 <td v-cloak class="txtWhitecolor">@{{(itemSetBids(index)).toFixed(4)}}</td>
@@ -322,8 +329,9 @@
                                             <th class="txtWhitecolor">Amount</th>
                                             <th class="txtWhitecolor">Count</th>
                                         </thead>
-                                        <tbody style="background-color:#942f3e6e; ">
-                                            <tr v-for="(item, index) in asks">
+                                        {{--<tbody style="background-color:#942f3e6e; ">--}}
+                                        <tbody>
+                                            <tr v-for="(item, index) in asks" :class="{ 'coloredask': asksprev.length > 0 && asksprev[index][2] != asks[index][2] }">
                                                 <td v-cloak class="txtWhitecolor">@{{item[0]}}</td>
                                                 <td v-cloak class="txtWhitecolor">@{{(Math.abs(itemSetAsks(index))).toFixed(4)}}</td>
                                                 <td v-cloak class="txtWhitecolor">@{{(Math.abs(item[2])).toFixed(4)}}</td>
@@ -460,12 +468,13 @@
     <script>
         // var dumCoin = ["tOMGC:USD", 3.00, 3.01111, 3.411, 311.1100000, -0.0999, -0.000222, 301.00111, 115.88027091, 372.28, 356];
         const socket = io('http://192.144.82.234:3000/');
-        // const socket = io('http://127.0.0.1:3005/');
+        // const socket = io('http://127.0.0.1:3000/');
         // showLoader('Loading...');
+        // const socket = io('http://192.168.1.29:3000/');
         let loaded = false;
         socket.on('trackers', (trackers) => {
             Home.trackers = trackers.trackers;
-            // console.log(Home.trackers);
+            console.log(Home.trackers);
             let volumeIndex = Home.trackers;
             for (let i = 0; i<volumeIndex.length; i++){
                 let volume = trackers.trackers[i][7] * trackers.trackers[i][8];
@@ -495,67 +504,121 @@
         var currencies = <?php echo json_encode($currency); ?>;
 
         // const OrderBook Start
-        // $(document).ready(function() {
-        //     getInitialOrder("tBTCUSD");
-        // });
+        $(document).ready(function() {
+            getInitialOrder("tBTCUSD");
+        });
         // const OrderBook End
 
-        // let getInitialOrder = function (currency) {
-        //     let CurrencyApi = ' ';
-        //     if(currency == undefined){
-        //         CurrencyApi = 'https://api.bitfinex.com/v2/book/tBTCUSD/P0';
-        //     } else {
-        //         CurrencyApi = 'https://api.bitfinex.com/v2/book/'+currency+'/P0';
-        //     }
-        //     // console.log(CurrencyApi);
-        //     axios.get(CurrencyApi, {
-        //         headers: {
-        //             'Access-Control-Allow-Origin': '*',
-        //             'Access-Control-Allow-Credentials':'true',
-        //             'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-        //         }
-        //     })
-        //         .then(response => {
-        //             items = response.data;
-        //             if(items){
-        //                 if(items.length > 3){
-        //                     bids = [];
-        //                     asks = [];
-        //                     items.forEach(function(item){
-        //                         if(item[2] > 0){
-        //                             bids.push(item);
-        //                         }else{
-        //                             asks.push(item);
-        //                         }
-        //                     });
-        //                     Home.bids = bids;
-        //                     Home.asks = asks;
-        //                 }else{
-        //                     item = items;
-        //                 }
-        //                 Home.latestBid = Home.bids[0][0];
-        //                 Home.bidIncrease = Home.bids[0][0]>Home.bids[1][0];
-        //                 title = Home.bidIncrease?'▲':'▼';
-        //                 document.title = title+" "+Home.latestBid+" "+Home.currency+"/USD";
-        //
-        //                 Home.latestAsk = Home.asks[0][0];
-        //                 Home.askIncrease = Home.asks[0][0]>Home.asks[1][0];
-        //
-        //                 console.log(Home.asks[0][0]);
-        //                 console.log(Home.asks[1][0]);
-        //             }
-        //         })
-        //         .catch(error => "404")
-        // }
+        let getInitialOrder = function (currency) {
+            let CurrencyApi = ' ';
+            if(currency == undefined){
+                CurrencyApi = 'https://api.bitfinex.com/v2/book/tBTCUSD/P0';
+            } else {
+                CurrencyApi = 'https://api.bitfinex.com/v2/book/'+currency+'/P0';
+            }
+            CurrencyApi = 'http://127.0.0.1:8000/get-order';
+            axios.get(CurrencyApi, {params: {currency: currency}})
+                .then(response => {
+                    console.log("response is here");
+                    items = response.data;
+                    if(items){
+                        if(items.length > 3){
+                            console.log("inside");
+                            bids = [];
+                            asks = [];
+                            items.forEach(function(item){
+                                if(item[2] > 0){
+                                    bids.push(item);
+                                }else{
+                                    asks.push(item);
+                                }
+                            });
+                            Home.bids = bids;
+                            Home.asks = asks;
+                            console.log(Home.bids);
+                        }else{
+                            item = items[1];
+                            if (item[2] > 0) {
+                                if (Home.bids.length > 25) Home.bids.pop();
+                                Home.bids = [item].concat(Home.bids);
+                            } else if (item[2] < 0) {
+                                if (Home.asks.length > 25) Home.asks.pop();
+                                Home.asks = [item].concat(Home.asks);
+                            }
+                        }
+                        /***** code for bid price arrow ***/
+                            //Home.latestBid = Home.bids[0][0];
+                        var getlatestval = document.getElementById("bidval").textContent;
+                        if(getlatestval === 0){
+                            Home.latestBid = Home.bids[0][0];
+                        }
+                        else{
+                            Home.latestBid = getlatestval;
+                        }
+
+                        // console.log(getlatestval);
+                        Home.bidIncrease = Home.bids[0][0] > Home.bids[1][0];
+                        //Home.bidIncrease = Home.latestBid>Home.bids[0][0] > Home.bids[1][0];
+                        if (Home.bids[0][0] > Home.latestBid)
+                        {
+                            console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("bid increased");
+                            //Home.bidIncrease=Home.bids[0][0] > Home.latestBid;
+                            Home.bidincreased = 'increased';
+                        }
+                        else
+                        {
+                            Home.bidincreased = 'decreased';
+                            console.log("bid decreased");
+                        }
+                        /*** end ****/
+
+                        Home.latestBid = Home.bids[0][0];
+                        title = Home.bidIncrease ? '▲' : '▼';
+
+                        /*** code for ask price arrow**/
+                        document.title = title + " " + Home.latestBid + " " + Home.currency + "/USD";
+                        var getaskval= document.getElementById('askval').textContent;
+                        if(getaskval === 0)
+                        {
+                            Home.latestAsk = Home.bids[0][0];
+                        }
+                        else
+                        {
+                            Home.latestAsk=getaskval;
+                        }
+                        if (Home.asks[0][0] > Home.latestAsk)
+                        {
+                            console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("ask increased");
+                            Home.askincreased = 'increased';
+                        }
+                        else
+                        {
+                            Home.askincreased = 'decreased';
+                            console.log("ask decreased");
+                        }
+                        /*** end****/
+
+                        Home.latestAsk = Home.asks[0][0];
+                        Home.askIncrease = Home.asks[0][0] > Home.asks[1][0];
+                    }
+                })
+                .catch(error => "404")
+        }
 
         let getOrders = function(currency){
-            if(w) w.close();
+            if (Home.lastcurrency != currency) {
+                Home.lastcurrency = currency;
+            }
+            console.log(currency);
+            if (w) w.close();
             w = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
             w.onmessage = function(msg){
                 items = JSON.parse(msg.data);
                 // console.log(msg.data);
                 if (items.event) return;
                 var title;
+                Home.bidsprev = Home.bids;
+                Home.asksprev = Home.asks;
                 if (items[1]) {
                     if (items[1].length > 3) {
                         bids = [];
@@ -569,6 +632,7 @@
                         });
                         Home.bids = bids;
                         Home.asks = asks;
+                        console.log(Home.bids);
                     } else {
                         item = items[1];
                         if (item[2] > 0) {
@@ -665,6 +729,8 @@
                 leverageWalletAmount: 0,
                 bids: [],
                 asks: [],
+                bidsprev: [],
+                asksprev: [],
                 latestBid: 0,
                 bidIncrease: false,
                 latestAsk: 0,
@@ -674,7 +740,8 @@
                 limitAmount:'',
                 totalLimitCurrency: '',
                 bidincreased:  '',
-                askincreased: ''
+                askincreased: '',
+                lastcurrency: 'tBTCUSD'
             },
             mounted() {
 
@@ -741,7 +808,8 @@
                 setCurrency(item){
                     let coin = item[0];
                     let symbolx = coin.substr(1);
-
+                    console.log('t'+symbolx);
+                    getInitialOrder('t'+symbolx);
                     let currentCoin = this.splitCurrency(symbolx);
                     get_buy_sell_data(currentCoin);
                     if(currentCoin == "MAB") {

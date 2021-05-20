@@ -47,6 +47,8 @@ Route::get('/about', [HomeController::class, 'about'])->name('front-about');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/verify/{token}', [AuthController::class, 'verify'])->name('verify-email');
 
+Route::get('/get-order', [UpdateController::class, 'getfirstbook']);
+
 
 Route::prefix('update')->group(function(){
     Route::get('/currencies', [UpdateController::class, 'getCurrencies']);
@@ -105,7 +107,6 @@ Route::prefix('user')->middleware(['auth'])->group(function(){
     Route::get('/limitcronjob', [LimitCronController::class, 'limitCronJob'])->name('limit-buysell-cronjob');
     Route::get('/testjobbuy', [LimitCronController::class, 'updateLimitBuyTable']);
     Route::get('/testjobsell', [LimitCronController::class, 'updateLimitSellTable']);
-
 });
 
 Route::prefix('admin')->group(function(){
@@ -151,8 +152,6 @@ Route::prefix('admin')->group(function(){
         Route::get('/locked-savings-delete-action/{id}', [AdminLockedSavingsController::class, 'lockedSavingsDeleteAction'])->name('admin-locked-savings-delete-action');
         Route::post('/locked-savings-edit-action/{id}', [AdminLockedSavingsController::class, 'lockedSavingsEditAction'])->name('admin-locked-savings-edit-action');
         Route::get('/locked-savings-edit/{id}', [AdminLockedSavingsController::class, 'lockedSavingsEdit'])->name('admin-locked-savings-edit');
-        
-
     });
 });
 
