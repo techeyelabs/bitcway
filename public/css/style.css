@@ -442,11 +442,11 @@ table,th, td {
     padding-left: 40px !important;
 }
 .th3{
-    width: 15% !important;
-    text-align: center !important;
+    width: 18% !important;
+    text-align: right !important;
 }
 .th4{
-    width: 30% !important;
+    width: 27% !important;
     text-align: right !important;
 }
 .td1{
@@ -460,11 +460,11 @@ table,th, td {
     text-align: right !important;
 }
 .td3{
-    width: 15% !important;
+    width: 18% !important;
     text-align: right !important;
 }
 .td4{
-    width: 30% !important;
+    width: 27% !important;
     text-align: right !important;
 }
 
