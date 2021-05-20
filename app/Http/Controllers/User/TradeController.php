@@ -109,7 +109,33 @@ class TradeController extends Controller
 
     public function getChartData(Request $request)
     {
+        //dd($request);
         if(empty($request->currency)) return response()->json(['status' => false]);
+        /*if($request->user_currency == 'MAB'){
+            //dd("here");
+            $data=array(
+              'status'=> 'true',
+               'chartData'=>array(
+                   array(1621404000000,39252,39821.73222635,39839,39252,417.14195681),
+                   array(1621402200000,39689,39252,39703.38687557,39037,631.40783786),
+                   array(1621400400000,39293,39689,39814,39166,2237.91657036),
+                   array(1621398600000,39622,39292,40192,38651,1351.04102485),
+                   array(1621396800000,40671.06476555,39622,40961,39500,1116.4597083200001)
+
+                )
+            );
+            return response()->json($data);
+        }
+        else{
+            $Bitfinex = new Bitfinex();
+            $response = $Bitfinex->getCandle($request->currency);
+            $balance = UserWallet::whereHas('currency', function($query) use ($request){
+                return $query->where('name', $request->user_currency);
+            })->where('user_id', Auth::user()->id)->first();
+            if($balance) $balance = $balance->balance;
+            else $balance = 0;
+            return response()->json(['status' => true, 'chartData' => $response, 'balance' => $balance]);
+        }*/
         $Bitfinex = new Bitfinex();
         $response = $Bitfinex->getCandle($request->currency);
         $balance = UserWallet::whereHas('currency', function($query) use ($request){
@@ -297,18 +323,21 @@ class TradeController extends Controller
         return $Bitfinex->getOrderBook($request->currency);
     }
     public function limitBuy(Request $request){
+
         $currency = Currency::where('name', $request->currency)->first();
-        $limitBuy = new LimitBuySell();
-        $limitBuy->limitType = $request->limitType;
-        $limitBuy->priceLimit = $request->priceLimit;
-        $limitBuy->currencyAmount = $request->currencyAmount;
-        $limitBuy->transactionStatus = $request->transactionStatus;
-        $limitBuy->user_id = Auth::user()->id;
-        $limitBuy->currency_id = $currency->id;
-        if($request->derivative){
-            $limitBuy->derivative = $request->derivative;
-        }
-        $limitBuy->save();
+            $limitBuy = new LimitBuySell();
+            $limitBuy->limitType = $request->limitType;
+            $limitBuy->priceLimit = $request->priceLimit;
+            $limitBuy->currencyAmount = $request->currencyAmount;
+            $limitBuy->transactionStatus = $request->transactionStatus;
+            $limitBuy->user_id = Auth::user()->id;
+            $limitBuy->currency_id = $currency->id;
+            if($request->derivative){
+                $limitBuy->derivative = $request->derivative;
+            }
+            $limitBuy->save();
+
+
         return response()->json(['status' => true]);
 
 
@@ -332,7 +361,15 @@ class TradeController extends Controller
     }
 
     public function getBuySellPendingData(Request $coinid){
-        $currency = Currency::where('name', $coinid->coin)->first();
+
+        if($coinid->coin == 'MAB')
+        {
+            $coinname = 'ADA';
+        }
+        else{
+            $coinname=$coinid->coin;
+        }
+        $currency = Currency::where('name', $coinname)->first();
         if($coinid->type === 'derivative')
         {
             $data = limitBuySell::select('id','priceLimit','currencyAmount','limitType')->where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->where('transactionStatus', 1)->where('derivative','>', 0)->orderBy('created_at', 'DESC')->get();
@@ -354,6 +391,14 @@ class TradeController extends Controller
            return "no data";
 
         }
+
+
+    }
+
+    public function limitDelete(Request $request){
+        $limitBuy   = LimitBuySell::find($request->limitId);
+        $limitBuy->delete();
+        return response()->json(['status' => true]);
 
 
     }

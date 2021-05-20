@@ -104,6 +104,7 @@
                                         <div class="form-group">
                                             <div id="limitDiv"  style="display: none">
                                                 <label class="txtWhitecolor" for="" style="margin-top: 10px;">Limit:</label>
+                                                <input type="hidden" name="editId" id="editId" value="" >
                                                 <div class="input-group">
                                                     <input type="text" id="limitAmountId" onkeyup="limitLength()" class="form-control mb-1" placeholder=""  v-model="limitAmount">
                                                     <span v-if="limitAmount.length" id="limitAmountInputLength" class="input-count d-none">@{{limitAmount.length}}</span>
@@ -115,7 +116,7 @@
                                             </div>
                                             <div id="totalAmountDiv">
                                                 <label class="txtWhitecolor"  for="" style="margin-top: 10px;">Total:</label>
-                                                <span v-cloak class="text-muted form-control"  style="">~@{{calcAmount}}</span>
+                                                <span v-cloak class="text-muted form-control" id="totalamountVal"  style="">~@{{calcAmount}}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -145,15 +146,16 @@
                                         </div>
                                         <div id="coinDiv" style="display: none">
                                             <label v-cloak class="txtWhitecolor" id="coinId" for="" style="margin-bottom: 5px">@{{currency}}:</label>
-                                            <div class="input-group">
-                                                <input type="text" id="totalLimitCurrencyId" onkeyup="limitLength()" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
-                                                <span v-if="totalLimitCurrency.length" id="totalLimitCurrencyInputLength" class="input-count d-none">@{{totalLimitCurrency.length}}</span>
-                                            </div>
+
+                                            <input type="text" id="totalLimitCurrencyId" onkeyup="limitLength()" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
+
+                                            <span v-if="totalLimitCurrency.length" id="totalLimitCurrencyInputLength" class="input-count d-none">@{{totalLimitCurrency.length}}</span>
+
                                             <p class="d-none" id="calcLimitAmountId">@{{ calcLimitAmount }}</p>
                                         </div>
                                         <div class="form-group" id="tradeCoinForm" style="margin-top: 14px">
                                             <label v-cloak class="txtWhitecolor" for="">@{{currency}}:</label>
-                                            <input type="text" class="form-control mb-1" placeholder=" " v-model="amount">
+                                            <input type="number" id='coinval' class="form-control mb-1" placeholder=" " v-model="amount">
                                         </div>
                                         <div class="form-group">
 {{--                                            <label v-cloak class="txtWhitecolor"  id="askboxlabel" for="" style="margin-top: 20px;">@{{currency}}:</label>--}}
@@ -185,7 +187,7 @@
                                         <button id='derivativeLimitBuy' class="btn btn-block btn-success" disabled style="display:none;" v-on:click="limitBuy">Derivative Buy</button>
                                     </div>
                                     <div class="col d-grid">
-                                        <button id='derivativeNormalSell' class="btn btn-block btn-danger" :disabled="amount<=0 || amount > leverageWalletAmount" v-on:click="derivativeSell">Derivative Sell</button>
+                                        <button  :load="logdata(amount)"id='derivativeNormalSell' class="btn btn-block btn-danger" :disabled="amount <= 0 || amount > leverageWalletAmount" v-on:click="derivativeSell">Derivative Sell</button>
                                         <button id='derivativeLimitSell' class="btn btn-block btn-danger" disabled  style="display:none;" v-on:click="limitSell">Derivative Sell</button>
                                     </div>
                                 </div>
@@ -202,9 +204,10 @@
                                         <option value="1">Limit</option>
                                     </select>
                                     <div class="form-group">
+                                        <input type="hidden" name="editId" id="editId" value="" >
                                         <div id="limitDiv"  style="display: none">
                                             <label class="txtWhitecolor" for="" style="margin-top: 10px;">Limit:</label>
-                                            <div class="input-group">
+                                            <div class="input-group" id="limitinputdiv">
                                                 <input type="text" id="limitAmountId" onkeyup="limitLength()" class="form-control mb-1" placeholder="" v-model="limitAmount">
                                                 <span v-if="limitAmount.length" id="limitAmountInputLength" class="input-count d-none">@{{limitAmount.length}}</span>
                                             </div>
@@ -215,19 +218,19 @@
                                         </div>
                                         <div id="totalAmountDiv">
                                             <label class="txtWhitecolor"  for="" style="margin-top: 10px;">Total:</label>
-                                            <span v-cloak class="text-muted form-control" style="">~@{{calcAmount}}</span>
+                                            <span v-cloak id="totalamountVal" class="text-muted form-control" style="">~@{{calcAmount}}</span>
                                         </div>
                                     </div>
                                     <div class="" style="margin-bottom: 15px;">
                                         <small class="txtWhitecolor">BID</small>
                                         <small v-cloak class="float-end text-success cursor-pointer" id="bidval" v-on:click="selectedPrice=latestBid">
-                                            <i v-if="bidincreased == 'increased'" :load="log(bidincreased)"  class="fas fa-sort-up"></i>
+                                            <i v-if="bidincreased == 'increased'" :load="logbid(bidincreased)"  class="fas fa-sort-up"></i>
                                             <i v-else class="fas fa-sort-down"></i>
                                             @{{latestBid}}
                                         </small>
                                     </div>
                                         <button id="normalBuy" class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy" style="width: 100%;">Exchange Buy</button>
-                                        <button id="normalLimitBuyButton" class="btn btn-block btn-success" disabled v-on:click="limitBuy" style="display:none;width: 100%;">Exchange Buy</button>
+                                        <button id="normalLimitBuyButton" class="btn btn-block btn-success" disabled v-on:click="limitBuy" style="display:none;width: 100%;margin-top:-5px;">Exchange Buy</button>
                                 </div>
                                 <div class="col">
 
@@ -243,20 +246,18 @@
                                     </div>
                                     <div id="coinDiv" style="display: none">
                                         <label v-cloak class="txtWhitecolor" id="coinId" for="" style="margin-bottom: 5px">@{{currency}}:</label>
-                                        <div class="input-group">
-                                            <input type="text" id="totalLimitCurrencyId" onkeyup="limitLength()" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
-                                            <span v-if="totalLimitCurrency.length" id="totalLimitCurrencyInputLength" class="input-count d-none">@{{totalLimitCurrency.length}}</span>
-                                        </div>
+                                        <input type="text" id="totalLimitCurrencyId" onkeyup="limitLength()" class="form-control mb-1" placeholder="" v-model="totalLimitCurrency">
+                                        <span v-if="totalLimitCurrency.length" id="totalLimitCurrencyInputLength" class="input-count d-none">@{{totalLimitCurrency.length}}</span>
                                         <p class="d-none" id="calcLimitAmountId">@{{ calcLimitAmount }}</p>
                                     </div>
                                     <div class="form-group" id="tradeCoinForm" style="margin-top: 14px">
                                         <label v-cloak class="txtWhitecolor" for="">@{{currency}}:</label>
-                                        <input type="text" class="form-control mb-1" placeholder=" " v-model="amount">
+                                        <input type="text" id='coinval' class="form-control mb-1" placeholder=" " v-model="amount">
                                     </div>
                                     <div id="askDiv" style="margin-bottom: 15px;">
                                         <small class="txtWhitecolor">ASK</small>
                                         <small v-cloak class="float-end text-danger cursor-pointer" id="askval" v-on:click="selectedPrice=latestAsk">
-                                            <i v-if="askincreased =='increased'" :load="log(askincreased)" class="fas fa-sort-up"></i>
+                                            <i v-if="askincreased =='increased'" :load="logask(askincreased)" class="fas fa-sort-up"></i>
                                             <i v-else class="fas fa-sort-down"></i>
                                             @{{latestAsk}}
                                         </small>
@@ -273,7 +274,7 @@
                 <div class="card mt-3" >
                     <div class="card">
                         <div class="card-body buyselldata">
-                            <h4 v-cloak class="txtHeadingColor " >Pending Trade: @{{currency}}</h4>
+                            <h4 v-cloak class="txtHeadingColor " >Pending Trade: <span id="currcoin">@{{currency}}</span></h4>
                             <hr>
                             <table class="tables" id="tabledata">
 
@@ -349,7 +350,7 @@
             let cLimit = parseInt($('#totalLimitCurrencyInputLength').html());
             let aLimit = parseInt($('#limitAmountInputLength').html());
             if (aLimit > 0 && cLimit > 0){
-                buyCheckBox.disabled = false;
+                buyCheckBox.disabled  = false;
                 sellCheckBox.disabled = false;
             }
 
@@ -357,74 +358,97 @@
     </script>
     <script>
         function choseOrderType( limitype) {
-            var buyCheckBoxLevel = document.getElementById("limitBuyInputLevel");
-            var sellCheckBoxLevel = document.getElementById("limitSellInputLevel");
-            var buyCheckBox = document.getElementById("limitBuyInput");
-            var sellCheckBox = document.getElementById("limitSellInput");
-            var limitDiv = document.getElementById("limitDiv");
-            var selectType = document.getElementById("selectType");
-            var coinDiv = document.getElementById("coinDiv");
-            var tradeCoinForm = document.getElementById("tradeCoinForm");
-            var askDiv = document.getElementById("askDiv");
-            var totalAmountDiv = document.getElementById("totalAmountDiv");
-            var coinId = document.getElementById("coinId");
-            let type = $("#choseOrderType").val();
-            var normalSellButton=document.getElementById("normalSell");
-            var normalBuyButton=document.getElementById("normalBuy");
-            var normalLimitSellButton=document.getElementById("normalLimitSellButton");
-            var normalLimitBuyButton=document.getElementById("normalLimitBuyButton");
+            var buyCheckBoxLevel      = document.getElementById("limitBuyInputLevel");
+            var sellCheckBoxLevel     = document.getElementById("limitSellInputLevel");
+            var buyCheckBox           = document.getElementById("limitBuyInput");
+            var sellCheckBox          = document.getElementById("limitSellInput");
+            var limitDiv              = document.getElementById("limitDiv");
+            var selectType            = document.getElementById("selectType");
+            var coinDiv               = document.getElementById("coinDiv");
+            var tradeCoinForm         = document.getElementById("tradeCoinForm");
+            var askDiv                = document.getElementById("askDiv");
+            var totalAmountDiv        = document.getElementById("totalAmountDiv");
+            var coinId                = document.getElementById("coinId");
+            let type                  = $("#choseOrderType").val();
+            var normalSellButton      = document.getElementById("normalSell");
+            var normalBuyButton       = document.getElementById("normalBuy");
+            var normalLimitSellButton = document.getElementById("normalLimitSellButton");
+            var normalLimitBuyButton  = document.getElementById("normalLimitBuyButton");
             // var bidbox=document.getElementById("bidbox");
             // var askbox=document.getElementById("askbox");
             // var askboxlabel=document.getElementById("askboxlabel");
             if (type == 1){
-                if (limitype==="derivative"){
-                    document.getElementById("derivativeNormalSell").style.display='none';
-                    document.getElementById("derivativeNormalBuy").style.display='none';
-                    document.getElementById("derivativeLimitBuy").style.display='block';
-                    document.getElementById("derivativeLimitSell").style.display='block';
+
+                $(".deleteEnabled").show();
+                $(".deleteDisabled").hide();
+                if (limitype === "derivative"){
+                    document.getElementById("derivativeNormalSell").style.display = 'none';
+                    document.getElementById("derivativeNormalBuy").style.display  = 'none';
+                    document.getElementById("derivativeLimitBuy").style.display   = 'block';
+                    document.getElementById("derivativeLimitSell").style.display  = 'block';
+                    $('#limitAmountId').val("");
+                    $('#totalLimitCurrencyId').val("");
+                    // $('#limitAmountInputLength').html("");
+                    // $('#totalLimitCurrencyInputLength').html("");
 
                 }
-                coinId.style.marginTop = "5px";
-                askDiv.style.marginTop = "14px";
-                buyCheckBox.disabled = true;
-                sellCheckBox.disabled = true;
-                buyCheckBox.style.display = "block";
-                sellCheckBox.style.display = "block";
-                limitDiv.style.display = "block";
-                coinDiv.style.display = "block";
-                tradeCoinForm.style.display = "none";
-                totalAmountDiv.style.display = "none";
-                buyCheckBoxLevel.style.display = "block";
+                else{
+                    normalLimitBuyButton.style.display  = "block";
+                    normalLimitSellButton.style.display = "block";
+                    normalSellButton.style.display      = "none";
+                    normalBuyButton.style.display       = "none";
+                }
+                coinId.style.marginTop          = "5px";
+                askDiv.style.marginTop          = "14px";
+                buyCheckBox.disabled            = true;
+                sellCheckBox.disabled           = true;
+                buyCheckBox.style.display       = "block";
+                sellCheckBox.style.display      = "block";
+                limitDiv.style.display          = "block";
+                coinDiv.style.display           = "block";
+                tradeCoinForm.style.display     = "none";
+                totalAmountDiv.style.display    = "none";
+                buyCheckBoxLevel.style.display  = "block";
                 sellCheckBoxLevel.style.display = "block";
-                selectType.style.marginBottom = "15px";
-                normalLimitBuyButton.style.display="block";
-                normalLimitSellButton.style.display="block";
-                normalSellButton.style.display="none";
-                normalBuyButton.style.display="none";
+                selectType.style.marginBottom   = "15px";
 
+                $('#totalLimitCurrencyId').val("");
+                $('#limitAmountId').val("");
 
-            }else{
-                buyCheckBox.style.display = "none";
-                sellCheckBox.style.display = "none";
-                buyCheckBox.disabled = true;
-                sellCheckBox.disabled = true;
-                limitDiv.style.display = "none";
-                coinDiv.style.display = "none";
-                selectType.style.marginBottom = "15px";
-                buyCheckBoxLevel.style.display = "none";
+            }
+            else
+            {
+                buyCheckBox.style.display       = "none";
+                sellCheckBox.style.display      = "none";
+                buyCheckBox.disabled            = true;
+                buyCheckBox.checked             = false;
+                sellCheckBox.disabled           = true;
+                sellCheckBox.checked            = false;
+                limitDiv.style.display          = "none";
+                coinDiv.style.display           = "none";
+                selectType.style.marginBottom   = "15px";
+                buyCheckBoxLevel.style.display  = "none";
                 sellCheckBoxLevel.style.display = "none";
-                totalAmountDiv.style.display = "block";
-                tradeCoinForm.style.display = "block";
-                normalLimitBuyButton.style.display="none";
-                normalLimitSellButton.style.display="none";
-                normalSellButton.style.display="block";
-                normalBuyButton.style.display="block";
-                if (limitype==="derivative"){
-                    document.getElementById("derivativeNormalSell").style.display='block';
-                    document.getElementById("derivativeNormalBuy").style.display='block';
-                    document.getElementById("derivativeLimitBuy").style.display='none';
-                    document.getElementById("derivativeLimitSell").style.display='none';
+                totalAmountDiv.style.display    = "block";
+                tradeCoinForm.style.display     = "block";
 
+                //document.getElementsByClassName("editdisabled").style.display='block'
+                $(".deleteDisabled").show();
+                $(".deleteEnabled").hide();
+
+                if (limitype === "derivative"){
+                    document.getElementById("derivativeNormalSell").style.display = 'block';
+                    document.getElementById("derivativeNormalBuy").style.display  = 'block';
+                    document.getElementById("derivativeLimitBuy").style.display   = 'none';
+                    document.getElementById("derivativeLimitSell").style.display  = 'none';
+
+                }
+                else
+                {
+                    normalLimitBuyButton.style.display  = "none";
+                    normalLimitSellButton.style.display = "none";
+                    normalSellButton.style.display      = "block";
+                    normalBuyButton.style.display       = "block";
                 }
 
             }
@@ -464,10 +488,10 @@
         // showLoader('Loading...');
         let loaded = false;
         socket.on('trackers', (trackers) => {
-            Home.trackers = trackers.trackers;
-            // console.log(Home.trackers);
+            Home.trackers   = trackers.trackers;
             let volumeIndex = Home.trackers;
-            for (let i = 0; i<volumeIndex.length; i++){
+            for (let i = 0; i < volumeIndex.length; i++)
+            {
                 let volume = trackers.trackers[i][7] * trackers.trackers[i][8];
                 trackers.trackers[i][11] = volume;
             }
@@ -490,10 +514,9 @@
             }
         })
 
-        let w = null;
+        let w               = null;
         var totalSellAmount = 0;
-        var currencies = <?php echo json_encode($currency); ?>;
-
+        var currencies      = <?php echo json_encode($currency); ?>;
         // const OrderBook Start
         // $(document).ready(function() {
         //     getInitialOrder("tBTCUSD");
@@ -550,9 +573,9 @@
 
         let getOrders = function(currency){
             if(w) w.close();
-            w = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
+            w           = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
             w.onmessage = function(msg){
-                items = JSON.parse(msg.data);
+                items   = JSON.parse(msg.data);
                 // console.log(msg.data);
                 if (items.event) return;
                 var title;
@@ -594,54 +617,54 @@
                     //Home.bidIncrease = Home.latestBid>Home.bids[0][0] > Home.bids[1][0];
                     if (Home.bids[0][0] > Home.latestBid)
                     {
-                        console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("bid increased");
+                        //console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("bid increased");
                         //Home.bidIncrease=Home.bids[0][0] > Home.latestBid;
                         Home.bidincreased = 'increased';
                     }
                     else
                     {
                         Home.bidincreased = 'decreased';
-                        console.log("bid decreased");
+                       // console.log("bid decreased");
                     }
                     /*** end ****/
 
                     Home.latestBid = Home.bids[0][0];
-                    title = Home.bidIncrease ? '▲' : '▼';
+                    title          = Home.bidIncrease ? '▲' : '▼';
 
                     /*** code for ask price arrow**/
                     document.title = title + " " + Home.latestBid + " " + Home.currency + "/USD";
-                    var getaskval= document.getElementById('askval').textContent;
+                    var getaskval  = document.getElementById('askval').textContent;
                     if(getaskval === 0)
                     {
                         Home.latestAsk = Home.bids[0][0];
                     }
                     else
                     {
-                        Home.latestAsk=getaskval;
+                        Home.latestAsk = getaskval;
                     }
                     if (Home.asks[0][0] > Home.latestAsk)
                     {
-                        console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("ask increased");
+                        //console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("ask increased");
                         Home.askincreased = 'increased';
                     }
                     else
                     {
                         Home.askincreased = 'decreased';
-                        console.log("ask decreased");
+                        //console.log("ask decreased");
                     }
                     /*** end****/
 
-                    Home.latestAsk = Home.asks[0][0];
+                    Home.latestAsk   = Home.asks[0][0];
                     Home.askIncrease = Home.asks[0][0] > Home.asks[1][0];
 
                 }
             }
 
             let msg = JSON.stringify({ 
-                event: 'subscribe', 
-                channel: 'book',
-                freq: 'F1',
-                symbol: currency
+                event   : 'subscribe',
+                channel : 'book',
+                freq    : 'F1',
+                symbol  : currency
             })
 
             w.onopen = function(event){
@@ -658,7 +681,7 @@
                 selectedItem: [],
                 buyAmount: 0,
                 sellAmount: 0,
-                amount: '',
+                amount: 0,
                 balance: 0,
                 usdBalance: '{{Auth::user()->balance}}',
                 derivativeBalance:'{{Auth::user()->derivative}}',
@@ -683,6 +706,8 @@
                 currency(){
                     let currency = this.selectedItem[0]?this.selectedItem[0]:'tBTCUSD';
                     currency = this.splitCurrency(currency);
+                    //leverageWalletAmount = currencies['BTC']['amount'];
+                    //console.log("leverage:"+leverageWalletAmount);
                     return currency;
                 },
                 calcAmount(){
@@ -697,7 +722,7 @@
                 derivativeRange(){
                     if(document.getElementById("limitAmountId").value !=""){
                         var limitval=document.getElementById("limitAmountId").value;
-                        console.log("amount:"+this.limitAmount+"selectedPrice:"+this.selectedPrice+"DerivativeVal:"+this.derivativeValue);
+                        //console.log("amount:"+this.limitAmount+"selectedPrice:"+this.selectedPrice+"DerivativeVal:"+this.derivativeValue);
                         return (this.limitAmount)/this.derivativeValue;
                     }
                     else{
@@ -713,11 +738,23 @@
                 }
             },
             methods: {
-                log(bidincreased) {
+                logbid(bidincreased) {
                     console.log(bidincreased+"bid")
                 },
-                log(askincreased) {
+                logask(askincreased) {
                     console.log(askincreased+"ask")
+                },
+               /* log(leverageWalletAmount) {
+                    console.log(leverageWalletAmount+"here is the leaverage");
+                },*/
+                logdata(amount) {
+                    console.log(amount+" amount");
+                    this.amount               = amount
+                    var currcoin              = this.currency;
+                    //console.log("currcoin:"+currcoin);
+                    leverageWalletAmount      = currencies[currcoin]['amount']
+                    this.leverageWalletAmount = leverageWalletAmount;
+                    console.log(this.leverageWalletAmount+" lvcoin");
                 },
                 itemSetBids(index) {
                     let result = 0;
@@ -736,17 +773,21 @@
                 splitCurrency(currency){
                     currency = currency.split('t').join('');
                     currency = currency.split('USD').join('');
+                    if(currency.length>4){
+                        currency = currency.substr(0,4);
+                    }
                     return currency;
                 },
                 setCurrency(item){
-                    let coin = item[0];
+                    let coin    = item[0];
                     let symbolx = coin.substr(1);
+
 
                     let currentCoin = this.splitCurrency(symbolx);
                     get_buy_sell_data(currentCoin);
                     if(currentCoin == "MAB") {
                         currentCoin = "ADA";
-                        symbolx = "ADAUSD";
+                        symbolx     = "ADAUSD";
                     }
                         new TradingView.widget({
                             "width": "auto",
@@ -772,6 +813,10 @@
 
                     if(currencies[currentCoin]){
                         totalSellAmount = currencies[currentCoin]['amount'];
+                        // console.log(currencies);
+                        // totalSellAmount = currencies['BTC']['amount'];
+                        // console.log("totalamount:"+totalSellAmount);
+                        // console.log(currencies[currentCoin]);
                     }
                     else{
                         totalSellAmount = 0;
@@ -783,11 +828,13 @@
                     this.getChartData();
                 },
                 getChartData(){
+                    //alert('I am here');
                     let that = this;
                     let currency = that.selectedItem[0];
                     // showLoader('Loading ...');
                     axios.get('{{route("user-get-chart-data")}}', {params: {currency: currency, user_currency: that.currency}})
                     .then(function (response) {
+                        console.log(response);
                         let chartData = [];
                         if(response.data.status){
                             that.balance = response.data.balance;
@@ -851,11 +898,11 @@
                 buy(){
 
                     let that = this;
-                    //remove commented code to check invalid amount
-                    /*if(that.calcAmount <= 0 || that.calcAmount > that.usdBalance) {
+
+                    if(that.calcAmount <= 0 || that.calcAmount > that.usdBalance) {
                         toastr.error('Invalid amount !!');
                         return false;
-                    }*/
+                    }
                     showLoader('Processing...');
                     axios.post('{{route("user-trade-buy")}}', {
                         currency: that.currency,
@@ -869,7 +916,9 @@
                         if(response.data.status){
                             toastr.success('Buy successfull');
                             //window.location.href = '{{route("user-wallets")}}';
-                            window.location.href = '{{route("user-trade")}}';
+                            //window.location.href = '{{route("user-trade")}}';
+                            hideLoader();
+                            get_buy_sell_data(that.currency);
                             return false;
                         }
                         toastr.error('Error occured !!');
@@ -880,23 +929,27 @@
                 },
                 sell(){
                     let that = this;
-                    //remove commented code to check invalid amount
-                    /*if(that.calcAmount <= 0 || that.amount > that.balance) {
+                    /*alert(that.calcAmount);
+                    alert(that.balance);*/
+
+                    if(that.calcAmount <= 0 || that.amount > that.balance) {
                         toastr.error('Invalid amount !!');
                         return false;
-                    }*/
+                    }
 
                     showLoader('Processing...');
                     axios.post('{{route("user-trade-sell")}}', {
-                        currency: that.currency,
-                        sellAmount: that.amount,
-                        calcSellAmount: that.calcAmount
+                        currency        : that.currency,
+                        sellAmount      : that.amount,
+                        calcSellAmount  : that.calcAmount
                     })
                     .then(function (response) {
                         if(response.data.status){
                             toastr.success('Sell successfull');
                             {{--window.location.href = '{{route("user-wallets")}}';--}}
-                            window.location.href = '{{route("user-trade")}}';
+                            //window.location.href = '{{route("user-trade")}}';
+                            hideLoader();
+                            get_buy_sell_data(that.currency);
                             return false;
                         }
                         toastr.error('Error occured !!');
@@ -914,17 +967,21 @@
                     }
                     showLoader('Processing...');
                     axios.post('{{route("user-trade-buy")}}', {
-                        currency: that.currency,
-                        buyAmount: that.amount,
-                        calcBuyAmount: that.calcAmount,
-                        leverage: $("#sliderRange").val(),
-                        derivativeUserMoney: that.derivativeRange
+                    currency                : that.currency,
+                        buyAmount           : that.amount,
+                        calcBuyAmount       : that.calcAmount,
+                        leverage            : $("#sliderRange").val(),
+                        derivativeUserMoney : that.derivativeRange
                     })
                         .then(function (response) {
                             if(response.data.status){
                                 toastr.success('Buy successfull');
                                 {{--window.location.href = '{{route("user-wallets")}}';--}}
-                                window.location.href = '{{route("user-trade-derivative")}}';
+                                //window.location.href = '{{route("user-trade-derivative")}}';
+                                $('#limitAmountId').val("");
+                                $('#totalLimitCurrencyId').val("");
+                                hideLoader();
+                                get_buy_sell_data(that.currency);
                                 return false;
                             }
                             toastr.error('Error occured !!');
@@ -942,16 +999,18 @@
 
                     showLoader('Processing...');
                     axios.post('{{route("user-trade-sell")}}', {
-                        currency: that.currency,
-                        sellAmount: that.amount,
-                        calcSellAmount: that.calcAmount,
-                        derivativeType: '0'
+                        currency       : that.currency,
+                        sellAmount     : that.amount,
+                        calcSellAmount : that.calcAmount,
+                        derivativeType : '0'
                     })
                         .then(function (response) {
                             if(response.data.status){
                                 toastr.success('Sell successfull');
                                 {{--window.location.href = '{{route("user-wallets")}}';--}}
-                                window.location.href = '{{route("user-trade-derivative")}}';
+                                //window.location.href = '{{route("user-trade-derivative")}}';
+                                hideLoader();
+                                get_buy_sell_data(that.currency);
                                 return false;
                             }
                                 toastr.error('Error occured !!');
@@ -963,48 +1022,59 @@
                         });
                 },
                 limitBuy(){
-                    let sellCheckBox = document.getElementById("limitSellInput");
+                    let sellCheckBox   = document.getElementById("limitSellInput");
                     //for Derivative buy/sell
                     var chk_derivative = document.getElementById("rangeInput");
+                    // var check_id = document.getElementById("editId");
+                    // if(check_id){
+                    //     var idval=check_id.value;
+                    // }
+                    // else{
+                    //     var idval="";
+                    // }
                     if(chk_derivative){
-                        var derivative=chk_derivative.value;
+                        var derivative = chk_derivative.value;
                     }
                     else{
-                        var derivative=0;
+                        var derivative = 0;
                     }
 
                     let buyCheckedValue = $('#limitBuyInput:checked').val();
                     if (buyCheckedValue == 1){
                         sellCheckBox.disabled = true;
                         let that = this;
+                        //remove commented code to check invalid amount
                         // let calcLimit = that.calcLimitAmount;
-                        if(that.calcLimitAmount <= 0 || that.calcLimitAmount > that.usdBalance) {
-                            toastr.error('Invalid limit amount !!');
-                            return false;
-                        }
+                        // if(that.calcLimitAmount <= 0 || that.calcLimitAmount > that.usdBalance) {
+                        //     toastr.error('Invalid limit amount !!');
+                        //     return false;
+                        // }
                         showLoader('Processing...');
                         axios.post('{{route("user-limit-buy")}}', {
-                            currency: that.currency,
-                            limitType: 1,
-                            priceLimit : that.limitAmount,
-                            currencyAmount: that.totalLimitCurrency,
-                            transactionStatus: 1,
-                            derivative:derivative
+                            currency          : that.currency,
+                            limitType         : 1,
+                            priceLimit        : that.limitAmount,
+                            currencyAmount    : that.totalLimitCurrency,
+                            transactionStatus : 1,
+                            derivative        : derivative,
+                            //id:idval
 
                         })
                             .then(function (response) {
                                 if(response.data.status){
                                     toastr.success('Limit Buy successfull');
                                     {{--window.location.href = '{{route("user-wallets")}}';--}}
-
+                                    hideLoader();
+                                    sellCheckBox.disabled = false;
+                                    get_buy_sell_data(that.currency);
 
                                     //if derivative buy/sell
-                                    if(chk_derivative){
-                                        window.location.href = '{{route("user-trade-derivative")}}';
-                                    }
-                                    else{
-                                        window.location.href = '{{route("user-trade")}}';
-                                    }
+                                    {{--if(chk_derivative){--}}
+                                    {{--    window.location.href = '{{route("user-trade-derivative")}}';--}}
+                                    {{--}--}}
+                                    {{--else{--}}
+                                    {{--    window.location.href = '{{route("user-trade")}}';--}}
+                                    {{--}--}}
 
                                     return false;
                                 }
@@ -1017,7 +1087,7 @@
 
                 },
                 limitSell(){
-                    let buyCheckBox = document.getElementById("limitBuyInput");
+                    let buyCheckBox    = document.getElementById("limitBuyInput");
                     var chk_derivative = document.getElementById("rangeInput");
                     if(chk_derivative){
                         var derivative = chk_derivative.value;
@@ -1029,31 +1099,35 @@
                     if (sellCheckedValue == 2){
                         buyCheckBox.disabled = true;
                         let that = this;
-                        // if(that.calcLimitAmount <= 0 ) {
-                        if(that.calcLimitAmount <= 0 || that.totalLimitCurrency > that.balance) {
-                            toastr.error('Invalid Limit Sell amount !!');
-                            return false;
-                        }
+
+                        //remove commented code to check invalid amount
+                        // if(that.calcLimitAmount <= 0 || that.totalLimitCurrency > that.balance) {
+                        //     toastr.error('Invalid Limit Sell amount !!');
+                        //     return false;
+                        // }
 
                         showLoader('Processing...');
                         axios.post('{{route("user-limit-sell")}}', {
-                            currency: that.currency,
-                            limitType: 2,
-                            priceLimit : that.limitAmount,
-                            currencyAmount: that.totalLimitCurrency,
-                            transactionStatus: 1,
+                            currency            : that.currency,
+                            limitType           : 2,
+                            priceLimit          : that.limitAmount,
+                            currencyAmount      : that.totalLimitCurrency,
+                            transactionStatus   : 1,
                             derivative:derivative
                         })
                             .then(function (response) {
                                 if(response.data.status){
                                     toastr.success('Limit Sell successfull');
                                     {{--window.location.href = '{{route("user-wallets")}}';--}}
-                                    if(chk_derivative){
-                                        window.location.href = '{{route("user-trade-derivative")}}';
-                                    }
-                                    else{
-                                        window.location.href = '{{route("user-trade")}}';
-                                    }
+                                    buyCheckBox.disabled = false;
+                                    hideLoader();
+                                    get_buy_sell_data(that.currency);
+                                    {{--if(chk_derivative){--}}
+                                    {{--    window.location.href = '{{route("user-trade-derivative")}}';--}}
+                                    {{--}--}}
+                                    {{--else{--}}
+                                    {{--    window.location.href = '{{route("user-trade")}}';--}}
+                                    {{--}--}}
 
                                     return false;
                                 }
@@ -1064,6 +1138,7 @@
                             });
                     }
                 },
+
                 getOrders(){
                     let that = this;
                     let currency = that.selectedItem[0];
@@ -1075,40 +1150,100 @@
             },
         });
 
+
         function enableLimitBuy(type){
             if(type === 'derivative'){
-                var bt = document.getElementById('derivativeLimitBuy');
+                var bt      = document.getElementById('derivativeLimitBuy');
                 bt.disabled = document.getElementById('limitBuyInput').checked ? false : true;
                 document.getElementById('limitSellInput').checked = false;
                 document.getElementById('derivativeLimitSell').disabled = true;
             }
             else{
-                var bt = document.getElementById('normalLimitBuyButton');
-                bt.disabled=document.getElementById('limitBuyInput').checked ? false : true;
+                var bt      = document.getElementById('normalLimitBuyButton');
+                bt.disabled = document.getElementById('limitBuyInput').checked ? false : true;
                 document.getElementById('limitSellInput').checked = false;
                 document.getElementById('normalLimitSellButton').disabled = true;
             }
         };
        function enableLimitSell(type){
-           if(type==='derivative'){
-               var bt = document.getElementById('derivativeLimitSell');
+           if(type === 'derivative'){
+               var bt      = document.getElementById('derivativeLimitSell');
                bt.disabled = document.getElementById('limitSellInput').checked ? false : true;
                document.getElementById('limitBuyInput').checked = false;
                document.getElementById('derivativeLimitBuy').disabled = true;
            }
            else{
-               var bt = document.getElementById('normalLimitSellButton');
+               var bt      = document.getElementById('normalLimitSellButton');
                bt.disabled = document.getElementById('limitSellInput').checked ? false : true;
                document.getElementById('limitBuyInput').checked = false;
                document.getElementById('normalLimitBuyButton').disabled = true;
            }
         };
+       function limitDelete(id) {
+           var idval    = $("#editId").val(id);
+           var val_id   = $("#editId").val();
+           var currcoin = $("#currcoin").text();
+           //alert(val_id);
+           var confirm_message = confirm("Do you want to delete this Trade?");
+           if (confirm_message == true) {
+               showLoader('Processing...');
+                   axios.post('{{route("user-limit-delete")}}', {
+                       limitId: val_id,
+                   })
+                       .then(function (response) {
+                           if(response.data.status){
+                               toastr.success('Limit Delete successfull');
+                               get_buy_sell_data(currcoin);
+                               hideLoader();
+                               return false;
+                           }
+                       })
+
+               }
+
+
+       }
+       /*function updatelimit(id, pricelimit, amount, position){
+
+
+           var inputfield="<input type='text' id='limitAmountId'  class='form-control mb-1' >";
+           var currencyinput="<input type='text' id='totalLimitCurrencyId'  class='form-control mb-1' placeholder='' >";
+
+
+
+           $("#limitinputdiv").html(inputfield);
+           $("#currencyinputdiv").html(currencyinput);
+           $("#totalLimitCurrencyId").val(amount);
+           $("#limitAmountId").val(pricelimit);
+           var idval= $("#editId").val(id);
+           console.log(idval);
+
+           if (position ===1){
+               $("#limitBuyInput").prop('checked', true);
+               $("#limitSellInput").prop('disabled', true);
+               $("#limitSellInput").prop('checked', false);
+               $("#normalLimitBuyButton").prop('disabled', false);
+               $("#normalLimitSellButton").prop('disabled', true);
+           }
+           else{
+               $("#limitBuyInput").prop('disabled', false);
+               $("#limitBuyInput").prop('checked', false);
+               $("#limitSellInput").prop('checked', true);
+               $("#normalLimitBuyButton").prop('disabled', true);
+               $("#normalLimitSellButton").prop('disabled', false);
+           }
+           console.log(id);
+           console.log(pricelimit);
+           console.log(amount);
+           console.log(position);
+       }*/
         /**
          * Generates HTML table for Buy/Sell Pending
          * @param string coin name
          * @author Mahbub (mahbub.benri@gmail.com)
          */
         function get_buy_sell_data(coin){
+            //alert(coin);
             var type = "{{ Request::get('type') }}";
             if(type){
                 type = 'derivative';
@@ -1123,10 +1258,10 @@
                 }
             });
             $.ajax({
-                url: '{{route("get-buy-sell-pending-data")}}',
-                type: "Get",
-                data:{coin:coin, type:type}, // the value of input
-                success: function(response){ // What to do if we succeed
+                url     : '{{route("get-buy-sell-pending-data")}}',
+                type    : "Get",
+                data    : {coin:coin, type:type}, // the value of input
+                success : function(response){ // What to do if we succeed
                     var data = "";
                     if(response.length < 0 || response === "no data"){
                         $("#tabledata").html("<div>No Pending Buy/Sell Data Found.</div>");
@@ -1137,7 +1272,7 @@
                                     "<th class='txtWhitecolor th5'>LIMIT</th>" +
                                     "<th class='txtWhitecolor th6'>AMOUNT</th>" +
                                     "<th class='txtWhitecolor th7'>POSITION</th>" +
-                                     "<th class='txtWhitecolor th8'>ACTION</th>"
+                                    "<th class='txtWhitecolor th8'>ACTION</th>"+
                                 " </tr>" +
                               "</thead>";
                         data+="<tbody>";
@@ -1166,11 +1301,18 @@
                             {
                                 var amount = response[i].currencyAmount.toFixed(5);
                             }
+                            let type = $("#choseOrderType").val();
+                            if (type == 1){
+                                var button_code = "<i class='fas fa-trash deleteEnabled' style='color:green;' onclick='limitDelete("+response[i].id+")'></i><i class='fas fa-trash deleteDisabled' style='display:none;' ></i>";
+                            }
+                            else{
+                                var button_code =  "<i class='fas fa-trash deleteEnabled' style='display:none;color:green;' onclick='limitDelete("+response[i].id+")'></i><i class='fas fa-trash deleteDisabled'></i>";
+                            }
                             data+="<tr>" +
                                     "<td class='txtWhitecolor tdlimit'>"+response[i].priceLimit+"</td>" +
                                     "<td class='txtWhitecolor tdamount'>"+amount+"</td>" +
                                     "<td class='tdposition "+ classname +"'>" + position + "</td>" +
-                                    "<td class='tdposition'><button type='button' class='btn btn-secondary btn-sm'>Edit</button</td>"+
+                                    "<td class='tdposition td8'>"+button_code+"</td>"
                                    "</tr>";
                         }
                         data+="</tbody>";

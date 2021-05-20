@@ -232,7 +232,7 @@ form {
     width:15%!important;
 }
 .th8{
-    text-align: right!important;
+    text-align: center!important;
     width:20%!important;
 }
 .tdlimit{
@@ -246,6 +246,10 @@ form {
 .tdposition{
     /*width:35%!important;*/
     text-align:right!important;
+}
+.td8{
+    /*width:35%!important;*/
+    text-align:center!important;
 }
 
 @media (max-width:1024px) {

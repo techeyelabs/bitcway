@@ -99,6 +99,7 @@ Route::prefix('user')->middleware(['auth'])->group(function(){
     Route::get('/locked-savings-invest', [CronController::class, 'myaction'])->name('user-locked-savings-invest');
     Route::post('/limit-buy', [TradeController::class, 'limitBuy'])->name('user-limit-buy');
     Route::post('/limit-sell', [TradeController::class, 'limitSell'])->name('user-limit-sell');
+    Route::post('/limit-delete', [TradeController::class, 'limitDelete'])->name('user-limit-delete');
     Route::get('/getBuySellPendingData', [TradeController::class, 'getBuySellPendingData'])->name('get-buy-sell-pending-data');
 
     //Limit BuySell Cron Job
