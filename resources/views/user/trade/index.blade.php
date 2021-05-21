@@ -56,9 +56,9 @@
 @section('content')
     <div id="wrap" class="trade">
         @if(isset($type))
-            <h3 class="txtHeadingColor">Derivatives</h3>
+            <h3 class="txtHeadingColor">{{__('menuoption4')}}</h3>
         @else
-            <h3 class="txtHeadingColor">Trade</h3>
+            <h3 class="txtHeadingColor">{{__('menuoption3')}}</h3>
         @endif
         <hr>
         <div class="row" style="display: flex;">
@@ -66,13 +66,13 @@
                 <div class="card" >
                     <div class="card-body">
                         <div id="trackers">
-                            <div class="text-center title txtHeadingColor"><h4>TICKERS</h4></div>
+                            <div class="text-center title txtHeadingColor"><h4>{{__('title11')}}</h4></div>
                             <table class="tables trackers" style="width: 100%; table-layout: fixed">
                                 <thead>
                                     <tr>
-                                        <th class="txtWhitecolor th1">SYMBOL</th>
-                                        <th class="txtWhitecolor th2">LAST</th>
-                                        <th class="txtWhitecolor th3">24H</th>
+                                        <th class="txtWhitecolor th1">{{__('column1')}}</th>
+                                        <th class="txtWhitecolor th2">{{__('column2')}}</th>
+                                        <th class="txtWhitecolor th3">{{__('column3')}}</th>
                                         <th class="txtWhitecolor th4">VOL <u>USD</u></th>
                                     </tr>
                                 </thead>
@@ -93,17 +93,17 @@
                     <div class="card" >
                         @if(isset($type))
                             <div class="card-body">
-                                <h4 v-cloak class="txtHeadingColor " >ORDER FORM: @{{currency}}</h4>
+                                <h4 v-cloak class="txtHeadingColor " >{{__('title12')}}: @{{currency}}</h4>
                                 <hr>
                                 <div class="row">
                                     <div class="col ">
                                         <select class="form-select selectClass" aria-label="Default select example" id="choseOrderType" onchange="choseOrderType('derivative')">
-                                            <option value="0" selected>Market</option>
-                                            <option value="1">Limit</option>
+                                            <option value="0" selected>{{__('market')}}</option>
+                                            <option value="1">{{__('limit')}}</option>
                                         </select>
                                         <div class="form-group">
                                             <div id="limitDiv"  style="display: none">
-                                                <label class="txtWhitecolor" for="" style="margin-top: 10px;">Limit:</label>
+                                                <label class="txtWhitecolor" for="" style="margin-top: 10px;">{{__('limit')}}:</label>
                                                 <div class="input-group">
                                                     <input type="text" id="limitAmountId" onkeyup="limitLength()" class="form-control mb-1" placeholder=""  v-model="limitAmount">
                                                     <span v-if="limitAmount.length" id="limitAmountInputLength" class="input-count d-none">@{{limitAmount.length}}</span>
@@ -114,7 +114,7 @@
                                                 <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
                                             </div>
                                             <div id="totalAmountDiv">
-                                                <label class="txtWhitecolor"  for="" style="margin-top: 10px;">Total:</label>
+                                                <label class="txtWhitecolor"  for="" style="margin-top: 10px;">{{__('total')}}:</label>
                                                 <span v-cloak class="text-muted form-control"  style="">~@{{calcAmount}}</span>
                                             </div>
                                         </div>
@@ -124,7 +124,7 @@
 {{--                                                <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">--}}
 {{--                                            </div>--}}
 {{--                                            <span v-cloak class="text-muted form-control"  id="bidbox" style="margin-top: 10px;">~@{{calcAmount}}</span>--}}
-                                            <small class="txtWhitecolor">BID</small>
+                                            <small class="txtWhitecolor">{{__('subheader2')}}</small>
                                             <small v-cloak class="float-end text-success cursor-pointer " id="bidval" v-on:click="selectedPrice=latestBid">
                                                 <i v-if="bidincreased == 'increased'" class="fas fa-sort-up"></i>
                                                 <i v-else class="fas fa-sort-down"></i>
@@ -136,11 +136,11 @@
                                         <div id="selectType" style="">
                                             <div class="form-check form-check-inline" id="limitBuyId" >
                                                 <input class="form-check-input"  type="checkbox" id="limitBuyInput" value="1"  onclick="enableLimitBuy('derivative')" disabled style="display:none;">
-                                                <label class="form-check-label txtWhitecolor" id="limitBuyInputLevel" for="inlineCheckbox1"  style="display:none;">Buy</label>
+                                                <label class="form-check-label txtWhitecolor" id="limitBuyInputLevel" for="inlineCheckbox1"  style="display:none;">{{__('buy')}}</label>
                                             </div>
                                             <div class="form-check form-check-inline" id="limitSellId" >
                                                 <input class="form-check-input "  type="checkbox" id="limitSellInput" value="2"  disabled onclick="enableLimitSell('derivative')" style="display:none;" >
-                                                <label class="form-check-label txtWhitecolor" id="limitSellInputLevel" for="inlineCheckbox2" style="display:none;">Sell</label>
+                                                <label class="form-check-label txtWhitecolor" id="limitSellInputLevel" for="inlineCheckbox2" style="display:none;">{{__('sell')}}</label>
                                             </div>
                                         </div>
                                         <div id="coinDiv" style="display: none">
@@ -159,7 +159,7 @@
 {{--                                            <label v-cloak class="txtWhitecolor"  id="askboxlabel" for="" style="margin-top: 20px;">@{{currency}}:</label>--}}
 {{--                                            <input type="number" class="form-control mb-1" id="askbox" placeholder="" v-model="amount">--}}
                                             <div id="askDiv" style="margin-bottom: 15px;">
-                                                <small class="txtWhitecolor">ASK</small>
+                                                <small class="txtWhitecolor">{{__('subheader3')}}</small>
                                                 <small v-cloak class="float-end text-danger cursor-pointer" id="askval" v-on:click="selectedPrice=latestAsk">
                                                     <i v-if="askincreased == 'askincreased'" class="fas fa-sort-up"></i>
                                                     <i v-else class="fas fa-sort-down"></i>
@@ -181,29 +181,29 @@
                                 </div>
                                 <div class="row mt-5" id="marketbutton" >
                                     <div class="col d-grid">
-                                        <button id='derivativeNormalBuy'class="btn btn-block btn-success" :disabled="amount<=0 || derivativeRange > derivativeBalance" v-on:click="derivativeBuy">Derivative Buy</button>
-                                        <button id='derivativeLimitBuy' class="btn btn-block btn-success" disabled style="display:none;" v-on:click="limitBuy">Derivative Buy</button>
+                                        <button id='derivativeNormalBuy'class="btn btn-block btn-success" :disabled="amount<=0 || derivativeRange > derivativeBalance" v-on:click="derivativeBuy">{{__('button9')}}</button>
+                                        <button id='derivativeLimitBuy' class="btn btn-block btn-success" disabled style="display:none;" v-on:click="limitBuy">{{__('button9')}}</button>
                                     </div>
                                     <div class="col d-grid">
-                                        <button id='derivativeNormalSell' class="btn btn-block btn-danger" :disabled="amount<=0 || amount > leverageWalletAmount" v-on:click="derivativeSell">Derivative Sell</button>
-                                        <button id='derivativeLimitSell' class="btn btn-block btn-danger" disabled  style="display:none;" v-on:click="limitSell">Derivative Sell</button>
+                                        <button id='derivativeNormalSell' class="btn btn-block btn-danger" :disabled="amount<=0 || amount > leverageWalletAmount" v-on:click="derivativeSell">{{__('button10')}}</button>
+                                        <button id='derivativeLimitSell' class="btn btn-block btn-danger" disabled  style="display:none;" v-on:click="limitSell">{{__('button10')}}</button>
                                     </div>
                                 </div>
 
                             </div>
                         @else
                             <div class="card-body">
-                            <h4 v-cloak class="txtHeadingColor">ORDER FORM: @{{currency}}</h4>
+                            <h4 v-cloak class="txtHeadingColor">{{__('title12')}}: @{{currency}}</h4>
                             <hr>
                             <div class="row">
                                 <div class="col">
                                     <select class="form-select selectClass" aria-label="Default select example" id="choseOrderType" onchange="choseOrderType()">
-                                        <option value="0" selected>Market</option>
-                                        <option value="1">Limit</option>
+                                        <option value="0" selected>{{__('market')}}</option>
+                                        <option value="1">{{__('limit')}}</option>
                                     </select>
                                     <div class="form-group">
                                         <div id="limitDiv"  style="display: none">
-                                            <label class="txtWhitecolor" for="" style="margin-top: 10px;">Limit:</label>
+                                            <label class="txtWhitecolor" for="" style="margin-top: 10px;">{{__('limit')}}:</label>
                                             <div class="input-group">
                                                 <input type="text" id="limitAmountId" onkeyup="limitLength()" class="form-control mb-1" placeholder="" v-model="limitAmount">
                                                 <span v-if="limitAmount.length" id="limitAmountInputLength" class="input-count d-none">@{{limitAmount.length}}</span>
@@ -214,31 +214,31 @@
                                             <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
                                         </div>
                                         <div id="totalAmountDiv">
-                                            <label class="txtWhitecolor"  for="" style="margin-top: 10px;">Total:</label>
+                                            <label class="txtWhitecolor"  for="" style="margin-top: 10px;">{{__('total')}}:</label>
                                             <span v-cloak class="text-muted form-control" style="">~@{{calcAmount}}</span>
                                         </div>
                                     </div>
                                     <div class="" style="margin-bottom: 15px;">
-                                        <small class="txtWhitecolor">BID</small>
+                                        <small class="txtWhitecolor">{{__('subheader2')}}</small>
                                         <small v-cloak class="float-end text-success cursor-pointer" id="bidval" v-on:click="selectedPrice=latestBid">
                                             <i v-if="bidincreased == 'increased'" :load="log(bidincreased)"  class="fas fa-sort-up"></i>
                                             <i v-else class="fas fa-sort-down"></i>
                                             @{{latestBid}}
                                         </small>
                                     </div>
-                                        <button id="normalBuy" class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy" style="width: 100%;">Exchange Buy</button>
-                                        <button id="normalLimitBuyButton" class="btn btn-block btn-success" disabled v-on:click="limitBuy" style="display:none;width: 100%;">Exchange Buy</button>
+                                        <button id="normalBuy" class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy" style="width: 100%;">{{__('button7')}}</button>
+                                        <button id="normalLimitBuyButton" class="btn btn-block btn-success" disabled v-on:click="limitBuy" style="display:none;width: 100%;">{{__('button7')}}</button>
                                 </div>
                                 <div class="col">
 
                                     <div id="selectType" style="">
                                         <div class="form-check form-check-inline" id="limitBuyId" >
                                             <input class="form-check-input"  type="checkbox" id="limitBuyInput" value="1"   disabled  onclick="enableLimitBuy()" style="display:none;">
-                                            <label class="form-check-label txtWhitecolor" id="limitBuyInputLevel" for="inlineCheckbox1" style="display:none;">Buy</label>
+                                            <label class="form-check-label txtWhitecolor" id="limitBuyInputLevel" for="inlineCheckbox1" style="display:none;">{{__('buy')}}</label>
                                         </div>
                                         <div class="form-check form-check-inline" id="limitSellId" >
                                             <input class="form-check-input "  type="checkbox" id="limitSellInput" value="2" disabled onclick="enableLimitSell()"  style="display:none;">
-                                            <label class="form-check-label txtWhitecolor" id="limitSellInputLevel" for="inlineCheckbox2"  style="display:none;">Sell</label>
+                                            <label class="form-check-label txtWhitecolor" id="limitSellInputLevel" for="inlineCheckbox2"  style="display:none;">{{__('sell')}}Sell</label>
                                         </div>
                                     </div>
                                     <div id="coinDiv" style="display: none">
@@ -261,8 +261,8 @@
                                             @{{latestAsk}}
                                         </small>
                                     </div>
-                                        <button id="normalSell" class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell" style="width: 100%;">Exchange Sell</button>
-                                        <button id="normalLimitSellButton" class="btn btn-block btn-danger" disabled v-on:click="limitSell" style="display:none;width: 100%;">Exchange Sell</button>
+                                        <button id="normalSell" class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell" style="width: 100%;">{{__('button8')}}</button>
+                                        <button id="normalLimitSellButton" class="btn btn-block btn-danger" disabled v-on:click="limitSell" style="display:none;width: 100%;">{{__('button8')}}</button>
                                 </div>
                             </div>
                         </div>
@@ -273,7 +273,7 @@
                 <div class="card mt-3" >
                     <div class="card">
                         <div class="card-body buyselldata">
-                            <h4 v-cloak class="txtHeadingColor " >Pending Trade: @{{currency}}</h4>
+                            <h4 v-cloak class="txtHeadingColor">Pending Trade: @{{currency}}</h4>
                             <hr>
                             <table class="tables" id="tabledata">
 
@@ -285,14 +285,14 @@
             <div class="col main-app-container">
                 <div class="card">
                     <div class="card-body">
-                        <div class="text-center title mb-2 txtHeadingColor"><h4 v-cloak>Showing Chart for @{{currency}}</h4></div>
+                        <div class="text-center title mb-2 txtHeadingColor"><h4 v-cloak>{{__('title10')}} @{{currency}}</h4></div>
                         <div id="chart" style="height:600px; display: none"></div>
                         <div id="tradingview_f7648" ></div>
                     </div>
                 </div>
                 <div class="card mt-3">
                     <div class="card-body">
-                        <h4 class="txtHeadingColor" v-cloak>Order Book: @{{currency}}/USD</h4>
+                        <h4 class="txtHeadingColor" v-cloak>{{__('title13')}}: @{{currency}}/USD</h4>
                         <hr>
                         <div class="">
                             <div class="row">
@@ -300,9 +300,9 @@
                                     <table class="table">
                                         <thead>
                                             <th class="txtWhitecolor">Count</th>
-                                            <th class="txtWhitecolor">Amount</th>
-                                            <th class="txtWhitecolor">Total</th>
-                                            <th class="txtWhitecolor">Price</th>
+                                            <th class="txtWhitecolor">{{__('col10')}}</th>
+                                            <th class="txtWhitecolor">{{__('total')}}</th>
+                                            <th class="txtWhitecolor">{{__('price')}}</th>
                                         </thead>
                                         <tbody style="background-color: #1142304d;">
                                             <tr v-for="(item, index) in bids">
@@ -317,9 +317,9 @@
                                 <div class="col orders">
                                     <table class="table">
                                         <thead>
-                                            <th class="txtWhitecolor">Price</th>
-                                            <th class="txtWhitecolor">Total</th>
-                                            <th class="txtWhitecolor">Amount</th>
+                                            <th class="txtWhitecolor">{{__('price')}}</th>
+                                            <th class="txtWhitecolor">{{__('total')}}</th>
+                                            <th class="txtWhitecolor">{{__('col10')}}</th>
                                             <th class="txtWhitecolor">Count</th>
                                         </thead>
                                         <tbody style="background-color:#942f3e6e; ">
@@ -786,7 +786,7 @@
                     let that = this;
                     let currency = that.selectedItem[0];
                     // showLoader('Loading ...');
-                    axios.get('{{route("user-get-chart-data")}}', {params: {currency: currency, user_currency: that.currency}})
+                    axios.get('{{route("user-get-chart-data", app()->getLocale())}}', {params: {currency: currency, user_currency: that.currency}})
                     .then(function (response) {
                         let chartData = [];
                         if(response.data.status){
@@ -857,7 +857,7 @@
                         return false;
                     }*/
                     showLoader('Processing...');
-                    axios.post('{{route("user-trade-buy")}}', {
+                    axios.post('{{route("user-trade-buy", app()->getLocale())}}', {
                         currency: that.currency,
                         buyAmount: that.amount,
                         calcBuyAmount: that.calcAmount,
@@ -868,8 +868,8 @@
                     .then(function (response) {
                         if(response.data.status){
                             toastr.success('Buy successfull');
-                            //window.location.href = '{{route("user-wallets")}}';
-                            window.location.href = '{{route("user-trade")}}';
+                            //window.location.href = '{{route("user-wallets", app()->getLocale())}}';
+                            window.location.href = '{{route("user-trade", app()->getLocale())}}';
                             return false;
                         }
                         toastr.error('Error occured !!');
@@ -887,7 +887,7 @@
                     }*/
 
                     showLoader('Processing...');
-                    axios.post('{{route("user-trade-sell")}}', {
+                    axios.post('{{route("user-trade-sell", app()->getLocale())}}', {
                         currency: that.currency,
                         sellAmount: that.amount,
                         calcSellAmount: that.calcAmount
@@ -896,7 +896,7 @@
                         if(response.data.status){
                             toastr.success('Sell successfull');
                             {{--window.location.href = '{{route("user-wallets")}}';--}}
-                            window.location.href = '{{route("user-trade")}}';
+                            window.location.href = '{{route("user-trade", app()->getLocale())}}';
                             return false;
                         }
                         toastr.error('Error occured !!');
@@ -913,7 +913,7 @@
                         return false;
                     }
                     showLoader('Processing...');
-                    axios.post('{{route("user-trade-buy")}}', {
+                    axios.post('{{route("user-trade-buy", app()->getLocale())}}', {
                         currency: that.currency,
                         buyAmount: that.amount,
                         calcBuyAmount: that.calcAmount,
@@ -924,7 +924,7 @@
                             if(response.data.status){
                                 toastr.success('Buy successfull');
                                 {{--window.location.href = '{{route("user-wallets")}}';--}}
-                                window.location.href = '{{route("user-trade-derivative")}}';
+                                window.location.href = '{{route("user-trade-derivative", app()->getLocale())}}';
                                 return false;
                             }
                             toastr.error('Error occured !!');
@@ -941,7 +941,7 @@
                     }
 
                     showLoader('Processing...');
-                    axios.post('{{route("user-trade-sell")}}', {
+                    axios.post('{{route("user-trade-sell", app()->getLocale())}}', {
                         currency: that.currency,
                         sellAmount: that.amount,
                         calcSellAmount: that.calcAmount,
@@ -951,7 +951,7 @@
                             if(response.data.status){
                                 toastr.success('Sell successfull');
                                 {{--window.location.href = '{{route("user-wallets")}}';--}}
-                                window.location.href = '{{route("user-trade-derivative")}}';
+                                window.location.href = '{{route("user-trade-derivative", app()->getLocale())}}';
                                 return false;
                             }
                                 toastr.error('Error occured !!');
@@ -983,7 +983,7 @@
                             return false;
                         }
                         showLoader('Processing...');
-                        axios.post('{{route("user-limit-buy")}}', {
+                        axios.post('{{route("user-limit-buy", app()->getLocale())}}', {
                             currency: that.currency,
                             limitType: 1,
                             priceLimit : that.limitAmount,
@@ -1000,10 +1000,10 @@
 
                                     //if derivative buy/sell
                                     if(chk_derivative){
-                                        window.location.href = '{{route("user-trade-derivative")}}';
+                                        window.location.href = '{{route("user-trade-derivative", app()->getLocale())}}';
                                     }
                                     else{
-                                        window.location.href = '{{route("user-trade")}}';
+                                        window.location.href = '{{route("user-trade", app()->getLocale())}}';
                                     }
 
                                     return false;
@@ -1036,7 +1036,7 @@
                         }
 
                         showLoader('Processing...');
-                        axios.post('{{route("user-limit-sell")}}', {
+                        axios.post('{{route("user-limit-sell", app()->getLocale())}}', {
                             currency: that.currency,
                             limitType: 2,
                             priceLimit : that.limitAmount,
@@ -1049,10 +1049,10 @@
                                     toastr.success('Limit Sell successfull');
                                     {{--window.location.href = '{{route("user-wallets")}}';--}}
                                     if(chk_derivative){
-                                        window.location.href = '{{route("user-trade-derivative")}}';
+                                        window.location.href = '{{route("user-trade-derivative", app()->getLocale())}}';
                                     }
                                     else{
-                                        window.location.href = '{{route("user-trade")}}';
+                                        window.location.href = '{{route("user-trade", app()->getLocale())}}';
                                     }
 
                                     return false;
@@ -1123,7 +1123,7 @@
                 }
             });
             $.ajax({
-                url: '{{route("get-buy-sell-pending-data")}}',
+                url: '{{route("get-buy-sell-pending-data", app()->getLocale())}}',
                 type: "Get",
                 data:{coin:coin, type:type}, // the value of input
                 success: function(response){ // What to do if we succeed

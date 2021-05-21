@@ -323,7 +323,7 @@
                         return false;
                     }
                     showLoader('Processing...');
-                    axios.post('{{route("user-trade-buy")}}', {
+                    axios.post('{{route("user-trade-buy", app()->getLocale())}}', {
                         currency: that.currency,
                         buyAmount: that.buyAmount,
                         calcBuyAmount: that.calcBuyAmount
@@ -348,7 +348,7 @@
                     }
 
                     showLoader('Processing...');
-                    axios.post('{{route("user-trade-sell")}}', {
+                    axios.post('{{route("user-trade-sell", app()->getLocale())}}', {
                         currency: that.currency,
                         sellAmount: that.sellAmount,
                         calcSellAmount: that.calcSellAmount

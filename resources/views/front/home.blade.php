@@ -15,11 +15,11 @@
 @section('content')
 <div class=" text-center home-banner">
     <div class="card-body">
-        <h1 class="card-title txtHeadingColor">The Home of Digital Asset <br>Trading & Finance</h1><br>
+        <h1 class="card-title txtHeadingColor">{{__('title')}} <br>{{__('title2')}}</h1><br>
         <?php if(Auth::check()){?>
-            <a href="{{route('user-dashboard')}}" class="btn btn-outline-warning btn-lg">DASHBOARD</a>
+            <a href="{{route('user-dashboard', app()->getLocale())}}" class="btn btn-outline-warning btn-lg">{{__('menuoption1')}}</a>
         <?php }else{?>
-            <a href="{{route('signup')}}" class="btn btn-outline-warning btn-lg t">JOIN NOW</a>
+            <a href="{{route('signup', app()->getLocale())}}" class="btn btn-outline-warning btn-lg t">{{__('button1')}}</a>
         <?php }?>
         
     </div>
@@ -31,12 +31,12 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th class="txtWhitecolor">SYMBOL</th>
-                    <th class="txtWhitecolor">LAST PRICE</th>
-                    <th class="txtWhitecolor">24H CHANGE</th>
-                    <th class="txtWhitecolor">24H HIGH</th>
-                    <th class="txtWhitecolor">24H LOW</th>
-                    <th class="txtWhitecolor">VOLUME</th>
+                    <th class="txtWhitecolor">{{__('column1')}}</th>
+                    <th class="txtWhitecolor">{{__('column2')}}</th>
+                    <th class="txtWhitecolor">{{__('column3')}}</th>
+                    <th class="txtWhitecolor">{{__('column4')}}</th>
+                    <th class="txtWhitecolor">{{__('column5')}}</th>
+                    <th class="txtWhitecolor">{{__('column6')}}</th>
                 </tr>
             </thead>
             <tbody>

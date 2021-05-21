@@ -57,7 +57,7 @@
         <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-content">
                 <div class="sidebar-brand">
-                    <a class="logo txtWhitecolor" href="{{route('front-home')}}"><strong>BITC-WAY</strong></a>
+                    <a class="logo txtWhitecolor" href="{{route('front-home', app()->getLocale())}}"><strong>BITC-WAY</strong></a>
                     <div id="close-sidebar">
                         <i class="fas fa-times"></i>
                     </div>
@@ -76,94 +76,91 @@
                 <div class="sidebar-menu">
                     <ul>
                         <li class="header-menu">
-                            <span class="txtWhitecolor">General</span>
+                            <span class="txtWhitecolor">{{__('menuTitle1')}}</span>
                         </li>
                         
                         <li>
-                            <a  href="{{route('user-dashboard')}}">
+                            <a  href="{{route('user-dashboard', app()->getLocale())}}">
                                 <i class="fa fa-tachometer-alt sideBar"></i>
-                                <span class="sideBar">Dashboard</span>
+                                <span class="sideBar">{{__('menuoption1')}}</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('user-wallet')}}">
+                            <a href="{{route('user-wallet', app()->getLocale())}}">
                                 <i class="fas fa-wallet sideBar"></i>
-                                <span class="sideBar">Wallet</span>
+                                <span class="sideBar">{{__('menuoption2')}}</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('user-trade')}}">
+                            <a href="{{route('user-trade', app()->getLocale())}}">
                                 <i class="fas fa-route sideBar"></i>
-                                <span class="sideBar">Trade</span>
+                                <span class="sideBar">{{__('menuoption3')}}</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('user-trade', ['type' => 'derivative'])}}">
+                            <a href="{{route('user-trade', ['type' => 'derivative', app()->getLocale()])}}">
                                 <i class="fas fa-route sideBar"></i>
-                                <span class="sideBar">Derivatives</span>
+                                <span class="sideBar">{{__('menuoption4')}}</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('user-trade-finance')}}">
+                            <a href="{{route('user-trade-finance', app()->getLocale())}}">
                                 <i class="fas fa-route sideBar"></i>
-                                <span class="sideBar">Finance</span>
+                                <span class="sideBar">{{__('menuoption5')}}</span>
                                 {{--<span class="badge badge-pill badge-primary">Beta</span>--}}
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('user-transactions')}}">
+                            <a href="{{route('user-transactions', app()->getLocale())}}">
                                 <i class="fas fa-money-bill-wave sideBar"></i>
-                                <span class="sideBar">Buy/Sell</span>
+                                <span class="sideBar">{{__('menuoption6')}}</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('user-wallets')}}">
+                            <a href="{{route('user-wallets', app()->getLocale())}}">
                                 <i class="fas fa-money-bill-wave sideBar"></i>
-                                <span class="sideBar">Assets</span>
+                                <span class="sideBar">{{__('menuoption7')}}</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
 
                         <li class="header-menu">
-                            <span class="sideBar">Settings</span>
+                            <span class="sideBar">{{__('menuTitle2')}}</span>
                         </li>
 
                         <li>
-                            <a href="{{route('user-message')}}">
+                            <a href="{{route('user-message', app()->getLocale())}}">
                                 <i class="fas fa-envelope sideBar"></i>
-                                <span class="sideBar">Message</span>
+                                <span class="sideBar">{{__('menuoption8')}}</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('user-update-profile')}}">
+                            <a href="{{route('user-update-profile', app()->getLocale())}}">
                                 <i class="fa fa-user sideBar"></i>
-                                <span class="sideBar">Profile</span>
+                                <span class="sideBar">{{__('menuoption9')}}</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('user-change-password')}}">
+                            <a href="{{route('user-change-password', app()->getLocale())}}">
                                 <i class="fas fa-key sideBar"></i>
-                                <span class="sideBar">Change Password</span>
+                                <span class="sideBar">{{__('menuoption10')}}</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('logout')}}">
+                            <a href="{{route('logout', app()->getLocale())}}">
                                 <i class="fas fa-power-off sideBar"></i>
-                                <span class="sideBar">Logout</span>
+                                <span class="sideBar">{{__('menuoption11')}}</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
-
-
-
                     </ul>
                 </div>
                 <!-- sidebar-menu  -->

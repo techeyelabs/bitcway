@@ -10,7 +10,7 @@
 
 @section('content')
 <div id="wrap" class="deposit">
-    <h3 class="txtWhitecolor">Withdraw</h3>
+    <h3 class="txtWhitecolor">{{__('button4')}}</h3>
     <hr>
 
     <div class="row">
@@ -29,7 +29,7 @@
                         <div class="alert alert-success alert-dismissible fade show mb-3 bg-transparent " role="alert" style="color:white !important;" >
                             Withdraw request has been sent.
                         </div>
-                        <a href="{{route('user-wallet',['id'=>1])}}" class="btn btn-outline-info">Exit</a>
+                        <a href="{{route('user-wallet',['id'=>1,app()->getLocale()])}}" class="btn btn-outline-info">Exit</a>
                     </template>
 
                     <template v-else>
@@ -38,7 +38,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label class="txtWhitecolor" for="">Amount (USD)</label>
+                            <label class="txtWhitecolor" for="">{{__('col10')}} (USD)</label>
                             <input type="number" class="form-control" aria-describedby="" name="amount"
                                 value="{{old('amount')}}" placeholder="Enter amount in bitcoin here..." required v-model="amount" :disabled="balance<=0">                            
                             @error('amount')
@@ -47,7 +47,7 @@
                         </div>
                         
 
-                        <a href="#" class="btn btn-outline-warning float-end" v-on:click="withdraw" :class="{disabled: amount<=0}">Withdraw</a>
+                        <a href="#" class="btn btn-outline-warning float-end" v-on:click="withdraw" :class="{disabled: amount<=0}">{{__('button4')}}</a>
                     </template>
                     @endif
                     
@@ -81,7 +81,7 @@
                         return false;
                     }
                     showLoader('please wait...');
-                    axios.post('{{route("user-withdraw-action")}}', {
+                    axios.post('{{route("user-withdraw-action", app()->getLocale())}}', {
                         amount: that.amount
                     })
                     .then(function (response) {

@@ -44,7 +44,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{route('front-home')}}"><strong>BITC-WAY</strong></a>
+            <a class="navbar-brand" href="{{route('front-home', app()->getLocale())}}"><strong>BITC-WAY</strong></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -53,35 +53,50 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="txtWhitecolor nav-link"  aria-current="page" href="{{route('front-home')}}">Home</a>
+                        <a class="txtWhitecolor nav-link"  aria-current="page" href="{{route('front-home', app()->getLocale())}}">{{__('nav1')}}</a>
                     </li>
                     {{--{{!Auth::check()?'disabled':''}}--}}
                     <li class="nav-item">
                         <?php if(Auth::check()){?>
-                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('user-trade')}}">Trade</a>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('user-trade', app()->getLocale())}}">{{__('nav2')}}</a>
                         <?php }else{?>
-                        <a class="txtWhitecolor nav-link" aria-current="page" href="{{route('login')}}">Trade</a>
+                        <a class="txtWhitecolor nav-link" aria-current="page" href="{{route('login', app()->getLocale())}}">{{__('nav2')}}</a>
                         <?php }?>
                     </li>
                     <li class="nav-item">
                         <?php if(Auth::check()){?>
-                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('user-trade', ['type' => 'derivative'])}}">Derivative</a>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('user-trade', ['type' => 'derivative'], app()->getLocale())}}">{{__('nav3')}}</a>
                         <?php }else{?>
-                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('login')}}">Derivative</a>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('login', app()->getLocale())}}">{{__('nav3')}}</a>
                         <?php }?>
                     </li>
                     <li class="nav-item">
                         <?php if(Auth::check()){?>
-                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('user-trade-finance')}}">Finance</a>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('user-trade-finance', app()->getLocale())}}">{{__('nav4')}}</a>
                         <?php }else{?>
-                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('login')}}">Finance</a>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('login', app()->getLocale())}}">{{__('nav4')}}</a>
                         <?php }?>
                     </li>
                     <li class="nav-item">
-                        <a class="txtWhitecolor nav-link" href="{{route('front-terms')}}">Terms & conditions</a>
+                        <a class="txtWhitecolor nav-link" href="{{route('front-terms', app()->getLocale())}}">{{__('nav5')}}</a>
                     </li>
 
 
+                </ul>
+                <ul class="navbar-nav mb-1 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle txtWhitecolor" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false" style="text-transform: uppercase;">
+                            {{app()->getLocale()}}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ route(Route::currentRouteName(), 'jp') }}">JP</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{{ route(Route::currentRouteName(), 'en') }}">EN</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <?php if(Auth::check()){?>
@@ -91,21 +106,24 @@
                             <i class="fas fa-user"></i> {{Auth::user()->first_name.' '.Auth::user()->last_name}}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{{route('user-dashboard')}}">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="{{route('user-dashboard', app()->getLocale())}}">{{__('menuoption1')}}</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="{{route('logout')}}">Logout</a></li>
+                            <li><a class="dropdown-item" href="{{route('logout', app()->getLocale())}}">{{__('menuoption11')}}</a></li>
                         </ul>
                     </li>
                     <?php }else{?>
                     <li class="nav-item">
-                        <a class="txtWhitecolor nav-link" aria-current="page" href="{{route('login')}}">Login</a>
+                        <a class="txtWhitecolor nav-link" aria-current="page" href="{{route('login', app()->getLocale())}}">{{__('nav6')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="txtWhitecolor nav-link" href="{{route('signup')}}">Sign up</a>
+                        <a class="txtWhitecolor nav-link" href="{{route('signup', app()->getLocale())}}">{{__('nav7')}}</a>
                     </li>
                     <?php }?>
+                        <li>
+                            <language-switcher></language-switcher>
+                        </li>
                 </ul>
             </div>
         </div>
@@ -173,6 +191,8 @@
         })
 
     </script>
+
+    <script src="{{ asset('js/app.js') }}" defer></script>
 
     @yield('custom_js')
 </body>

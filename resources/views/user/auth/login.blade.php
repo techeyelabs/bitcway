@@ -9,7 +9,7 @@
     
     <div class="card login-form">
         <div class="card-body">
-            <h3 class="card-title text-center">Login</h3>
+            <h3 class="card-title text-center">{{__('button2')}}</h3>
             <div class="card-text">
                 @include('includes.message')
                 <form method="POST" action="">
@@ -22,28 +22,28 @@
                         @enderror
                     </div> -->
                     <div class="form-group">
-                        <label for="">Username</label>
-                        <input type="text" class="form-control" id="" aria-describedby="" name="username" value="{{old('username')}}" placeholder="Enter you username here..." required>
+                        <label for="">{{__('label1')}}</label>
+                        <input type="text" class="form-control" id="" aria-describedby="" name="username" value="{{old('username')}}" placeholder="{{__('placeholder1')}}" required>
                         @error('username')
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
-                        <a href="{{route('forgot')}}" style="float:right;font-size:12px;">Forgot password?</a>
-                        <input type="password" class="form-control" id="exampleInputPassword1" name="password" value="{{old('password')}}" placeholder="Enter your password here..." required>
+                        <label for="exampleInputPassword1">{{__('label2')}}</label>
+                        <a href="{{route('forgot', app()->getLocale())}}" style="float:right;font-size:12px;">{{__('link1')}}</a>
+                        <input type="password" class="form-control" id="exampleInputPassword1" name="password" value="{{old('password')}}" placeholder="{{__('placeholder2')}}" required>
                         @error('password')
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1" name="remember" value="" placeholder="">
-                        <label class="form-check-label" for="exampleCheck1">Remember me</label>
+                        <label class="form-check-label" for="exampleCheck1">{{__('checkbox1')}}</label>
                     </div>
-                    <button type="submit" class="btn btn-outline-warning float-right">Login</button>
+                    <button type="submit" class="btn btn-outline-warning float-right">{{__('title4')}}</button>
 
                     <div class="sign-up">
-                        Don't have an account? <a href="{{route('signup')}}">Create One</a>
+                        <a href="{{route('signup', app()->getLocale())}}">{{__('link2')}}</a>
                     </div>
                 </form>
             </div>

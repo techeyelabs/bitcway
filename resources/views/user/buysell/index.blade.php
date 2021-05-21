@@ -14,17 +14,17 @@
 @section('content')
 
 <div id="wrap">
-    <h3 class="txtHeadingColor">Buy/Sell</h3>
+    <h3 class="txtHeadingColor">{{__('title17')}}</h3>
     <hr>
     <div class="card">
         <div class="card-body">
             <table class="table">
                 <thead>
-                    <th class="txtWhitecolor">Date</th>
-                    <th class="txtWhitecolor">Symbol</th>
-                    <th class="txtWhitecolor">Amount</th>
+                    <th class="txtWhitecolor">{{__('col8')}}</th>
+                    <th class="txtWhitecolor">{{__('column1')}}</th>
+                    <th class="txtWhitecolor">{{__('col10')}}</th>
                     <th class="txtWhitecolor">USD</th>
-                    <th class="txtWhitecolor">Type</th>
+                    <th class="txtWhitecolor">{{__('col12')}}</th>
                 </thead>
                 <tbody>
                     <?php foreach($transactions as $item){?>

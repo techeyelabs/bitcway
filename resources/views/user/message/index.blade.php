@@ -45,7 +45,7 @@
 
 <div class="w3-modal-content w3-card-4 w3-animate-zoom" id="div" style="max-width:600px; margin: auto;" bis_skin_checked="1">
     <div id="wrap" class="message">
-        <h3 class="txtHeadingColor msgHeader" >Admin</h3>
+        <h3 class="txtHeadingColor msgHeader" >{{__('title22')}}</h3>
 
         <div class="card message-list">
             <div class="card-body">
@@ -77,9 +77,10 @@
                 <form action="#" v-on:submit="send">
                     <div class="input-group">
                         
-                            <textarea v-model="message" type="text" class="form-control" style = "width: 283%;height: 75px;" placeholder="type your message here..."></textarea>
+                            <textarea v-model="message" type="text" class="form-control" style = "width: 283%;height: 75px;" placeholder="{{__('placeholder3')}}"></textarea>
                             <br><br>
-                            <button  class="btn btn-outline-warning mt-2" type="submit" :disabled="message == ''" style="margin: auto;">Send</button>
+                            <button  class="btn btn-outline-warning mt-2" type="submit" :disabled="message == ''" style="margin: auto;">
+                                {{__('BUTTON2')}}</button>
                             
                     </div>
                 </form>
@@ -116,7 +117,7 @@
                 e.preventDefault();
                 let that = this;
                 showLoader('Please wait...');
-                axios.post('{{route("user-send-message")}}', {
+                axios.post('{{route("user-send-message", app()->getLocale())}}', {
                     message: that.message
                 })
                 .then(function (response) {
@@ -138,7 +139,7 @@
             },
             getMessage(){
                 let that = this;
-                axios.get('{{route("user-get-message")}}')
+                axios.get('{{route("user-get-message", app()->getLocale())}}')
                 .then(function (response) {
                     // handle success
                     console.log(response);

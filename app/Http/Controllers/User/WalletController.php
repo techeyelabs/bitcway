@@ -93,6 +93,6 @@ class WalletController extends Controller
             $derivative->balance = $derivative->balance + $request->derivativeamount;
         }
         $derivative->save();
-        return redirect()->route('user-wallets');
+        return redirect()->route('user-wallets', app()->getLocale());
     }
 }

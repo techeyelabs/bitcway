@@ -10,7 +10,7 @@
 
 @section('content')
 <div id="wrap" class="deposit">
-    <h3 class="txtWhitecolor">Deposit</h3>
+    <h3 class="txtWhitecolor">{{__('button3')}}</h3>
     <hr>
 
     <div class="row">
@@ -20,20 +20,20 @@
 
                     <template v-if='qrCode'>
                         <div class="text-center">
-                            <h5 class="txtWhitecolor">Scan following QR code from your wallet app to complete deposit</h5>
+                            <h5 class="txtWhitecolor">{{__('qr')}}</h5>
                             <hr>
-                            <h6 class="txtWhitecolor">Pay: @{{parseFloat(amount).toFixed(8)}} BTC </h6>
+                            <h6 class="txtWhitecolor">{{__('col10')}}: @{{parseFloat(amount).toFixed(8)}} BTC </h6>
                             <h6 class="mb-3 txtWhitecolor">To: @{{wallet}}</h6>
                             <img :src="qrCodeLink" alt="">
                         </div>
                         <hr>
-                        <a href="{{route('user-wallet')}}" class="btn btn-outline-info mt-2" >Cancel</a>
+                        <a href="{{route('user-wallet', app()->getLocale())}}" class="btn btn-outline-info mt-2" >{{__('button12')}}</a>
                         <a href="#" class="btn btn-outline-warning mt-2" v-on:click="done">Done</a>
                     </template>
 
                     <template v-else>                            
                         <div class="form-group">
-                            <label class="txtWhitecolor" for="">Amount (BTC)</label>
+                            <label class="txtWhitecolor" for="">{{__('col14')}} (BTC)</label>
                             <input type="number" class="form-control" aria-describedby="" name="amount"
                                 value="{{old('amount')}}" placeholder="Enter amount in bitcoin here..." required v-model="amount">                            
                             @error('amount')
@@ -45,7 +45,7 @@
                             <h4 class="txtWhitecolor">Equivalent: @{{amount*rate}} (USD)</h4>
                         </div>
 
-                        <a href="#" class="btn btn-outline-warning float-end" v-on:click="deposit">Deposit</a>
+                        <a href="#" class="btn btn-outline-warning float-end" v-on:click="deposit">{{__('button3')}}</a>
                     </template>
 
                     
@@ -87,14 +87,14 @@
                 done(){
                     let that = this;
                     showLoader('please wait...');
-                    axios.post('{{route("user-deposit-action")}}', {
+                    axios.post('{{route("user-deposit-action", app()->getLocale())}}', {
                         amount: that.amount,
                         rate: that.rate
                     })
                     .then(function (response) {
                         console.log(response);
                         if(response.data.status) {
-                            location.href = "{{route('user-wallet')}}";
+                            location.href = "{{route('user-wallet', app()->getLocale())}}";
                         }
                         else toastr.error('error occured,please try again');
                         hideLoader();

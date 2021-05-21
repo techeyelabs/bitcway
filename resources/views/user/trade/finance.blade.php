@@ -64,11 +64,11 @@
 @section('content')
 
     <div id="wrap" class="trade">
-        <h3 class="txtHeadingColor">Finance</h3>
+        <h3 class="txtHeadingColor">{{__('nav4')}}</h3>
         <hr>
         <div class="card">
             <div class="card-body text-center">
-                <h4 class="txtHeadingColor">Locked Savings Amount:  {{$total}} USD</h4>
+                <h4 class="txtHeadingColor">{{__('title16')}}:  {{$total}} USD</h4>
             </div>
         </div>
 
@@ -102,10 +102,10 @@
                 <div style="margin: auto; overflow-x: auto">
                     <ul class="container-fluid" style=" min-width: 600px;">
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
-                            <p class="col txtWhitecolor" id="" style="text-align: left; ">Symbol</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: left; ">{{__('column1')}}</p>
                             <p class="col txtWhitecolor" id="" style="text-align: left; ">Annualized Interest Rate</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: center;">Duration (Days)</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: right;">Interest Per Lot</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: center;">{{__('col2')}} (Days)</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('col3')}}</p>
                             <p class="col txtWhitecolor" id="" style="text-align: right;">Action</p>
                         </li>
                         <div id="btnDurationId">
@@ -125,7 +125,7 @@
                                 </p>
                                 <p class="col txtWhitecolor" id="interestPerLot{{$index}}" style="text-align: right;">{!! number_format((float)(($FinanceSetting->rate_1/365)*$FinanceSetting->duration_1), 4) !!}</p>
                                 <p class="col txtWhitecolor" id="" style="text-align: right;">
-                                    <button class="btn-outline-warning btn cursor-pointer" id="transferBtn{{$index}}"  onclick="changeData({{$index}});" disabled>Transfer</button>
+                                    <button class="btn-outline-warning btn cursor-pointer" id="transferBtn{{$index}}"  onclick="changeData({{$index}});" disabled>{{__('button11')}}</button>
 
                                     <span style="display: none" id="lotCurrencyAmount{{$index}}">{{isset($dummy_coin_balance[$FinanceSetting->currency_id]) ? $dummy_coin_balance[$FinanceSetting->currency_id]:0}}</span>
                                 </p>
@@ -139,16 +139,16 @@
         </div>
         {{--Finance locked Saving Setting Div2 End--}}
 
-        <form method="post" action="{{route('user-trade-finance-entry')}}">
+        <form method="post" action="{{route('user-trade-finance-entry', app()->getLocale())}}">
             @csrf
             <div class="card mt-3 confirmation" id="confirmation" style="display: none">
                 <div class="card-body list-group col-md-8 offset-md-2">
                    <div class="row col-md-12">
                        <div class="col-md-6 mb-5 mt-4" style="padding-left: 5%">
-                           <div class="txtWhitecolor" id="coinName">Coin<br/><h4>MAB</h4></div>
+                           <div class="txtWhitecolor" id="coinName">{{__('transfertitle1')}}<br/><h4>MAB</h4></div>
                            <span class="d-none" id="coinName_hidden">Coin</span>
-                           <div class="txtWhitecolor">Activity Duration <span class="day-block"><span id="duration"></span> days</span></div><br/>
-                           <div class="txtWhitecolor" >Lot amount (Available Lot: <span id="lotCurrency">00</span>)</div>
+                           <div class="txtWhitecolor">{{__('transferlabel1')}} <span class="day-block"><span id="duration"></span> days</span></div><br/>
+                           <div class="txtWhitecolor" >{{__('transferlabel2')}} <span id="lotCurrency">00</span>)</div>
                            <div>
                                <input type="number" class="lot-input" name="lot" id="lot" onkeyup="setTotalInterest(this)">
                                <input type="hidden" id="ratePerLot" name="ratePerLot" value="">
@@ -156,33 +156,33 @@
                                <input class="d-none" type="number" id="coiId" name="coinId" value="">
 {{--                               <input type="hidden" id="balance" name="balance" value="">--}}
                            </div>
-                           <div class="txtWhitecolor">= <span id="total">0</span>&nbsp;<span id="totalCoinName">Coin</span></div>
+                           <div class="txtWhitecolor">= <span id="total">0</span>&nbsp;<span id="totalCoinName">{{__('transfertitle1')}}Coin</span></div>
                            <input type="hidden" id="totalCoin" name="totalCoin" value="">
                        </div>
                        <div class="row col-md-6 mb-5 mt-4">
                            <div>
-                               <span class="txtWhitecolor" style="float: left">Lot Size</span>
+                               <span class="txtWhitecolor" style="float: left">{{__('transfertext1')}}</span>
                                <span class="txtWhitecolor" id="lotSizeId" style="float: right">5 MAB</span>
                                <span class="d-none" id="lotSizeId_hidden"></span>
                                <input class="d-none" type="number" id="coinLotSize" name="coinLotSize" value="">
                            </div>
                            <div>
-                               <span class="txtWhitecolor" style="float: left">Interest Per Lot</span>
+                               <span class="txtWhitecolor" style="float: left">{{__('transfertext2')}}</span>
                                <span class="txtWhitecolor"  style="float: right" id="ipl">0.0000 (0.00% Annually)</span>
                                <span class="d-none" id="ipl_hidden"></span>
                            </div>
                            <div>
-                               <span class="txtWhitecolor" style="float: left">Value Date</span>
+                               <span class="txtWhitecolor" style="float: left">{{__('transfertext3')}}</span>
                                <span class="txtWhitecolor" style="float: right">{!! date('Y-m-d h:i:s') !!}</span>
                            </div>
                            <div>
-                               <span class="txtWhitecolor" style="float: left">Redemption Date</span>
+                               <span class="txtWhitecolor" style="float: left">{{__('transfertext4')}}</span>
                                <span class="txtWhitecolor" style="float: right" id="termination">2021-00-00 00:00</span>
                                <input type="hidden" id="redemptionTimeId" name="redemptionTime" value="">
                            </div>
                            <div>
-                               <span class="txtWhitecolor" style="float: left">Expected Interest</span>
-                               <span class="txtWhitecolor" style="float: right" id="interest">0 Coin</span>
+                               <span class="txtWhitecolor" style="float: left">{{__('transfertext5')}}</span>
+                               <span class="txtWhitecolor" style="float: right" id="interest">0 {{__('transfertitle1')}}</span>
                                <input type="hidden" id="expected_interest" name="expected_interest" value="">
                            </div>
                        </div>
@@ -192,12 +192,12 @@
                     <div class="row col-md-12 txtWhitecolor" style="text-align: right">
                         <span>
                             <input type="checkbox" id="acceptance" name="acceptance" value="confirm" onchange="confirmButtonCheck()">
-                            <label for="vehicle1"> I have read and accepted the terms and conditions of <span id="termCoinName">MAB</span> Coin</label>
+                            <label for="vehicle1">{{__('transfercheckbox')}}<span id="termCoinName">MAB</span> {{__('transfertitle1')}}</label>
                         </span>
                     </div>
                     <div class="row col-md-12" style="text-align: right">
                         <span>
-                            <button class="confirm-button btn-outline-warning" disabled>Confirm Transaction</button>
+                            <button class="confirm-button btn-outline-warning" disabled>{{__('transferbtn')}}</button>
                         </span>
                     </div>
                 </div>
