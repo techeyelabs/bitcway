@@ -27,8 +27,12 @@ class UpdateController extends Controller
 
     public function getfirstbook(Request $request)
     {
+        if ($request->currency == 'tMABUSD'){
+            $symbol = 'tADAUSD';
+        } else {
+            $symbol = $request->currency;
+        }
         $bids = [];
-        $symbol = $request->currency;
         $PublicUrl = 'https://api.bitfinex.com/v2/book/'.$symbol.'/P0';
         $response = Http::get($PublicUrl);
         if($response->json()) return $response->json();
