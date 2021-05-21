@@ -821,7 +821,13 @@
                     var currcoin              = this.currency;
                     console.log(currcoin);
                     //console.log("currcoin:"+currcoin);
-                    leverageWalletAmount      = currencies[currcoin]['amount']
+                    if(typeof currencies[currcoin] === 'undefined') {
+                        leverageWalletAmount = 0;
+                    }
+                    else {
+                        leverageWalletAmount      = currencies[currcoin]['amount']
+                    }
+
                     this.leverageWalletAmount = leverageWalletAmount;
                     console.log(this.leverageWalletAmount+" lvcoin");
                 },
