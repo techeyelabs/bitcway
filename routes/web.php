@@ -48,6 +48,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/verify/{token}', [AuthController::class, 'verify'])->name('verify-email');
 
 Route::get('/get-order', [UpdateController::class, 'getfirstbook']);
+Route::get('/get-order-dummy', [UpdateController::class, 'getOrderDummy']);
 
 
 Route::prefix('update')->group(function(){

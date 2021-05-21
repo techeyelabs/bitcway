@@ -33,4 +33,9 @@ class UpdateController extends Controller
         $response = Http::get($PublicUrl);
         if($response->json()) return $response->json();
     }
+
+    public function getOrderDummy(Request $request)
+    {
+        dd($request);
+    }
 }
