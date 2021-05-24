@@ -248,10 +248,15 @@ form {
     text-align:right!important;
 }
 .td8{
+<<<<<<< HEAD
+    text-align:center!important;
+}
+=======
     /*width:35%!important;*/
     text-align:center!important;
 }
 
+>>>>>>> dev-mahbub
 @media (max-width:1024px) {
     .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
         padding-right: var(--bs-gutter-x,.25rem);
