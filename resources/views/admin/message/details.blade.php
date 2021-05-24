@@ -118,7 +118,7 @@
                 e.preventDefault();
                 let that = this;
                 showLoader('Please wait...');
-                axios.post('{{route("admin-send-message")}}', {
+                axios.post('{{route("admin-send-message", app()->getLocale())}}', {
                     to_id: {{$user->id}},
                     message: that.message
                 })
@@ -142,7 +142,7 @@
 
             getMessage(){
                 let that = this;
-                axios.get('{{route("admin-get-message")}}', {
+                axios.get('{{route("admin-get-message", app()->getLocale())}}', {
                     params: {
                         to_id: {{$user->id}}
                     }

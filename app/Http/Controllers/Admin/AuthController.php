@@ -25,7 +25,7 @@ class AuthController extends Controller
         ]);
         
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password, 'status' => true], $request->remember)) {
-            return redirect()->intended(route('admin-dashboard'));
+            return redirect()->intended(route('admin-dashboard', app()->getLocale()));
         }
 
         return redirect()->back()->with('error_message', 'Wrong credentials..');
@@ -59,6 +59,6 @@ class AuthController extends Controller
         Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('admin-login');
+        return redirect()->route('admin-login', app()->getLocale());
     }
 }

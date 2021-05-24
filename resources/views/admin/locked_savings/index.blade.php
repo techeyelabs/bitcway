@@ -34,7 +34,7 @@
                     <div class="card-body">
                         @if(isset($user))
                             @foreach ($user as $u)
-                                <form action="{{ route('admin-locked-savings-edit-action', \Crypt::encrypt($u->id)) }}" method="post">
+                                <form action="{{route('admin-locked-savings-edit-action', \Crypt::encrypt($u->id), app()->getLocale())}}" method="post">
                                     @csrf
 
                                     <div class="form-group">
@@ -73,7 +73,7 @@
                                 </form>
                             @endforeach
                         @else
-                                <form action="{{ route('admin-locked-savings-settings') }}" method="post">
+                                <form action="{{route('admin-locked-savings-settings', app()->getLocale())}}" method="post">
                             @csrf
                             <div class="form-group">
                                 <label for="" class="txtWhitecolor">Select Currency</label>
@@ -146,8 +146,8 @@
                                     </p>
                                     <p class="col txtWhitecolor" id="lotSize{{$index}}" style="text-align: right;">{{$FinanceSetting->lot_size}}</p>
                                     <p class="col txtWhitecolor" id="" style="text-align: right;">
-                                        <a style="margin-right: 20px" class="txtHeadingColor" href="{{route('admin-locked-savings-edit', \Crypt::encrypt($FinanceSetting->id))}}"><i class="fas fa-edit"></i></a>
-                                        <a class="txtHeadingColor" href="{{route('admin-locked-savings-delete-action', \Crypt::encrypt($FinanceSetting->id))}}"><i class="fas fa-trash-alt"></i></a>
+                                        <a style="margin-right: 20px" class="txtHeadingColor" href="{{route('admin-locked-savings-edit', \Crypt::encrypt($FinanceSetting->id), app()->getLocale())}}"><i class="fas fa-edit"></i></a>
+                                        <a class="txtHeadingColor" href="{{route('admin-locked-savings-delete-action', \Crypt::encrypt($FinanceSetting->id), app()->getLocale())}}"><i class="fas fa-trash-alt"></i></a>
                                     </p>
                                 </li>
                             @endforeach

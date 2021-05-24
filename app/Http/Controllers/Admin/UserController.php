@@ -54,23 +54,23 @@ class UserController extends Controller
                     return $row->first_name.' '.$row->last_name;
                 })
                 ->addColumn('asset', function ($row) {
-                    return '<a href="'.route('admin-user-wallets', [$row->id]).'" class="btn btn-sm btn-outline-info">Asset</a>';
+                    return '<a href="'.route('admin-user-wallets', [$row->id, app()->getLocale()]).'" class="btn btn-sm btn-outline-info">Asset</a>';
                 })
                 ->editColumn('memo', function ($row) {
-                    return '<a href="'.route('admin-user-memo', [$row->id]).'" class="btn btn-sm btn-outline-info">Memo</a>';
+                    return '<a href="'.route('admin-user-memo', [$row->id, app()->getLocale()]).'" class="btn btn-sm btn-outline-info">Memo</a>';
                 })
                 ->editColumn('created_at', function ($row) {
                     return date('d M Y', strtotime($row->created_at));
                 })
                 ->addColumn('action', function ($row) {
                     $action = '';
-                    // $action .= ' <a href="'.route('admin-user-wallets', [$row->id]).'" class="btn btn-sm btn-outline-info">Asset</a>';
+                    // $action .= ' <a href="'.route('admin-user-wallets', [$row->id, app()->getLocale()]).'" class="btn btn-sm btn-outline-info">Asset</a>';
 
-                    if($row->status == 0) $action .= ' <a href="'.route('admin-user-change-status', ['id' => $row->id, 'status' => 1]).'" class="btn btn-sm btn-outline-success">Active</a>';
-                    else $action .= ' <a href="'.route('admin-user-change-status', ['id' => $row->id, 'status' => 0]).'" class="btn btn-sm btn-outline-warning">Inactive</a>';
-                    // $action .= ' <a href="'.route('admin-user-destroy', [$row->id]).'" class="btn btn-sm btn-outline-danger delete-button-new">Delete</a>';
+                    if($row->status == 0) $action .= ' <a href="'.route('admin-user-change-status', ['id' => $row->id, 'status' => 1, app()->getLocale()]).'" class="btn btn-sm btn-outline-success">Active</a>';
+                    else $action .= ' <a href="'.route('admin-user-change-status', ['id' => $row->id, 'status' => 0, app()->getLocale()]).'" class="btn btn-sm btn-outline-warning">Inactive</a>';
+                    // $action .= ' <a href="'.route('admin-user-destroy', [$row->id, app()->getLocale()]).'" class="btn btn-sm btn-outline-danger delete-button-new">Delete</a>';
                     
-                    $action .= ' <a href="'.route('admin-message-details', [$row->id]).'" class="btn btn-sm btn-outline-info">Chat</a>';
+                    $action .= ' <a href="'.route('admin-message-details', [$row->id, app()->getLocale()]).'" class="btn btn-sm btn-outline-info">Chat</a>';
 
                     return $action;
                 })
@@ -104,7 +104,7 @@ class UserController extends Controller
         $User = User::find($request->id);
         $User->memo = $request->memo;
         $User->save();
-        return redirect()->route('admin-user-list');
+        return redirect()->route('admin-user-list', app()->getLocale());
     }
 
 

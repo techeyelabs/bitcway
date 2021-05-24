@@ -13,7 +13,7 @@
             <div class="card-body col-md-8 text-center offset-2">
                 <h4 class="txtHeadingColor">Withdraw Message Box</h4>
                 <hr>
-                <form action="{{route('admin-withdraw-notification')}}" method="post">
+                <form action="{{route('admin-withdraw-notification', app()->getLocale())}}" method="post">
                     @csrf
                     <div class="form-group">
                 <textarea type="text" class="form-control withdrawMessageArea" id="withdrawMessageArea" aria-describedby="" name="withdrawMessage" rows="5"
@@ -69,7 +69,7 @@
                 processing: true,
                 serverSide: true,
                 order: [[3, "ASC"]],
-                ajax: '{!! route("admin-withdraw-list-data") !!}',
+                ajax: '{!! route("admin-withdraw-list-data", app()->getLocale()) !!}',
                 columns: [
                     {data: 'name', name: 'name'},
                     {data: 'email', name: 'email'},

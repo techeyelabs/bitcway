@@ -45,7 +45,7 @@
         <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-content">
                 <div class="sidebar-brand">
-                    <a class="logo" href="{{route('front-home')}}"><strong>BITC-WAY</strong></a>
+                    <a class="logo" href="{{route('front-home', app()->getLocale())}}"><strong>BITC-WAY</strong></a>
                     <div id="close-sidebar">
                         <i class="fas fa-times"></i>
                     </div>
@@ -63,28 +63,28 @@
                         </li>
 
                         <li>
-                            <a href="{{route('admin-user-list')}}">
+                            <a href="{{route('admin-user-list', app()->getLocale())}}">
                                 <i class="fas fa-user"></i>
                                 <span>User Management</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('admin-deposit-list')}}">
+                            <a href="{{route('admin-deposit-list', app()->getLocale())}}">
                                 <i class="fas fa-money-check-alt"></i>
                                 <span>Deposit History</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('admin-withdraw-list')}}">
+                            <a href="{{route('admin-withdraw-list', app()->getLocale())}}">
                                 <i class="fas fa-hand-holding-usd"></i>
                                 <span>Withdraw History</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('admin-message-list')}}">
+                            <a href="{{route('admin-message-list', app()->getLocale())}}">
                                 <i class="fas fa-envelope"></i>
                                 <span>Message</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
@@ -92,7 +92,7 @@
                         </li>
 
                         <li>
-                            <a href="{{route('admin-dmg-coin')}}">
+                            <a href="{{route('admin-dmg-coin', app()->getLocale())}}">
                                 <i class="fas fa-coins"></i>
                                 <span>DMG Coin</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
@@ -100,7 +100,7 @@
                         </li>
 
                         <li>
-                            <a href="{{route('admin-locked-savings')}}">
+                            <a href="{{route('admin-locked-savings', app()->getLocale())}}">
                                 <i class="fas fa-coins"></i>
                                 <span>Locked Savings Settings</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
@@ -113,14 +113,14 @@
 
                        
                         <li>
-                            <a href="{{route('admin-change-password')}}">
+                            <a href="{{route('admin-change-password', app()->getLocale())}}">
                                 <i class="fas fa-key"></i>
                                 <span>Change Password</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('admin-logout')}}">
+                            <a href="{{route('admin-logout', app()->getLocale())}}">
                                 <i class="fas fa-power-off"></i>
                                 <span>Logout</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}

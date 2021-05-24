@@ -102,7 +102,7 @@ class TradeController extends Controller
             $UserWallet->save();
 
         } catch (Exception $e){
-            return route('user-trade-finance');
+            return route('user-trade-finance', app()->getLocale());
         }
         return redirect()->back();
     }
