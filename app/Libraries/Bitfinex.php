@@ -29,7 +29,7 @@ class Bitfinex
 
     public function getCandle($currency)
     {
-        $response = Http::get('https://api-pub.bitfinex.com/v2/candles/trade:30m:'.$currency.'/hist?limit=1200');
+        $response = Http::get('https://api-pub.bitfinex.com/v2/candles/trade:1D:'.$currency.'/hist?limit=10000&start=1512086400000&end= 1621842634000');
         if($response->json()) return $response->json();
     }
 

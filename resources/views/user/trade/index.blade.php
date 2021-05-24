@@ -50,6 +50,28 @@
             border: none;
         }
 
+         .loader {
+             border: 16px solid #f3f3f3;
+             border-radius: 50%;
+             border-top: 16px solid #3498db;
+             width: 120px;
+             height: 120px;
+             -webkit-animation: spin 2s linear infinite; / Safari /
+         animation: spin 2s linear infinite;
+         }
+
+        / Safari /
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+
 
     </style>
 @endsection
@@ -285,9 +307,35 @@
             </div>
             <div class="col main-app-container">
                 <div class="card">
-                    <div class="card-body">
-                        <div class="text-center title mb-2 txtHeadingColor"><h4 v-cloak>Showing Chart for @{{currency}}</h4></div>
-                        <div id="chart" style="height:515px; display: block"></div>
+                    <div class="card-body" >
+                        <div class="text-center title mb-2 txtHeadingColor"></div>
+
+                        <div id='buttonrow' class="chart-top-row">
+                            <span><h6 v-cloak>@{{currency}}/USD</h6></span>
+                            <span class="interval" id='1m' onclick="getChartData('interval', this.id)">1m</span>
+                            <span class="interval" id="15m" onclick="getChartData('interval',this.id)">15m</span>
+                            <span class="interval" id="30m" onclick="getChartData('interval', this.id)">30m</span>
+                            <span class="interval" id="1h" onclick="getChartData('interval', this.id)">1h</span>
+                            <span class="interval" id="6h" onclick="getChartData('interval', this.id)">6h</span>
+                            <span style="margin-left: 10px">BitcWay</span>
+                        </div>
+                        <div id="chart" style="height:465px; display: block; color: white; background-color: #171b26">
+                            <div class="loader" style="display: none">
+
+                            </div>
+                        </div>
+
+                        <div id='buttonrow' class="chart-top-row">
+                            <span class="interval border-removal" id="3Y" onclick="getChartData('range', this.id)">3Y</span>
+                            <span class="interval border-removal" id="1Y" onclick="getChartData('range', this.id)">1Y</span>
+                            <span class="interval border-removal" id="3M" onclick="getChartData('range', this.id)">3M</span>
+                            <span class="interval border-removal" id="1M" onclick="getChartData('range', this.id)">1M</span>
+                            <span class="interval border-removal" id="7D" onclick="getChartData('range', this.id)">7D</span>
+                            <span class="interval border-removal" id="3D" onclick="getChartData('range', this.id)">3D</span>
+                            <span class="interval border-removal" id="1D" onclick="getChartData('range', this.id)">1D</span>
+                            <span class="interval border-removal" id="6h" onclick="getChartData('range', this.id)">6h</span>
+                            <span class="interval border-removal" id="1h" onclick="getChartData('range', this.id)">1h</span>
+                        </div>
                         <div id="tradingview_f7648" class="d-none"></div>
                     </div>
                 </div>
@@ -488,6 +536,7 @@
         // const socket = io('http://127.0.0.1:3005/');
         // showLoader('Loading...');
         let loaded = false;
+        //showLoader("Loading");
         socket.on('trackers', (trackers) => {
             Home.trackers   = trackers.trackers;
             let volumeIndex = Home.trackers;
@@ -498,6 +547,7 @@
             }
             // Home.trackers.push(dumCoin);
             let coinData = Home.trackers;
+
             for (let i = 0; i < coinData.length; i++ ){
                 if (coinData[i][0] == "tADAUSD" ){
                     Home.trackers[i][0] = "tMABUSD";
@@ -507,6 +557,7 @@
             if(loaded == false){
                 hideLoader();
                 Home.selectedItem = Home.trackers[0];
+                console.log("here it goes");
                 Home.getChartData();
                 setInterval(function(){
                     Home.getOrders();
@@ -836,7 +887,7 @@
                     // showLoader('Loading ...');
                     axios.get('{{route("user-get-chart-data")}}', {params: {currency: currency, user_currency: that.currency}})
                     .then(function (response) {
-                        console.log(response);
+                        console.log(currency);
                         let chartData = [];
                         if(response.data.status){
                             that.balance = response.data.balance;
@@ -846,9 +897,20 @@
                                 // var getdate= humanDateFormat.split(" ");
                                 // var datevalue= formatDate(getdate[0]);
                                 // console.log(datevalue+' '+getdate[1]+' '+getdate[2]);
-                                let newChartData = { time: item[0] , open: item[1], high: item[3], low: item[4], close: item[2]};
+                                let newChartData = { time: item[0]/1000 , open: item[1], high: item[3], low: item[4], close: item[2]};
                                 chartData.push(newChartData);
+
                             });
+                            console.log(chartData);
+                            if(currency == 'tMABUSD'){
+                                var coindata=[
+                                    { "time":1621604,"open": 39252, "high":39839,"low":39252, "close":39821.73222635},
+                                    { "time":1621518,"open": 39689, "high":39037,"low":631.40783786, "close":39252}
+                                ]
+
+                                //chartData.push(coindata);
+                                console.log(chartData);
+                            }
                             setTimeout(function(){
                                 that.drawChart(chartData);
                             }, 100);
@@ -868,7 +930,12 @@
                     if(that.chart) {
                         that.chart.remove();
                     }
-
+                //     var chartElement="<div style='background-color:#171b26;'>"
+                //     +"<button>1D</button>"
+                //     +"<button>1W</button>"
+                //     +"<button>1M</button>"
+                // "</div>";
+                //     $('#chart').empty();
                     that.chart = LightweightCharts.createChart(document.getElementById('chart'), {
                         layout: {
                             backgroundColor: '#171b26',
@@ -918,92 +985,92 @@
 
                     data.sort((a, b) => (a.time > b.time) ? 1 : -1);
                     candleSeries.setData(data);
-                    volumeSeries.setData([
-                        { time: '2021-05-19', value: 1621404000000, color: 'rgba(0, 150, 136, 0.8)' },
-                        { time: '2021-04-22', value: 21737523.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        { time: '2021-03-23', value: 29328713.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        { time: '2021-02-24', value: 37435638.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        { time: '2021-01-25', value: 25269995.00, color: 'rgba(255,82,82, 0.8)' },
-                        { time: '2021-10-26', value: 24973311.00, color: 'rgba(255,82,82, 0.8)' },
-                        { time: '2021-10-29', value: 22103692.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        { time: '2021-09-30', value: 25231199.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        { time: '2021-10-31', value: 24214427.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2021-11-01', value: 22533201.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2021-11-02', value: 14734412.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2021-11-05', value: 12733842.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-11-06', value: 12371207.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-11-07', value: 14891287.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-11-08', value: 12482392.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-11-09', value: 17365762.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-11-12', value: 13236769.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-11-13', value: 13047907.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-11-14', value: 18288710.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-11-15', value: 17147123.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-11-16', value: 19470986.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-11-19', value: 18405731.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-11-20', value: 22028957.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-11-21', value: 18482233.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-11-23', value: 7009050.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-11-26', value: 12308876.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-11-27', value: 14118867.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-11-28', value: 18662989.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-11-29', value: 14763658.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-11-30', value: 31142818.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-12-03', value: 27795428.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-12-04', value: 21727411.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-12-06', value: 26880429.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-12-07', value: 16948126.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-12-10', value: 16603356.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-12-11', value: 14991438.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-12-12', value: 18892182.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-12-13', value: 15454706.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-12-14', value: 13960870.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-12-17', value: 18902523.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-12-18', value: 18895777.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-12-19', value: 20968473.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-12-20', value: 26897008.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-12-21', value: 55413082.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-12-24', value: 15077207.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2018-12-26', value: 17970539.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-12-27', value: 17530977.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-12-28', value: 14771641.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2018-12-31', value: 15331758.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-01-02', value: 13969691.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2019-01-03', value: 19245411.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-01-04', value: 17035848.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-01-07', value: 16348982.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-01-08', value: 21425008.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-01-09', value: 18136000.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2019-01-10', value: 14259910.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-01-11', value: 15801548.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-01-14', value: 11342293.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-01-15', value: 10074386.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-01-16', value: 13411691.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2019-01-17', value: 15223854.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2019-01-18', value: 16802516.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-01-22', value: 18284771.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2019-01-23', value: 15109007.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-01-24', value: 12494109.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2019-01-25', value: 17806822.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2019-01-28', value: 25955718.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2019-01-29', value: 33789235.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2019-01-30', value: 27260036.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-01-31', value: 28585447.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-02-01', value: 13778392.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2019-02-04', value: 15818901.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2019-02-05', value: 14124794.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-02-06', value: 11391442.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2019-02-07', value: 12436168.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2019-02-08', value: 12011657.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-02-11', value: 9802798.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-02-12', value: 11227550.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-02-13', value: 11884803.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-02-14', value: 11190094.00, color: 'rgba(255,82,82, 0.8)' },
-                        // { time: '2019-02-15', value: 15719416.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-02-19', value: 12272877.00, color: 'rgba(0, 150, 136, 0.8)' },
-                        // { time: '2019-02-20', value: 11379006.00, color: 'rgba(0, 150, 136, 0.8)' },
-                         //{ time: '2019-02-21', value: 14680547.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    ]);
+                    // volumeSeries.setData([
+                    //     { time: '2021-05-19', value: 1621404000000, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     { time: '2021-04-22', value: 21737523.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     { time: '2021-03-23', value: 29328713.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     { time: '2021-02-24', value: 37435638.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     { time: '2021-01-25', value: 25269995.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     { time: '2021-10-26', value: 24973311.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     { time: '2021-10-29', value: 22103692.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     { time: '2021-09-30', value: 25231199.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     { time: '2021-10-31', value: 24214427.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2021-11-01', value: 22533201.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2021-11-02', value: 14734412.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2021-11-05', value: 12733842.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-11-06', value: 12371207.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-11-07', value: 14891287.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-11-08', value: 12482392.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-11-09', value: 17365762.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-11-12', value: 13236769.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-11-13', value: 13047907.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-11-14', value: 18288710.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-11-15', value: 17147123.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-11-16', value: 19470986.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-11-19', value: 18405731.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-11-20', value: 22028957.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-11-21', value: 18482233.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-11-23', value: 7009050.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-11-26', value: 12308876.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-11-27', value: 14118867.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-11-28', value: 18662989.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-11-29', value: 14763658.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-11-30', value: 31142818.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-12-03', value: 27795428.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-12-04', value: 21727411.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-12-06', value: 26880429.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-12-07', value: 16948126.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-12-10', value: 16603356.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-12-11', value: 14991438.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-12-12', value: 18892182.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-12-13', value: 15454706.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-12-14', value: 13960870.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-12-17', value: 18902523.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-12-18', value: 18895777.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-12-19', value: 20968473.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-12-20', value: 26897008.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-12-21', value: 55413082.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-12-24', value: 15077207.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2018-12-26', value: 17970539.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-12-27', value: 17530977.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-12-28', value: 14771641.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2018-12-31', value: 15331758.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-01-02', value: 13969691.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2019-01-03', value: 19245411.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-01-04', value: 17035848.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-01-07', value: 16348982.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-01-08', value: 21425008.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-01-09', value: 18136000.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2019-01-10', value: 14259910.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-01-11', value: 15801548.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-01-14', value: 11342293.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-01-15', value: 10074386.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-01-16', value: 13411691.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2019-01-17', value: 15223854.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2019-01-18', value: 16802516.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-01-22', value: 18284771.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2019-01-23', value: 15109007.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-01-24', value: 12494109.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2019-01-25', value: 17806822.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2019-01-28', value: 25955718.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2019-01-29', value: 33789235.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2019-01-30', value: 27260036.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-01-31', value: 28585447.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-02-01', value: 13778392.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2019-02-04', value: 15818901.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2019-02-05', value: 14124794.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-02-06', value: 11391442.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2019-02-07', value: 12436168.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2019-02-08', value: 12011657.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-02-11', value: 9802798.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-02-12', value: 11227550.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-02-13', value: 11884803.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-02-14', value: 11190094.00, color: 'rgba(255,82,82, 0.8)' },
+                    //     // { time: '2019-02-15', value: 15719416.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-02-19', value: 12272877.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //     // { time: '2019-02-20', value: 11379006.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    //      //{ time: '2019-02-21', value: 14680547.00, color: 'rgba(0, 150, 136, 0.8)' },
+                    // ]);
                 },
                 buy(){
 
@@ -1431,6 +1498,57 @@
                 }
             });
         }
+        function syncToInterval(interval) {
+            if (areaSeries) {
+                chart.removeSeries(areaSeries);
+                areaSeries = null;
+            }
+            candle = chart.addCandleSeries({
+                topColor: 'rgba(76, 175, 80, 0.56)',
+                bottomColor: 'rgba(76, 175, 80, 0.04)',
+                lineColor: 'rgba(76, 175, 80, 1)',
+                lineWidth: 2,
+            });
+            candle.setData(seriesesData.get(interval));
+        }
+        var intervals = ['1D', '1W', '1M', '1Y'];
+        var switcherElement = createSimpleSwitcher(intervals, intervals[0], syncToInterval);
+
+        var chartElement = document.createElement('div');
+        function createSimpleSwitcher(items, activeItem, activeItemChangedCallback) {
+            var switcherElement = document.createElement('div');
+            switcherElement.classList.add('switcher');
+
+            var intervalElements = items.map(function(item) {
+                var itemEl = document.createElement('button');
+                itemEl.innerText = item;
+                itemEl.classList.add('switcher-item');
+                itemEl.classList.toggle('switcher-active-item', item === activeItem);
+                itemEl.addEventListener('click', function() {
+                    onItemClicked(item);
+                });
+                switcherElement.appendChild(itemEl);
+                return itemEl;
+            });
+
+            function onItemClicked(item) {
+                if (item === activeItem) {
+                    return;
+                }
+
+                intervalElements.forEach(function(element, index) {
+                    element.classList.toggle('switcher-active-item', items[index] === item);
+                });
+
+                activeItem = item;
+
+                activeItemChangedCallback(item);
+            }
+
+            return switcherElement;
+        }
+        document.body.appendChild(chartElement);
+        document.body.appendChild(switcherElement);
         function formatDate(date) {
             var d = new Date(date),
                 month = '' + (d.getMonth() + 1),

@@ -120,7 +120,8 @@ class TradeController extends Controller
         if(empty($request->currency)) return response()->json(['status' => false]);
         $Bitfinex = new Bitfinex();
         if($request->currency == 'tMABUSD'){
-            $response = $Bitfinex->getCandle('tADAUSD');
+            $response = $Bitfinex->getCandle('tADAUSD', '','', '' );
+            //dd($response);
 //            $chartData =array(
 //                   array(1621604979000,39252,39821.73222635,39839,39252,417.14195681),
 //                   array(1621518579000,39689,39252,39703.38687557,39037,631.40783786),

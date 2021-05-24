@@ -501,4 +501,27 @@ table,th, td {
     width: 27% !important;
     text-align: right !important;
 }
+.interval{
+    margin: 0px 0px 0px 10px;
+    /*border: 1px solid gray;*/
+    padding: 0px 5px 0px 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.interval:hover {
+    background-color: grey;
+}
+.chart-top-row{
+    background-color:#171b26;
+    border: 1px solid #6e737a;
+    padding: 5px;
+    display:flex;
+    color: white;
+    margin-right: 2px;
+}
+.border-removal{
+    border: none;
+    font-size: 11px;
+}
 
