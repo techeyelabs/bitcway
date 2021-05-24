@@ -27,9 +27,20 @@ class Bitfinex
         return false;
     }
 
-    public function getCandle($currency)
+    public function getCandle($currency,$interval,$start,$end)
     {
-        $response = Http::get('https://api-pub.bitfinex.com/v2/candles/trade:1D:'.$currency.'/hist?limit=10000&start=1512086400000&end= 1621842634000');
+        if($start != "" && $end != "" ){
+            //dd("got range");
+            $response = Http::get('https://api-pub.bitfinex.com/v2/candles/trade:1D:'.$currency.'/hist?limit=10000&start='.$start.'&end='.$end);
+        }
+        elseif($interval != ""){
+            //dd("got inteval");
+            $response = Http::get('https://api-pub.bitfinex.com/v2/candles/trade:'.$interval.':'.$currency.'/hist?limit=10000');
+        }
+        else{
+            //dd("no condition");
+            $response = Http::get('https://api-pub.bitfinex.com/v2/candles/trade:1D:'.$currency.'/hist?limit=10000');
+        }
         if($response->json()) return $response->json();
     }
 

@@ -318,11 +318,11 @@
 
                         <div id='buttonrow' class="chart-top-row">
                             <span><h6 v-cloak>@{{currency}}/USD</h6></span>
-                            <span class="interval" id='1m' onclick="getChartData('interval', this.id)">1m</span>
-                            <span class="interval" id="15m" onclick="getChartData('interval',this.id)">15m</span>
-                            <span class="interval" id="30m" onclick="getChartData('interval', this.id)">30m</span>
-                            <span class="interval" id="1h" onclick="getChartData('interval', this.id)">1h</span>
-                            <span class="interval" id="6h" onclick="getChartData('interval', this.id)">6h</span>
+                            <span class="interval" id='1m' v-on:click="getChartData('interval','1m')">1m</span>
+                            <span class="interval" id="15m" v-on:click="getChartData('interval','15m')">15m</span>
+                            <span class="interval" id="30m" v-on:click="getChartData('interval','30m')">30m</span>
+                            <span class="interval" id="1h"  v-on:click="getChartData('interval','1h')">1h</span>
+                            <span class="interval" id="6h"  v-on:click="getChartData('interval','6h')">6h</span>
                             <span style="margin-left: 10px">BitcWay</span>
                         </div>
                         <div id="chart" style="height:465px; display: block; color: white; background-color: #171b26">
@@ -332,8 +332,8 @@
                         </div>
 
                         <div id='buttonrow' class="chart-top-row">
-                            <span class="interval border-removal" id="3Y" onclick="getChartData('range', this.id)">3Y</span>
-                            <span class="interval border-removal" id="1Y" onclick="getChartData('range', this.id)">1Y</span>
+                            <span class="interval border-removal" id="3Y" v-on:click="getChartData('range','3Y')">3Y</span>
+                            <span class="interval border-removal" id="1Y" v-on:click="getChartData('range', '1Y')">1Y</span>
                             <span class="interval border-removal" id="3M" onclick="getChartData('range', this.id)">3M</span>
                             <span class="interval border-removal" id="1M" onclick="getChartData('range', this.id)">1M</span>
                             <span class="interval border-removal" id="7D" onclick="getChartData('range', this.id)">7D</span>
@@ -581,7 +581,9 @@
         console.log(currencies);
         // const OrderBook Start
         $(document).ready(function() {
+            var item = ["tBTCUSD"];
             getInitialOrder("tBTCUSD");
+            Home.setCurrency(item);
         });
         // const OrderBook End
 
@@ -905,6 +907,8 @@
                     return currency;
                 },
                 setCurrency(item){
+                    console.log("item:")
+                    console.log(item);
                     let coin    = item[0];
                     let symbolx = coin.substr(1);
                     console.log('t'+symbolx);
@@ -954,13 +958,69 @@
                     this.selectedItem = item;
                     this.getChartData();
                 },
-                getChartData(){
+                getChartData(type,value){
                     //alert('I am here');
+                    if (type!='' && type ==='interval'){
+                        var interval_value = value;
+                    }
+                    else{
+                       var interval_value="";
+
+                    }
+                    if (type ==='range'){
+                        //alert(value);
+                        var range_value = value;
+                        var current_date = new Date();
+                        var year = current_date.getFullYear();
+                        var month = current_date.getMonth();
+                        var day = current_date.getDate();
+
+                        if (range_value === '3Y'){
+
+                            var end_date = new Date(year - 3, month, day);
+                           var enddate = current_date.getTime();
+                           var startdate=end_date.getTime();
+
+
+                        }
+                        if (range_value === '1Y'){
+                            var end_date = new Date(year - 1, month, day);
+                            var enddate = current_date.getTime();
+                            var startdate=end_date.getTime();
+                        }
+                        if (range_value == '3M'){
+
+                        }
+                        if (range_value == '7D'){
+
+                        }
+                        if (range_value == '3D'){
+
+                        }
+                        if (range_value == '1D'){
+
+                        }
+                        if (range_value == '6h'){
+
+                        }
+                        if (range_value == '1h'){
+
+                        }
+                    }
+                    else{
+                        var start ="";
+                        var end   =""
+
+                    }
+
+
+
+
                     let that = this;
                     let currency = that.selectedItem[0];
                     console.log(that.currency);
                     // showLoader('Loading ...');
-                    axios.get('{{route("user-get-chart-data")}}', {params: {currency: currency, user_currency: that.currency}})
+                    axios.get('{{route("user-get-chart-data")}}', {params: {currency: currency, user_currency: that.currency, interval:interval_value, start:startdate, end:enddate}})
                     .then(function (response) {
                         console.log(currency);
                         let chartData = [];
@@ -1573,57 +1633,57 @@
                 }
             });
         }
-        function syncToInterval(interval) {
-            if (areaSeries) {
-                chart.removeSeries(areaSeries);
-                areaSeries = null;
-            }
-            candle = chart.addCandleSeries({
-                topColor: 'rgba(76, 175, 80, 0.56)',
-                bottomColor: 'rgba(76, 175, 80, 0.04)',
-                lineColor: 'rgba(76, 175, 80, 1)',
-                lineWidth: 2,
-            });
-            candle.setData(seriesesData.get(interval));
-        }
-        var intervals = ['1D', '1W', '1M', '1Y'];
-        var switcherElement = createSimpleSwitcher(intervals, intervals[0], syncToInterval);
-
-        var chartElement = document.createElement('div');
-        function createSimpleSwitcher(items, activeItem, activeItemChangedCallback) {
-            var switcherElement = document.createElement('div');
-            switcherElement.classList.add('switcher');
-
-            var intervalElements = items.map(function(item) {
-                var itemEl = document.createElement('button');
-                itemEl.innerText = item;
-                itemEl.classList.add('switcher-item');
-                itemEl.classList.toggle('switcher-active-item', item === activeItem);
-                itemEl.addEventListener('click', function() {
-                    onItemClicked(item);
-                });
-                switcherElement.appendChild(itemEl);
-                return itemEl;
-            });
-
-            function onItemClicked(item) {
-                if (item === activeItem) {
-                    return;
-                }
-
-                intervalElements.forEach(function(element, index) {
-                    element.classList.toggle('switcher-active-item', items[index] === item);
-                });
-
-                activeItem = item;
-
-                activeItemChangedCallback(item);
-            }
-
-            return switcherElement;
-        }
-        document.body.appendChild(chartElement);
-        document.body.appendChild(switcherElement);
+        // function syncToInterval(interval) {
+        //     if (areaSeries) {
+        //         chart.removeSeries(areaSeries);
+        //         areaSeries = null;
+        //     }
+        //     candle = chart.addCandleSeries({
+        //         topColor: 'rgba(76, 175, 80, 0.56)',
+        //         bottomColor: 'rgba(76, 175, 80, 0.04)',
+        //         lineColor: 'rgba(76, 175, 80, 1)',
+        //         lineWidth: 2,
+        //     });
+        //     candle.setData(seriesesData.get(interval));
+        // }
+        // var intervals = ['1D', '1W', '1M', '1Y'];
+        // var switcherElement = createSimpleSwitcher(intervals, intervals[0], syncToInterval);
+        //
+        // var chartElement = document.createElement('div');
+        // function createSimpleSwitcher(items, activeItem, activeItemChangedCallback) {
+        //     var switcherElement = document.createElement('div');
+        //     switcherElement.classList.add('switcher');
+        //
+        //     var intervalElements = items.map(function(item) {
+        //         var itemEl = document.createElement('button');
+        //         itemEl.innerText = item;
+        //         itemEl.classList.add('switcher-item');
+        //         itemEl.classList.toggle('switcher-active-item', item === activeItem);
+        //         itemEl.addEventListener('click', function() {
+        //             onItemClicked(item);
+        //         });
+        //         switcherElement.appendChild(itemEl);
+        //         return itemEl;
+        //     });
+        //
+        //     function onItemClicked(item) {
+        //         if (item === activeItem) {
+        //             return;
+        //         }
+        //
+        //         intervalElements.forEach(function(element, index) {
+        //             element.classList.toggle('switcher-active-item', items[index] === item);
+        //         });
+        //
+        //         activeItem = item;
+        //
+        //         activeItemChangedCallback(item);
+        //     }
+        //
+        //     return switcherElement;
+        // }
+        // document.body.appendChild(chartElement);
+        // document.body.appendChild(switcherElement);
         function formatDate(date) {
             var d = new Date(date),
                 month = '' + (d.getMonth() + 1),
@@ -1635,6 +1695,7 @@
 
             return [year, month, day].join('-');
         }
+
         /***Load data for first time***/
         get_buy_sell_data('BTC');
     </script>

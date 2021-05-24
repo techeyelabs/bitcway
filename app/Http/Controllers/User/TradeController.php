@@ -116,11 +116,40 @@ class TradeController extends Controller
         else{
             $currency = $request->user_currency;
         }
+        if($request->interval && $request->interval!=""){
+
+                $interval_value = $request->interval;
+                $start ='';
+                $end   ='';
+        }
+        else{
+            $interval_value='';
+             if(($request->start && $request->end) && ($request->start !="" && $request->end !="") ){
+                 $start =  $request->start;
+                 $end =  $request->end;
+             }
+             else{
+                 $start = '';
+                 $end = '';
+             }
+
+        }
+
+
        // dd( $request->user_currency);
         if(empty($request->currency)) return response()->json(['status' => false]);
         $Bitfinex = new Bitfinex();
         if($request->currency == 'tMABUSD'){
-            $response = $Bitfinex->getCandle('tADAUSD', '','', '' );
+            if($interval_value != ""){
+                $response = $Bitfinex->getCandle('tADAUSD', $interval_value,'','' );
+            }
+            elseif ($start != "" && $end != ""){
+                $response = $Bitfinex->getCandle('tADAUSD', '',$start,$end );
+            }
+            else{
+                $response = $Bitfinex->getCandle('tADAUSD', '','','' );
+            }
+
             //dd($response);
 //            $chartData =array(
 //                   array(1621604979000,39252,39821.73222635,39839,39252,417.14195681),
@@ -140,7 +169,19 @@ class TradeController extends Controller
 //           print_r($response);
         }
         else{
-            $response = $Bitfinex->getCandle($request->currency);
+            if($interval_value != ""){
+
+                $response = $Bitfinex->getCandle($request->currency,$interval_value,'','');
+            }
+            elseif ($start != "" && $end != ""){
+
+                $response = $Bitfinex->getCandle($request->currency,'', $start, $end);
+            }
+            else{
+
+                $response = $Bitfinex->getCandle($request->currency,'','','');
+            }
+           // $response = $Bitfinex->getCandle($request->currency,$interval_value,$start,$end);
         }
 
         $balance = UserWallet::whereHas('currency', function($query) use ($currency){
