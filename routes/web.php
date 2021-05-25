@@ -88,7 +88,7 @@ Route::group(['prefix'=>'{language}'], function (){
             //Gateway
             Route::post('/hcgenerate', [WalletController::class, 'hcgenerate'])->name('hcgenerate');
             Route::post('/getwayUriResponse', [WalletController::class, 'getwayUriResponse'])->name('getwayUriResponse');
-            Route::post('/getwayPaymentReceipt', [WalletController::class, 'getwayPaymentReceipt'])->name('getwayPaymentReceipt');
+            Route::get('/getwayPaymentReceipt', [WalletController::class, 'getwayPaymentReceipt'])->name('getwayPaymentReceipt');
         });
 
         Route::get('/message', [MessageController::class, 'index'])->name('user-message');
