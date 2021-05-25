@@ -70,8 +70,32 @@ class WalletController extends Controller
     }
     public function getwayPaymentReceipt(Request $request)
     {
-        print_r($request);
-        return view('user.wallet.wallets');
+        $data = $request->all();
+        dd($data);
+        echo "Here1";
+        if (isset($request)) {
+            echo "Here2";
+            //Get parameters
+            $trading_id = isset($_POST['trading']) && !empty($_POST['trading']) ? $_POST['trading'] : NULL;
+            echo $trading_id;
+            $amount = isset($_POST['amount']) && !empty($_POST['amount']) ? $_POST['amount'] : NULL;
+            $currency = isset($_POST['type']) && !empty($_POST['type']) ? $_POST['currency'] : NULL;
+            $hash = isset($_POST['hash']) && !empty($_POST['hash']) ? $_POST['hash'] : NULL;
+            //Optional
+            $custom = isset($_POST['custom']) && !empty($_POST['custom']) ? $_POST['custom'] : NULL;
+            //Check empty
+            if (empty($trading_id) || empty($amount) || empty($currency) || empty($hash)) {
+                exit();
+            }
+            //Validate data with hash key
+            $hash_key = 'INa7F6trT8A1nbJ6';
+            $hc_check = hash("sha256", $hash_key . $trading_id . $amount . $currency);
+            if ($hc_check != $hash) {
+                echo "Here";
+                exit();
+            }
+            //Data is OK then process to update order status
+        }
     }
     public function depositAction(Request $request)
     {
