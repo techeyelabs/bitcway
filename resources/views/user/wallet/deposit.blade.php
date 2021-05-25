@@ -9,56 +9,61 @@
 @endsection
 
 @section('content')
-<div id="wrap" class="deposit">
-    <h3 class="txtWhitecolor">Deposit</h3>
-    <hr>
+    <div id="wrap" class="deposit">
+        <h3 class="txtWhitecolor">{{__('button3')}}</h3>
+        <hr>
 
-    <div class="row">
-        <div class="col-md-8 col-lg-6">
-            <div class="card">
-                <div class="card-body">
-
-                    <template v-if='qrCode'>
-                        <div class="text-center">
-                            <h5 class="txtWhitecolor">Scan following QR code from your wallet app to complete deposit</h5>
-                            <hr>
-                            <h6 class="txtWhitecolor">Pay: @{{parseFloat(amount).toFixed(8)}} BTC </h6>
-                            <h6 class="mb-3 txtWhitecolor">To: @{{wallet}}</h6>
-                            <img :src="qrCodeLink" alt="">
-                        </div>
-                        <hr>
-                        <a href="{{route('user-wallet')}}" class="btn btn-outline-info mt-2" >Cancel</a>
-                        <a href="#" class="btn btn-outline-warning mt-2" v-on:click="done">Done</a>
-                    </template>
-
-                    <template v-else>                            
+        <div class="row">
+            <div class="col-md-8 col-lg-6">
+                <div class="card">
+                    <div class="card-body">
                         <div class="form-group">
-                            <label class="txtWhitecolor" for="">Amount (BTC)</label>
+                            <label class="txtWhitecolor" for="">{{__('col14')}} (BTC)</label>
                             <input type="number" class="form-control" aria-describedby="" name="amount"
-                                value="{{old('amount')}}" placeholder="Enter amount in bitcoin here..." required v-model="amount">                            
+                                   value="{{old('amount')}}" placeholder="Enter amount in bitcoin here..." required v-model="amount" v-on:keyup="hcgenerate">
                             @error('amount')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="form-group text-center">
-{{--                            <h4 class="txtWhitecolor">Equivalent: @{{(amount*rate).toFixed(2)}} (USD)</h4>--}}
-                            <h4 class="txtWhitecolor">Equivalent: @{{amount*rate}} (USD)</h4>
+                            <h4 class="txtWhitecolor">Equivalent: <span id="amountRate"> @{{amount*rate}}</span> (USD)</h4>
                         </div>
+                        <button class="btn btn-outline-warning float-end" onclick="gatewaypost()">{{__('button3')}}</button>
 
-                        <a href="#" class="btn btn-outline-warning float-end" v-on:click="deposit">Deposit</a>
-                    </template>
-
-                    
-
+                        <div class="BITCPaymentGateway d-none">
+                            <form id="formForGateway" action ="https://api.saiwin.co/generate" method = "post">
+                                <input type = "text" name = "hash_key" id="hash_key" value = "{{$hash_key}}">
+                                <input type = "text" name = "site_id" id="site_id" value = "{{$site_id}}">
+                                <input type ="number" name = "trading_id" id="trading_id" value = "{{$trading_id}}">
+                                <input type = "number" name ="amount" id="rate" value = "">
+                                <input type ="text" name = "hc" id="hc" value = "">
+                            </form>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
-</div>
 @endsection
 
 @section('custom_js')
+    <script>
+        function gatewaypost() {
+            axios.post('{{route("getwayUriResponse", app()->getLocale())}}', {
+                site_id: $('#site_id').val(),
+                trading_id: $('#trading_id').val(),
+                amount: $('#amountRate').html(),
+                hc: $('#hc').val()
+            })
+                .then(function (response) {
+                    let url = response.data;
+                    location.href = url.url;
+                    hideLoader();
+                })
+
+        }
+    </script>
     <script>
         let deposit = new Vue({
             el: '.deposit',
@@ -74,35 +79,45 @@
             },
 
             methods:{
-                deposit(){
+                hcgenerate(){
                     let that = this;
-                    if(that.amount <= 0 || that.rate <= 0){
-                        toastr.error('invalid amount or rate!!');
-                        return false;
-                    }
-                    this.qrCode = true;
-                    let walletLink = 'bitcoin:'+this.wallet+'?amount='+that.amount;
-                    that.qrCodeLink = "https://chart.googleapis.com/chart?chs=250x250&chld=L|2&cht=qr&chl="+encodeURIComponent(walletLink);
+                    $('#rate').val(that.amount*that.rate);
+                    // showLoader('please wait...');
+                    axios.post('{{route("hcgenerate", app()->getLocale())}}', {
+                        hash_key: $('#hash_key').val(),
+                        site_id: $('#site_id').val(),
+                        trading_id: $('#trading_id').val(),
+                        rate: parseFloat($('#amountRate').html())
+                    })
+                        .then(function (response) {
+                            console.log(response);
+                            $("#hc").val(response.data[0]);
+                            hideLoader();
+                        })
+                        .catch(function (error) {
+                            toastr.error('error occured,please try again');
+                            hideLoader();
+                        });
                 },
                 done(){
                     let that = this;
                     showLoader('please wait...');
-                    axios.post('{{route("user-deposit-action")}}', {
+                    axios.post('{{route("user-deposit-action", app()->getLocale())}}', {
                         amount: that.amount,
                         rate: that.rate
                     })
-                    .then(function (response) {
-                        console.log(response);
-                        if(response.data.status) {
-                            location.href = "{{route('user-wallet')}}";
-                        }
-                        else toastr.error('error occured,please try again');
-                        hideLoader();
-                    })
-                    .catch(function (error) {
-                        toastr.error('error occured,please try again');
-                        hideLoader();
-                    });
+                        .then(function (response) {
+                            console.log(response);
+                            if(response.data.status) {
+                                location.href = "{{route('user-wallet', app()->getLocale())}}";
+                            }
+                            else toastr.error('error occured,please try again');
+                            hideLoader();
+                        })
+                        .catch(function (error) {
+                            toastr.error('error occured,please try again');
+                            hideLoader();
+                        });
                 }
             }
         });
