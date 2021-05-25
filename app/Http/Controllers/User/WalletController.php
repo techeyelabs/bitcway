@@ -70,8 +70,8 @@ class WalletController extends Controller
     }
     public function getwayPaymentReceipt(Request $request)
     {
-        $data = $request->all();
-        dd($data);
+        dd($_POST['amount']);
+//        dd($request->json()->all());
         echo "Here1";
         if (isset($request)) {
             echo "Here2";
