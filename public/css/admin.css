@@ -23,3 +23,6 @@ body{
 table.dataTable tbody tr {
     background-color: transparent !important;
 }
+.txtWhitecolor {
+    color: white !important;
+}

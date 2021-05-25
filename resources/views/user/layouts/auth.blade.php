@@ -65,7 +65,7 @@
     <div id="wrap">
         <div class="container">
             <div class="text-center mt-5">
-                <a class="logo" href="{{route('front-home', app()->getLocale())}}"><strong>BITC-WAY</strong></a>
+                <a class="logo txtWhitecolor" href="{{route('front-home', app()->getLocale())}}"><strong>BITC-WAY</strong></a>
             </div>            
             @yield('content')
         </div>

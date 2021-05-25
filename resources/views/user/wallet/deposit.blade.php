@@ -12,7 +12,6 @@
     <div id="wrap" class="deposit">
         <h3 class="txtWhitecolor">{{__('button3')}}</h3>
         <hr>
-
         <div class="row">
             <div class="col-md-8 col-lg-6">
                 <div class="card">
@@ -44,7 +43,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
