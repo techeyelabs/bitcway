@@ -70,7 +70,8 @@ class WalletController extends Controller
     }
     public function getwayPaymentReceipt(Request $request)
     {
-        dd($request);
+        print_r($request);
+        return view('user.wallet.wallets');
     }
     public function depositAction(Request $request)
     {
