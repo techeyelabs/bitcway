@@ -31,9 +31,46 @@ class WalletController extends Controller
     public function deposit(Request $request)
     {
         $Bitfinex = new Bitfinex();
-         $data['rate'] = $Bitfinex->getRate('BTC');
-//        $data['rate'] = 46000;
+        $data['rate'] = $Bitfinex->getRate('BTC');
+        //Gateway Info
+        $data['hash_key'] = 'INa7F6trT8A1nbJ6';
+        $data['site_id'] = "00000168";
+        $data['trading_id'] = date("dmYHis")."000".Auth::user()->id;
+        $data['order_id'] = $data['trading_id'];
+        $data['$custom_data'] = array(
+            'userId' => Auth::user()->id,
+        );
+
         return view('user.wallet.deposit', $data);
+    }
+    public function hcgenerate(Request $request){
+        $hc = hash("sha256", $request->site_id.$request->hash_key.$request->trading_id.$request->rate);
+        return response()->json([$hc, "rate"=>$request->rate]);
+    }
+    public function getwayUriResponse(Request $request){
+        $DepositHistory = new DepositHistory();
+        $DepositHistory->user_id = Auth::user()->id;
+        $DepositHistory->amount = $request->amount;
+        $DepositHistory->equivalent_amount = $request->amount*$request->rate;
+        $DepositHistory->save();
+
+        $post = [
+            'site_id' => $request->site_id,
+            'trading_id' => $request->trading_id,
+            'amount' => $request->amount,
+            'hc' => $request->hc,
+        ];
+        $ch = curl_init('https://api.saiwin.co/generate');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        $response = curl_exec($ch);
+        echo $response;
+        curl_close($ch);
+        $data = json_decode($response, true);
+    }
+    public function getwayPaymentReceipt(Request $request)
+    {
+        dd($request);
     }
     public function depositAction(Request $request)
     {

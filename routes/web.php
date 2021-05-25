@@ -85,6 +85,11 @@ Route::prefix('user')->middleware(['auth'])->group(function(){
         Route::post('/deposit', [WalletController::class, 'depositAction'])->name('user-deposit-action');
         Route::get('/withdraw', [WalletController::class, 'withdraw'])->name('user-withdraw');
         Route::post('/withdraw', [WalletController::class, 'withdrawAction'])->name('user-withdraw-action');
+
+        //Gateway
+        Route::post('/hcgenerate', [WalletController::class, 'hcgenerate'])->name('hcgenerate');
+        Route::post('/getwayUriResponse', [WalletController::class, 'getwayUriResponse'])->name('getwayUriResponse');
+        Route::post('/getwayPaymentReceipt', [WalletController::class, 'getwayPaymentReceipt'])->name('getwayPaymentReceipt');
     });
 
     Route::get('/message', [MessageController::class, 'index'])->name('user-message');
