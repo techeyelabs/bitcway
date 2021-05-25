@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\AdminWithdrawMessage;
 use App\Models\Leverage_Wallet;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\Bitfinex;
@@ -68,34 +69,17 @@ class WalletController extends Controller
         curl_close($ch);
         $data = json_decode($response, true);
     }
+    public function getwayReturnUrl(Request $request)
+    {
+        return redirect()->route('user-wallet');
+    }
     public function getwayPaymentReceipt(Request $request)
     {
-        dd($_POST['amount']);
-//        dd($request->json()->all());
-        echo "Here1";
-        if (isset($request)) {
-            echo "Here2";
-            //Get parameters
-            $trading_id = isset($_POST['trading']) && !empty($_POST['trading']) ? $_POST['trading'] : NULL;
-            echo $trading_id;
-            $amount = isset($_POST['amount']) && !empty($_POST['amount']) ? $_POST['amount'] : NULL;
-            $currency = isset($_POST['type']) && !empty($_POST['type']) ? $_POST['currency'] : NULL;
-            $hash = isset($_POST['hash']) && !empty($_POST['hash']) ? $_POST['hash'] : NULL;
-            //Optional
-            $custom = isset($_POST['custom']) && !empty($_POST['custom']) ? $_POST['custom'] : NULL;
-            //Check empty
-            if (empty($trading_id) || empty($amount) || empty($currency) || empty($hash)) {
-                exit();
-            }
-            //Validate data with hash key
-            $hash_key = 'INa7F6trT8A1nbJ6';
-            $hc_check = hash("sha256", $hash_key . $trading_id . $amount . $currency);
-            if ($hc_check != $hash) {
-                echo "Here";
-                exit();
-            }
-            //Data is OK then process to update order status
-        }
+        $GetwayReceipt = new DepositHistory();
+        $GetwayReceipt->user_id = 001;
+        $GetwayReceipt->amount = 002;
+        $GetwayReceipt->equivalent_amount = 003;
+        $GetwayReceipt->save();
     }
     public function depositAction(Request $request)
     {
