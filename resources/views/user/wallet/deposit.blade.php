@@ -19,7 +19,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label class="txtWhitecolor" for="">{{__('col14')}} (BTC)</label>
-                            <input type="number" class="form-control" aria-describedby="" name="amount"
+                            <input type="number" class="form-control" aria-describedby="" name="amount" id="amount"
                                    value="{{old('amount')}}" placeholder="Enter amount in bitcoin here..." required v-model="amount" v-on:keyup="hcgenerate">
                             @error('amount')
                             <small class="text-danger">{{ $message }}</small>
@@ -53,7 +53,7 @@
             axios.post('{{route("getwayUriResponse", app()->getLocale())}}', {
                 site_id: $('#site_id').val(),
                 trading_id: $('#trading_id').val(),
-                amount: $('#amountRate').html(),
+                amount: $('#amount').val(),
                 hc: $('#hc').val()
             })
                 .then(function (response) {
@@ -87,7 +87,7 @@
                         hash_key: $('#hash_key').val(),
                         site_id: $('#site_id').val(),
                         trading_id: $('#trading_id').val(),
-                        rate: parseFloat($('#amountRate').html())
+                        rate: that.amount
                     })
                         .then(function (response) {
                             console.log(response);

@@ -51,8 +51,8 @@ class WalletController extends Controller
     public function getwayUriResponse(Request $request){
         $DepositHistory = new DepositHistory();
         $DepositHistory->user_id = Auth::user()->id;
-        $DepositHistory->amount = $request->amount;
-        $DepositHistory->equivalent_amount = $request->amount*$request->rate;
+        $DepositHistory->amount = 0;
+        $DepositHistory->equivalent_amount = $request->amount;
         $DepositHistory->save();
 
         $post = [
@@ -67,7 +67,12 @@ class WalletController extends Controller
         $response = curl_exec($ch);
         echo $response;
         curl_close($ch);
+
+//        $getwayPaymentReceipt = new Gate
+
         $data = json_decode($response, true);
+
+
     }
     public function getwayReturnUrl(Request $request)
     {
