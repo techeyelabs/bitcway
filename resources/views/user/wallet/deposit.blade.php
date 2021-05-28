@@ -18,19 +18,19 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
-                            <label class="txtWhitecolor" for="">{{__('col14')}} (BTC)</label>
+                            <label class="txtWhitecolor" for="">{{__('col14')}} (USD)</label>
                             <input type="number" class="form-control" aria-describedby="" name="amount" id="amount"
                                    value="{{old('amount')}}" placeholder="Enter amount in bitcoin here..." required v-model="amount" v-on:keyup="hcgenerate">
                             @error('amount')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <div class="form-group text-center">
+                        <div class="form-group text-center d-none">
                             <h4 class="txtWhitecolor">Equivalent: <span id="amountRate"> @{{amount*rate}}</span> (USD)</h4>
                         </div>
                         <button class="btn btn-outline-warning float-end" onclick="gatewaypost()">{{__('button3')}}</button>
 
-                        <div class="BITCPaymentGateway">
+                        <div class="BITCPaymentGateway ">
                             <form id="formForGateway" action ="https://api.saiwin.co/generate" method = "post">
                                 <input type = "text" name = "hash_key" id="hash_key" value = "{{$hash_key}}">
                                 <input type = "text" name = "site_id" id="site_id" value = "{{$site_id}}">

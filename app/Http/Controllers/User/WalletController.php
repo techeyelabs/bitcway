@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdminWithdrawMessage;
+use App\Models\GatewayReceipt;
 use App\Models\Leverage_Wallet;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -68,11 +69,15 @@ class WalletController extends Controller
         echo $response;
         curl_close($ch);
 
-//        $getwayPaymentReceipt = new Gate
+        $getwayPaymentReceipt = new GatewayReceipt();
+        $getwayPaymentReceipt->userId = Auth::user()->id;
+        $getwayPaymentReceipt->trading_id = $request->trading_id;
+        $getwayPaymentReceipt->hc = $request->hc;
+        $getwayPaymentReceipt-> amount = $request->amount;
+        $getwayPaymentReceipt-> status = 0;
+        $getwayPaymentReceipt->save();
 
         $data = json_decode($response, true);
-
-
     }
     public function getwayReturnUrl(Request $request)
     {
@@ -80,11 +85,31 @@ class WalletController extends Controller
     }
     public function getwayPaymentReceipt(Request $request)
     {
-        $GetwayReceipt = new DepositHistory();
-        $GetwayReceipt->user_id = 001;
-        $GetwayReceipt->amount = 002;
-        $GetwayReceipt->equivalent_amount = 003;
-        $GetwayReceipt->save();
+        $site_id = "00000168";
+        $pendingPayment = GatewayReceipt::where('status', 0)->get();
+        for ($i = 0; $i<count($pendingPayment); $i++){
+            $trading_id = $pendingPayment[$i]->trading_id;
+            $hc = $pendingPayment[$i]->hc;
+
+            $post = [
+                'site_id' => $site_id,
+                'trading_id' => $trading_id,
+                'hc' => $hc
+            ];
+            $ch = curl_init('https://api.saiwin.co/status');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+            $response = curl_exec($ch);
+            curl_close($ch);
+            $data = json_decode($response, true);
+
+            print_r($data);
+            echo '<br>';
+
+//            $updatePayment = GatewayReceipt::where('trading_id', $trading_id)->update(['status' => 1]);
+//            $updatePayment = GatewayReceipt::where('trading_id', $trading_id)-->update( [ 'name' => $data['name'], 'address' => $data['address']]);
+        }
+        exit();
     }
     public function depositAction(Request $request)
     {
