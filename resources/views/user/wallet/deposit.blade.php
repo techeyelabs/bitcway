@@ -31,7 +31,7 @@
                         <button class="btn btn-outline-warning float-end" onclick="gatewaypost()">{{__('button3')}}</button>
 
                         <div class="BITCPaymentGateway d-none">
-                            <form id="formForGateway" action ="https://api.saiwin.co/generate" method = "post">
+                            <form id="formForGateway d-none" action ="https://api.saiwin.co/generate" method = "post">
                                 <input type = "text" name = "hash_key" id="hash_key" value = "{{$hash_key}}">
                                 <input type = "text" name = "site_id" id="site_id" value = "{{$site_id}}">
                                 <input type ="number" name = "trading_id" id="trading_id" value = "{{$trading_id}}">
