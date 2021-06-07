@@ -49,7 +49,7 @@
 <body>
 
     @include('includes.loader')
-
+{{--    <i class="fas fa-angle-right"></i>--}}
     <div class="page-wrapper chiller-theme toggled">
         <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
             <i id="pageSideBarIcon" class="fas fa-bars"></i>
@@ -59,7 +59,7 @@
                 <div class="sidebar-brand">
                     <a class="logo txtWhitecolor" href="{{route('front-home')}}"><strong>BITC-WAY</strong></a>
                     <div id="close-sidebar">
-                        <i class="fas fa-times"></i><i class="fas fa-angle-right"></i>
+                        <i class="fas fa-times"></i>
                     </div>
                 </div>
                 <div class="sidebar-header">
