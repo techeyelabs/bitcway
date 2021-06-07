@@ -41,6 +41,7 @@
             flex-grow: 1;
             min-width: 0;
         }
+
         .table>:not(caption)>*>* {
             padding: 2px 20px 2px 20px !important;
         }
@@ -62,8 +63,8 @@
              border-top: 16px solid #3498db;
              width: 120px;
              height: 120px;
-             -webkit-animation: spin 2s linear infinite; / Safari /
-         animation: spin 2s linear infinite;
+             -webkit-animation: spin 2s linear infinite;
+             animation: spin 2s linear infinite;
          }
 
         / Safari /
@@ -311,8 +312,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col main-app-container">
-                <div class="card">
+            <div class="col-md-9 main-app-container">
+                <div class="card graphDiv">
                     <div class="card-body" >
                         <div class="text-center title mb-2 txtHeadingColor"></div>
 
@@ -345,8 +346,8 @@
                         <div id="tradingview_f7648" class="d-none"></div>
                     </div>
                 </div>
-                <div class="card mt-3">
-                    <div class="card-body">
+                <div class="card mt-3 orderBookDiv">
+                    <div class="card-body ">
                         <h4 class="txtHeadingColor" v-cloak>Order Book: @{{currency}}/USD</h4>
                         <hr>
                         <div class="">

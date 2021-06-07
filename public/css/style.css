@@ -549,6 +549,19 @@ table,th, td {
     .message-list{
         height: 415px !important;
     }
+    .main-app-container{
+        margin-top: 20px !important;
+        width: 350px !important;
+        max-width: 100% !important;
+    }
+    .graphDiv{
+        width: 350px !important;
+        max-width: 100%;
+    }
+    .orderBookDiv{
+        width: 350px !important;
+        max-width: 100%;
+    }
 }
 .navbar-dark .navbar-toggler {
      color: #081420 !important;

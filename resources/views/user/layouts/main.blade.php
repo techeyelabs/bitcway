@@ -47,7 +47,6 @@
 </head>
 
 <body>
-
     @include('includes.loader')
 {{--    <i class="fas fa-angle-right"></i>--}}
     <div class="page-wrapper chiller-theme toggled">
@@ -236,26 +235,16 @@
 
     <script>
         jQuery(function ($) {
-
             $(".sidebar-dropdown > a").click(function () {
                 $(".sidebar-submenu").slideUp(200);
-                if (
-                    $(this)
-                    .parent()
-                    .hasClass("active")
+                if ($(this).parent().hasClass("active")
                 ) {
                     $(".sidebar-dropdown").removeClass("active");
-                    $(this)
-                        .parent()
-                        .removeClass("active");
+                    $(this).parent().removeClass("active");
                 } else {
                     $(".sidebar-dropdown").removeClass("active");
-                    $(this)
-                        .next(".sidebar-submenu")
-                        .slideDown(200);
-                    $(this)
-                        .parent()
-                        .addClass("active");
+                    $(this).next(".sidebar-submenu").slideDown(200);
+                    $(this).parent().addClass("active");
                 }
             });
 
@@ -266,12 +255,9 @@
                 $(".page-wrapper").addClass("toggled");
             });
 
-
             if($(window).width() <= 1024){
                 $(".page-wrapper").removeClass("toggled");
             }
-
-
         });
 
     </script>
