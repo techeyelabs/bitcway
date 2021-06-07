@@ -84,9 +84,9 @@
 @section('content')
     <div id="wrap" class="trade">
         @if(isset($type))
-            <h3 class="txtHeadingColor">Derivatives</h3>
+            <h3 class="txtHeadingColor pageTitle">Derivatives</h3>
         @else
-            <h3 class="txtHeadingColor">Trade</h3>
+            <h3 class="txtHeadingColor pageTitle">Trade</h3>
         @endif
         <hr>
         <div class="row" style="display: flex;">

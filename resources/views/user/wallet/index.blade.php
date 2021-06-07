@@ -30,7 +30,7 @@
 @section('content')
 
 <div id="wrap">
-    <h3 class="txtHeadingColor">Wallet</h3>
+    <h3 class="txtHeadingColor pageTitle">Wallet</h3>
     <hr>
     <div class="card mt-3">
         <div class="">

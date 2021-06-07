@@ -52,14 +52,14 @@
 
     <div class="page-wrapper chiller-theme toggled">
         <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
-            <i class="fas fa-bars"></i>
+            <i id="pageSideBarIcon" class="fas fa-bars"></i>
         </a>
         <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-content">
                 <div class="sidebar-brand">
                     <a class="logo txtWhitecolor" href="{{route('front-home')}}"><strong>BITC-WAY</strong></a>
                     <div id="close-sidebar">
-                        <i class="fas fa-times"></i>
+                        <i class="fas fa-times"></i><i class="fas fa-angle-right"></i>
                     </div>
                 </div>
                 <div class="sidebar-header">
@@ -78,57 +78,49 @@
                         <li class="header-menu">
                             <span class="txtWhitecolor">General</span>
                         </li>
-                        
+{{--                        <li>--}}
+{{--                            <a href="{{route('user-dashboard')}}">--}}
+{{--                                <i class="fa fa-tachometer-alt sideBar"></i>--}}
+{{--                                <span class="sideBar">Dashboard</span>--}}
+{{--                                --}}{{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
+{{--                            </a>--}}
+{{--                        </li>--}}
                         <li>
-                            <a  href="{{route('user-dashboard')}}">
-                                <i class="fa fa-tachometer-alt sideBar"></i>
-                                <span class="sideBar">Dashboard</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{route('user-wallet')}}">
-                                <i class="fas fa-wallet sideBar"></i>
-                                <span class="sideBar">Wallet</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
+                            <a href="{{route('user-wallets')}}">
+                                <i class="fas fa-money-bill-wave sideBar"></i>
+                                <span class="sideBar">Assets</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-trade')}}">
                                 <i class="fas fa-route sideBar"></i>
                                 <span class="sideBar">Trade</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-trade', ['type' => 'derivative'])}}">
                                 <i class="fas fa-route sideBar"></i>
                                 <span class="sideBar">Derivatives</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-trade-finance')}}">
                                 <i class="fas fa-route sideBar"></i>
                                 <span class="sideBar">Finance</span>
-                                {{--<span class="badge badge-pill badge-primary">Beta</span>--}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{route('user-wallet')}}">
+                                <i class="fas fa-wallet sideBar"></i>
+                                <span class="sideBar">Wallet</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-transactions')}}">
                                 <i class="fas fa-money-bill-wave sideBar"></i>
-                                <span class="sideBar">Buy/Sell</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
+                                <span class="sideBar">History</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="{{route('user-wallets')}}">
-                                <i class="fas fa-money-bill-wave sideBar"></i>
-                                <span class="sideBar">Assets</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
-                            </a>
-                        </li>
-
                         <li class="header-menu">
                             <span class="sideBar">Settings</span>
                         </li>
@@ -137,28 +129,24 @@
                             <a href="{{route('user-message')}}">
                                 <i class="fas fa-envelope sideBar"></i>
                                 <span class="sideBar">Message</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-update-profile')}}">
                                 <i class="fa fa-user sideBar"></i>
                                 <span class="sideBar">Profile</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-change-password')}}">
                                 <i class="fas fa-key sideBar"></i>
                                 <span class="sideBar">Change Password</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('logout')}}">
                                 <i class="fas fa-power-off sideBar"></i>
                                 <span class="sideBar">Logout</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
 

@@ -43,9 +43,9 @@
 
 @section('content')
 
-<div class="w3-modal-content w3-card-4 w3-animate-zoom" id="div" style="max-width:600px; margin: auto;" bis_skin_checked="1">
+<div class="w3-modal-content w3-card-4 w3-animate-zoom" id="div" style="max-width:600px; margin: auto;">
     <div id="wrap" class="message">
-        <h3 class="txtHeadingColor msgHeader" >Admin</h3>
+        <h3 class="txtHeadingColor msgHeader pageTitle" >Admin</h3>
 
         <div class="card message-list">
             <div class="card-body">
@@ -55,7 +55,7 @@
                             
                                 <div v-cloak v-if="item.type == 1" style="margin-left: 50%; margin-bottom:5px;">
                                     <div v-cloak class="time" style="font-size:10px; margin-left: 52%;"> <i class="far fa-clock"></i> @{{new Date(item.created_at).toLocaleString()}}</div>
-                                    {{-- <strong>{{Auth::user()->first_name.' '.Auth::user()->last_name}}</strong> --}}
+{{--                                     <strong>{{Auth::user()->first_name.' '.Auth::user()->last_name}}</strong>--}}
                                     <div v-cloak class="message txtWhitecolor"  style="text-align: left; width: 100%; border-radius: 10px; border: 1px solid #d2d2d2;
                                     padding: 10px; text-align: right; font-size: 18px;">
                                         <pre style="white-space: break-spaces !important;">@{{item.message}}</pre>
@@ -76,11 +76,9 @@
             <div class="card-body">
                 <form action="#" v-on:submit="send">
                     <div class="input-group">
-                        
                             <textarea v-model="message" type="text" class="form-control" style = "width: 283%;height: 75px;" placeholder="type your message here..."></textarea>
                             <br><br>
                             <button  class="btn btn-outline-warning mt-2" type="submit" :disabled="message == ''" style="margin: auto;">Send</button>
-                            
                     </div>
                 </form>
             </div>

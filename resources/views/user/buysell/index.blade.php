@@ -14,7 +14,7 @@
 @section('content')
 
 <div id="wrap">
-    <h3 class="txtHeadingColor">Buy/Sell</h3>
+    <h3 class="txtHeadingColor pageTitle">Buy/Sell</h3>
     <hr>
     <div class="card">
         <div class="card-body">

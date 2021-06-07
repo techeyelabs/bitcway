@@ -10,6 +10,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         return view('front.home');
+//        return redirect()->route('user-wallets');
     }
     public function about(Request $request)
     {

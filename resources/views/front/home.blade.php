@@ -17,7 +17,7 @@
     <div class="card-body">
         <h1 class="card-title txtHeadingColor">The Home of Digital Asset <br>Trading & Finance</h1><br>
         <?php if(Auth::check()){?>
-            <a href="{{route('user-dashboard')}}" class="btn btn-outline-warning btn-lg">DASHBOARD</a>
+            <a href="{{route('user-wallets')}}" class="btn btn-outline-warning btn-lg">MY ASSET</a>
         <?php }else{?>
             <a href="{{route('signup')}}" class="btn btn-outline-warning btn-lg t">JOIN NOW</a>
         <?php }?>

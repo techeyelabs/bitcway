@@ -28,7 +28,7 @@ class AuthController extends Controller
         ]);
         
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password, 'is_email_verified' => true, 'status' => true], $request->remember)) {
-            return redirect()->intended(route('user-dashboard'));
+            return redirect()->intended(route('user-wallets'));
         }
 
         return redirect()->back()->with('error_message', 'Wrong credentials..');

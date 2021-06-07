@@ -522,4 +522,36 @@ table,th, td {
     border: none;
     font-size: 11px;
 }
+@media (max-width:768px) {
+    #userIcon {
+        display: none;
+    }
+    #siteName{
+        font-size: 28px;
+        padding: 10px 20px;
+    }
+    .sideNavBar{
+        padding: 10px 20px;
+    }
+    .pageTitle{
+        text-align: center;
+        font-size: 28px;
+        margin-top: -25px;
+    }
+    #show-sidebar{
+        top: 15px !important;
+        width: 40px !important;
+    }
+    #pageSideBarIcon{
+        font-size: 24px;
+        margin-top: 2px;
+    }
+    .message-list{
+        height: 415px !important;
+    }
+}
+.navbar-dark .navbar-toggler {
+     color: #081420 !important;
+     border-color: #081420 !important;
+}
 
