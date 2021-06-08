@@ -39,6 +39,12 @@
             border-color: yellow;
             background-color: yellow;
         }
+        /*#lpro li {*/
+        /*    display: inline-block;*/
+        /*    list-style-type: none;*/
+        /*    padding-right: 20px;*/
+        /*    float: left;*/
+        /*}*/
     </style>
    
     @yield('custom_css')
@@ -50,6 +56,16 @@
     @include('includes.loader')
 {{--    <i class="fas fa-angle-right"></i>--}}
     <div class="page-wrapper chiller-theme toggled">
+{{--        <div class="columns">--}}
+{{--            <ul id="lpro">--}}
+{{--                <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">--}}
+{{--                    <i id="pageSideBarIcon" class="fas fa-bars"></i>--}}
+{{--                </a>--}}
+{{--                <a id="show-sidebar d-none" class="graphArrow" href="#">--}}
+{{--                    <i style="margin-top: 21px !important;" class="fas fa-angle-right fa-2x"></i>--}}
+{{--                </a>--}}
+{{--            </ul>--}}
+{{--        </div>--}}
         <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
             <i id="pageSideBarIcon" class="fas fa-bars"></i>
         </a>

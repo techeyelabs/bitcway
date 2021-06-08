@@ -569,6 +569,11 @@ table,th, td {
     .historyTable{
         overflow-x: auto;
     }
+    .graphArrow{
+        display: block;
+        margin-left: 15px !important;
+
+    }
 }
 .navbar-dark .navbar-toggler {
      color: #081420 !important;
