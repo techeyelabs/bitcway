@@ -313,8 +313,8 @@
                 </div>
             </div>
             <div class="col-md-9 main-app-container">
-                <div class="card graphDiv">
-                    <div class="card-body" >
+                <div class="card">
+                    <div class="card-body graphDiv" >
                         <div class="text-center title mb-2 txtHeadingColor"></div>
 
                         <div id='buttonrow' class="chart-top-row">

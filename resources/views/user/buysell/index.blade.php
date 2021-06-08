@@ -17,7 +17,7 @@
     <h3 class="txtHeadingColor pageTitle">Buy/Sell</h3>
     <hr>
     <div class="card">
-        <div class="card-body">
+        <div class="card-body historyTable">
             <table class="table">
                 <thead>
                     <th class="txtWhitecolor">Date</th>

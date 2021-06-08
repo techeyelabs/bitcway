@@ -560,6 +560,12 @@ table,th, td {
         max-width: 100% !important;
         margin-left: 6px !important;
     }
+    .graphDiv{
+        padding: 5px !important;
+    }
+    .historyTable{
+        overflow-x: auto;
+    }
 }
 .navbar-dark .navbar-toggler {
      color: #081420 !important;
