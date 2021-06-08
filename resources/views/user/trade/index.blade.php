@@ -31,10 +31,10 @@
             padding: 5px 0px 5px 0px
         }
         .sidebar{
-            width: 375px;
-            min-width: 375px;
+            /*width: 375px;*/
+            /*min-width: 375px;*/
             z-index: 6;
-            margin-left: 6px;
+            /*margin-left: 6px;*/
         }
         .main-app-container{
             margin: 0 5px;
