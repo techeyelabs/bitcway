@@ -39,7 +39,7 @@
         .main-app-container{
             margin: 0 5px;
             flex-grow: 1;
-            min-width: 0;
+            min-width:0;
         }
 
         .table>:not(caption)>*>* {
@@ -64,7 +64,7 @@
              width: 120px;
              height: 120px;
              -webkit-animation: spin 2s linear infinite;
-             animation: spin 2s linear infinite;
+             /*animation: spin 2s linear infinite;*/
          }
 
         / Safari /
@@ -77,9 +77,6 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-
-
     </style>
 @endsection
 @section('content')
@@ -116,7 +113,6 @@
                             </table>
                         </div>
                     </div>
-
                 </div>
                 <div class="card mt-3" >
                     <div class="card" >
@@ -306,13 +302,12 @@
                             <h4 v-cloak class="txtHeadingColor">Pending Trade: <span id="currcoin">@{{currency}}</span></h4>
                             <hr>
                             <table class="tables" id="tabledata">
-
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-9 main-app-container">
+            <div class="col main-app-container">
                 <div class="card">
                     <div class="card-body graphDiv" >
                         <div class="text-center title mb-2 txtHeadingColor"></div>
@@ -328,7 +323,6 @@
                         </div>
                         <div id="chart" style="height:465px; display: block; color: white; background-color: #171b26">
                             <div class="loader" style="display: none">
-
                             </div>
                         </div>
 
@@ -360,7 +354,6 @@
                                             <th class="txtWhitecolor">Total</th>
                                             <th class="txtWhitecolor">Price</th>
                                         </thead>
-                                        {{--<tbody style="background-color: #1142304d;">--}}
                                         <tbody>
                                             <tr v-for="(item, index) in bids" :class="{ 'coloredbid': bidsprev.length > 0 && bidsprev[index][2] != bids[index][2] }">
                                                 <td v-cloak class="txtWhitecolor">@{{item[1]}}</td>
@@ -410,7 +403,6 @@
                 buyCheckBox.disabled  = false;
                 sellCheckBox.disabled = false;
             }
-
         }
     </script>
     <script>
@@ -473,7 +465,6 @@
                     normalSellButton.style.display      = "none";
                     normalBuyButton.style.display       = "none";
                 }
-
             }
             else
             {
@@ -501,7 +492,6 @@
                     document.getElementById("derivativeNormalBuy").style.display  = 'block';
                     document.getElementById("derivativeLimitBuy").style.display   = 'none';
                     document.getElementById("derivativeLimitSell").style.display  = 'none';
-
                 }
                 else
                 {
@@ -510,7 +500,6 @@
                     normalSellButton.style.display      = "block";
                     normalBuyButton.style.display       = "block";
                 }
-
             }
         }
     </script>
@@ -544,10 +533,7 @@
     <script>
         // var dumCoin = ["tOMGC:USD", 3.00, 3.01111, 3.411, 311.1100000, -0.0999, -0.000222, 301.00111, 115.88027091, 372.28, 356];
         const socket = io('http://192.144.82.234:3000/');
-        //const socket = io('http://130.51.180.11:3000/');
-        // const socket = io('http://127.0.0.1:3005/');
         // showLoader('Loading...');
-        // const socket = io('http://192.168.1.29:3000/');
         let loaded = false;
         //showLoader("Loading");
         socket.on('trackers', (trackers) => {

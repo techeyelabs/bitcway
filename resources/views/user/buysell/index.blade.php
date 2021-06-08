@@ -1,15 +1,6 @@
 @extends('user.layouts.main')
 
 @section('custom_css')
-    <style>
-        .txtWhitecolor{
-            color: white;
-            font-size: 14px;
-        }
-        .txtHeadingColor{
-            color: yellow;
-        }
-    </style>
 @endsection
 @section('content')
 
@@ -20,20 +11,20 @@
         <div class="card-body historyTable">
             <table class="table">
                 <thead>
-                    <th class="txtWhitecolor">Date</th>
-                    <th class="txtWhitecolor">Symbol</th>
-                    <th class="txtWhitecolor">Amount</th>
-                    <th class="txtWhitecolor">USD</th>
-                    <th class="txtWhitecolor">Type</th>
+                    <th class="txtWhitecolor fs14px">Date</th>
+                    <th class="txtWhitecolor fs14px">Symbol</th>
+                    <th class="txtWhitecolor fs14px">Amount</th>
+                    <th class="txtWhitecolor fs14px">USD</th>
+                    <th class="txtWhitecolor fs14px">Type</th>
                 </thead>
                 <tbody>
                     <?php foreach($transactions as $item){?>
                     <tr>
-                        <td class="txtWhitecolor">{{date('d/m/Y', strtotime($item->created_at))}}</td>
-                        <td class="txtWhitecolor">{{$item->currency->name}}</td>
-                        <td class="txtWhitecolor">{!! number_format((double)($item->amount), 8) !!}</td>
-                        <td class="txtWhitecolor">{{$item->equivalent_amount}}</td>
-                        <td class="txtWhitecolor">
+                        <td class="txtWhitecolor fs14px">{{date('d/m/Y', strtotime($item->created_at))}}</td>
+                        <td class="txtWhitecolor fs14px">{{$item->currency->name}}</td>
+                        <td class="txtWhitecolor fs14px">{!! number_format((double)($item->amount), 8) !!}</td>
+                        <td class="txtWhitecolor fs14px">{{$item->equivalent_amount}}</td>
+                        <td class="txtWhitecolor fs14px">
                             {{$item->type==1?'Buy':'Sell'}}
                         </td>
                     </tr>

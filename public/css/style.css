@@ -469,6 +469,9 @@ table,th, td {
 .txtHeadingColor {
     color: yellow;
 }
+.fs14px{
+    font-size: 14px;
+}
 .th1{
     width: 15% !important
 }
@@ -574,4 +577,6 @@ table,th, td {
 .tickersDiv{
     height: 575px !important;
 }
-
+.tableClass>:not(:last-child)>:last-child>* {
+    border-bottom-color: inherit;
+}

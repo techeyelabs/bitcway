@@ -1,15 +1,6 @@
 @extends('front.layouts.main')
 
 @section('custom_css')
-    <style>
-        .txtWhitecolor{
-            color: white;
-        }
-        .txtHeadingColor{
-            color: yellow;
-        }
-
-    </style>
 @endsection
 
 @section('content')
@@ -27,7 +18,7 @@
 
 <div id="home">
     <div id="trackers">
-        <table class="table trackers">
+        <table class="table trackers tableClass">
             <thead>
                 <tr>
                     <th></th>
