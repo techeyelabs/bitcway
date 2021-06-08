@@ -216,7 +216,10 @@ form {
     margin-top: 20px;
 }
 .buyselldata{
-    padding-left:30px!important;
+    /*padding-left:30px!important;*/
+    max-height: 365px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
 }
 
 .th5{
@@ -561,5 +564,8 @@ table,th, td {
 .navbar-dark .navbar-toggler {
      color: #081420 !important;
      border-color: #081420 !important;
+}
+.tickersDiv{
+    height: 575px !important;
 }
 

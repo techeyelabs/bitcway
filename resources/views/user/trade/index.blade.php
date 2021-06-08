@@ -92,7 +92,7 @@
         <hr>
         <div class="row" style="display: flex;">
             <div class="col-md-3 sidebar">
-                <div class="card" >
+                <div class="card tickersDiv" >
                     <div class="card-body">
                         <div id="trackers">
                             <div class="text-center title txtHeadingColor"><h4>TICKERS</h4></div>
@@ -300,7 +300,7 @@
                     </div>
 
                 </div>
-                <div class="card mt-3 pendingTrade"  style="display: none">
+                <div class="card mt-3" id="pendingTrade" style="display: none">
                     <div class="card">
                         <div class="card-body buyselldata">
                             <h4 v-cloak class="txtHeadingColor">Pending Trade: <span id="currcoin">@{{currency}}</span></h4>
@@ -415,6 +415,7 @@
     </script>
     <script>
         function choseOrderType( limitype) {
+            let type                  = $("#choseOrderType").val();
             var buyCheckBoxLevel      = document.getElementById("limitBuyInputLevel");
             var sellCheckBoxLevel     = document.getElementById("limitSellInputLevel");
             var buyCheckBox           = document.getElementById("limitBuyInput");
@@ -426,37 +427,18 @@
             var askDiv                = document.getElementById("askDiv");
             var totalAmountDiv        = document.getElementById("totalAmountDiv");
             var coinId                = document.getElementById("coinId");
-            let type                  = $("#choseOrderType").val();
             var normalSellButton      = document.getElementById("normalSell");
             var normalBuyButton       = document.getElementById("normalBuy");
             var normalLimitSellButton = document.getElementById("normalLimitSellButton");
             var normalLimitBuyButton  = document.getElementById("normalLimitBuyButton");
-            var pendingTrade  = document.getElementsByClassName("pendingTrade");
+            var pendingTrade          = document.getElementById("pendingTrade");
             // var bidbox=document.getElementById("bidbox");
             // var askbox=document.getElementById("askbox");
             // var askboxlabel=document.getElementById("askboxlabel");
             if (type == 1){
-                console.log("here")
                 $(".deleteEnabled").show();
                 $(".deleteDisabled").hide();
-                pendingTrade.style.display = "block";
-                if (limitype === "derivative"){
-                    document.getElementById("derivativeNormalSell").style.display = 'none';
-                    document.getElementById("derivativeNormalBuy").style.display  = 'none';
-                    document.getElementById("derivativeLimitBuy").style.display   = 'block';
-                    document.getElementById("derivativeLimitSell").style.display  = 'block';
-                    $('#limitAmountId').val("");
-                    $('#totalLimitCurrencyId').val("");
-                    // $('#limitAmountInputLength').html("");
-                    // $('#totalLimitCurrencyInputLength').html("");
-
-                }
-                else{
-                    normalLimitBuyButton.style.display  = "block";
-                    normalLimitSellButton.style.display = "block";
-                    normalSellButton.style.display      = "none";
-                    normalBuyButton.style.display       = "none";
-                }
+                pendingTrade.style.display      = "block";
                 coinId.style.marginTop          = "5px";
                 askDiv.style.marginTop          = "14px";
                 buyCheckBox.disabled            = true;
@@ -474,9 +456,28 @@
                 $('#totalLimitCurrencyId').val("");
                 $('#limitAmountId').val("");
 
+                if (limitype === "derivative"){
+                    document.getElementById("derivativeNormalSell").style.display = 'none';
+                    document.getElementById("derivativeNormalBuy").style.display  = 'none';
+                    document.getElementById("derivativeLimitBuy").style.display   = 'block';
+                    document.getElementById("derivativeLimitSell").style.display  = 'block';
+                    $('#limitAmountId').val("");
+                    $('#totalLimitCurrencyId').val("");
+                    // $('#limitAmountInputLength').html("");
+                    // $('#totalLimitCurrencyInputLength').html("");
+
+                }
+                else{
+                    normalLimitBuyButton.style.display  = "block";
+                    normalLimitSellButton.style.display = "block";
+                    normalSellButton.style.display      = "none";
+                    normalBuyButton.style.display       = "none";
+                }
+
             }
             else
             {
+                pendingTrade.style.display      = "none";
                 buyCheckBox.style.display       = "none";
                 sellCheckBox.style.display      = "none";
                 buyCheckBox.disabled            = true;
