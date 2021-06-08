@@ -31,8 +31,8 @@
             padding: 5px 0px 5px 0px
         }
         .sidebar{
-            /*width: 375px;*/
-            /*min-width: 375px;*/
+            width: 375px;
+            min-width: 375px;
             z-index: 6;
             /*margin-left: 6px;*/
         }
@@ -300,10 +300,10 @@
                     </div>
 
                 </div>
-                <div class="card mt-3" >
+                <div class="card mt-3 pendingTrade"  style="display: none">
                     <div class="card">
                         <div class="card-body buyselldata">
-                            <h4 v-cloak class="txtHeadingColor " >Pending Trade: <span id="currcoin">@{{currency}}</span></h4>
+                            <h4 v-cloak class="txtHeadingColor">Pending Trade: <span id="currcoin">@{{currency}}</span></h4>
                             <hr>
                             <table class="tables" id="tabledata">
 
@@ -431,13 +431,15 @@
             var normalBuyButton       = document.getElementById("normalBuy");
             var normalLimitSellButton = document.getElementById("normalLimitSellButton");
             var normalLimitBuyButton  = document.getElementById("normalLimitBuyButton");
+            var pendingTrade  = document.getElementsByClassName("pendingTrade");
             // var bidbox=document.getElementById("bidbox");
             // var askbox=document.getElementById("askbox");
             // var askboxlabel=document.getElementById("askboxlabel");
             if (type == 1){
-
+                console.log("here")
                 $(".deleteEnabled").show();
                 $(".deleteDisabled").hide();
+                pendingTrade.style.display = "block";
                 if (limitype === "derivative"){
                     document.getElementById("derivativeNormalSell").style.display = 'none';
                     document.getElementById("derivativeNormalBuy").style.display  = 'none';
@@ -567,7 +569,6 @@
             if(loaded == false){
                 hideLoader();
                 Home.selectedItem = Home.trackers[0];
-                console.log("here it goes");
                 Home.getChartData();
                 setInterval(function(){
                     Home.getOrders();
@@ -579,7 +580,6 @@
         let w               = null;
         var totalSellAmount = 0;
         var currencies      = <?php echo json_encode($currency); ?>;
-        console.log(currencies);
         // const OrderBook Start
         $(document).ready(function() {
             var item = ["tBTCUSD"];
@@ -598,11 +598,9 @@
             CurrencyApi = 'http://bitc-way.com/get-order';
             axios.get(CurrencyApi, {params: {currency: currency}})
                 .then(response => {
-                    console.log("response is here");
                     items = response.data;
                     if(items){
                         if(items.length > 3){
-                            console.log("inside");
                             bids = [];
                             asks = [];
                             items.forEach(function(item){
@@ -614,7 +612,6 @@
                             });
                             Home.bids = bids;
                             Home.asks = asks;
-                            console.log(Home.bids);
                         }else{
                             item = items[1];
                             if (item[2] > 0) {
@@ -635,19 +632,16 @@
                             Home.latestBid = getlatestval;
                         }
 
-                        // console.log(getlatestval);
                         Home.bidIncrease = Home.bids[0][0] > Home.bids[1][0];
                         //Home.bidIncrease = Home.latestBid>Home.bids[0][0] > Home.bids[1][0];
                         if (Home.bids[0][0] > Home.latestBid)
                         {
-                            console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("bid increased");
                             //Home.bidIncrease=Home.bids[0][0] > Home.latestBid;
                             Home.bidincreased = 'increased';
                         }
                         else
                         {
                             Home.bidincreased = 'decreased';
-                            console.log("bid decreased");
                         }
                         /*** end ****/
 
@@ -667,13 +661,11 @@
                         }
                         if (Home.asks[0][0] > Home.latestAsk)
                         {
-                            console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("ask increased");
                             Home.askincreased = 'increased';
                         }
                         else
                         {
                             Home.askincreased = 'decreased';
-                            console.log("ask decreased");
                         }
                         /*** end****/
 
@@ -688,12 +680,10 @@
             if (Home.lastcurrency != currency) {
                 Home.lastcurrency = currency;
             }
-            console.log(currency);
             if (w) w.close();
             w = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
             w.onmessage = function(msg){
                 items   = JSON.parse(msg.data);
-                // console.log(msg.data);
                 if (items.event) return;
                 var title;
                 Home.bidsprev = Home.bids;
@@ -711,7 +701,6 @@
                         });
                         Home.bids = bids;
                         Home.asks = asks;
-                        console.log(Home.bids);
                     } else {
                         item = items[1];
                         if (item[2] > 0) {
@@ -732,19 +721,16 @@
                         Home.latestBid = getlatestval;
                     }
 
-                    // console.log(getlatestval);
                     Home.bidIncrease = Home.bids[0][0] > Home.bids[1][0];
                     //Home.bidIncrease = Home.latestBid>Home.bids[0][0] > Home.bids[1][0];
                     if (Home.bids[0][0] > Home.latestBid)
                     {
-                        //console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("bid increased");
                         //Home.bidIncrease=Home.bids[0][0] > Home.latestBid;
                         Home.bidincreased = 'increased';
                     }
                     else
                     {
                         Home.bidincreased = 'decreased';
-                       // console.log("bid decreased");
                     }
                     /*** end ****/
 
@@ -764,13 +750,11 @@
                     }
                     if (Home.asks[0][0] > Home.latestAsk)
                     {
-                        //console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("ask increased");
                         Home.askincreased = 'increased';
                     }
                     else
                     {
                         Home.askincreased = 'decreased';
-                        //console.log("ask decreased");
                     }
                     /*** end****/
 
@@ -830,7 +814,6 @@
                     let currency = this.selectedItem[0]?this.selectedItem[0]:'tBTCUSD';
                     currency = this.splitCurrency(currency);
                     //leverageWalletAmount = currencies['BTC']['amount'];
-                    //console.log("leverage:"+leverageWalletAmount);
                     return currency;
                 },
                 calcAmount(){
@@ -845,7 +828,6 @@
                 derivativeRange(){
                     if(document.getElementById("limitAmountId").value !=""){
                         var limitval=document.getElementById("limitAmountId").value;
-                        //console.log("amount:"+this.limitAmount+"selectedPrice:"+this.selectedPrice+"DerivativeVal:"+this.derivativeValue);
                         return (this.limitAmount)/this.derivativeValue;
                     }
                     else{
@@ -861,29 +843,21 @@
             },
             methods: {
                 logbid(bidincreased) {
-                    console.log(bidincreased+"bid")
                 },
                 logask(askincreased) {
-                    console.log(askincreased+"ask")
                 },
                /* log(leverageWalletAmount) {
-                    console.log(leverageWalletAmount+"here is the leaverage");
                 },*/
                 logdata(amount) {
-                    console.log(amount+" amount");
                     this.amount               = amount
                     var currcoin              = this.currency;
-                    console.log(currcoin);
-                    //console.log("currcoin:"+currcoin);
                     if(typeof currencies[currcoin] === 'undefined') {
                         leverageWalletAmount = 0;
                     }
                     else {
                         leverageWalletAmount      = currencies[currcoin]['amount']
                     }
-
                     this.leverageWalletAmount = leverageWalletAmount;
-                    console.log(this.leverageWalletAmount+" lvcoin");
                 },
                 itemSetBids(index) {
                     let result = 0;
@@ -908,11 +882,8 @@
                     return currency;
                 },
                 setCurrency(item){
-                    console.log("item:")
-                    console.log(item);
                     let coin    = item[0];
                     let symbolx = coin.substr(1);
-                    console.log('t'+symbolx);
                     getInitialOrder('t'+symbolx);
 
                     let currentCoin = this.splitCurrency(symbolx);
@@ -945,10 +916,7 @@
 
                     if(currencies[currentCoin]){
                         totalSellAmount = currencies[currentCoin]['amount'];
-                        // console.log(currencies);
                         // totalSellAmount = currencies['BTC']['amount'];
-                        // console.log("totalamount:"+totalSellAmount);
-                        // console.log(currencies[currentCoin]);
                     }
                     else{
                         totalSellAmount = 0;
@@ -1019,11 +987,9 @@
 
                     let that = this;
                     let currency = that.selectedItem[0];
-                    console.log(that.currency);
                     // showLoader('Loading ...');
                     axios.get('{{route("user-get-chart-data")}}', {params: {currency: currency, user_currency: that.currency, interval:interval_value, start:startdate, end:enddate}})
                     .then(function (response) {
-                        console.log(currency);
                         let chartData = [];
                         if(response.data.status){
                             that.balance = response.data.balance;
@@ -1032,12 +998,10 @@
                                 // const humanDateFormat = dateObject.toLocaleString();
                                 // var getdate= humanDateFormat.split(" ");
                                 // var datevalue= formatDate(getdate[0]);
-                                // console.log(datevalue+' '+getdate[1]+' '+getdate[2]);
                                 let newChartData = { time: item[0]/1000 , open: item[1], high: item[3], low: item[4], close: item[2]};
                                 chartData.push(newChartData);
 
                             });
-                            console.log(chartData);
                             if(currency == 'tMABUSD'){
                                 var coindata=[
                                     { "time":1621604,"open": 39252, "high":39839,"low":39252, "close":39821.73222635},
@@ -1045,7 +1009,6 @@
                                 ]
 
                                 //chartData.push(coindata);
-                                console.log(chartData);
                             }
                             setTimeout(function(){
                                 that.drawChart(chartData);
@@ -1054,14 +1017,12 @@
 
                     })
                     .catch(function (error) {
-                        // console.log(error);
                     })
                     .then(function () {
                         hideLoader();
                     });
                 },
                 drawChart(data){
-                    console.log(data)
                     let that = this;
                     if(that.chart) {
                         that.chart.remove();
@@ -1529,7 +1490,6 @@
            $("#totalLimitCurrencyId").val(amount);
            $("#limitAmountId").val(pricelimit);
            var idval= $("#editId").val(id);
-           console.log(idval);
 
            if (position ===1){
                $("#limitBuyInput").prop('checked', true);
@@ -1545,10 +1505,6 @@
                $("#normalLimitBuyButton").prop('disabled', true);
                $("#normalLimitSellButton").prop('disabled', false);
            }
-           console.log(id);
-           console.log(pricelimit);
-           console.log(amount);
-           console.log(position);
        }*/
         /**
          * Generates HTML table for Buy/Sell Pending
