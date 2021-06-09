@@ -22,7 +22,7 @@
 
 @section('content')
     <div id="wrap" class="deposit">
-        <h3 class="txtHeadingColor">Assets</h3>
+        <h3 class="txtHeadingColor pageTitle">Assets</h3>
         <hr>
 
         {{--Margin Balance Start--}}

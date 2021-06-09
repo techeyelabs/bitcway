@@ -13,7 +13,7 @@
 
 @section('content')
 <div id="wrap">
-    <h3 class="txtHeadingColor">Change password</h3>
+    <h3 class="txtHeadingColor pageTitle">Change password</h3>
     <hr>
 
     <div class="row">

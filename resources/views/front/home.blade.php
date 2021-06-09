@@ -1,15 +1,6 @@
 @extends('front.layouts.main')
 
 @section('custom_css')
-    <style>
-        .txtWhitecolor{
-            color: white;
-        }
-        .txtHeadingColor{
-            color: yellow;
-        }
-
-    </style>
 @endsection
 
 @section('content')
@@ -17,7 +8,7 @@
     <div class="card-body">
         <h1 class="card-title txtHeadingColor">The Home of Digital Asset <br>Trading & Finance</h1><br>
         <?php if(Auth::check()){?>
-            <a href="{{route('user-dashboard')}}" class="btn btn-outline-warning btn-lg">DASHBOARD</a>
+            <a href="{{route('user-wallets')}}" class="btn btn-outline-warning btn-lg">MY ASSET</a>
         <?php }else{?>
             <a href="{{route('signup')}}" class="btn btn-outline-warning btn-lg t">JOIN NOW</a>
         <?php }?>
@@ -27,7 +18,7 @@
 
 <div id="home">
     <div id="trackers">
-        <table class="table trackers">
+        <table class="table trackers tableClass">
             <thead>
                 <tr>
                     <th></th>

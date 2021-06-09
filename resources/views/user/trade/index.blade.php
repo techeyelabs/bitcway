@@ -34,13 +34,14 @@
             width: 375px;
             min-width: 375px;
             z-index: 6;
-            margin-left: 6px;
+            /*margin-left: 6px;*/
         }
         .main-app-container{
             margin: 0 5px;
             flex-grow: 1;
-            min-width: 0;
+            min-width:0;
         }
+
         .table>:not(caption)>*>* {
             padding: 2px 20px 2px 20px !important;
         }
@@ -62,8 +63,8 @@
              border-top: 16px solid #3498db;
              width: 120px;
              height: 120px;
-             -webkit-animation: spin 2s linear infinite; / Safari /
-         animation: spin 2s linear infinite;
+             -webkit-animation: spin 2s linear infinite;
+             /*animation: spin 2s linear infinite;*/
          }
 
         / Safari /
@@ -76,22 +77,19 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-
-
     </style>
 @endsection
 @section('content')
     <div id="wrap" class="trade">
         @if(isset($type))
-            <h3 class="txtHeadingColor">Derivatives</h3>
+            <h3 class="txtHeadingColor pageTitle">Derivatives</h3>
         @else
-            <h3 class="txtHeadingColor">Trade</h3>
+            <h3 class="txtHeadingColor pageTitle">Trade</h3>
         @endif
         <hr>
         <div class="row" style="display: flex;">
             <div class="col-md-3 sidebar">
-                <div class="card" >
+                <div class="card tickersDiv" >
                     <div class="card-body">
                         <div id="trackers">
                             <div class="text-center title txtHeadingColor"><h4>TICKERS</h4></div>
@@ -115,7 +113,6 @@
                             </table>
                         </div>
                     </div>
-
                 </div>
                 <div class="card mt-3" >
                     <div class="card" >
@@ -299,13 +296,12 @@
                     </div>
 
                 </div>
-                <div class="card mt-3" >
+                <div class="card mt-3" id="pendingTrade" style="display: none">
                     <div class="card">
                         <div class="card-body buyselldata">
-                            <h4 v-cloak class="txtHeadingColor " >Pending Trade: <span id="currcoin">@{{currency}}</span></h4>
+                            <h4 v-cloak class="txtHeadingColor">Pending Trade: <span id="currcoin">@{{currency}}</span></h4>
                             <hr>
                             <table class="tables" id="tabledata">
-
                             </table>
                         </div>
                     </div>
@@ -313,7 +309,7 @@
             </div>
             <div class="col main-app-container">
                 <div class="card">
-                    <div class="card-body" >
+                    <div class="card-body graphDiv" >
                         <div class="text-center title mb-2 txtHeadingColor"></div>
 
                         <div id='buttonrow' class="chart-top-row">
@@ -327,7 +323,6 @@
                         </div>
                         <div id="chart" style="height:465px; display: block; color: white; background-color: #171b26">
                             <div class="loader" style="display: none">
-
                             </div>
                         </div>
 
@@ -345,8 +340,8 @@
                         <div id="tradingview_f7648" class="d-none"></div>
                     </div>
                 </div>
-                <div class="card mt-3">
-                    <div class="card-body">
+                <div class="card mt-3 orderBookDiv">
+                    <div class="card-body ">
                         <h4 class="txtHeadingColor" v-cloak>Order Book: @{{currency}}/USD</h4>
                         <hr>
                         <div class="">
@@ -359,7 +354,6 @@
                                             <th class="txtWhitecolor">Total</th>
                                             <th class="txtWhitecolor">Price</th>
                                         </thead>
-                                        {{--<tbody style="background-color: #1142304d;">--}}
                                         <tbody>
                                             <tr v-for="(item, index) in bids" :class="{ 'coloredbid': bidsprev.length > 0 && bidsprev[index][2] != bids[index][2] }">
                                                 <td v-cloak class="txtWhitecolor">@{{item[1]}}</td>
@@ -409,11 +403,11 @@
                 buyCheckBox.disabled  = false;
                 sellCheckBox.disabled = false;
             }
-
         }
     </script>
     <script>
         function choseOrderType( limitype) {
+            let type                  = $("#choseOrderType").val();
             var buyCheckBoxLevel      = document.getElementById("limitBuyInputLevel");
             var sellCheckBoxLevel     = document.getElementById("limitSellInputLevel");
             var buyCheckBox           = document.getElementById("limitBuyInput");
@@ -425,35 +419,18 @@
             var askDiv                = document.getElementById("askDiv");
             var totalAmountDiv        = document.getElementById("totalAmountDiv");
             var coinId                = document.getElementById("coinId");
-            let type                  = $("#choseOrderType").val();
             var normalSellButton      = document.getElementById("normalSell");
             var normalBuyButton       = document.getElementById("normalBuy");
             var normalLimitSellButton = document.getElementById("normalLimitSellButton");
             var normalLimitBuyButton  = document.getElementById("normalLimitBuyButton");
+            var pendingTrade          = document.getElementById("pendingTrade");
             // var bidbox=document.getElementById("bidbox");
             // var askbox=document.getElementById("askbox");
             // var askboxlabel=document.getElementById("askboxlabel");
             if (type == 1){
-
                 $(".deleteEnabled").show();
                 $(".deleteDisabled").hide();
-                if (limitype === "derivative"){
-                    document.getElementById("derivativeNormalSell").style.display = 'none';
-                    document.getElementById("derivativeNormalBuy").style.display  = 'none';
-                    document.getElementById("derivativeLimitBuy").style.display   = 'block';
-                    document.getElementById("derivativeLimitSell").style.display  = 'block';
-                    $('#limitAmountId').val("");
-                    $('#totalLimitCurrencyId').val("");
-                    // $('#limitAmountInputLength').html("");
-                    // $('#totalLimitCurrencyInputLength').html("");
-
-                }
-                else{
-                    normalLimitBuyButton.style.display  = "block";
-                    normalLimitSellButton.style.display = "block";
-                    normalSellButton.style.display      = "none";
-                    normalBuyButton.style.display       = "none";
-                }
+                pendingTrade.style.display      = "block";
                 coinId.style.marginTop          = "5px";
                 askDiv.style.marginTop          = "14px";
                 buyCheckBox.disabled            = true;
@@ -471,9 +448,27 @@
                 $('#totalLimitCurrencyId').val("");
                 $('#limitAmountId').val("");
 
+                if (limitype === "derivative"){
+                    document.getElementById("derivativeNormalSell").style.display = 'none';
+                    document.getElementById("derivativeNormalBuy").style.display  = 'none';
+                    document.getElementById("derivativeLimitBuy").style.display   = 'block';
+                    document.getElementById("derivativeLimitSell").style.display  = 'block';
+                    $('#limitAmountId').val("");
+                    $('#totalLimitCurrencyId').val("");
+                    // $('#limitAmountInputLength').html("");
+                    // $('#totalLimitCurrencyInputLength').html("");
+
+                }
+                else{
+                    normalLimitBuyButton.style.display  = "block";
+                    normalLimitSellButton.style.display = "block";
+                    normalSellButton.style.display      = "none";
+                    normalBuyButton.style.display       = "none";
+                }
             }
             else
             {
+                pendingTrade.style.display      = "none";
                 buyCheckBox.style.display       = "none";
                 sellCheckBox.style.display      = "none";
                 buyCheckBox.disabled            = true;
@@ -497,7 +492,6 @@
                     document.getElementById("derivativeNormalBuy").style.display  = 'block';
                     document.getElementById("derivativeLimitBuy").style.display   = 'none';
                     document.getElementById("derivativeLimitSell").style.display  = 'none';
-
                 }
                 else
                 {
@@ -506,7 +500,6 @@
                     normalSellButton.style.display      = "block";
                     normalBuyButton.style.display       = "block";
                 }
-
             }
         }
     </script>
@@ -540,10 +533,7 @@
     <script>
         // var dumCoin = ["tOMGC:USD", 3.00, 3.01111, 3.411, 311.1100000, -0.0999, -0.000222, 301.00111, 115.88027091, 372.28, 356];
         const socket = io('http://192.144.82.234:3000/');
-        //const socket = io('http://130.51.180.11:3000/');
-        // const socket = io('http://127.0.0.1:3005/');
         // showLoader('Loading...');
-        // const socket = io('http://192.168.1.29:3000/');
         let loaded = false;
         //showLoader("Loading");
         socket.on('trackers', (trackers) => {
@@ -566,7 +556,6 @@
             if(loaded == false){
                 hideLoader();
                 Home.selectedItem = Home.trackers[0];
-                console.log("here it goes");
                 Home.getChartData();
                 setInterval(function(){
                     Home.getOrders();
@@ -578,7 +567,6 @@
         let w               = null;
         var totalSellAmount = 0;
         var currencies      = <?php echo json_encode($currency); ?>;
-        console.log(currencies);
         // const OrderBook Start
         $(document).ready(function() {
             var item = ["tBTCUSD"];
@@ -597,11 +585,9 @@
             CurrencyApi = 'http://bitc-way.com/get-order';
             axios.get(CurrencyApi, {params: {currency: currency}})
                 .then(response => {
-                    console.log("response is here");
                     items = response.data;
                     if(items){
                         if(items.length > 3){
-                            console.log("inside");
                             bids = [];
                             asks = [];
                             items.forEach(function(item){
@@ -613,7 +599,6 @@
                             });
                             Home.bids = bids;
                             Home.asks = asks;
-                            console.log(Home.bids);
                         }else{
                             item = items[1];
                             if (item[2] > 0) {
@@ -634,19 +619,16 @@
                             Home.latestBid = getlatestval;
                         }
 
-                        // console.log(getlatestval);
                         Home.bidIncrease = Home.bids[0][0] > Home.bids[1][0];
                         //Home.bidIncrease = Home.latestBid>Home.bids[0][0] > Home.bids[1][0];
                         if (Home.bids[0][0] > Home.latestBid)
                         {
-                            console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("bid increased");
                             //Home.bidIncrease=Home.bids[0][0] > Home.latestBid;
                             Home.bidincreased = 'increased';
                         }
                         else
                         {
                             Home.bidincreased = 'decreased';
-                            console.log("bid decreased");
                         }
                         /*** end ****/
 
@@ -666,13 +648,11 @@
                         }
                         if (Home.asks[0][0] > Home.latestAsk)
                         {
-                            console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("ask increased");
                             Home.askincreased = 'increased';
                         }
                         else
                         {
                             Home.askincreased = 'decreased';
-                            console.log("ask decreased");
                         }
                         /*** end****/
 
@@ -687,12 +667,10 @@
             if (Home.lastcurrency != currency) {
                 Home.lastcurrency = currency;
             }
-            console.log(currency);
             if (w) w.close();
             w = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
             w.onmessage = function(msg){
                 items   = JSON.parse(msg.data);
-                // console.log(msg.data);
                 if (items.event) return;
                 var title;
                 Home.bidsprev = Home.bids;
@@ -710,7 +688,6 @@
                         });
                         Home.bids = bids;
                         Home.asks = asks;
-                        console.log(Home.bids);
                     } else {
                         item = items[1];
                         if (item[2] > 0) {
@@ -731,19 +708,16 @@
                         Home.latestBid = getlatestval;
                     }
 
-                    // console.log(getlatestval);
                     Home.bidIncrease = Home.bids[0][0] > Home.bids[1][0];
                     //Home.bidIncrease = Home.latestBid>Home.bids[0][0] > Home.bids[1][0];
                     if (Home.bids[0][0] > Home.latestBid)
                     {
-                        //console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("bid increased");
                         //Home.bidIncrease=Home.bids[0][0] > Home.latestBid;
                         Home.bidincreased = 'increased';
                     }
                     else
                     {
                         Home.bidincreased = 'decreased';
-                       // console.log("bid decreased");
                     }
                     /*** end ****/
 
@@ -763,13 +737,11 @@
                     }
                     if (Home.asks[0][0] > Home.latestAsk)
                     {
-                        //console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("ask increased");
                         Home.askincreased = 'increased';
                     }
                     else
                     {
                         Home.askincreased = 'decreased';
-                        //console.log("ask decreased");
                     }
                     /*** end****/
 
@@ -829,7 +801,6 @@
                     let currency = this.selectedItem[0]?this.selectedItem[0]:'tBTCUSD';
                     currency = this.splitCurrency(currency);
                     //leverageWalletAmount = currencies['BTC']['amount'];
-                    //console.log("leverage:"+leverageWalletAmount);
                     return currency;
                 },
                 calcAmount(){
@@ -844,7 +815,6 @@
                 derivativeRange(){
                     if(document.getElementById("limitAmountId").value !=""){
                         var limitval=document.getElementById("limitAmountId").value;
-                        //console.log("amount:"+this.limitAmount+"selectedPrice:"+this.selectedPrice+"DerivativeVal:"+this.derivativeValue);
                         return (this.limitAmount)/this.derivativeValue;
                     }
                     else{
@@ -860,29 +830,21 @@
             },
             methods: {
                 logbid(bidincreased) {
-                    console.log(bidincreased+"bid")
                 },
                 logask(askincreased) {
-                    console.log(askincreased+"ask")
                 },
                /* log(leverageWalletAmount) {
-                    console.log(leverageWalletAmount+"here is the leaverage");
                 },*/
                 logdata(amount) {
-                    console.log(amount+" amount");
                     this.amount               = amount
                     var currcoin              = this.currency;
-                    console.log(currcoin);
-                    //console.log("currcoin:"+currcoin);
                     if(typeof currencies[currcoin] === 'undefined') {
                         leverageWalletAmount = 0;
                     }
                     else {
                         leverageWalletAmount      = currencies[currcoin]['amount']
                     }
-
                     this.leverageWalletAmount = leverageWalletAmount;
-                    console.log(this.leverageWalletAmount+" lvcoin");
                 },
                 itemSetBids(index) {
                     let result = 0;
@@ -907,11 +869,8 @@
                     return currency;
                 },
                 setCurrency(item){
-                    console.log("item:")
-                    console.log(item);
                     let coin    = item[0];
                     let symbolx = coin.substr(1);
-                    console.log('t'+symbolx);
                     getInitialOrder('t'+symbolx);
 
                     let currentCoin = this.splitCurrency(symbolx);
@@ -944,10 +903,7 @@
 
                     if(currencies[currentCoin]){
                         totalSellAmount = currencies[currentCoin]['amount'];
-                        // console.log(currencies);
                         // totalSellAmount = currencies['BTC']['amount'];
-                        // console.log("totalamount:"+totalSellAmount);
-                        // console.log(currencies[currentCoin]);
                     }
                     else{
                         totalSellAmount = 0;
@@ -1018,11 +974,9 @@
 
                     let that = this;
                     let currency = that.selectedItem[0];
-                    console.log(that.currency);
                     // showLoader('Loading ...');
                     axios.get('{{route("user-get-chart-data")}}', {params: {currency: currency, user_currency: that.currency, interval:interval_value, start:startdate, end:enddate}})
                     .then(function (response) {
-                        console.log(currency);
                         let chartData = [];
                         if(response.data.status){
                             that.balance = response.data.balance;
@@ -1031,12 +985,10 @@
                                 // const humanDateFormat = dateObject.toLocaleString();
                                 // var getdate= humanDateFormat.split(" ");
                                 // var datevalue= formatDate(getdate[0]);
-                                // console.log(datevalue+' '+getdate[1]+' '+getdate[2]);
                                 let newChartData = { time: item[0]/1000 , open: item[1], high: item[3], low: item[4], close: item[2]};
                                 chartData.push(newChartData);
 
                             });
-                            console.log(chartData);
                             if(currency == 'tMABUSD'){
                                 var coindata=[
                                     { "time":1621604,"open": 39252, "high":39839,"low":39252, "close":39821.73222635},
@@ -1044,7 +996,6 @@
                                 ]
 
                                 //chartData.push(coindata);
-                                console.log(chartData);
                             }
                             setTimeout(function(){
                                 that.drawChart(chartData);
@@ -1053,14 +1004,12 @@
 
                     })
                     .catch(function (error) {
-                        // console.log(error);
                     })
                     .then(function () {
                         hideLoader();
                     });
                 },
                 drawChart(data){
-                    console.log(data)
                     let that = this;
                     if(that.chart) {
                         that.chart.remove();
@@ -1528,7 +1477,6 @@
            $("#totalLimitCurrencyId").val(amount);
            $("#limitAmountId").val(pricelimit);
            var idval= $("#editId").val(id);
-           console.log(idval);
 
            if (position ===1){
                $("#limitBuyInput").prop('checked', true);
@@ -1544,10 +1492,6 @@
                $("#normalLimitBuyButton").prop('disabled', true);
                $("#normalLimitSellButton").prop('disabled', false);
            }
-           console.log(id);
-           console.log(pricelimit);
-           console.log(amount);
-           console.log(position);
        }*/
         /**
          * Generates HTML table for Buy/Sell Pending

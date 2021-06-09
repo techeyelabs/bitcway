@@ -39,6 +39,12 @@
             border-color: yellow;
             background-color: yellow;
         }
+        /*#lpro li {*/
+        /*    display: inline-block;*/
+        /*    list-style-type: none;*/
+        /*    padding-right: 20px;*/
+        /*    float: left;*/
+        /*}*/
     </style>
    
     @yield('custom_css')
@@ -47,12 +53,21 @@
 </head>
 
 <body>
-
     @include('includes.loader')
-
+{{--    <i class="fas fa-angle-right"></i>--}}
     <div class="page-wrapper chiller-theme toggled">
+{{--        <div class="columns">--}}
+{{--            <ul id="lpro">--}}
+{{--                <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">--}}
+{{--                    <i id="pageSideBarIcon" class="fas fa-bars"></i>--}}
+{{--                </a>--}}
+{{--                <a id="show-sidebar d-none" class="graphArrow" href="#">--}}
+{{--                    <i style="margin-top: 21px !important;" class="fas fa-angle-right fa-2x"></i>--}}
+{{--                </a>--}}
+{{--            </ul>--}}
+{{--        </div>--}}
         <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
-            <i class="fas fa-bars"></i>
+            <i id="pageSideBarIcon" class="fas fa-bars"></i>
         </a>
         <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-content">
@@ -78,57 +93,49 @@
                         <li class="header-menu">
                             <span class="txtWhitecolor">General</span>
                         </li>
-                        
+{{--                        <li>--}}
+{{--                            <a href="{{route('user-dashboard')}}">--}}
+{{--                                <i class="fa fa-tachometer-alt sideBar"></i>--}}
+{{--                                <span class="sideBar">Dashboard</span>--}}
+{{--                                --}}{{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
+{{--                            </a>--}}
+{{--                        </li>--}}
                         <li>
-                            <a  href="{{route('user-dashboard')}}">
-                                <i class="fa fa-tachometer-alt sideBar"></i>
-                                <span class="sideBar">Dashboard</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{route('user-wallet')}}">
-                                <i class="fas fa-wallet sideBar"></i>
-                                <span class="sideBar">Wallet</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
+                            <a href="{{route('user-wallets')}}">
+                                <i class="fas fa-money-bill-wave sideBar"></i>
+                                <span class="sideBar">Assets</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-trade')}}">
                                 <i class="fas fa-route sideBar"></i>
                                 <span class="sideBar">Trade</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-trade', ['type' => 'derivative'])}}">
                                 <i class="fas fa-route sideBar"></i>
                                 <span class="sideBar">Derivatives</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-trade-finance')}}">
                                 <i class="fas fa-route sideBar"></i>
                                 <span class="sideBar">Finance</span>
-                                {{--<span class="badge badge-pill badge-primary">Beta</span>--}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{route('user-wallet')}}">
+                                <i class="fas fa-wallet sideBar"></i>
+                                <span class="sideBar">Wallet</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-transactions')}}">
                                 <i class="fas fa-money-bill-wave sideBar"></i>
-                                <span class="sideBar">Buy/Sell</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
+                                <span class="sideBar">History</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="{{route('user-wallets')}}">
-                                <i class="fas fa-money-bill-wave sideBar"></i>
-                                <span class="sideBar">Assets</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
-                            </a>
-                        </li>
-
                         <li class="header-menu">
                             <span class="sideBar">Settings</span>
                         </li>
@@ -137,28 +144,24 @@
                             <a href="{{route('user-message')}}">
                                 <i class="fas fa-envelope sideBar"></i>
                                 <span class="sideBar">Message</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-update-profile')}}">
                                 <i class="fa fa-user sideBar"></i>
                                 <span class="sideBar">Profile</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('user-change-password')}}">
                                 <i class="fas fa-key sideBar"></i>
                                 <span class="sideBar">Change Password</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
                         <li>
                             <a href="{{route('logout')}}">
                                 <i class="fas fa-power-off sideBar"></i>
                                 <span class="sideBar">Logout</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
 
@@ -248,26 +251,16 @@
 
     <script>
         jQuery(function ($) {
-
             $(".sidebar-dropdown > a").click(function () {
                 $(".sidebar-submenu").slideUp(200);
-                if (
-                    $(this)
-                    .parent()
-                    .hasClass("active")
+                if ($(this).parent().hasClass("active")
                 ) {
                     $(".sidebar-dropdown").removeClass("active");
-                    $(this)
-                        .parent()
-                        .removeClass("active");
+                    $(this).parent().removeClass("active");
                 } else {
                     $(".sidebar-dropdown").removeClass("active");
-                    $(this)
-                        .next(".sidebar-submenu")
-                        .slideDown(200);
-                    $(this)
-                        .parent()
-                        .addClass("active");
+                    $(this).next(".sidebar-submenu").slideDown(200);
+                    $(this).parent().addClass("active");
                 }
             });
 
@@ -278,12 +271,9 @@
                 $(".page-wrapper").addClass("toggled");
             });
 
-
             if($(window).width() <= 1024){
                 $(".page-wrapper").removeClass("toggled");
             }
-
-
         });
 
     </script>
