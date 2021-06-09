@@ -1,6 +1,7 @@
 @extends('front.layouts.main')
 
 @section('custom_css')
+
 @endsection
 
 @section('content')
@@ -31,7 +32,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in trackers">
+                <tr v-for="item in trackers" >
                     <td class="txtWhitecolor"></td>
                     <td v-cloak class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
                     <td v-cloak class="txtWhitecolor">@{{item[7]}} USD</td>
