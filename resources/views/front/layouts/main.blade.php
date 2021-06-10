@@ -81,13 +81,13 @@
                         <a class="txtWhitecolor nav-link" href="{{route('front-terms', app()->getLocale())}}">{{__('nav5')}}</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav mb-2 mb-lg-0">
+                <ul class="navbar-nav mb-2 mb-lg-0 ">
                     <?php if(Auth::check()){?>
-                        <li class="nav-item">
+                        <li class="nav-item" style="margin-right: 20px">
                             <a class="txtWhitecolor nav-link" href="{{route('user-wallets', app()->getLocale())}}"><i id="userIcon" class="fas fa-user"></i>  {{Auth::user()->first_name.' '.Auth::user()->last_name}}</a>
                         </li>
                     <?php }else{?>
-                    <li class="nav-item">
+                    <li class="nav-item" style="margin-right: 20px">
                         <a class="txtWhitecolor nav-link" aria-current="page" href="{{route('login', app()->getLocale())}}">{{__('nav6')}}</a>
                     </li>
 {{--                    <li class="nav-item">--}}
@@ -98,21 +98,21 @@
                             <language-switcher></language-switcher>
                         </li>
                 </ul>
-                <ul class="navbar-nav mb-1 mb-lg-0">
-                    <li class="nav-item dropdown" style="margin-right: 20px">
-                        <a class="nav-link dropdown-toggle txtWhitecolor" href="#" id="navbarDropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false" style="text-transform: uppercase;">
-                            {{app()->getLocale()}}
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{{ route(Route::currentRouteName(), 'jp') }}">JP</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="{{ route(Route::currentRouteName(), 'en') }}">EN</a></li>
-                        </ul>
-                    </li>
-                </ul>
+{{--                <ul class="navbar-nav mb-1 mb-lg-0">--}}
+{{--                    <li class="nav-item dropdown" style="margin-right: 20px">--}}
+{{--                        <a class="nav-link dropdown-toggle txtWhitecolor" href="#" id="navbarDropdown" role="button"--}}
+{{--                           data-bs-toggle="dropdown" aria-expanded="false" style="text-transform: uppercase;">--}}
+{{--                            {{app()->getLocale()}}--}}
+{{--                        </a>--}}
+{{--                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">--}}
+{{--                            <li><a class="dropdown-item" href="{{ route(Route::currentRouteName(), 'jp') }}">JP</a></li>--}}
+{{--                            <li>--}}
+{{--                                <hr class="dropdown-divider">--}}
+{{--                            </li>--}}
+{{--                            <li><a class="dropdown-item" href="{{ route(Route::currentRouteName(), 'en') }}">EN</a></li>--}}
+{{--                        </ul>--}}
+{{--                    </li>--}}
+{{--                </ul>--}}
             </div>
         </div>
     </nav>
