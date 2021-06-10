@@ -45,7 +45,7 @@ class WithdrawController extends Controller
                 ->addColumn('action', function ($row) {
                     $action = '';
                     if($row->status == 0) {
-                        $action .= '<a href="'.route('admin-withdraw-change-status',['id' => $row->id, 'status' =>1, app()->getLocale()]).'" class="btn btn-sm btn-outline-success">Approve</a>';
+                        $action .= '<a href="'.route('admin-withdraw-change-status',[app()->getLocale(), 'id' => $row->id, 'status' => 1]).'" class="btn btn-sm btn-outline-success">Approve</a>';
                         $action .= ' <a href="'.route('admin-withdraw-change-status',['id' => $row->id, 'status' => 2, app()->getLocale()]).'" class="btn btn-sm btn-outline-warning">Decline</a>';
                     }elseif($row->status == 2){
                         $action .= ' <a href="'.route('admin-withdraw-destroy', [$row->id, app()->getLocale()]).'" class="btn btn-sm btn-outline-danger delete-button-new">Delete</a>';
@@ -57,7 +57,7 @@ class WithdrawController extends Controller
                 ->make();
     }
 
-    public function changeStatus($id, $status)
+    public function changeStatus($lang, $id, $status)
     {
         $WithdrawHistory = WithdrawHistory::find($id);
         $WithdrawHistory->status = $status;
