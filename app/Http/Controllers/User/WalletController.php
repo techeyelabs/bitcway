@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdminWithdrawMessage;
+use App\Models\GatewayReceipt;
 use App\Models\Leverage_Wallet;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -37,7 +38,7 @@ class WalletController extends Controller
         //Gateway Info
         $data['hash_key'] = 'INa7F6trT8A1nbJ6';
         $data['site_id'] = "00000168";
-        $data['trading_id'] = date("dmYHis") . "000" . Auth::user()->id;
+        $data['trading_id'] = date("dmYHis")."000".Auth::user()->id;
         $data['order_id'] = $data['trading_id'];
         $data['$custom_data'] = array(
             'userId' => Auth::user()->id,
@@ -46,15 +47,17 @@ class WalletController extends Controller
         return view('user.wallet.deposit', $data);
     }
 
-    public function hcgenerate(Request $request)
-    {
-        $hc = hash("sha256", $request->site_id . $request->hash_key . $request->trading_id . $request->rate);
-        return response()->json([$hc, "rate" => $request->rate]);
+    public function hcgenerate(Request $request){
+        $hc = hash("sha256", $request->site_id.$request->hash_key.$request->trading_id.$request->rate);
+        return response()->json([$hc, "rate"=>$request->rate]);
     }
+    public function getwayUriResponse(Request $request){
+        $DepositHistory = new DepositHistory();
+        $DepositHistory->user_id = Auth::user()->id;
+        $DepositHistory->amount = 0;
+        $DepositHistory->equivalent_amount = $request->amount;
+        $DepositHistory->save();
 
-    public function getwayUriResponse(Request $request)
-    {
-        $rateamount = $request->amount;
         $post = [
             'site_id' => $request->site_id,
             'trading_id' => $request->trading_id,
@@ -67,43 +70,48 @@ class WalletController extends Controller
         $response = curl_exec($ch);
         echo $response;
         curl_close($ch);
+
+        $getwayPaymentReceipt = new GatewayReceipt();
+        $getwayPaymentReceipt->userId = Auth::user()->id;
+        $getwayPaymentReceipt->trading_id = $request->trading_id;
+        $getwayPaymentReceipt->hc = $request->hc;
+        $getwayPaymentReceipt-> amount = $request->amount;
+        $getwayPaymentReceipt-> status = 0;
+        $getwayPaymentReceipt->save();
+
         $data = json_decode($response, true);
-
-        $DepositHistory = new DepositHistory();
-        $DepositHistory->user_id = Auth::user()->id;
-        $DepositHistory->amount = $request->coin;
-        $DepositHistory->equivalent_amount = $rateamount;
-        $DepositHistory->save();
     }
-
+    public function getwayReturnUrl(Request $request)
+    {
+        return redirect()->route('user-wallet');
+    }
     public function getwayPaymentReceipt(Request $request)
     {
-        $data = $request->all();
-        dd($data);
-        echo "Here1";
-        if (isset($request)) {
-            echo "Here2";
-            //Get parameters
-            $trading_id = isset($_POST['trading']) && !empty($_POST['trading']) ? $_POST['trading'] : NULL;
-            echo $trading_id;
-            $amount = isset($_POST['amount']) && !empty($_POST['amount']) ? $_POST['amount'] : NULL;
-            $currency = isset($_POST['type']) && !empty($_POST['type']) ? $_POST['currency'] : NULL;
-            $hash = isset($_POST['hash']) && !empty($_POST['hash']) ? $_POST['hash'] : NULL;
-            //Optional
-            $custom = isset($_POST['custom']) && !empty($_POST['custom']) ? $_POST['custom'] : NULL;
-            //Check empty
-            if (empty($trading_id) || empty($amount) || empty($currency) || empty($hash)) {
-                exit();
-            }
-            //Validate data with hash key
-            $hash_key = 'INa7F6trT8A1nbJ6';
-            $hc_check = hash("sha256", $hash_key . $trading_id . $amount . $currency);
-            if ($hc_check != $hash) {
-                echo "Here";
-                exit();
-            }
-            //Data is OK then process to update order status
+        $site_id = "00000168";
+        $pendingPayment = GatewayReceipt::where('status', 0)->get();
+        for ($i = 0; $i<count($pendingPayment); $i++){
+            $trading_id = $pendingPayment[$i]->trading_id;
+            $hc = $pendingPayment[$i]->hc;
+
+            $post = [
+                'site_id' => $site_id,
+                'trading_id' => $trading_id,
+                'hc' => $hc
+            ];
+            $ch = curl_init('https://api.saiwin.co/status');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+            $response = curl_exec($ch);
+            curl_close($ch);
+            $data = json_decode($response, true);
+
+            print_r($data);
+            echo '<br>';
+
+//          $updatePayment = GatewayReceipt::where('trading_id', $trading_id)->update(['status' => 1]);
+//          $updatePayment = GatewayReceipt::where('trading_id', $trading_id)-->update( [ 'name' => $data['name'], 'address' => $data['address']]);
         }
+        exit();
     }
 
     public function depositAction(Request $request)

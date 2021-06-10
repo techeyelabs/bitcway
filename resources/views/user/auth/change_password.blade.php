@@ -13,9 +13,9 @@
 
 @section('content')
 <div id="wrap">
-    <h3 class="txtHeadingColor">{{__('title24')}}</h3>
-    <hr>
 
+    <h3 class="txtHeadingColor pageTitle">{{__('title24')}}</h3>
+    <hr>
     <div class="row">
         <div class="col-md-8 col-lg-6">
             <div class="card">

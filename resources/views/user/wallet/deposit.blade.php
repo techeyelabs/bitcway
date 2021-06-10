@@ -18,14 +18,14 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
-                            <label class="txtWhitecolor" for="">{{__('col14')}} (BTC)</label>
+                            <label class="txtWhitecolor">{{__('col14')}} (USD)</label>
                             <input type="number" class="form-control" aria-describedby="" name="amount" id="amount"
                                    value="{{old('amount')}}" placeholder="Enter amount in bitcoin here..." required v-model="amount" v-on:keyup="hcgenerate">
                             @error('amount')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <div class="form-group text-center">
+                        <div class="form-group text-center d-none">
                             <h4 class="txtWhitecolor">Equivalent: <span id="amountRate"> @{{amount*rate}}</span> (USD)</h4>
                         </div>
                         <button class="btn btn-outline-warning float-end" onclick="gatewaypost()">{{__('button3')}}</button>
@@ -61,7 +61,6 @@
                     location.href = url.url;
                     hideLoader();
                 })
-
         }
     </script>
     <script>

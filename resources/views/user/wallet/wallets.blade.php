@@ -22,7 +22,7 @@
 
 @section('content')
     <div id="wrap" class="deposit">
-        <h3 class="txtHeadingColor">{{__('menuoption7')}}</h3>
+        <h3 class="txtHeadingColor pageTitle">{{__('menuoption7')}}</h3>
         <hr>
 
         {{--Margin Balance Start--}}
@@ -31,11 +31,11 @@
                 <div class="" style="margin: auto">
                     <div class="row container-fluid" >
                         <div class="  text-left " style="margin-left: -15px;">
-                            <abbr title="Your Total Margin Balance"  class="txtWhitecolor text-left initialism">Total Margin Balance</abbr><br>
+                            <abbr title="{{__('your_total_margin_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_margin_balance')}}</abbr><br>
                             <h4 class="txtWhitecolor text-left mb-4" ><span id="totalMArginBalanceId">00.000000</span><span style="font-size: 10px">USD</span></h4>
                             <div class="col-md-12 row">
                                 <div class="col-md-8">
-                                    <abbr title="Your Total Wallet Balance"  class="txtWhitecolor text-left initialism">Total Wallet Balance</abbr><br>
+                                    <abbr title="{{__('your_total_wallet_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_wallet_balance')}}</abbr><br>
                                     <h4 class="txtWhitecolor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
                                 </div>
                                 <div class="col-md-4" style="margin-top: 3px;">
@@ -52,7 +52,6 @@
         </div>
         {{--Margin Balance End--}}
 
-
         {{--Trade Wallet New Start--}}
         <div class="card mt-3 ">
             <div class="card-body">
@@ -60,7 +59,7 @@
                     <div class="container-fluid" >
 
                         <div class="row  text-left mb-3" style="margin-left: -15px;">
-                            <abbr title="Trade Wallet"  class="txtWhitecolor text-left initialism">Trade Wallet</abbr><br>
+                            <abbr title="{{__('Btrade_wallet')}}"  class="txtWhitecolor text-left initialism">{{__('trade_wallet')}}</abbr><br>
                             <h4 class="txtWhitecolor text-left mb-2" id="totalAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
                         </div>
                     </div>
@@ -69,11 +68,11 @@
                     <ul class="container-fluid" style=" min-width: 600px;">
                         <li class="row list-group-item d-flex justify-content-between align-items-center ">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('column1')}}</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: left;">Size</p>
-                            <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: center;">Entry Price</p>
-                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin" style="text-align: center;">Mark Price</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: left;">{{__('size')}}</p>
+                            <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: center;">{{__('entryprice')}}</p>
+                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin" style="text-align: center;">{{__('markprice')}}</p>
                             <p class="col txtWhitecolor" id="unrealizedpnl" style="text-align: right;">Unrealized PNL</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: right;">Action</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('action')}}</p>
                         </li>
                         <?php
                         $i = 0;
@@ -116,9 +115,9 @@
                     <ul class="container-fluid" style=" min-width: 600px;">
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('column1')}}</p>
-                            <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: left; ">Size</p>
-                            <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">Entry Price</p>
-                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin2" style="text-align: center;">Mark Price</p>
+                            <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: left; ">{{__('size')}}</p>
+                            <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('size')}}</p>
+                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin2" style="text-align: center;">{{__('markprice')}}</p>
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: right;">Unrealized PNL</p>
                             <p class="col txtWhitecolor" id="derivati8vePercent" style="text-align: right;">{{__('col16')}}</p>
                             <p class="col txtWhitecolor" id="" style="text-align: right;">Action</p>
@@ -441,6 +440,6 @@
         {
             window.location = window.location.href;
         }
-        setInterval('autoRefreshPage()', 600000);
+        setInterval('autoRefreshPage()', 300000);
     </script>
 @endsection

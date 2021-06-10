@@ -28,7 +28,7 @@ class AuthController extends Controller
         ]);
         
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password, 'is_email_verified' => true, 'status' => true], $request->remember)) {
-            return redirect()->intended(route('user-dashboard', app()->getLocale()));
+            return redirect()->intended(route('user-wallets', app()->getLocale()));
         }
 
         return redirect()->back()->with('error_message', 'Wrong credentials..');
@@ -66,7 +66,7 @@ class AuthController extends Controller
         Mail::to($User->email)
             ->send(new Common($User));
 
-        return redirect()->back()->with('success_message', 'Registration successfull,please check your email to activate your account.');
+        return redirect()->back()->with('success_message', 'Registration successfull, please check your email to activate your account.');
     }
 
     public function verify(Request $request)

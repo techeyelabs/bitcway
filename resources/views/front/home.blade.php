@@ -1,15 +1,7 @@
 @extends('front.layouts.main')
 
 @section('custom_css')
-    <style>
-        .txtWhitecolor{
-            color: white;
-        }
-        .txtHeadingColor{
-            color: yellow;
-        }
 
-    </style>
 @endsection
 
 @section('content')
@@ -17,7 +9,7 @@
     <div class="card-body">
         <h1 class="card-title txtHeadingColor">{{__('title')}} <br>{{__('title2')}}</h1><br>
         <?php if(Auth::check()){?>
-            <a href="{{route('user-dashboard', app()->getLocale())}}" class="btn btn-outline-warning btn-lg">{{__('menuoption1')}}</a>
+            <a href="{{route('user-wallets', app()->getLocale())}}" class="btn btn-outline-warning btn-lg">{{__('my_assets')}}</a>
         <?php }else{?>
             <a href="{{route('signup', app()->getLocale())}}" class="btn btn-outline-warning btn-lg t">{{__('button1')}}</a>
         <?php }?>
@@ -27,7 +19,7 @@
 
 <div id="home">
     <div id="trackers">
-        <table class="table trackers">
+        <table class="table trackers tableClass">
             <thead>
                 <tr>
                     <th></th>
@@ -40,7 +32,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in trackers">
+                <tr v-for="item in trackers" >
                     <td class="txtWhitecolor"></td>
                     <td v-cloak class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
                     <td v-cloak class="txtWhitecolor">@{{item[7]}} USD</td>

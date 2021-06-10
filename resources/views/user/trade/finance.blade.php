@@ -66,47 +66,18 @@
     <div id="wrap" class="trade">
         <h3 class="txtHeadingColor">{{__('nav4')}}</h3>
         <hr>
-        <div class="card">
-            <div class="card-body text-center">
-                <h4 class="txtHeadingColor">{{__('title16')}}:  {{$total}} USD</h4>
-            </div>
-        </div>
-
-{{--        <div class="card mt-3">--}}
-{{--            <div class="card-body">--}}
-{{--                <ul class="container-fluid" style="max-width: 700px">--}}
-{{--                    <li class="list-group-item d-flex justify-content-between align-items-center">--}}
-{{--                        <span class="txtWhitecolor">Rate</span>--}}
-{{--                        <span class="txtWhitecolor">Duration</span>--}}
-{{--                        <span class="txtWhitecolor" style="margin-right: 60px;">Interest Per Lot</span>--}}
-{{--                        <span class="txtWhitecolor"></span>--}}
-{{--                    </li>--}}
-{{--                    @foreach($settings as $item)--}}
-{{--                        <li class="list-group-item d-flex justify-content-between align-items-center">--}}
-{{--                            <span class="txtWhitecolor">{{$item->rate}}</span>--}}
-{{--                            <span class="txtWhitecolor">{{$item->duration}}</span>--}}
-{{--                            <span class="txtWhitecolor">{{$item->interest_per_lot}}</span>--}}
-{{--                            <span class="btn-outline-warning btn  cursor-pointer"  onclick="changeData({{$item->id}}, {{$item->rate}}, {{$item->duration}}, {{$item->interest_per_lot}})">Transfer</span>--}}
-{{--                            <span class="btn-outline-warning btn  cursor-pointer"  onclick="changeData({{$item->id}}, 6.31, 14, {{$item->interest_per_lot}})">Transfer</span>--}}
-{{--                        </li>--}}
-{{--                    @endforeach--}}
-{{--                </ul>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-
         {{--Finance locked Saving Setting Div2 End--}}
-
         <div class="card mt-3">
             <div class="card-body">
 
                 <div style="margin: auto; overflow-x: auto">
-                    <ul class="container-fluid" style=" min-width: 600px;">
+                    <ul class="container-fluid" style=" min-width: 700px;">
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
                             <p class="col txtWhitecolor" id="" style="text-align: left; ">{{__('column1')}}</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: left; ">Annualized Interest Rate</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: center;">{{__('col2')}} (Days)</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: left; ">{{__('annualized_interest_rate')}}</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: center;">{{__('col2')}} ({{__('days')}})</p>
                             <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('col3')}}</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: right;">Action</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('action')}}</p>
                         </li>
                         <div id="btnDurationId">
                             @foreach($lockedFinanceSettings as $index => $FinanceSetting)
@@ -147,7 +118,7 @@
                        <div class="col-md-6 mb-5 mt-4" style="padding-left: 5%">
                            <div class="txtWhitecolor" id="coinName">{{__('transfertitle1')}}<br/><h4>MAB</h4></div>
                            <span class="d-none" id="coinName_hidden">Coin</span>
-                           <div class="txtWhitecolor">{{__('transferlabel1')}} <span class="day-block"><span id="duration"></span> days</span></div><br/>
+                           <div class="txtWhitecolor">{{__('transferlabel1')}} <span class="day-block"><span id="duration"></span> {{__('days')}}</span></div><br/>
                            <div class="txtWhitecolor" >{{__('transferlabel2')}} <span id="lotCurrency">00</span>)</div>
                            <div>
                                <input type="number" class="lot-input" name="lot" id="lot" onkeyup="setTotalInterest(this)">
@@ -156,7 +127,7 @@
                                <input class="d-none" type="number" id="coiId" name="coinId" value="">
 {{--                               <input type="hidden" id="balance" name="balance" value="">--}}
                            </div>
-                           <div class="txtWhitecolor">= <span id="total">0</span>&nbsp;<span id="totalCoinName">{{__('transfertitle1')}}Coin</span></div>
+                           <div class="txtWhitecolor">= <span id="total">0</span>&nbsp;<span id="totalCoinName"></span></div>
                            <input type="hidden" id="totalCoin" name="totalCoin" value="">
                        </div>
                        <div class="row col-md-6 mb-5 mt-4">
@@ -168,7 +139,7 @@
                            </div>
                            <div>
                                <span class="txtWhitecolor" style="float: left">{{__('transfertext2')}}</span>
-                               <span class="txtWhitecolor"  style="float: right" id="ipl">0.0000 (0.00% Annually)</span>
+                               <span class="txtWhitecolor"  style="float: right" id="ipl">0.0000 (0.00% {{__('annually')}})</span>
                                <span class="d-none" id="ipl_hidden"></span>
                            </div>
                            <div>
@@ -203,33 +174,7 @@
                 </div>
             </div>
         </form>
-
-
-{{--        <div class="card mt-3">--}}
-{{--            <div class="card-body">--}}
-{{--                <ul class="container-fluid" style="max-width: 968px">--}}
-{{--                    <li class="list-group-item d-flex justify-content-between align-items-center">--}}
-{{--                        <p class="col-1 txtWhitecolor ">Lot</p>--}}
-{{--                        <p class="col-4 txtWhitecolor">Value Date</p>--}}
-{{--                        <p class="col-4 txtWhitecolor">Redemption Date</p>--}}
-{{--                        <p class="col-2 txtWhitecolor">Expected Interest</p>--}}
-{{--                    </li>--}}
-{{--                    @foreach($history as $item)--}}
-{{--                        <li class="list-group-item d-flex justify-content-between align-items-center">--}}
-{{--                            <p class="col-1 txtWhitecolor">{{$item->lot_count}}</p>--}}
-{{--                            <p class="col-4 txtWhitecolor">{{date('d/m/Y ', strtotime($item->value_date))}}</p>--}}
-{{--                            <p class="col-4 txtWhitecolor">{{date('d/m/Y ', strtotime($item->redemption_date))}}</p>--}}
-{{--                            <p class="col-2 txtWhitecolor">{{$item->expected_interest}}</p>--}}
-{{--                        </li>--}}
-{{--                    @endforeach--}}
-{{--                </ul>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-
-
     </div>
-
-
 @endsection
 
 @section('custom_js')
@@ -284,7 +229,7 @@
             $('#coinName').html(currencyName);
             $('#duration').html(selectedDuration);
             $('#lotSizeId').html(lotSize+' '+currencyName);
-            $('#ipl').html(perLotInterest+' ('+ selectedRate+' Annually)');
+            $('#ipl').html(perLotInterest+' ('+ selectedRate+' {{__('annually')}})');
             let myDate = new Date(new Date().getTime()+(parseInt(selectedDuration)*24*60*60*1000));
             $('#termination').html(myDate.getFullYear()+'-'+("0" + myDate.getMonth()).slice(-2)+'-'+("0" + myDate.getDate()).slice(-2)+' '+myDate.getHours()+':'+myDate.getMinutes()+':'+myDate.getSeconds());
 
@@ -294,15 +239,6 @@
             }else{
                 $('#lotCurrency').html(0);
             }
-
-
-            // $('#days').html(duration);
-            // $('#ratePerLot').val(interest);
-            // $('#plan').val(id);
-            // $('#ipl').html(interest+' ('+rate+'%'+' Annually)');
-            //
-            // let myDate = new Date(new Date().getTime()+(parseInt(duration)*24*60*60*1000));
-            // $('#termination').html(myDate.getFullYear()+'-'+("0" + myDate.getMonth()).slice(-2)+'-'+("0" + myDate.getDate()).slice(-2)+' '+myDate.getHours()+':'+myDate.getMinutes()+':'+myDate.getSeconds());
             var elmnt = document.getElementById("confirmation");
             elmnt.scrollIntoView();
 
@@ -330,15 +266,6 @@
             $('#total').html(hiddenLotSize * value.value);
             $('#totalCoinName').html(currencyName);
             $('#totalCoin').val(hiddenLotSize * value.value);
-
-
-            // let totalinterest = $('#ratePerLot').val() * (value.value);
-            // $('#total').html(value.value * 5);
-            // if (value.value > 0 && $('input[id="acceptance"]:checked').length > 0 && parseInt($('#balance').val()/5) >= value.value){
-            //     $('.confirm-button').attr('disabled', false);
-            // } else {
-            //     $('.confirm-button').attr('disabled', true);
-            // }
         }
     </script>
     <script>
@@ -360,9 +287,5 @@
                 this.className += " active";
             });
         }
-
-    </script>
-    <script>
-
     </script>
 @endsection

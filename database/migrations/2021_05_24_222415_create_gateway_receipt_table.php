@@ -18,9 +18,9 @@ class CreateGatewayReceiptTable extends Migration
             $table->integer('user_id');
             $table->integer('code');
             $table->string('trading_id');
+            $table->string('hc');
             $table->double('amount');
             $table->string('currency');
-            $table->string('hash');
             $table->string('custom');
             $table->timestamps();
         });

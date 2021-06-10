@@ -30,7 +30,7 @@
 @section('content')
 
 <div id="wrap">
-    <h3 class="txtHeadingColor">{{__('title7')}}</h3>
+    <h3 class="txtHeadingColor pageTitle">{{__('title7')}}</h3>
     <hr>
     <div class="card mt-3">
         <div class="">

@@ -50,7 +50,7 @@
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse sideNavBar" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="txtWhitecolor nav-link"  aria-current="page" href="{{route('front-home', app()->getLocale())}}">{{__('nav1')}}</a>
@@ -65,7 +65,7 @@
                     </li>
                     <li class="nav-item">
                         <?php if(Auth::check()){?>
-                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('user-trade', ['type' => 'derivative'], app()->getLocale())}}">{{__('nav3')}}</a>
+                        <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('user-trade', ['type' => 'derivative', app()->getLocale()])}}">{{__('nav3')}}</a>
                         <?php }else{?>
                         <a class="txtWhitecolor nav-link " aria-current="page" href="{{route('login', app()->getLocale())}}">{{__('nav3')}}</a>
                         <?php }?>
@@ -80,8 +80,6 @@
                     <li class="nav-item">
                         <a class="txtWhitecolor nav-link" href="{{route('front-terms', app()->getLocale())}}">{{__('nav5')}}</a>
                     </li>
-
-
                 </ul>
                 <ul class="navbar-nav mb-1 mb-lg-0">
                     <li class="nav-item dropdown">
@@ -100,19 +98,9 @@
                 </ul>
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <?php if(Auth::check()){?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle txtWhitecolor" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user"></i> {{Auth::user()->first_name.' '.Auth::user()->last_name}}
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{{route('user-dashboard', app()->getLocale())}}">{{__('menuoption1')}}</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="{{route('logout', app()->getLocale())}}">{{__('menuoption11')}}</a></li>
-                        </ul>
-                    </li>
+                        <li class="nav-item">
+                            <a class="txtWhitecolor nav-link" href="{{route('user-wallets', app()->getLocale())}}"><i id="userIcon" class="fas fa-user"></i>  {{Auth::user()->first_name.' '.Auth::user()->last_name}}</a>
+                        </li>
                     <?php }else{?>
                     <li class="nav-item">
                         <a class="txtWhitecolor nav-link" aria-current="page" href="{{route('login', app()->getLocale())}}">{{__('nav6')}}</a>
@@ -142,21 +130,10 @@
 
 
 
-
-
-
-    <!-- Optional JavaScript; choose one of the two! -->
-
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
     </script>
-
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
-    -->
 
     {{-- jquery --}}
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"
@@ -164,9 +141,6 @@
 
     {{-- vue dev version --}}
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-
-    {{-- vue production version --}}
-    {{-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script> --}}
 
     {{-- axios --}}
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

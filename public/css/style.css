@@ -216,7 +216,10 @@ form {
     margin-top: 20px;
 }
 .buyselldata{
-    padding-left:30px!important;
+    /*padding-left:30px!important;*/
+    max-height: 365px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
 }
 
 .th5{
@@ -248,6 +251,7 @@ form {
     text-align:right!important;
 }
 .td8{
+    /*width:35%!important;*/
     text-align:center!important;
 }
 @media (max-width:1024px) {
@@ -464,6 +468,9 @@ table,th, td {
 .txtHeadingColor {
     color: yellow;
 }
+.fs14px{
+    font-size: 14px;
+}
 .th1{
     width: 15% !important
 }
@@ -498,4 +505,89 @@ table,th, td {
     width: 27% !important;
     text-align: right !important;
 }
+.interval{
+    margin: 0px 0px 0px 10px;
+    /*border: 1px solid gray;*/
+    padding: 0px 5px 0px 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.interval:hover {
+    background-color: grey;
+}
+.chart-top-row{
+    background-color:#171b26;
+    border: 1px solid #6e737a;
+    padding: 5px;
+    display:flex;
+    color: white;
+}
+.border-removal{
+    border: none;
+    font-size: 11px;
+}
+@media (max-width:768px) {
+    #userIcon {
+        display: none;
+    }
+    #siteName{
+        font-size: 28px;
+        padding: 10px 20px;
+    }
+    .sideNavBar{
+        padding: 10px 20px;
+    }
+    .pageTitle{
+        text-align: center;
+        font-size: 28px;
+        margin-top: -25px;
+    }
+    #show-sidebar{
+        top: 15px !important;
+        width: 40px !important;
+    }
+    #pageSideBarIcon{
+        font-size: 24px;
+        margin-top: 2px;
+    }
+    .message-list{
+        height: 415px !important;
+    }
+    .main-app-container{
+        margin-top: 20px !important;
+    }
+    .sidebar{
+        width: 450px !important;
+        max-width: 100% !important;
+        margin-left: 6px !important;
+    }
+    .graphDiv{
+        padding: 5px !important;
+    }
+    .historyTable{
+        overflow-x: auto;
+    }
+    .graphArrow{
+        display: block;
+        margin-left: 15px !important;
 
+    }
+
+}
+.navbar-dark .navbar-toggler {
+     color: #081420 !important;
+     border-color: #081420 !important;
+}
+.tickersDiv{
+    height: 575px !important;
+}
+.tableClass>:not(:last-child)>:last-child>* {
+    border-bottom-color: inherit;
+}
+#limitBuyId{
+    margin-right: 0px !important;
+}
+#limitSellId{
+    margin-right: 0px !important;
+}

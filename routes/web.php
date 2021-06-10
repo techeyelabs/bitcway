@@ -52,6 +52,8 @@ Route::group(['prefix'=>'{language}'], function (){
     Route::prefix('update')->group(function(){
         Route::get('/currencies', [UpdateController::class, 'getCurrencies']);
     });
+    Route::get('/get-order', [UpdateController::class, 'getfirstbook']);
+    Route::get('/get-order-dummy', [UpdateController::class, 'getOrderDummy']);
 
     Route::middleware(['guest'])->group(function(){
         Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -62,6 +64,7 @@ Route::group(['prefix'=>'{language}'], function (){
 
         Route::get('/forgot', [AuthController::class, 'forgot'])->name('forgot');
         Route::post('/forgot', [AuthController::class, 'forgotAction'])->name('forgot-action');
+
 
         Route::get('/reset', [AuthController::class, 'reset'])->name('reset');
         Route::post('/reset', [AuthController::class, 'resetAction'])->name('reset-action');
@@ -106,6 +109,7 @@ Route::group(['prefix'=>'{language}'], function (){
         Route::get('/locked-savings-invest', [CronController::class, 'myaction'])->name('user-locked-savings-invest');
         Route::post('/limit-buy', [TradeController::class, 'limitBuy'])->name('user-limit-buy');
         Route::post('/limit-sell', [TradeController::class, 'limitSell'])->name('user-limit-sell');
+        Route::post('/limit-delete', [TradeController::class, 'limitDelete'])->name('user-limit-delete');
         Route::get('/getBuySellPendingData', [TradeController::class, 'getBuySellPendingData'])->name('get-buy-sell-pending-data');
 
         //Limit BuySell Cron Job
@@ -114,7 +118,6 @@ Route::group(['prefix'=>'{language}'], function (){
         Route::get('/testjobsell', [LimitCronController::class, 'updateLimitSellTable']);
 
     });
-
 
     Route::prefix('admin')->group(function(){
         Route::get('/', [AdminAuthController::class, 'login'])->name('admin-login');

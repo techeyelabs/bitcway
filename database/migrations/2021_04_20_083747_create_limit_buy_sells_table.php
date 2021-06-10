@@ -15,6 +15,7 @@ class CreateLimitBuySellsTable extends Migration
     {
         Schema::create('limitbuysell', function (Blueprint $table) {
             $table->id();
+            $table->integer('derivative',10);
             $table->tinyInteger('limitType')->comment('1: Buy 2:Sell');
             $table->double('priceLimit', 16, 8);
             $table->double('currencyAmount', 16, 8);
