@@ -1,4 +1,6 @@
 {
+  "24h_change": "24H 変化",
+  "last_price": "最終価格",
   "noBuySellData": "Buy/Sellデータがありません",
   "days": "日",
   "annualized_interest_rate": "年利率",

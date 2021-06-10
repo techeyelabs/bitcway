@@ -1,4 +1,6 @@
 {
+  "24h_change": "24H CHANGE",
+  "last_price": "LAST PRICE",
   "noBuySellData": "No Pending Buy/Sell Data Found",
   "days": "days",
   "annualized_interest_rate": "Annualized Interest Rate",
@@ -38,7 +40,7 @@
   "nav6": "Login",
   "nav7": "Sign up",
   "button1": "JOIN NOW",
-  "column1": "Symbol",
+  "column1": "SYMBOL",
   "column2": "LAST",
   "column3": "24H",
   "column4": "24H HIGH",

@@ -24,8 +24,8 @@
                 <tr>
                     <th></th>
                     <th class="txtWhitecolor">{{__('column1')}}</th>
-                    <th class="txtWhitecolor">{{__('column2')}}</th>
-                    <th class="txtWhitecolor">{{__('column3')}}</th>
+                    <th class="txtWhitecolor">{{__('last_price')}}</th>
+                    <th class="txtWhitecolor">{{__('24h_change')}}</th>
                     <th class="txtWhitecolor">{{__('column4')}}</th>
                     <th class="txtWhitecolor">{{__('column5')}}</th>
                     <th class="txtWhitecolor">{{__('column6')}}</th>
