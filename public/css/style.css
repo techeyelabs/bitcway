@@ -586,8 +586,11 @@ table,th, td {
     border-bottom-color: inherit;
 }
 #limitBuyId{
-    margin-right: 0px !important;
+    margin-right: 20px !important;
 }
 #limitSellId{
     margin-right: 0px !important;
+}
+.form-control::placeholder {
+    font-size: 12px;
 }

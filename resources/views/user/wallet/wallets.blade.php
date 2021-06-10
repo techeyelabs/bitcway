@@ -116,11 +116,11 @@
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('column1')}}</p>
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: left; ">{{__('size')}}</p>
-                            <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('size')}}</p>
+                            <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('entryprice')}}</p>
                             <p class="col txtWhitecolor" id="CoinpriceIntoMycoin2" style="text-align: center;">{{__('markprice')}}</p>
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: right;">Unrealized PNL</p>
                             <p class="col txtWhitecolor" id="derivati8vePercent" style="text-align: right;">{{__('col16')}}</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: right;">Action</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('action')}}</p>
                         </li>
                         <?php
                         $j = 0;

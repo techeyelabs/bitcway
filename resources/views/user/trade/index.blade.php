@@ -1338,15 +1338,15 @@
                     // Ans: Try to solve the next problem.
                     var data = "";
                     if(response.length < 0 || response === "no data"){
-                        $("#tabledata").html("<div>No Pending Buy/Sell Data Found.</div>");
+                        $("#tabledata").html("<div>{{__('noBuySellData')}}.</div>");
                     }
                   else{
                         data+="<thead>" +
                                 "<tr>" +
-                                    "<th class='txtWhitecolor th5'>LIMIT</th>" +
-                                    "<th class='txtWhitecolor th6'>AMOUNT</th>" +
-                                    "<th class='txtWhitecolor th7'>POSITION</th>" +
-                                    "<th class='txtWhitecolor th8'>ACTION</th>"+
+                                    "<th class='txtWhitecolor th5'>{{__('limit')}}</th>" +
+                                    "<th class='txtWhitecolor th6'>{{__('col10')}}</th>" +
+                                    "<th class='txtWhitecolor th7'>{{__('col12')}}</th>" +
+                                    "<th class='txtWhitecolor th8'>{{__('action')}}</th>"+
                                 " </tr>" +
                               "</thead>";
                         data+="<tbody>";
