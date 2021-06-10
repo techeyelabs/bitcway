@@ -555,12 +555,12 @@ table,th, td {
         height: 415px !important;
     }
     .main-app-container{
-        margin-top: 20px !important;
+        margin: 20px 0px 0px 0px !important;
     }
     .sidebar{
         width: 450px !important;
         max-width: 100% !important;
-        margin-left: 6px !important;
+        /*margin-left: 6px !important;*/
     }
     .graphDiv{
         padding: 5px !important;

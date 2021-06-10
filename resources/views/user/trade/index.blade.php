@@ -312,7 +312,7 @@
                             <span class="interval" id="30m" v-on:click="getChartData('interval','30m')">30m</span>
                             <span class="interval" id="1h"  v-on:click="getChartData('interval','1h')">1h</span>
                             <span class="interval" id="6h"  v-on:click="getChartData('interval','6h')">6h</span>
-                            <span style="margin-left: 10px">BitcWay</span>
+                            <span class="interval" style="margin-left: 10px">BitcWay</span>
                         </div>
                         <div id="chart" style="height:465px; display: block; color: white; background-color: #171b26">
                             <div class="loader" style="display: none">
