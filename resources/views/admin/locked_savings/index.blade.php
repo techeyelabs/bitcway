@@ -34,7 +34,7 @@
                     <div class="card-body">
                         @if(isset($user))
                             @foreach ($user as $u)
-                                <form action="{{route('admin-locked-savings-edit-action', \Crypt::encrypt($u->id), app()->getLocale())}}" method="post">
+                                <form action="{{route('admin-locked-savings-edit-action', [\Crypt::encrypt($u->id), app()->getLocale()])}}" method="post">
                                     @csrf
 
                                     <div class="form-group">
