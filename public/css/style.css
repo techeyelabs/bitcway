@@ -94,7 +94,7 @@ body {
 
 #wrap {
     min-height: calc(100% - 50px);
-    padding-bottom: 48px;
+    /*padding-bottom: 48px;*/
 }
 
 .navbar-brand {
@@ -581,6 +581,29 @@ table,th, td {
     .tableClass{
         width: 150% !important;
     }
+    .buttons_row{
+        margin-left: 30px !important;
+    }
+    .lp2_subtitle{
+        font-size: 28px !important;
+        font: bold;
+        line-height: 40px !important;
+    }
+    .sec5_desc{
+        margin-top: 10px;
+    }
+    .sec5_motoright{
+        height: 80px !important;
+    }
+    .sec5_btn1{
+        top: -5px !important;
+    }
+    .sec5_btn2{
+        top: -5px !important;
+    }
+    .section5{
+        height: 200px !important;
+    }
 
 }
 .navbar-dark .navbar-toggler {
@@ -605,3 +628,35 @@ table,th, td {
 .bgco{
     background-color: #081420;
 }
+.center_cls {
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+}
+.vol_sec {
+    padding: 80px 0;
+}
+.dwhite {
+    color: #f5f8fa;
+}
+.vol_sec_list {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+}
+.vol_sec_item {
+    text-align: center;
+}
+.vol_sec_fig {
+    color: yellow;
+    font-size: 32px;
+    margin-bottom: .5rem;
+    font-weight: 300;
+}
+.mt-20{
+    margin-top: 20px;
+}
+.bg-black{
+    background-color: black;
+}
+
