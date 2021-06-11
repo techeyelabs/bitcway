@@ -36,9 +36,10 @@
         .dropdown-menu{
             min-width: 4.5rem;
             background-color: #081420;
-            /*border: 1px solid rgba(0,0,0,.15);*/
+            /*border: 1px solid rgba(0,0,0,.15); transparent*/
             border: 1px solid rgba(255,255,255,0.15);
             color: white;
+            margin-left: -50px !important;
         }
         .dropdown-menu .dropdown-item > li > a:hover {
             /*background-image: none;*/

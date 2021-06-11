@@ -362,7 +362,7 @@
        <div class="col-md-8" style="margin-top: 5%">
            <div class="content content_wrapper">
                <div class="sec5_desc">
-                   <div class="lp2_subtitle lp2_subtitle2" style="color: white !important;margin-left: 15px">Join Bitfinex and start </br> trading today</div>
+                   <div class="lp2_subtitle lp2_subtitle2" style="color: white !important;margin-left: 15px">Join Bitc-Way and start </br> trading today</div>
                </div>
            </div>
        </div>
