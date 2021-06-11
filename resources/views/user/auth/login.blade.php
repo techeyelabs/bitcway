@@ -40,10 +40,10 @@
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input " id="exampleCheck1" name="remember" value="" placeholder="">
-                        <label class="form-check-label"style="color: white;">{{__('checkbox1')}}</label>
-                    </div>
+{{--                    <div class="form-group form-check">--}}
+{{--                        <input type="checkbox" class="form-check-input " id="exampleCheck1" name="remember" value="" placeholder="">--}}
+{{--                        <label class="form-check-label"style="color: white;">{{__('checkbox1')}}</label>--}}
+{{--                    </div>--}}
                     <button type="submit" class="btn btn-outline-warning float-right">{{__('title4')}}</button>
 
                     <div class="sign-up">

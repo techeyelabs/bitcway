@@ -312,7 +312,7 @@
                             <span class="interval" id="30m" v-on:click="getChartData('interval','30m')">30m</span>
                             <span class="interval" id="1h"  v-on:click="getChartData('interval','1h')">1h</span>
                             <span class="interval" id="6h"  v-on:click="getChartData('interval','6h')">6h</span>
-                            <span style="margin-left: 10px">BitcWay</span>
+                            <span class="interval" style="margin-left: 10px">BitcWay</span>
                         </div>
                         <div id="chart" style="height:465px; display: block; color: white; background-color: #171b26">
                             <div class="loader" style="display: none">
@@ -1338,15 +1338,15 @@
                     // Ans: Try to solve the next problem.
                     var data = "";
                     if(response.length < 0 || response === "no data"){
-                        $("#tabledata").html("<div>No Pending Buy/Sell Data Found.</div>");
+                        $("#tabledata").html("<div>{{__('noBuySellData')}}.</div>");
                     }
                   else{
                         data+="<thead>" +
                                 "<tr>" +
-                                    "<th class='txtWhitecolor th5'>LIMIT</th>" +
-                                    "<th class='txtWhitecolor th6'>AMOUNT</th>" +
-                                    "<th class='txtWhitecolor th7'>POSITION</th>" +
-                                    "<th class='txtWhitecolor th8'>ACTION</th>"+
+                                    "<th class='txtWhitecolor th5'>{{__('limit')}}</th>" +
+                                    "<th class='txtWhitecolor th6'>{{__('col10')}}</th>" +
+                                    "<th class='txtWhitecolor th7'>{{__('col12')}}</th>" +
+                                    "<th class='txtWhitecolor th8'>{{__('action')}}</th>"+
                                 " </tr>" +
                               "</thead>";
                         data+="<tbody>";
