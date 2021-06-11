@@ -44,7 +44,7 @@ class AuthController extends Controller
         $validated = $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
-            'furigana' => 'required',
+//            'furigana' => 'required',
             'username' => 'required|min:6|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed',
@@ -54,7 +54,8 @@ class AuthController extends Controller
         $User = new User();
         $User->first_name = $request->first_name;
         $User->last_name = $request->last_name;
-        $User->furigana = $request->furigana;
+//        $User->furigana = $request->furigana;
+        $User->furigana = "null";
         $User->username = $request->username;
         $User->email = $request->email;
         $User->password = Hash::make($request->password);
@@ -71,6 +72,7 @@ class AuthController extends Controller
 
     public function verify(Request $request)
     {
+        dd($lang);
         $check = User::where('verification_token', $request->token)->first();
         if($check){
             $check->is_email_verified = true;

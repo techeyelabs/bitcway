@@ -42,9 +42,11 @@
 <body>
 
 
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bgco">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{route('front-home', app()->getLocale())}}" style="padding: 10px 20px;"><strong>BITC-WAY</strong></a>
+            <a class="" href="{{route('front-home', app()->getLocale())}}" style="">
+                <img src="./images/logo.png" alt="" width="150" height="50%">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">

@@ -40,14 +40,14 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="txtWhitecolor">{{__('label6')}}</label>
-                        <input type="text" class="form-control" id="" name="furigana"
-                            value="{{old('furigana')}}" placeholder="{{__('placeholder9')}}" required>
-                        @error('furigana')
-                        <small class="text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
+{{--                    <div class="form-group">--}}
+{{--                        <label class="txtWhitecolor">{{__('label6')}}</label>--}}
+{{--                        <input type="text" class="form-control" id="" name="furigana"--}}
+{{--                            value="{{old('furigana')}}" placeholder="{{__('placeholder9')}}" required>--}}
+{{--                        @error('furigana')--}}
+{{--                        <small class="text-danger">{{ $message }}</small>--}}
+{{--                        @enderror--}}
+{{--                    </div>--}}
 
                     <div class="form-group">
                         <label class="txtWhitecolor">{{__('label7')}}</label>
@@ -57,9 +57,6 @@
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-
-
-
                     <div class="form-group">
                         <label class="txtWhitecolor">{{__('label9')}}</label>
                         <input type="email" class="form-control" id="" name="email"
