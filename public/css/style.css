@@ -604,6 +604,9 @@ table,th, td {
     .section5{
         height: 200px !important;
     }
+    .lp2_subtitle2{
+        margin-left: 0px !important;
+    }
 
 }
 .navbar-dark .navbar-toggler {
