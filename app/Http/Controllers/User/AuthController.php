@@ -72,7 +72,6 @@ class AuthController extends Controller
 
     public function verify(Request $request)
     {
-        dd($lang);
         $check = User::where('verification_token', $request->token)->first();
         if($check){
             $check->is_email_verified = true;

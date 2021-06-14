@@ -35,7 +35,7 @@
     <div class="card mt-3">
         <div class="">
             <div class="text-center mt-3">
-                <h4 class="txtHeadingColor">{{__('title8')}}: {{Auth::user()->balance}} USD</h4>
+                <h4 class="txtHeadingColor">{{__('title8')}} {{Auth::user()->balance}} USD</h4>
             </div>
             <div class="col-md-12 mb-1 mt-3" style="margin-left: 15px;">
                 <a href="{{route('user-deposit', app()->getLocale())}}" type="button" class="btn btn-outline-info walletBtn" >{{__('button3')}}</a>

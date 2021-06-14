@@ -16,7 +16,7 @@
     <footer>
         Best regards
         <br>
-        OAS Team
+        BitC-Way Team
     </footer>
     @yield('custom_js')
 </body>

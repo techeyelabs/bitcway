@@ -92,7 +92,7 @@
                     <button type="submit" class="btn btn-outline-warning float-right">{{__('BUTTON5')}}</button>
 
                     <div class="sign-up txtWhitecolor">
-                        {{__('link2')}} <a class="txtWhitecolor" href="{{route('login', app()->getLocale())}}"> {{__('button2')}}</a>
+                         <a class="txtWhitecolor" href="{{route('login', app()->getLocale())}}"> {{__('link3')}}</a>
                     </div>
                 </form>
             </div>

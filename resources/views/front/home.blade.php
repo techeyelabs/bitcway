@@ -18,9 +18,9 @@
     {{--</div>--}}
     <div class=" text-center home-banner">
         <?php if(!Auth::check()){?>
-        <a  href="{{route('signup', app()->getLocale())}}">
-            <img class="ad" src="./images/bonusBanner.png">
-        </a>
+            <a  href="{{route('signup', app()->getLocale())}}">
+                <img class="ad" src="./images/client_banner1.png">
+            </a>
         <?php } ?>
         <div class="card-body" style="margin-top: 25px !important;">
             <h1 class="card-title txtHeadingColor">{{__('title')}} <br>{{__('title2')}}</h1><br>
