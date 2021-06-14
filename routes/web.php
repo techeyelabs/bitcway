@@ -162,6 +162,10 @@ Route::group(['prefix'=>'{language}'], function (){
             Route::get('/locked-savings-delete-action/{id}', [AdminLockedSavingsController::class, 'lockedSavingsDeleteAction'])->name('admin-locked-savings-delete-action');
             Route::post('/locked-savings-edit-action/{id}', [AdminLockedSavingsController::class, 'lockedSavingsEditAction'])->name('admin-locked-savings-edit-action');
             Route::get('/locked-savings-edit/{id}', [AdminLockedSavingsController::class, 'lockedSavingsEdit'])->name('admin-locked-savings-edit');
+
+            Route::get('/admindeposit', [AdminDepositController::class, 'adminDeposit'])->name('adminDeposit');
+            Route::post('/admindeposit-action', [AdminDepositController::class, 'adminDepositAction'])->name('adminDeposit-action');
+            Route::get('/admindeposit-history', [AdminDepositController::class, 'adminDepositHistory'])->name('adminDeposit-history');
         });
     });
 });

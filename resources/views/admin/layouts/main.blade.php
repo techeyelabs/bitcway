@@ -77,6 +77,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{route('adminDeposit', app()->getLocale())}}">
+                                <i class="fas fa-coins"></i>
+                                <span>Direct Deposit</span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{route('admin-withdraw-list', app()->getLocale())}}">
                                 <i class="fas fa-hand-holding-usd"></i>
                                 <span>Withdraw History</span>
@@ -103,10 +109,9 @@
                             <a href="{{route('admin-locked-savings', app()->getLocale())}}">
                                 <i class="fas fa-coins"></i>
                                 <span>Locked Savings Settings</span>
-                                {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
+{{--                                 <span class="badge badge-pill badge-primary">Beta</span>--}}
                             </a>
                         </li>
-
                         <li class="header-menu">
                             <span>Settings</span>
                         </li>

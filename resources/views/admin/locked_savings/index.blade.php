@@ -39,7 +39,7 @@
 
                                     <div class="form-group">
                                         <label for="" class="txtWhitecolor">Select Currency</label>
-                                        <select id="coinOption" class="form-control form-select lockedSavingInputFroup" name="selectCoinName" aria-label="Default select example" >
+                                        <select id="coinOption" class="form-control form-select" name="selectCoinName" aria-label="Default select example" >
                                             <option value="{{$u->currency->name}}">{{$u->currency->name}}</option>
                                         </select>
                                         <small class="text-danger"></small>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminDeposit;
 use Illuminate\Http\Request;
 
 use Yajra\Datatables\Datatables;
@@ -87,5 +88,51 @@ class DepositController extends Controller
     {
         DepositHistory::find($id)->delete();
         return redirect()->back()->with('success_message', 'Successfully Deleted.');
+    }
+    public function adminDeposit()
+    {
+        $users = User::all();
+        return view('admin.deposit.admindeposit',['users'=>$users]);
+    }
+    public function adminDepositAction(Request $request)
+    {
+        $userBalance = User::where('id', $request->user_id)->first();
+
+        $username = User::where('id', $request->user_id)->first('username');
+        $useremail = User::where('id', $request->user_id)->first('email');
+
+        $admindeposit = new AdminDeposit();
+        $admindeposit->user_email = $useremail->email;
+        $admindeposit->user_name = $username->username;
+        $admindeposit->directdepositamount = $request->directdepositamount;
+        $admindeposit->user_id = $request->user_id;
+        $admindeposit->save();
+
+        $depositAmount = doubleval($request->directdepositamount);
+        $userBalance->balance = $userBalance->balance + $depositAmount;
+        $userBalance->update();
+
+        return redirect()->back();
+    }
+
+    public function adminDepositHistory()
+    {
+        $directDeposit = AdminDeposit::all();
+        return Datatables::of($directDeposit)
+            ->addColumn('name', function ($row) {
+                return $row->user_name;
+            })
+            ->addColumn('email', function ($row) {
+                return $row->user_email;
+            })
+            ->addColumn('directdepositamount', function ($row) {
+                return $row->directdepositamount;
+            })
+            ->editColumn('created_at', function ($row) {
+                return date('Y-m-d H:i:s', strtotime($row->created_at));
+            })
+            ->make();
+
+//        return redirect()->back();
     }
 }
