@@ -2,66 +2,6 @@
 
 @section('custom_css')
     <style>
-        .ad {
-            display: block;
-            /*max-width:100px;*/
-            /*max-height:80px;*/
-            width: 100%;
-            height: auto;
-            margin-top: 25px;
-        }
-
-        section {
-            margin: 0 auto;
-            width: 100%;
-            padding: 2rem 0;
-            /*background: #172d3e;*/
-            color: #fff;
-        }
-
-        .content_wrapper {
-            max-width: 79rem;
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .lp_subtitle, .lp_title {
-            color: #03ca9b;
-        }
-
-        .lp_title {
-            text-transform: uppercase;
-            font-style: normal;
-            font-weight: 700;
-            font-size: 12px;
-            line-height: 160%;
-            letter-spacing: .05em;
-            margin-bottom: .5rem;
-        }
-
-        .lp_subtitle, .section_title h1 {
-            font-size: 50px;
-            line-height: 65px;
-            margin-bottom: .5em;
-            width: auto;
-        }
-
-        @media screen and (min-width: 900px) {
-            .features .lp_subtitle {
-                color: #03ca9b;
-            }
-        }
-
-        @media screen and (min-width: 900px) {
-            .lp_subtitle, .section_title h1 {
-                font-size: 50px;
-                line-height: 65px;
-                margin-bottom: .5em;
-                width: auto;
-            }
-        }
 
         /*.features .features-grid {*/
         /*    display: flex;*/
@@ -69,32 +9,6 @@
         /*    flex-wrap: wrap;*/
         /*    margin-top: 75px;*/
         /*}*/
-        .dark {
-            background-color: black;
-        }
-
-        .boxh1 {
-            font-size: 22px;
-        }
-
-        .description {
-            font-size: 15px;
-        }
-
-        .lp2_subtitle {
-            font-size: 50px;
-            line-height: 65px;
-            margin-bottom: .5em;
-            width: auto;
-            color: #03ca9b;
-        }
-
-        .sec4_desc {
-            padding: 20px 60px;
-            font-family: sans-serif;
-        }
-
-
     </style>
 @endsection
 
@@ -369,7 +283,7 @@
         <div class="col-md-4 sec5_motoright" style="height: 150px !important; margin-top: 5%">
             <div class="buttons_row" style="position: relative">
                 <a style="position:absolute;top:80px;" href="{{route('signup', app()->getLocale())}}" class="btn btn-outline-warning btn-lg sec5_btn1" >Sign Up</a>
-                <a style="position:absolute;top:80px;left: 120px" href="{{route('signup', app()->getLocale())}}" class="btn btn-outline-warning btn-lg sec5_btn2" >Log in</a>
+                <a style="position:absolute;top:80px;left: 120px" href="{{route('login', app()->getLocale())}}" class="btn btn-outline-warning btn-lg sec5_btn2" >Log In</a>
             </div>
         </div>
     </div>
