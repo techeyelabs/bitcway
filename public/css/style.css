@@ -607,6 +607,9 @@ table,th, td {
     .lp2_subtitle2{
         margin-left: 0px !important;
     }
+    .siteLogo{
+        margin-left: 0px !important;
+    }
 
 }
 .navbar-dark .navbar-toggler {
@@ -692,7 +695,7 @@ table,th, td {
     /*max-height:80px;*/
     width: 100%;
     height: auto;
-    margin-top: 25px;
+    margin-top: 5px;
 }
 
 section {
@@ -745,6 +748,10 @@ section {
         margin-bottom: .5em;
         width: auto;
     }
+}
+.siteLogo{
+    margin-right:20px;
+    margin-left: 40px
 }
 
 

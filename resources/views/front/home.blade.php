@@ -2,6 +2,17 @@
 
 @section('custom_css')
     <style>
+        .indexTableTextHide{
+            overflow:hidden;
+            white-space:nowrap;
+            max-width:32px;
+        }
+        /*.hide-text {*/
+        /*    text-indent: 100%;*/
+        /*    text-overflow: ellipsis;*/
+        /*    white-space: nowrap;*/
+        /*    overflow: hidden;*/
+        /*}*/
 
         /*.features .features-grid {*/
         /*    display: flex;*/
@@ -19,7 +30,7 @@
     <div class=" text-center home-banner">
         <?php if(!Auth::check()){?>
             <a  href="{{route('signup', app()->getLocale())}}">
-                <img class="ad" src="./images/client_banner1.png">
+                <img class="ad" src="./images/client_banner3.png">
             </a>
         <?php } ?>
         <div class="card-body" style="margin-top: 25px !important;">
@@ -51,7 +62,11 @@
                 <tbody>
                 <tr v-for="item in trackers">
                     <td class="txtWhitecolor"></td>
-                    <td v-cloak class="txtWhitecolor">@{{splitCurrency(item[0])}}</td>
+                    <td v-cloak class="txtWhitecolor">
+                        <div class="indexTableTextHide">
+                            @{{splitCurrency(item[0])}}
+                        </div>
+                    </td>
                     <td v-cloak class="txtWhitecolor">@{{item[7]}} USD</td>
                     <td v-cloak :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">
                         @{{Math.abs((item[6]*100).toFixed(2))}}%
@@ -69,15 +84,15 @@
         <div class="volume-totals">
             <div class="vol_sec_list row">
                 <div class="vol_sec_item col-md-4">
-                    <div class="vol_sec_fig">$<span class=" ">1,755,170,131</span></div>
+                    <div class="vol_sec_fig">$<span class=" ">1,963,630,099</span></div>
                     <div>24 Hour Volume</div>
                 </div>
                 <div class="vol_sec_item col-md-4">
-                    <div class="vol_sec_fig">$<span class=" ">21,633,229,657</span></div>
+                    <div class="vol_sec_fig">$<span class=" ">21,361,834,761</span></div>
                     <div>7 Day Volume</div>
                 </div>
                 <div class="vol_sec_item col-md-4">
-                    <div class="vol_sec_fig">$<span class=" ">173,425,341,195</span></div>
+                    <div class="vol_sec_fig">$<span class=" ">160,422,076,475</span></div>
                     <div>30 Day Volume</div>
                 </div>
             </div>

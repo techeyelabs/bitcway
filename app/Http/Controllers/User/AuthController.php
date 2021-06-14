@@ -28,7 +28,7 @@ class AuthController extends Controller
         ]);
         
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password, 'is_email_verified' => true, 'status' => true], $request->remember)) {
-            return redirect()->intended(route('user-wallets', app()->getLocale()));
+            return redirect()->intended(route('user-trade', app()->getLocale()));
         }
 
         return redirect()->back()->with('error_message', 'Wrong credentials..');
@@ -77,6 +77,7 @@ class AuthController extends Controller
             $check->is_email_verified = true;
             $check->status = true;
             $check->verification_token = null;
+            $check->balance = 100;
             $check->save();
             return redirect()->route('login', app()->getLocale())->with('success_message', 'Your account is active now.');
         }
