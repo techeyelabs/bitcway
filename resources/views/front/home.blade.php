@@ -33,7 +33,7 @@
                 <img class="ad" src="./images/client_banner3.png">
             </a>
         <?php } ?>
-        <div class="card-body" style="margin-top: 25px !important;">
+        <div class="card-body" style="margin-top: 30px !important;">
             <h1 class="card-title txtHeadingColor">{{__('title')}} <br>{{__('title2')}}</h1><br>
             <?php if(Auth::check()){?>
             <a href="{{route('user-wallets', app()->getLocale())}}"
@@ -84,16 +84,16 @@
         <div class="volume-totals">
             <div class="vol_sec_list row">
                 <div class="vol_sec_item col-md-4">
-                    <div class="vol_sec_fig">$<span class=" ">1,963,630,099</span></div>
-                    <div>24 Hour Volume</div>
+                    <div class="vol_sec_fig">$<span class=" ">1,755,277,181</span></div>
+                    <div>{{__('24hvolume')}}</div>
                 </div>
                 <div class="vol_sec_item col-md-4">
-                    <div class="vol_sec_fig">$<span class=" ">21,361,834,761</span></div>
-                    <div>7 Day Volume</div>
+                    <div class="vol_sec_fig">$<span class=" ">20,203,861,379</span></div>
+                    <div>{{__('7dvolume')}}</div>
                 </div>
                 <div class="vol_sec_item col-md-4">
-                    <div class="vol_sec_fig">$<span class=" ">160,422,076,475</span></div>
-                    <div>30 Day Volume</div>
+                    <div class="vol_sec_fig">$<span class=" ">155,241,416,679</span></div>
+                    <div>{{__('30dvolume')}}</div>
                 </div>
             </div>
         </div>
@@ -103,8 +103,8 @@
         <section class="features dark">
             <div class="content content_wrapper">
                 <div>
-                    <div class="lp_title">Features</div>
-                    <div class="lp_subtitle">World class trading platform</div>
+                    <div class="lp_title">{{__('hfeatures')}}</div>
+                    <div class="lp_subtitle">{{__('hfeaturestitle')}}</div>
                 </div>
                 <div class="row features-grid">
                     <div class="col-md-4 ">
@@ -113,13 +113,9 @@
                                 <img src="./images/exchange.png" alt="exchange"
                                      style="min-width:120px;width:120px;height:120px;margin-right:20px">
                                 <div id="" style="display:flex;flex-direction:column" class="">
-                                    <h1 class="boxh1">Exchange</h1>
+                                    <h1 class="boxh1">{{__('hfeaturessubtitle1')}}</h1>
                                     <div class="description">
-                                        <p>
-                                            BitC-Way offers order books with top tier liquidity, allowing users to
-                                            easily exchange Bitcoin, Ethereum, EOS, Litecoin, Ripple, NEO and many other
-                                            digital assets with minimal slippage.
-                                        </p>
+                                        <p>{{__('hfeaturessubdetails1')}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -131,13 +127,9 @@
                                 <img src="./images/fundmerge.png" alt="exchange"
                                      style="min-width:120px;width:120px;height:120px;margin-right:20px">
                                 <div id="" style="display:flex;flex-direction:column" class="">
-                                    <h1 class="boxh1">Margin funding</h1>
+                                    <h1 class="boxh1">{{__('hfeaturessubtitle2')}}</h1>
                                     <div class="description">
-                                        <p>
-                                            Liquidity providers can generate yield by providing funding to traders
-                                            wanting to trade with leverage. Funding is traded on an order book at
-                                            various rates and periods.
-                                        </p>
+                                        <p>{{__('hfeaturessubdetails2')}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -150,11 +142,10 @@
                                 <img src="./images/trademerge.png" alt="exchange"
                                      style="min-width:120px;width:120px;height:120px;margin-right:20px">
                                 <div id="" style="display:flex;flex-direction:column" class="">
-                                    <h1 class="boxh1">Margin trading</h1>
+                                    <h1 class="boxh1">{{__('hfeaturessubtitle3')}}</h1>
                                     <div class="description">
                                         <p>
-                                            BitC-Way allows up to 10x leverage trading by providing traders with access
-                                            to the peer-to-peer funding market.
+                                            {{__('hfeaturessubdetails3')}}
                                         </p>
                                     </div>
                                 </div>
@@ -170,13 +161,9 @@
                                 <img src="./images/ordertype.png" alt="exchange"
                                      style="min-width:120px;width:120px;height:120px;margin-right:20px">
                                 <div id="" style="display:flex;flex-direction:column" class="">
-                                    <h1 class="boxh1">Order types</h1>
+                                    <h1 class="boxh1">{{__('hfeaturessubtitle4')}}</h1>
                                     <div class="description">
-                                        <p>
-                                            BitC-Way offers a suite of order types to give traders the tools they need
-                                            for every scenario. Discover more about our most advanced Algorithmic orders
-                                            types.
-                                        </p>
+                                        <p>{{__('hfeaturessubdetails4')}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -189,12 +176,9 @@
                                 <img src="./images/custominterface.png" alt="exchange"
                                      style="min-width:120px;width:120px;height:120px;margin-right:20px">
                                 <div id="" style="display:flex;flex-direction:column" class="">
-                                    <h1 class="boxh1">Customizable interface</h1>
+                                    <h1 class="boxh1">{{__('hfeaturessubtitle5')}}</h1>
                                     <div class="description">
-                                        <p>
-                                            Organize your workspace according to your needs: compose your layout, choose
-                                            between themes, and set up notifications.
-                                        </p>
+                                        <p>{{__('hfeaturessubdetails5')}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -207,11 +191,9 @@
                                 <img src="./images/security.png" alt="exchange"
                                      style="min-width:120px;width:120px;height:120px;margin-right:20px">
                                 <div id="" style="display:flex;flex-direction:column" class="">
-                                    <h1 class="boxh1">Security</h1>
+                                    <h1 class="boxh1">{{__('hfeaturessubtitle6')}}</h1>
                                     <div class="description">
-                                        <p>
-                                            Security of user information and funds is our first priority. Learn more
-                                            about our security features and integrations.
+                                        <p>{{__('hfeaturessubdetails6')}}
                                         </p>
                                     </div>
                                 </div>
@@ -227,32 +209,24 @@
         <section class="features">
             <div class="content content_wrapper">
                 <div>
-                    <div class="lp_title">ADVANCED FEATURES FOR PROFESSIONALS</div>
-                    <div class="lp2_subtitle">To meet the highest of demands</div>
+                    <div class="lp_title">{{__('afeatures')}}</div>
+                    <div class="lp2_subtitle">{{__('afeaturestitle')}}</div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 sec4_desc">
                     <div class="">
-                        <h1 class="" style="font-size: 22px">Professional connectivity</h1>
+                        <h1 class="" style="font-size: 22px">{{__('afeaturessubtitle1')}}</h1>
                         <div class="description mt-4">
-                            <p>
-                                Partnering with Market Synergy, corporate accounts and professional traders can take
-                                advantage of the fastest trading speeds through institutional-grade connectivity and
-                                co-location services with direct access to our digital asset gateway.
-                            </p>
+                            <p>{{__('afeaturessubdetails1')}}</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 sec4_desc">
                     <div class="">
-                        <h1 class="" style="font-size: 22px">Advanced chart tools</h1>
+                        <h1 class="" style="font-size: 22px">{{__('afeaturessubtitle2')}}</h1>
                         <div class="description mt-4">
-                            <p style="">
-                                BitC-Way facilitates a graphical trading experience with advanced charting functionality
-                                that allows traders to visualise orders, positions and price alerts, tap to modify order
-                                properties, and annotate to their trading strategy.
-                            </p>
+                            <p style="">{{__('afeaturessubdetails2')}}</p>
                         </div>
                     </div>
                 </div>
@@ -261,25 +235,17 @@
             <div class="row">
                 <div class="col-md-6 sec4_desc">
                     <div class="">
-                        <h1 class="" style="font-size: 22px">Corporate account and professional trading</h1>
+                        <h1 class="" style="font-size: 22px">{{__('afeaturessubtitle3')}}</h1>
                         <div class="description mt-4">
-                            <p>
-                                BitC-Way has a bespoke offering expertly tailored to meet the specific needs of
-                                professional and institutional traders including sub-accounts, expedited verification,
-                                and dedicated customer support.
-                            </p>
+                            <p>{{__('afeaturessubdetails3')}}</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 sec4_desc">
                     <div class="">
-                        <h1 class="" style="font-size: 22px">API</h1>
+                        <h1 class="" style="font-size: 22px">{{__('afeaturessubtitle4')}}</h1>
                         <div class="description mt-4">
-                            <p style="">
-                                The BitC-Way REST and Websocket APIs are designed to facilitate access to all features
-                                of the BitC-Way platform, allowing full integration with traders’ own products and
-                                platforms.
-                            </p>
+                            <p style="">{{__('afeaturessubdetails4')}}</p>
                         </div>
                     </div>
                 </div>
@@ -287,21 +253,24 @@
         </section>
     </div>
 
-    <div class="section5 row mt-20 bg-black" style="height: 300px">
-       <div class="col-md-8" style="margin-top: 5%">
-           <div class="content content_wrapper">
-               <div class="sec5_desc">
-                   <div class="lp2_subtitle lp2_subtitle2" style="color: white !important;margin-left: 15px">Join Bitc-Way and start </br> trading today</div>
+    <div class="section5  mt-20 bg-black" style="height: 300px">
+       <div class="row">
+           <div class="col-md-8" style="margin-top: 5%">
+               <div class="content content_wrapper">
+                   <div class="sec5_desc">
+                       <div class="lp2_subtitle lp2_subtitle2" style="color: white !important;margin-left: 15px"><span>{{__('bbannertext1')}}</span> </br><span>{{__('bbannertext2')}}</span></div>
+                   </div>
                </div>
            </div>
-       </div>
-        <div class="col-md-4 sec5_motoright" style="height: 150px !important; margin-top: 5%">
+           <div class="col-md-4 sec5_motoright" style="height: 150px !important; margin-top: 5%">
             <div class="buttons_row" style="position: relative">
-                <a style="position:absolute;top:80px;" href="{{route('signup', app()->getLocale())}}" class="btn btn-outline-warning btn-lg sec5_btn1" >Sign Up</a>
-                <a style="position:absolute;top:80px;left: 120px" href="{{route('login', app()->getLocale())}}" class="btn btn-outline-warning btn-lg sec5_btn2" >Log In</a>
+                <a style="position:absolute;top:80px;" href="{{route('signup', app()->getLocale())}}" class="btn btn-outline-warning btn-lg sec5_btn1" >{{__('bbutton1')}}</a>
+                <a style="position:absolute;top:80px;left: 120px" href="{{route('login', app()->getLocale())}}" class="btn btn-outline-warning btn-lg sec5_btn2" >{{__('bbutton2')}}</a>
             </div>
         </div>
+       </div>
     </div>
+    <div id="thisdiv"></div>
 @endsection
 
 @section('custom_js')

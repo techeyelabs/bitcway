@@ -132,7 +132,12 @@
                                         <td class="txtWhitecolor">{!! number_format((float)($item->amount), 5) !!}</td>
                                         <td class="txtWhitecolor">{{$item->equivalent_amount}}</td>
                                         <td class="txtWhitecolor">
-                                            <?php if($item->status == 1) echo 'Approved';elseif($item->status == 2) echo 'Declined'; else echo 'Pending';?>
+                                            <?php
+                                            if($item->status == 1) echo 'Approved';
+                                            elseif($item->status == 2) echo 'Declined';
+                                            elseif($item->status == 4) echo 'Direct Deposit';
+                                            elseif($item->status == 5) echo 'Opening Bonus';
+                                            else echo 'Pending';?>
                                         </td>
                                     </tr>
                                     <?php }?>

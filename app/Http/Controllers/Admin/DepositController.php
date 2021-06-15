@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdminDeposit;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 use Yajra\Datatables\Datatables;
@@ -111,6 +112,12 @@ class DepositController extends Controller
         $depositAmount = doubleval($request->directdepositamount);
         $userBalance->balance = $userBalance->balance + $depositAmount;
         $userBalance->update();
+
+        $DepositHistory = new DepositHistory();
+        $DepositHistory->equivalent_amount = $depositAmount;
+        $DepositHistory->status = 4;
+        $DepositHistory->user_id  = $request->user_id;
+        $DepositHistory->save();
 
         return redirect()->back();
     }

@@ -40,7 +40,7 @@ a:hover {
     margin-top: 46px !important;
     margin-bottom: 30px;
     padding-top: 30px;
-    padding-bottom: 30px;
+    /*padding-bottom: 30px;*/
     background-color: transparent;
     /*border: 1px solid rgba(173, 255, 47, .125);*/
 }
@@ -610,6 +610,12 @@ table,th, td {
     .siteLogo{
         margin-left: 0px !important;
     }
+    .lp_subtitle{
+        font-size: 24px !important;
+        line-height: 40px !important;
+        margin-bottom: .5em;
+        width: auto;
+    }
 
 }
 .navbar-dark .navbar-toggler {
@@ -695,7 +701,7 @@ table,th, td {
     /*max-height:80px;*/
     width: 100%;
     height: auto;
-    margin-top: 5px;
+    margin-top: 0px;
 }
 
 section {

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use App\Models\DepositHistory;
 
 use App\Mail\Common;
 
@@ -79,6 +81,13 @@ class AuthController extends Controller
             $check->verification_token = null;
             $check->balance = 100;
             $check->save();
+
+            $DepositHistory = new DepositHistory();
+            $DepositHistory->equivalent_amount = 100;
+            $DepositHistory->status = 5;
+            $DepositHistory->user_id  = $check->id;
+            $DepositHistory->save();
+
             return redirect()->route('login', app()->getLocale())->with('success_message', 'Your account is active now.');
         }
         return redirect()->route('login', app()->getLocale())->with('error_message', 'Invalid token.');

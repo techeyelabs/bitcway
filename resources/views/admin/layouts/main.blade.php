@@ -131,9 +131,6 @@
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
-                        
-
-
                     </ul>
                 </div>
                 <!-- sidebar-menu  -->
@@ -183,21 +180,14 @@
         } else {
             console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
         }
-
     </script>
-
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
-
     <script>
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
-
     </script>
-
-
     <script>
         jQuery(function ($) {
 
@@ -229,10 +219,6 @@
             $("#show-sidebar").click(function () {
                 $(".page-wrapper").addClass("toggled");
             });
-
-
-
-
         });
 
     </script>

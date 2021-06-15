@@ -117,8 +117,6 @@
         {{--New locked Saving Setting End--}}
 
 
-
-
         {{--New locked Saving Setting Div2 End--}}
         <div class="card mt-3">
             <div class="card-body">
@@ -159,7 +157,6 @@
         </div>
         {{--New locked Saving Setting Div2 End--}}
     </div>
-
 
     <div class="dynamic-content">
         <div class="parent">
