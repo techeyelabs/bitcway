@@ -58,7 +58,7 @@
 {{--    </footer>--}}
 
 {{--     <hr>--}}
-<footer class="text-center pt-3 pb-5">
+<footer class="text-center pt-4 pb-4">
     <div>
         <small class="txtWhitecolor">
             Copyright &copy; 2018 All Rights Reserved by <a class="txtWhitecolor" target="_blank" rel="noopener noreferrer" href="#">BITC-WAY

@@ -45,7 +45,7 @@
         <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-content">
                 <div class="sidebar-brand">
-                    <a class="logo" href="{{route('front-home', app()->getLocale())}}"><strong>BITC-WAY</strong></a>
+                    <a class="logo" href="{{route('admin-user-list', app()->getLocale())}}"><strong>BITC-WAY</strong></a>
                     <div id="close-sidebar">
                         <i class="fas fa-times"></i>
                     </div>
