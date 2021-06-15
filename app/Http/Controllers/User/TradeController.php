@@ -141,15 +141,31 @@ class TradeController extends Controller
         $Bitfinex = new Bitfinex();
         if($request->currency == 'tMABUSD'){
             if($interval_value != ""){
-                $response = $Bitfinex->getCandle('tADAUSD', $interval_value,'','' );
+                $response = $Bitfinex->getCandle('tADAUSD', $interval_value,'','','' );
             }
             elseif ($start != "" && $end != ""){
-                $response = $Bitfinex->getCandle('tADAUSD', '',$start,$end );
+                $response = $Bitfinex->getCandle('tADAUSD', '',$start,$end,$request->range );
+
             }
             else{
-                $response = $Bitfinex->getCandle('tADAUSD', '','','' );
-            }
 
+                $response = $Bitfinex->getCandle('tADAUSD', '','','','' );
+               // dd($response);
+            }
+//            $chartData =array(
+//                   array(1621900800000,39252,39821.73222635,39839,39252,417.14195681),
+//                   array(1621814400000,39689,39252,39703.38687557,39037,631.40783786),
+//                   array(1621728000000,39293,39689,39814,39166,2237.91657036),
+//                   array(1621641600000,39622,39292,40192,38651,1351.04102485),
+//                   array(1621555200000,40671.06476555,39622,40961,39500,1116.4597083200001),
+//                   array(1621468800000,40677.57848236,40817,40969.93034879,40531,161.74014193),
+//                   array(1621382400000,41352,40685.84590945,41352,40661,165.66093902),
+//                   array(1621296000000,41269.78728655,41371,41439,41176,78.63957097),
+//                   array(1621209600000,41514.05709619,41263,41689,41148,207.0136384),
+//                   array(1621123200000,41589.73268099,41522,41880,41361,120.94050563),
+//                   array(1621036800000,41825,41585,41886.12351982,41500,124.1747853),
+//            );
+//            $response=$chartData;
             //dd($response);
 //            $chartData =array(
 //                   array(1621604979000,39252,39821.73222635,39839,39252,417.14195681),
@@ -171,15 +187,17 @@ class TradeController extends Controller
         else{
             if($interval_value != ""){
 
-                $response = $Bitfinex->getCandle($request->currency,$interval_value,'','');
+                $response = $Bitfinex->getCandle($request->currency,$interval_value,'','','');
+
             }
             elseif ($start != "" && $end != ""){
 
-                $response = $Bitfinex->getCandle($request->currency,'', $start, $end);
+                $response = $Bitfinex->getCandle($request->currency,'', $start, $end,$request->range );
             }
             else{
 
-                $response = $Bitfinex->getCandle($request->currency,'','','');
+                $response = $Bitfinex->getCandle($request->currency,'','','','');
+                //dd($response);
             }
            // $response = $Bitfinex->getCandle($request->currency,$interval_value,$start,$end);
         }

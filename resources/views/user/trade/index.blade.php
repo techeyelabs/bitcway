@@ -334,13 +334,13 @@
                         <div id='buttonrow' class="chart-top-row">
                             <span class="interval border-removal" id="3Y" v-on:click="getChartData('range','3Y')">3Y</span>
                             <span class="interval border-removal" id="1Y" v-on:click="getChartData('range', '1Y')">1Y</span>
-                            <span class="interval border-removal" id="3M" onclick="getChartData('range', this.id)">3M</span>
-                            <span class="interval border-removal" id="1M" onclick="getChartData('range', this.id)">1M</span>
-                            <span class="interval border-removal" id="7D" onclick="getChartData('range', this.id)">7D</span>
-                            <span class="interval border-removal" id="3D" onclick="getChartData('range', this.id)">3D</span>
-                            <span class="interval border-removal" id="1D" onclick="getChartData('range', this.id)">1D</span>
-                            <span class="interval border-removal" id="6h" onclick="getChartData('range', this.id)">6h</span>
-                            <span class="interval border-removal" id="1h" onclick="getChartData('range', this.id)">1h</span>
+                            <span class="interval border-removal" id="3M" v-on:click="getChartData('range', '3M')">3M</span>
+                            <span class="interval border-removal" id="1M" v-on:click="getChartData('range', '1M')">1M</span>
+                            <span class="interval border-removal" id="7D" v-on:click="getChartData('range', '7D')">7D</span>
+                            <span class="interval border-removal" id="3D" v-on:click="getChartData('range', '3D')">3D</span>
+                            <span class="interval border-removal" id="1D" v-on:click="getChartData('range', '1D')">1D</span>
+                            <span class="interval border-removal" id="6h" v-on:click="getChartData('range', '6h')">6h</span>
+                            <span class="interval border-removal" id="1h" v-on:click="getChartData('range', '1h')">1h</span>
                         </div>
                         <div id="tradingview_f7648" class="d-none"></div>
                     </div>
@@ -399,6 +399,7 @@
 @endsection
 
 @section('custom_js')
+    <script type="text/javascript" src="/dataJson/coindata.json"></script>
     <script>
         function limitLength() {
             var buyCheckBox = document.getElementById("limitBuyInput");
@@ -937,7 +938,8 @@
                             "details": false,
                             "hotlist": false,
                             "calendar": false,
-                            "container_id": "tradingview_f7648"
+                            "container_id": "tradingview_f7648",
+                            "volumedata":[]
                         });
                     this.selectedItem = item;
                     this.getChartData();
@@ -971,45 +973,72 @@
                         //alert(value);
                         var range_value = value;
                         var current_date = new Date();
-                        var year = current_date.getFullYear();
-                        var month = current_date.getMonth();
-                        var day = current_date.getDate();
+                        var enddate = current_date.getTime();
+                        var startdate= this.getStartDate(range_value);
 
-                        if (range_value === '3Y'){
-
-                            var end_date = new Date(year - 3, month, day);
-                           var enddate = current_date.getTime();
-                           var startdate=end_date.getTime();
-
+                        /*if (range_value === '3Y'){
+                           var date_3years_ago = new Date(year - 3, month, day);
+                           var startdate=date_3years_ago.getTime();
 
                         }
                         if (range_value === '1Y'){
-                            var end_date = new Date(year - 1, month, day);
-                            var enddate = current_date.getTime();
-                            var startdate=end_date.getTime();
+                            var date_1year_ago = new Date(year - 1, month, day);
+                            var startdate=date_1year_ago.getTime();
                         }
-                        if (range_value == '3M'){
-
+                        if (range_value === '3M'){
+                            var date_3months_ago = new Date(
+                                new Date().getFullYear(),
+                                new Date().getMonth() - 3,
+                                new Date().getDate()
+                            );
+                            startdate=date_3months_ago.getTime();
+                            console.log("3months date:"+startdate);
                         }
-                        if (range_value == '7D'){
-
+                        if (range_value === '1M'){
+                            var date_1months_ago = new Date(
+                                new Date().getFullYear(),
+                                new Date().getMonth() - 1,
+                                new Date().getDate()
+                            );
+                            startdate = date_1months_ago.getTime();
+                            console.log("1months date:"+startdate);
                         }
-                        if (range_value == '3D'){
-
+                        if (range_value === '7D'){
+                            var date_7days_ago = new Date(
+                                new Date().getFullYear(),
+                                new Date().getMonth() ,
+                                new Date().getDate()-7
+                            );
+                            startdate = date_7days_ago.getTime();
                         }
-                        if (range_value == '1D'){
-
+                        if (range_value === '3D'){
+                            var date_3days_ago = new Date(
+                                new Date().getFullYear(),
+                                new Date().getMonth() ,
+                                new Date().getDate()-3
+                            );
+                            startdate = date_3days_ago.getTime();
                         }
-                        if (range_value == '6h'){
-
+                        if (range_value === '1D'){
+                            var date_1day_ago = new Date(
+                                new Date().getFullYear(),
+                                new Date().getMonth() ,
+                                new Date().getDate()-1
+                            );
+                            startdate = date_1day_ago.getTime();
                         }
-                        if (range_value == '1h'){
-
+                        if (range_value === '6h'){
+                            var date_1day_ago = new Date();
+                            startdate = date_1day_ago.getTime()-(6*3600*1000);
                         }
+                        if (range_value === '1h'){
+                            startdate=enddate-(1000*3600)
+                        }*/
                     }
                     else{
-                        var start ="";
-                        var end   =""
+                        var startdate = "";
+                        var enddate   = "";
+                        var range_value = "";
 
                     }
 
@@ -1019,34 +1048,110 @@
                     let that = this;
                     let currency = that.selectedItem[0];
                     console.log(that.currency);
-                    // showLoader('Loading ...');
-                    axios.get('{{route("user-get-chart-data")}}', {params: {currency: currency, user_currency: that.currency, interval:interval_value, start:startdate, end:enddate}})
+                     showLoader('Loading ...');
+                    axios.get('{{route("user-get-chart-data")}}', {params: {currency: currency, user_currency: that.currency, interval:interval_value, start:startdate, end:enddate, range:range_value }})
                     .then(function (response) {
-                        console.log(currency);
+                        console.log("inresponsee"+currency);
                         let chartData = [];
                         if(response.data.status){
-                            that.balance = response.data.balance;
-                            response.data.chartData.forEach(function(item){
-                                // const dateObject = new Date(item[0]);
-                                // const humanDateFormat = dateObject.toLocaleString();
-                                // var getdate= humanDateFormat.split(" ");
-                                // var datevalue= formatDate(getdate[0]);
-                                // console.log(datevalue+' '+getdate[1]+' '+getdate[2]);
-                                let newChartData = { time: item[0]/1000 , open: item[1], high: item[3], low: item[4], close: item[2]};
-                                chartData.push(newChartData);
+                            // if(currency === 'tMABUSD'){
+                            //     //that.balance = response.data.balance;
+                            //     var coin_data=JSON.stringify(coindata);
+                            //     console.log("coindata"+coin_data);
+                            //     var newData = JSON.parse(coin_data);
+                            //     // newData.forEach(function (item) {
+                            //     //     // const dateObject = new Date(item[0]);
+                            //     //     // const humanDateFormat = dateObject.toLocaleString();
+                            //     //     // var getdate= humanDateFormat.split(" ");
+                            //     //     // var datevalue= formatDate(getdate[0]);
+                            //     //     // console.log(datevalue+' '+getdate[1]+' '+getdate[2]);
+                            //     //     let newChartData = {
+                            //     //         time: item[0],
+                            //     //         open: item[1],
+                            //     //         high: item[3],
+                            //     //         low: item[4],
+                            //     //         close: item[2],
+                            //     //         volume: 15517.284349850017
+                            //     //     };
+                            //     //     chartData.push(newChartData);
+                            //     // })
+                            //     console.log(newData);
+                            //     chartData=newData['weeklydata'];
+                            //     //chartData.push(newData);
+                            // console.log("handmade"+chartData)
+                            // }
+                            /*else {*/
 
-                            });
-                            console.log(chartData);
-                            if(currency == 'tMABUSD'){
-                                var coindata=[
-                                    { "time":1621604,"open": 39252, "high":39839,"low":39252, "close":39821.73222635},
-                                    { "time":1621518,"open": 39689, "high":39037,"low":631.40783786, "close":39252}
-                                ]
+                                that.balance = response.data.balance;
+                                console.log(response.data);
+                                response.data.chartData.forEach(function (item) {
+                                    // console.log(" value0:"+item[0]," value1:"+item[1]," value2:"+item[2],);
+                                    // console.log();
+                                    // console.log();
+                                    // console.log(" value3:"+item[3]);
+                                    // console.log(" value4:"+item[4]);
 
-                                //chartData.push(coindata);
+                                    // if (typeof item[0] === 'string' ||  item[0] instanceof String){
+                                    //     var time =Number(item[0])
+                                    // }
+                                    // else{
+                                    //     var time =item[0]
+                                    // }
+                                    // if (typeof item[1] === 'string' ||  item[1] instanceof String){
+                                    //     var open =Number(item[1])
+                                    // }
+                                    // else{
+                                    //     var open =item[1]
+                                    // }
+                                    // if (typeof item[2] === 'string' ||  item[2] instanceof String){
+                                    //     var close =Number(item[2])
+                                    // }
+                                    // else{
+                                    //     var close =item[2]
+                                    // }
+                                    // if (typeof item[3] === 'string' ||  item[3] instanceof String){
+                                    //     var high =Number(item[3])
+                                    // }
+                                    // else{
+                                    //     var high =item[3]
+                                    // }
+                                    // if (typeof item[4] === 'string' ||  item[4] instanceof String){
+                                    //     var low =Number(item[4])
+                                    // }
+                                    // else{
+                                    //     var low =item[4]
+                                    // }
+                                    // const dateObject = new Date(item[0]);
+                                    // const humanDateFormat = dateObject.toLocaleString();
+                                    // var getdate= humanDateFormat.split(" ");
+                                    // var datevalue= formatDate(getdate[0]);
+                                    // console.log(datevalue+' '+getdate[1]+' '+getdate[2]);
+                                    let newChartData = {
+                                        time: item[0] / 1000,
+                                        open:  item[1],
+                                        high:  item[3],
+                                        low:  item[4],
+                                        close: item[2],
+                                        volume: 15517.284349850017
+                                    };
+                                    //volumedata= { time: item[0]/1000,value:item[5]};
+                                    chartData.push(newChartData);
+
+                                    hideLoader()
+                                });
                                 console.log(chartData);
-                            }
+                           /* }*/
+                            // if(currency == 'tMABUSD'){
+                            //     var coindata=[
+                            //         { "time":1621604,"open": 39252, "high":39839,"low":39252, "close":39821.73222635},
+                            //         { "time":1621518,"open": 39689, "high":39037,"low":631.40783786, "close":39252}
+                            //     ]
+                            //
+                            //     //chartData.push(coindata);
+                            //     console.log(chartData);
+                            // }
                             setTimeout(function(){
+                                console.log(chartData);
                                 that.drawChart(chartData);
                             }, 100);
                         }
@@ -1058,6 +1163,41 @@
                     .then(function () {
                         hideLoader();
                     });
+                },
+                getStartDate(range){
+                    var startdate="";
+                    if (range === '3Y' || range === '1Y'){
+                        var date_ago = new Date(
+                            new Date().getFullYear()-parseInt(range[0]),
+                            new Date().getMonth(),
+                            new Date().getDate()
+                        );
+                    }
+                    if(range === '3M' || range === '1M'){
+                        var date_ago = new Date(
+                            new Date().getFullYear(),
+                            new Date().getMonth()-parseInt(range[0]),
+                            new Date().getDate()
+                        );
+
+                    }
+                    if(range === '7D' || range === '3D' || range === '1D'){
+                        var date_ago = new Date(
+                            new Date().getFullYear(),
+                            new Date().getMonth(),
+                            new Date().getDate()-parseInt(range[0])
+                        );
+                    }
+                    if(range === '6h' || range === '1h'){
+                        var date_1day_ago = new Date();
+                        startdate = date_1day_ago.getTime()-(parseInt(range[0])*3600*1000);
+
+                    }
+                    else{
+                        startdate=date_ago.getTime();
+                    }
+
+                    return startdate;
                 },
                 drawChart(data){
                     console.log(data)
@@ -1120,7 +1260,18 @@
 
                     data.sort((a, b) => (a.time > b.time) ? 1 : -1);
                     candleSeries.setData(data);
-                    // volumeSeries.setData([
+                    var volumeSeries = that.chart.addHistogramSeries({
+                        color: '#26a69a',
+                        priceFormat: {
+                            type: 'volume',
+                        },
+                        priceScaleId: '',
+                        scaleMargins: {
+                            top: 0.8,
+                            bottom: 0,
+                        },
+                    });
+                     //volumeSeries.setData([
                     //     { time: '2021-05-19', value: 1621404000000, color: 'rgba(0, 150, 136, 0.8)' },
                     //     { time: '2021-04-22', value: 21737523.00, color: 'rgba(0, 150, 136, 0.8)' },
                     //     { time: '2021-03-23', value: 29328713.00, color: 'rgba(0, 150, 136, 0.8)' },
