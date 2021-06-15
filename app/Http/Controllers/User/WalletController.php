@@ -4,7 +4,9 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdminWithdrawMessage;
+use App\Models\GatewayReceipt;
 use App\Models\Leverage_Wallet;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\Bitfinex;
@@ -21,35 +23,113 @@ class WalletController extends Controller
 {
     public function index(Request $request)
     {
-        if (isset($request->id)){
+        if (isset($request->id)) {
             $data['withdrawFlag'] = 1;
         }
         $data['deposit'] = DepositHistory::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
-        $data['withdraw'] = WithdrawHistory::where('user_id', Auth::user()->id)->orderBy('id','desc')->get();
+        $data['withdraw'] = WithdrawHistory::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
         return view('user.wallet.index', $data);
     }
+
     public function deposit(Request $request)
     {
         $Bitfinex = new Bitfinex();
-         $data['rate'] = $Bitfinex->getRate('BTC');
-//        $data['rate'] = 46000;
+        $data['rate'] = $Bitfinex->getRate('BTC');
+        //Gateway Info
+        $data['hash_key'] = 'INa7F6trT8A1nbJ6';
+        $data['site_id'] = "00000168";
+        $data['trading_id'] = date("dmYHis")."000".Auth::user()->id;
+        $data['order_id'] = $data['trading_id'];
+        $data['$custom_data'] = array(
+            'userId' => Auth::user()->id,
+        );
+
         return view('user.wallet.deposit', $data);
     }
+
+    public function hcgenerate(Request $request){
+        $hc = hash("sha256", $request->site_id.$request->hash_key.$request->trading_id.$request->rate);
+        return response()->json([$hc, "rate"=>$request->rate]);
+    }
+    public function getwayUriResponse(Request $request){
+        $DepositHistory = new DepositHistory();
+        $DepositHistory->user_id = Auth::user()->id;
+        $DepositHistory->amount = 0;
+        $DepositHistory->equivalent_amount = $request->amount;
+        $DepositHistory->save();
+
+        $post = [
+            'site_id' => $request->site_id,
+            'trading_id' => $request->trading_id,
+            'amount' => $request->amount,
+            'hc' => $request->hc,
+        ];
+        $ch = curl_init('https://api.saiwin.co/generate');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        $response = curl_exec($ch);
+        echo $response;
+        curl_close($ch);
+
+        $getwayPaymentReceipt = new GatewayReceipt();
+        $getwayPaymentReceipt->userId = Auth::user()->id;
+        $getwayPaymentReceipt->trading_id = $request->trading_id;
+        $getwayPaymentReceipt->hc = $request->hc;
+        $getwayPaymentReceipt-> amount = $request->amount;
+        $getwayPaymentReceipt-> status = 0;
+        $getwayPaymentReceipt->save();
+
+        $data = json_decode($response, true);
+    }
+    public function getwayReturnUrl(Request $request)
+    {
+        return redirect()->route('user-wallet');
+    }
+    public function getwayPaymentReceipt(Request $request)
+    {
+        $site_id = "00000168";
+        $pendingPayment = GatewayReceipt::where('status', 0)->get();
+        for ($i = 0; $i<count($pendingPayment); $i++){
+            $trading_id = $pendingPayment[$i]->trading_id;
+            $hc = $pendingPayment[$i]->hc;
+
+            $post = [
+                'site_id' => $site_id,
+                'trading_id' => $trading_id,
+                'hc' => $hc
+            ];
+            $ch = curl_init('https://api.saiwin.co/status');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+            $response = curl_exec($ch);
+            curl_close($ch);
+            $data = json_decode($response, true);
+
+            print_r($data);
+            echo '<br>';
+
+//          $updatePayment = GatewayReceipt::where('trading_id', $trading_id)->update(['status' => 1]);
+//          $updatePayment = GatewayReceipt::where('trading_id', $trading_id)-->update( [ 'name' => $data['name'], 'address' => $data['address']]);
+        }
+        exit();
+    }
+
     public function depositAction(Request $request)
     {
         $DepositHistory = new DepositHistory();
         $DepositHistory->user_id = Auth::user()->id;
         $DepositHistory->amount = $request->amount;
-        $DepositHistory->equivalent_amount = $request->amount*$request->rate;
+        $DepositHistory->equivalent_amount = $request->amount * $request->rate;
         $DepositHistory->save();
         return response()->json(['status' => true]);
     }
+
     public function withdraw(Request $request)
     {
-
         $withdrawnotification["notification"] = AdminWithdrawMessage::first();
         return view('user.wallet.withdraw', $withdrawnotification);
     }
+
     public function withdrawAction(Request $request)
     {
         $WithdrawHistory = new WithdrawHistory();
@@ -57,9 +137,9 @@ class WalletController extends Controller
         $WithdrawHistory->amount = $request->amount;
         $WithdrawHistory->save();
 
-        Auth::user()->balance = Auth::user()->balance-$request->amount;
+        Auth::user()->balance = Auth::user()->balance - $request->amount;
         Auth::user()->save();
-        
+
         return response()->json(['status' => true]);
     }
 
@@ -69,15 +149,15 @@ class WalletController extends Controller
         $data['total'] = 0;
         $data['wallets'] = UserWallet::where('user_id', Auth::user()->id)->with('currency')->orderBy('id', 'DESC')->get();
         $data['user'] = UserWallet::where('user_id', Auth::user()->id)->with('user')->orderBy('id', 'DESC')->get();
-        $data['userBalance'] =  User::where('id', Auth::user()->id)->first('balance');
+        $data['userBalance'] = User::where('id', Auth::user()->id)->first('balance');
         $data['leverage_wallets'] = Leverage_Wallet::where('user_id', Auth::user()->id)->with('currencyName')->orderBy('id', 'DESC')->get();
-        $data['transactionHistory'] = Leverage_Wallet::where('user_id', Auth::user()->id)->where('leverage','>',0)->with('leveragehistory')->orderBy('id', 'DESC')->get();
+        $data['transactionHistory'] = Leverage_Wallet::where('user_id', Auth::user()->id)->where('leverage', '>', 0)->with('leveragehistory')->orderBy('id', 'DESC')->get();
         $currentTime = Carbon\Carbon::now();
         $data['finances'] = LockedSaving::where('user_id', Auth::user()->id)->where('redemption_date', '>', $currentTime)->with('currency')->orderBy('id', 'DESC')->get();
 //        dd( $data['finances']);
 
-        foreach($data['wallets'] as $item){
-            $data['total'] += $item->balance * (is_numeric($Bitfinex->getRate($item->currency->name)?$Bitfinex->getRate($item->currency->name): 1));
+        foreach ($data['wallets'] as $item) {
+            $data['total'] += $item->balance * (is_numeric($Bitfinex->getRate($item->currency->name) ? $Bitfinex->getRate($item->currency->name) : 1));
         }
         return view('user.wallet.wallets', $data);
     }
@@ -85,7 +165,7 @@ class WalletController extends Controller
     public function derivativedeposit(Request $request)
     {
         $derivative = User::find(Auth::user()->id);
-        if($request->flag == 1){
+        if ($request->flag == 1) {
             $derivative->derivative = $derivative->derivative + $request->derivativeamount;
             $derivative->balance = $derivative->balance - $request->derivativeamount;
         } else {
@@ -93,6 +173,6 @@ class WalletController extends Controller
             $derivative->balance = $derivative->balance + $request->derivativeamount;
         }
         $derivative->save();
-        return redirect()->route('user-wallets');
+        return redirect()->route('user-wallets', app()->getLocale());
     }
 }

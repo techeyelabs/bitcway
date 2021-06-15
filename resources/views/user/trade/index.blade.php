@@ -34,13 +34,14 @@
             width: 375px;
             min-width: 375px;
             z-index: 6;
-            margin-left: 6px;
+            /*margin-left: 6px;*/
         }
         .main-app-container{
             margin: 0 5px;
             flex-grow: 1;
-            min-width: 0;
+            min-width:0;
         }
+
         .table>:not(caption)>*>* {
             padding: 2px 20px 2px 20px !important;
         }
@@ -62,8 +63,8 @@
              border-top: 16px solid #3498db;
              width: 120px;
              height: 120px;
-             -webkit-animation: spin 2s linear infinite; / Safari /
-         animation: spin 2s linear infinite;
+             -webkit-animation: spin 2s linear infinite;
+             /*animation: spin 2s linear infinite;*/
          }
 
         / Safari /
@@ -76,31 +77,28 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-
-
     </style>
 @endsection
 @section('content')
     <div id="wrap" class="trade">
         @if(isset($type))
-            <h3 class="txtHeadingColor">Derivatives</h3>
+            <h3 class="txtHeadingColor pageTitle">{{__('menuoption4')}}</h3>
         @else
-            <h3 class="txtHeadingColor">Trade</h3>
+            <h3 class="txtHeadingColor pageTitle">{{__('menuoption3')}}</h3>
         @endif
         <hr>
         <div class="row" style="display: flex;">
             <div class="col-md-3 sidebar">
-                <div class="card" >
+                <div class="card tickersDiv" >
                     <div class="card-body">
                         <div id="trackers">
-                            <div class="text-center title txtHeadingColor"><h4>TICKERS</h4></div>
+                            <div class="text-center title txtHeadingColor"><h4>{{__('title11')}}</h4></div>
                             <table class="tables trackers" style="width: 100%; table-layout: fixed">
                                 <thead>
                                     <tr>
-                                        <th class="txtWhitecolor th1">SYMBOL</th>
-                                        <th class="txtWhitecolor th2">LAST</th>
-                                        <th class="txtWhitecolor th3">24H</th>
+                                        <th class="txtWhitecolor th1">{{__('column1')}}</th>
+                                        <th class="txtWhitecolor th2">{{__('column2')}}</th>
+                                        <th class="txtWhitecolor th3">{{__('column3')}}</th>
                                         <th class="txtWhitecolor th4">VOL <u>USD</u></th>
                                     </tr>
                                 </thead>
@@ -115,23 +113,22 @@
                             </table>
                         </div>
                     </div>
-
                 </div>
                 <div class="card mt-3" >
                     <div class="card" >
                         @if(isset($type))
                             <div class="card-body">
-                                <h4 v-cloak class="txtHeadingColor " >ORDER FORM: @{{currency}}</h4>
+                                <h4 v-cloak class="txtHeadingColor " >{{__('title12')}}: @{{currency}}</h4>
                                 <hr>
                                 <div class="row">
                                     <div class="col ">
                                         <select class="form-select selectClass" aria-label="Default select example" id="choseOrderType" onchange="choseOrderType('derivative')">
-                                            <option value="0" selected>Market</option>
-                                            <option value="1">Limit</option>
+                                            <option value="0" selected>{{__('market')}}</option>
+                                            <option value="1">{{__('limit')}}</option>
                                         </select>
                                         <div class="form-group">
                                             <div id="limitDiv"  style="display: none">
-                                                <label class="txtWhitecolor" for="" style="margin-top: 10px;">Limit:</label>
+                                                <label class="txtWhitecolor" for="" style="margin-top: 10px;">{{__('limit')}}:</label>
                                                 <input type="hidden" name="editId" id="editId" value="" >
                                                 <div class="input-group">
                                                     <input type="text" id="limitAmountId" onkeyup="limitLength()" class="form-control mb-1" placeholder=""  v-model="limitAmount">
@@ -143,17 +140,12 @@
                                                 <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
                                             </div>
                                             <div id="totalAmountDiv">
-                                                <label class="txtWhitecolor"  for="" style="margin-top: 10px;">Total:</label>
-                                                <span v-cloak class="text-muted form-control" id="totalamountVal"  style="">~@{{calcAmount}}</span>
+                                                <label class="txtWhitecolor"  for="" style="margin-top: 10px;">{{__('total')}}:</label>
+                                                <span v-cloak class="text-muted form-control" id="totalamountVal" >~@{{calcAmount}}</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
-{{--                                            <label for="" class="txtWhitecolor" id="tradeCurrencyName">USD:</label>--}}
-{{--                                            <div class="input-group">--}}
-{{--                                                <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">--}}
-{{--                                            </div>--}}
-{{--                                            <span v-cloak class="text-muted form-control"  id="bidbox" style="margin-top: 10px;">~@{{calcAmount}}</span>--}}
-                                            <small class="txtWhitecolor">BID</small>
+                                            <small class="txtWhitecolor">{{__('subheader2')}}</small>
                                             <small v-cloak class="float-end text-success cursor-pointer " id="bidval" v-on:click="selectedPrice=latestBid">
                                                 <i v-if="bidincreased == 'increased'" class="fas fa-sort-up"></i>
                                                 <i v-else class="fas fa-sort-down"></i>
@@ -165,11 +157,11 @@
                                         <div id="selectType" style="">
                                             <div class="form-check form-check-inline" id="limitBuyId" >
                                                 <input class="form-check-input"  type="checkbox" id="limitBuyInput" value="1"  onclick="enableLimitBuy('derivative')" disabled style="display:none;">
-                                                <label class="form-check-label txtWhitecolor" id="limitBuyInputLevel" for="inlineCheckbox1"  style="display:none;">Buy</label>
+                                                <label class="form-check-label txtWhitecolor" id="limitBuyInputLevel" for="inlineCheckbox1"  style="display:none;">{{__('buy')}}</label>
                                             </div>
                                             <div class="form-check form-check-inline" id="limitSellId" >
                                                 <input class="form-check-input "  type="checkbox" id="limitSellInput" value="2"  disabled onclick="enableLimitSell('derivative')" style="display:none;" >
-                                                <label class="form-check-label txtWhitecolor" id="limitSellInputLevel" for="inlineCheckbox2" style="display:none;">Sell</label>
+                                                <label class="form-check-label txtWhitecolor" id="limitSellInputLevel" for="inlineCheckbox2" style="display:none;">{{__('sell')}}</label>
                                             </div>
                                         </div>
                                         <div id="coinDiv" style="display: none">
@@ -186,10 +178,8 @@
                                             <input type="number" id='coinval' class="form-control mb-1" placeholder=" " v-model="amount">
                                         </div>
                                         <div class="form-group">
-{{--                                            <label v-cloak class="txtWhitecolor"  id="askboxlabel" for="" style="margin-top: 20px;">@{{currency}}:</label>--}}
-{{--                                            <input type="number" class="form-control mb-1" id="askbox" placeholder="" v-model="amount">--}}
                                             <div id="askDiv" style="margin-bottom: 15px;">
-                                                <small class="txtWhitecolor">ASK</small>
+                                                <small class="txtWhitecolor">{{__('subheader3')}}</small>
                                                 <small v-cloak class="float-end text-danger cursor-pointer" id="askval" v-on:click="selectedPrice=latestAsk">
                                                     <i v-if="askincreased == 'askincreased'" class="fas fa-sort-up"></i>
                                                     <i v-else class="fas fa-sort-down"></i>
@@ -211,65 +201,65 @@
                                 </div>
                                 <div class="row mt-5" id="marketbutton" >
                                     <div class="col d-grid">
-                                        <button id='derivativeNormalBuy'class="btn btn-block btn-success" :disabled="amount<=0 || derivativeRange > derivativeBalance" v-on:click="derivativeBuy">Derivative Buy</button>
-                                        <button id='derivativeLimitBuy' class="btn btn-block btn-success" disabled style="display:none;" v-on:click="limitBuy">Derivative Buy</button>
+                                        <button id='derivativeNormalBuy'class="btn btn-block btn-success" :disabled="amount<=0 || derivativeRange > derivativeBalance" v-on:click="derivativeBuy">{{__('button9')}}</button>
+                                        <button id='derivativeLimitBuy' class="btn btn-block btn-success" disabled style="display:none;" v-on:click="limitBuy">{{__('button9')}}</button>
                                     </div>
                                     <div class="col d-grid">
-                                        <button  :load="logdata(amount)"id='derivativeNormalSell' class="btn btn-block btn-danger" :disabled="amount <= 0 || amount > leverageWalletAmount" v-on:click="derivativeSell">Derivative Sell</button>
-                                        <button id='derivativeLimitSell' class="btn btn-block btn-danger" disabled  style="display:none;" v-on:click="limitSell">Derivative Sell</button>
+                                        <button  :load="logdata(amount)" id='derivativeNormalSell' class="btn btn-block btn-danger" :disabled="amount <= 0 || amount > leverageWalletAmount" v-on:click="derivativeSell">{{__('button10')}}</button>
+                                        <button id='derivativeLimitSell' class="btn btn-block btn-danger" disabled  style="display:none;" v-on:click="limitSell">{{__('button10')}}</button>
                                     </div>
                                 </div>
 
                             </div>
                         @else
                             <div class="card-body">
-                            <h4 v-cloak class="txtHeadingColor">ORDER FORM: @{{currency}}</h4>
+                            <h4 v-cloak class="txtHeadingColor">{{__('title12')}}: @{{currency}}</h4>
                             <hr>
                             <div class="row">
                                 <div class="col">
                                     <select class="form-select selectClass" aria-label="Default select example" id="choseOrderType" onchange="choseOrderType()">
-                                        <option value="0" selected>Market</option>
-                                        <option value="1">Limit</option>
+                                        <option value="0" selected>{{__('market')}}</option>
+                                        <option value="1">{{__('limit')}}</option>
                                     </select>
                                     <div class="form-group">
                                         <input type="hidden" name="editId" id="editId" value="" >
                                         <div id="limitDiv"  style="display: none">
-                                            <label class="txtWhitecolor" for="" style="margin-top: 10px;">Limit:</label>
+                                            <label class="txtWhitecolor" for="" style="margin-top: 10px;">{{__('limit')}}:</label>
                                             <div class="input-group" id="limitinputdiv">
                                                 <input type="text" id="limitAmountId" onkeyup="limitLength()" class="form-control mb-1" placeholder="" v-model="limitAmount">
                                                 <span v-if="limitAmount.length" id="limitAmountInputLength" class="input-count d-none">@{{limitAmount.length}}</span>
                                             </div>
                                         </div>
-                                        <label class="txtWhitecolor d-none" for="" style="margin-top: 10px;">USD:</label>
+                                        <label class="txtWhitecolor d-none" style="margin-top: 10px;">USD:</label>
                                         <div class="input-group d-none">
                                             <input type="text" class="form-control mb-1" placeholder="" readonly v-model="selectedPrice" style="cursor: not-allowed;">
                                         </div>
                                         <div id="totalAmountDiv">
-                                            <label class="txtWhitecolor"  for="" style="margin-top: 10px;">Total:</label>
+                                            <label class="txtWhitecolor"  for="" style="margin-top: 10px;">{{__('total')}}:</label>
                                             <span v-cloak id="totalamountVal" class="text-muted form-control" style="">~@{{calcAmount}}</span>
                                         </div>
                                     </div>
                                     <div class="" style="margin-bottom: 15px;">
-                                        <small class="txtWhitecolor">BID</small>
+                                        <small class="txtWhitecolor">{{__('subheader2')}}</small>
                                         <small v-cloak class="float-end text-success cursor-pointer" id="bidval" v-on:click="selectedPrice=latestBid">
                                             <i v-if="bidincreased == 'increased'" :load="logbid(bidincreased)"  class="fas fa-sort-up"></i>
                                             <i v-else class="fas fa-sort-down"></i>
                                             @{{latestBid}}
                                         </small>
                                     </div>
-                                        <button id="normalBuy" class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy" style="width: 100%;">Exchange Buy</button>
-                                        <button id="normalLimitBuyButton" class="btn btn-block btn-success" disabled v-on:click="limitBuy" style="display:none;width: 100%;margin-top:-5px;">Exchange Buy</button>
+                                        <button id="normalBuy" class="btn btn-block btn-success" :disabled="amount<=0 || calcAmount > usdBalance" v-on:click="buy" style="width: 100%;">{{__('button7')}}</button>
+                                        <button id="normalLimitBuyButton" class="btn btn-block btn-success" disabled v-on:click="limitBuy" style="display:none;width: 100%;margin-top:-5px;">{{__('button7')}}</button>
                                 </div>
                                 <div class="col">
 
                                     <div id="selectType" style="">
                                         <div class="form-check form-check-inline" id="limitBuyId" >
                                             <input class="form-check-input"  type="checkbox" id="limitBuyInput" value="1"   disabled  onclick="enableLimitBuy()" style="display:none;">
-                                            <label class="form-check-label txtWhitecolor" id="limitBuyInputLevel" for="inlineCheckbox1" style="display:none;">Buy</label>
+                                            <label class="form-check-label txtWhitecolor" id="limitBuyInputLevel" for="inlineCheckbox1" style="display:none;">{{__('buy')}}</label>
                                         </div>
                                         <div class="form-check form-check-inline" id="limitSellId" >
                                             <input class="form-check-input "  type="checkbox" id="limitSellInput" value="2" disabled onclick="enableLimitSell()"  style="display:none;">
-                                            <label class="form-check-label txtWhitecolor" id="limitSellInputLevel" for="inlineCheckbox2"  style="display:none;">Sell</label>
+                                            <label class="form-check-label txtWhitecolor" id="limitSellInputLevel" for="inlineCheckbox2"  style="display:none;">{{__('sell')}}</label>
                                         </div>
                                     </div>
                                     <div id="coinDiv" style="display: none">
@@ -290,8 +280,8 @@
                                             @{{latestAsk}}
                                         </small>
                                     </div>
-                                        <button id="normalSell" class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell" style="width: 100%;">Exchange Sell</button>
-                                        <button id="normalLimitSellButton" class="btn btn-block btn-danger" disabled v-on:click="limitSell" style="display:none;width: 100%;">Exchange Sell</button>
+                                        <button id="normalSell" class="btn btn-block btn-danger" :disabled="amount<=0 || amount > balance" v-on:click="sell" style="width: 100%;">{{__('button8')}}</button>
+                                        <button id="normalLimitSellButton" class="btn btn-block btn-danger" disabled v-on:click="limitSell" style="display:none;width: 100%;">{{__('button8')}}</button>
                                 </div>
                             </div>
                         </div>
@@ -299,13 +289,12 @@
                     </div>
 
                 </div>
-                <div class="card mt-3" >
+                <div class="card mt-3" id="pendingTrade" style="display: none">
                     <div class="card">
                         <div class="card-body buyselldata">
-                            <h4 v-cloak class="txtHeadingColor " >Pending Trade: <span id="currcoin">@{{currency}}</span></h4>
+                            <h4 v-cloak class="txtHeadingColor">{{__('pending_trade')}}: <span id="currcoin">@{{currency}}</span></h4>
                             <hr>
                             <table class="tables" id="tabledata">
-
                             </table>
                         </div>
                     </div>
@@ -313,7 +302,7 @@
             </div>
             <div class="col main-app-container">
                 <div class="card">
-                    <div class="card-body" >
+                    <div class="card-body graphDiv" >
                         <div class="text-center title mb-2 txtHeadingColor"></div>
 
                         <div id='buttonrow' class="chart-top-row">
@@ -323,11 +312,10 @@
                             <span class="interval" id="30m" v-on:click="getChartData('interval','30m')">30m</span>
                             <span class="interval" id="1h"  v-on:click="getChartData('interval','1h')">1h</span>
                             <span class="interval" id="6h"  v-on:click="getChartData('interval','6h')">6h</span>
-                            <span style="margin-left: 10px">BitcWay</span>
+                            <span class="interval" style="margin-left: 10px">BitcWay</span>
                         </div>
                         <div id="chart" style="height:465px; display: block; color: white; background-color: #171b26">
                             <div class="loader" style="display: none">
-
                             </div>
                         </div>
 
@@ -345,21 +333,20 @@
                         <div id="tradingview_f7648" class="d-none"></div>
                     </div>
                 </div>
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <h4 class="txtHeadingColor" v-cloak>Order Book: @{{currency}}/USD</h4>
+                <div class="card mt-3 orderBookDiv">
+                    <div class="card-body ">
+                        <h4 class="txtHeadingColor" v-cloak>{{__('title13')}}: @{{currency}}/USD</h4>
                         <hr>
                         <div class="">
                             <div class="row">
                                 <div class="col orders">
                                     <table class="table">
                                         <thead>
-                                            <th class="txtWhitecolor">Count</th>
-                                            <th class="txtWhitecolor">Amount</th>
-                                            <th class="txtWhitecolor">Total</th>
-                                            <th class="txtWhitecolor">Price</th>
+                                            <th class="txtWhitecolor">{{__('count')}}</th>
+                                            <th class="txtWhitecolor">{{__('col10')}}</th>
+                                            <th class="txtWhitecolor">{{__('total')}}</th>
+                                            <th class="txtWhitecolor">{{__('price')}}</th>
                                         </thead>
-                                        {{--<tbody style="background-color: #1142304d;">--}}
                                         <tbody>
                                             <tr v-for="(item, index) in bids" :class="{ 'coloredbid': bidsprev.length > 0 && bidsprev[index][2] != bids[index][2] }">
                                                 <td v-cloak class="txtWhitecolor">@{{item[1]}}</td>
@@ -373,10 +360,10 @@
                                 <div class="col orders">
                                     <table class="table">
                                         <thead>
-                                            <th class="txtWhitecolor">Price</th>
-                                            <th class="txtWhitecolor">Total</th>
-                                            <th class="txtWhitecolor">Amount</th>
-                                            <th class="txtWhitecolor">Count</th>
+                                            <th class="txtWhitecolor">{{__('price')}}</th>
+                                            <th class="txtWhitecolor">{{__('total')}}</th>
+                                            <th class="txtWhitecolor">{{__('col10')}}</th>
+                                            <th class="txtWhitecolor">{{__('count')}}</th>
                                         </thead>
                                         {{--<tbody style="background-color:#942f3e6e; ">--}}
                                         <tbody>
@@ -410,11 +397,11 @@
                 buyCheckBox.disabled  = false;
                 sellCheckBox.disabled = false;
             }
-
         }
     </script>
     <script>
         function choseOrderType( limitype) {
+            let type                  = $("#choseOrderType").val();
             var buyCheckBoxLevel      = document.getElementById("limitBuyInputLevel");
             var sellCheckBoxLevel     = document.getElementById("limitSellInputLevel");
             var buyCheckBox           = document.getElementById("limitBuyInput");
@@ -426,35 +413,18 @@
             var askDiv                = document.getElementById("askDiv");
             var totalAmountDiv        = document.getElementById("totalAmountDiv");
             var coinId                = document.getElementById("coinId");
-            let type                  = $("#choseOrderType").val();
             var normalSellButton      = document.getElementById("normalSell");
             var normalBuyButton       = document.getElementById("normalBuy");
             var normalLimitSellButton = document.getElementById("normalLimitSellButton");
             var normalLimitBuyButton  = document.getElementById("normalLimitBuyButton");
+            var pendingTrade          = document.getElementById("pendingTrade");
             // var bidbox=document.getElementById("bidbox");
             // var askbox=document.getElementById("askbox");
             // var askboxlabel=document.getElementById("askboxlabel");
             if (type == 1){
-
                 $(".deleteEnabled").show();
                 $(".deleteDisabled").hide();
-                if (limitype === "derivative"){
-                    document.getElementById("derivativeNormalSell").style.display = 'none';
-                    document.getElementById("derivativeNormalBuy").style.display  = 'none';
-                    document.getElementById("derivativeLimitBuy").style.display   = 'block';
-                    document.getElementById("derivativeLimitSell").style.display  = 'block';
-                    $('#limitAmountId').val("");
-                    $('#totalLimitCurrencyId').val("");
-                    // $('#limitAmountInputLength').html("");
-                    // $('#totalLimitCurrencyInputLength').html("");
-
-                }
-                else{
-                    normalLimitBuyButton.style.display  = "block";
-                    normalLimitSellButton.style.display = "block";
-                    normalSellButton.style.display      = "none";
-                    normalBuyButton.style.display       = "none";
-                }
+                pendingTrade.style.display      = "block";
                 coinId.style.marginTop          = "5px";
                 askDiv.style.marginTop          = "14px";
                 buyCheckBox.disabled            = true;
@@ -472,9 +442,27 @@
                 $('#totalLimitCurrencyId').val("");
                 $('#limitAmountId').val("");
 
+                if (limitype === "derivative"){
+                    document.getElementById("derivativeNormalSell").style.display = 'none';
+                    document.getElementById("derivativeNormalBuy").style.display  = 'none';
+                    document.getElementById("derivativeLimitBuy").style.display   = 'block';
+                    document.getElementById("derivativeLimitSell").style.display  = 'block';
+                    $('#limitAmountId').val("");
+                    $('#totalLimitCurrencyId').val("");
+                    // $('#limitAmountInputLength').html("");
+                    // $('#totalLimitCurrencyInputLength').html("");
+
+                }
+                else{
+                    normalLimitBuyButton.style.display  = "block";
+                    normalLimitSellButton.style.display = "block";
+                    normalSellButton.style.display      = "none";
+                    normalBuyButton.style.display       = "none";
+                }
             }
             else
             {
+                pendingTrade.style.display      = "none";
                 buyCheckBox.style.display       = "none";
                 sellCheckBox.style.display      = "none";
                 buyCheckBox.disabled            = true;
@@ -498,7 +486,6 @@
                     document.getElementById("derivativeNormalBuy").style.display  = 'block';
                     document.getElementById("derivativeLimitBuy").style.display   = 'none';
                     document.getElementById("derivativeLimitSell").style.display  = 'none';
-
                 }
                 else
                 {
@@ -507,7 +494,6 @@
                     normalSellButton.style.display      = "block";
                     normalBuyButton.style.display       = "block";
                 }
-
             }
         }
     </script>
@@ -541,10 +527,7 @@
     <script>
         // var dumCoin = ["tOMGC:USD", 3.00, 3.01111, 3.411, 311.1100000, -0.0999, -0.000222, 301.00111, 115.88027091, 372.28, 356];
         const socket = io('http://192.144.82.234:3000/');
-        //const socket = io('http://130.51.180.11:3000/');
-        // const socket = io('http://127.0.0.1:3005/');
         // showLoader('Loading...');
-        // const socket = io('http://192.168.1.29:3000/');
         let loaded = false;
         //showLoader("Loading");
         socket.on('trackers', (trackers) => {
@@ -567,7 +550,6 @@
             if(loaded == false){
                 hideLoader();
                 Home.selectedItem = Home.trackers[0];
-                console.log("here it goes");
                 Home.getChartData();
                 setInterval(function(){
                     Home.getOrders();
@@ -579,7 +561,6 @@
         let w               = null;
         var totalSellAmount = 0;
         var currencies      = <?php echo json_encode($currency); ?>;
-        console.log(currencies);
         // const OrderBook Start
         $(document).ready(function() {
             var item = ["tBTCUSD"];
@@ -598,11 +579,9 @@
             CurrencyApi = 'http://bitc-way.com/get-order';
             axios.get(CurrencyApi, {params: {currency: currency}})
                 .then(response => {
-                    console.log("response is here");
                     items = response.data;
                     if(items){
                         if(items.length > 3){
-                            console.log("inside");
                             bids = [];
                             asks = [];
                             items.forEach(function(item){
@@ -614,7 +593,6 @@
                             });
                             Home.bids = bids;
                             Home.asks = asks;
-                            console.log(Home.bids);
                         }else{
                             item = items[1];
                             if (item[2] > 0) {
@@ -635,19 +613,16 @@
                             Home.latestBid = getlatestval;
                         }
 
-                        // console.log(getlatestval);
                         Home.bidIncrease = Home.bids[0][0] > Home.bids[1][0];
                         //Home.bidIncrease = Home.latestBid>Home.bids[0][0] > Home.bids[1][0];
                         if (Home.bids[0][0] > Home.latestBid)
                         {
-                            console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("bid increased");
                             //Home.bidIncrease=Home.bids[0][0] > Home.latestBid;
                             Home.bidincreased = 'increased';
                         }
                         else
                         {
                             Home.bidincreased = 'decreased';
-                            console.log("bid decreased");
                         }
                         /*** end ****/
 
@@ -667,13 +642,11 @@
                         }
                         if (Home.asks[0][0] > Home.latestAsk)
                         {
-                            console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("ask increased");
                             Home.askincreased = 'increased';
                         }
                         else
                         {
                             Home.askincreased = 'decreased';
-                            console.log("ask decreased");
                         }
                         /*** end****/
 
@@ -688,12 +661,10 @@
             if (Home.lastcurrency != currency) {
                 Home.lastcurrency = currency;
             }
-            console.log(currency);
             if (w) w.close();
             w = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
             w.onmessage = function(msg){
                 items   = JSON.parse(msg.data);
-                // console.log(msg.data);
                 if (items.event) return;
                 var title;
                 Home.bidsprev = Home.bids;
@@ -711,7 +682,6 @@
                         });
                         Home.bids = bids;
                         Home.asks = asks;
-                        console.log(Home.bids);
                     } else {
                         item = items[1];
                         if (item[2] > 0) {
@@ -732,19 +702,16 @@
                         Home.latestBid = getlatestval;
                     }
 
-                    // console.log(getlatestval);
                     Home.bidIncrease = Home.bids[0][0] > Home.bids[1][0];
                     //Home.bidIncrease = Home.latestBid>Home.bids[0][0] > Home.bids[1][0];
                     if (Home.bids[0][0] > Home.latestBid)
                     {
-                        //console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("bid increased");
                         //Home.bidIncrease=Home.bids[0][0] > Home.latestBid;
                         Home.bidincreased = 'increased';
                     }
                     else
                     {
                         Home.bidincreased = 'decreased';
-                       // console.log("bid decreased");
                     }
                     /*** end ****/
 
@@ -764,13 +731,11 @@
                     }
                     if (Home.asks[0][0] > Home.latestAsk)
                     {
-                        //console.log(Home.bids[0][0]);console.log(Home.latestBid+"latest");console.log("ask increased");
                         Home.askincreased = 'increased';
                     }
                     else
                     {
                         Home.askincreased = 'decreased';
-                        //console.log("ask decreased");
                     }
                     /*** end****/
 
@@ -830,7 +795,6 @@
                     let currency = this.selectedItem[0]?this.selectedItem[0]:'tBTCUSD';
                     currency = this.splitCurrency(currency);
                     //leverageWalletAmount = currencies['BTC']['amount'];
-                    //console.log("leverage:"+leverageWalletAmount);
                     return currency;
                 },
                 calcAmount(){
@@ -845,7 +809,6 @@
                 derivativeRange(){
                     if(document.getElementById("limitAmountId").value !=""){
                         var limitval=document.getElementById("limitAmountId").value;
-                        //console.log("amount:"+this.limitAmount+"selectedPrice:"+this.selectedPrice+"DerivativeVal:"+this.derivativeValue);
                         return (this.limitAmount)/this.derivativeValue;
                     }
                     else{
@@ -861,29 +824,21 @@
             },
             methods: {
                 logbid(bidincreased) {
-                    console.log(bidincreased+"bid")
                 },
                 logask(askincreased) {
-                    console.log(askincreased+"ask")
                 },
                /* log(leverageWalletAmount) {
-                    console.log(leverageWalletAmount+"here is the leaverage");
                 },*/
                 logdata(amount) {
-                    console.log(amount+" amount");
                     this.amount               = amount
                     var currcoin              = this.currency;
-                    console.log(currcoin);
-                    //console.log("currcoin:"+currcoin);
                     if(typeof currencies[currcoin] === 'undefined') {
                         leverageWalletAmount = 0;
                     }
                     else {
                         leverageWalletAmount      = currencies[currcoin]['amount']
                     }
-
                     this.leverageWalletAmount = leverageWalletAmount;
-                    console.log(this.leverageWalletAmount+" lvcoin");
                 },
                 itemSetBids(index) {
                     let result = 0;
@@ -908,11 +863,8 @@
                     return currency;
                 },
                 setCurrency(item){
-                    console.log("item:")
-                    console.log(item);
                     let coin    = item[0];
                     let symbolx = coin.substr(1);
-                    console.log('t'+symbolx);
                     getInitialOrder('t'+symbolx);
 
                     let currentCoin = this.splitCurrency(symbolx);
@@ -946,10 +898,7 @@
 
                     if(currencies[currentCoin]){
                         totalSellAmount = currencies[currentCoin]['amount'];
-                        // console.log(currencies);
                         // totalSellAmount = currencies['BTC']['amount'];
-                        // console.log("totalamount:"+totalSellAmount);
-                        // console.log(currencies[currentCoin]);
                     }
                     else{
                         totalSellAmount = 0;
@@ -1047,118 +996,31 @@
 
                     let that = this;
                     let currency = that.selectedItem[0];
-                    console.log(that.currency);
-                     showLoader('Loading ...');
-                    axios.get('{{route("user-get-chart-data")}}', {params: {currency: currency, user_currency: that.currency, interval:interval_value, start:startdate, end:enddate, range:range_value }})
+                    // showLoader('Loading ...');
+                    axios.get('{{route("user-get-chart-data", app()->getLocale())}}', {params: {currency: currency, user_currency: that.currency, interval:interval_value, start:startdate, end:enddate}})
                     .then(function (response) {
-                        console.log("inresponsee"+currency);
                         let chartData = [];
                         if(response.data.status){
-                            // if(currency === 'tMABUSD'){
-                            //     //that.balance = response.data.balance;
-                            //     var coin_data=JSON.stringify(coindata);
-                            //     console.log("coindata"+coin_data);
-                            //     var newData = JSON.parse(coin_data);
-                            //     // newData.forEach(function (item) {
-                            //     //     // const dateObject = new Date(item[0]);
-                            //     //     // const humanDateFormat = dateObject.toLocaleString();
-                            //     //     // var getdate= humanDateFormat.split(" ");
-                            //     //     // var datevalue= formatDate(getdate[0]);
-                            //     //     // console.log(datevalue+' '+getdate[1]+' '+getdate[2]);
-                            //     //     let newChartData = {
-                            //     //         time: item[0],
-                            //     //         open: item[1],
-                            //     //         high: item[3],
-                            //     //         low: item[4],
-                            //     //         close: item[2],
-                            //     //         volume: 15517.284349850017
-                            //     //     };
-                            //     //     chartData.push(newChartData);
-                            //     // })
-                            //     console.log(newData);
-                            //     chartData=newData['weeklydata'];
-                            //     //chartData.push(newData);
-                            // console.log("handmade"+chartData)
-                            // }
-                            /*else {*/
+                            that.balance = response.data.balance;
+                            response.data.chartData.forEach(function(item){
+                                let newChartData = { time: item[0]/1000 , open: item[1], high: item[3], low: item[4], close: item[2]};
+                                chartData.push(newChartData);
 
-                                that.balance = response.data.balance;
-                                console.log(response.data);
-                                response.data.chartData.forEach(function (item) {
-                                    // console.log(" value0:"+item[0]," value1:"+item[1]," value2:"+item[2],);
-                                    // console.log();
-                                    // console.log();
-                                    // console.log(" value3:"+item[3]);
-                                    // console.log(" value4:"+item[4]);
-
-                                    // if (typeof item[0] === 'string' ||  item[0] instanceof String){
-                                    //     var time =Number(item[0])
-                                    // }
-                                    // else{
-                                    //     var time =item[0]
-                                    // }
-                                    // if (typeof item[1] === 'string' ||  item[1] instanceof String){
-                                    //     var open =Number(item[1])
-                                    // }
-                                    // else{
-                                    //     var open =item[1]
-                                    // }
-                                    // if (typeof item[2] === 'string' ||  item[2] instanceof String){
-                                    //     var close =Number(item[2])
-                                    // }
-                                    // else{
-                                    //     var close =item[2]
-                                    // }
-                                    // if (typeof item[3] === 'string' ||  item[3] instanceof String){
-                                    //     var high =Number(item[3])
-                                    // }
-                                    // else{
-                                    //     var high =item[3]
-                                    // }
-                                    // if (typeof item[4] === 'string' ||  item[4] instanceof String){
-                                    //     var low =Number(item[4])
-                                    // }
-                                    // else{
-                                    //     var low =item[4]
-                                    // }
-                                    // const dateObject = new Date(item[0]);
-                                    // const humanDateFormat = dateObject.toLocaleString();
-                                    // var getdate= humanDateFormat.split(" ");
-                                    // var datevalue= formatDate(getdate[0]);
-                                    // console.log(datevalue+' '+getdate[1]+' '+getdate[2]);
-                                    let newChartData = {
-                                        time: item[0] / 1000,
-                                        open:  item[1],
-                                        high:  item[3],
-                                        low:  item[4],
-                                        close: item[2],
-                                        volume: 15517.284349850017
-                                    };
-                                    //volumedata= { time: item[0]/1000,value:item[5]};
-                                    chartData.push(newChartData);
-
-                                    hideLoader()
-                                });
-                                console.log(chartData);
-                           /* }*/
-                            // if(currency == 'tMABUSD'){
-                            //     var coindata=[
-                            //         { "time":1621604,"open": 39252, "high":39839,"low":39252, "close":39821.73222635},
-                            //         { "time":1621518,"open": 39689, "high":39037,"low":631.40783786, "close":39252}
-                            //     ]
-                            //
-                            //     //chartData.push(coindata);
-                            //     console.log(chartData);
-                            // }
+                            });
+                            if(currency == 'tMABUSD'){
+                                var coindata=[
+                                    { "time":1621604,"open": 39252, "high":39839,"low":39252, "close":39821.73222635},
+                                    { "time":1621518,"open": 39689, "high":39037,"low":631.40783786, "close":39252}
+                                ]
+                                //chartData.push(coindata);
+                            }
                             setTimeout(function(){
                                 console.log(chartData);
                                 that.drawChart(chartData);
                             }, 100);
                         }
-
                     })
                     .catch(function (error) {
-                        // console.log(error);
                     })
                     .then(function () {
                         hideLoader();
@@ -1200,17 +1062,10 @@
                     return startdate;
                 },
                 drawChart(data){
-                    console.log(data)
                     let that = this;
                     if(that.chart) {
                         that.chart.remove();
                     }
-                //     var chartElement="<div style='background-color:#171b26;'>"
-                //     +"<button>1D</button>"
-                //     +"<button>1W</button>"
-                //     +"<button>1M</button>"
-                // "</div>";
-                //     $('#chart').empty();
                     that.chart = LightweightCharts.createChart(document.getElementById('chart'), {
                         layout: {
                             backgroundColor: '#171b26',
@@ -1250,12 +1105,6 @@
                     });
 
                     var candleSeries = that.chart.addCandlestickSeries({
-                        //upColor: 'rgba(255, 144, 0, 1)',
-                        //downColor: '#000',
-                        //borderDownColor: 'rgba(255, 144, 0, 1)',
-                        //borderUpColor: 'rgba(255, 144, 0, 1)',
-                        //wickDownColor: 'rgba(255, 144, 0, 1)',
-                        //wickUpColor: 'rgba(255, 144, 0, 1)',
                     });
 
                     data.sort((a, b) => (a.time > b.time) ? 1 : -1);
@@ -1367,7 +1216,7 @@
                         return false;
                     }
                     showLoader('Processing...');
-                    axios.post('{{route("user-trade-buy")}}', {
+                    axios.post('{{route("user-trade-buy", app()->getLocale())}}', {
                         currency: that.currency,
                         buyAmount: that.amount,
                         calcBuyAmount: that.calcAmount,
@@ -1378,8 +1227,8 @@
                     .then(function (response) {
                         if(response.data.status){
                             toastr.success('Buy successfull');
-                            //window.location.href = '{{route("user-wallets")}}';
-                            //window.location.href = '{{route("user-trade")}}';
+                            //window.location.href = '{{route("user-wallets", app()->getLocale())}}';
+                            //window.location.href = '{{route("user-trade", app()->getLocale())}}';
                             hideLoader();
                             get_buy_sell_data(that.currency);
                             return false;
@@ -1401,7 +1250,7 @@
                     }
 
                     showLoader('Processing...');
-                    axios.post('{{route("user-trade-sell")}}', {
+                    axios.post('{{route("user-trade-sell", app()->getLocale())}}', {
                         currency        : that.currency,
                         sellAmount      : that.amount,
                         calcSellAmount  : that.calcAmount
@@ -1409,8 +1258,6 @@
                     .then(function (response) {
                         if(response.data.status){
                             toastr.success('Sell successfull');
-                            {{--window.location.href = '{{route("user-wallets")}}';--}}
-                            //window.location.href = '{{route("user-trade")}}';
                             hideLoader();
                             get_buy_sell_data(that.currency);
                             return false;
@@ -1429,7 +1276,7 @@
                         return false;
                     }
                     showLoader('Processing...');
-                    axios.post('{{route("user-trade-buy")}}', {
+                    axios.post('{{route("user-trade-buy", app()->getLocale())}}', {
                     currency                : that.currency,
                         buyAmount           : that.amount,
                         calcBuyAmount       : that.calcAmount,
@@ -1439,8 +1286,7 @@
                         .then(function (response) {
                             if(response.data.status){
                                 toastr.success('Buy successfull');
-                                {{--window.location.href = '{{route("user-wallets")}}';--}}
-                                //window.location.href = '{{route("user-trade-derivative")}}';
+                                //window.location.href = '{{route("user-trade-derivative", app()->getLocale())}}';
                                 $('#limitAmountId').val("");
                                 $('#totalLimitCurrencyId').val("");
                                 hideLoader();
@@ -1461,7 +1307,7 @@
                     }
 
                     showLoader('Processing...');
-                    axios.post('{{route("user-trade-sell")}}', {
+                    axios.post('{{route("user-trade-sell", app()->getLocale())}}', {
                         currency       : that.currency,
                         sellAmount     : that.amount,
                         calcSellAmount : that.calcAmount,
@@ -1470,8 +1316,7 @@
                         .then(function (response) {
                             if(response.data.status){
                                 toastr.success('Sell successfull');
-                                {{--window.location.href = '{{route("user-wallets")}}';--}}
-                                //window.location.href = '{{route("user-trade-derivative")}}';
+                                //window.location.href = '{{route("user-trade-derivative", app()->getLocale())}}';
                                 hideLoader();
                                 get_buy_sell_data(that.currency);
                                 return false;
@@ -1488,13 +1333,6 @@
                     let sellCheckBox   = document.getElementById("limitSellInput");
                     //for Derivative buy/sell
                     var chk_derivative = document.getElementById("rangeInput");
-                    // var check_id = document.getElementById("editId");
-                    // if(check_id){
-                    //     var idval=check_id.value;
-                    // }
-                    // else{
-                    //     var idval="";
-                    // }
                     if(chk_derivative){
                         var derivative = chk_derivative.value;
                     }
@@ -1506,14 +1344,8 @@
                     if (buyCheckedValue == 1){
                         sellCheckBox.disabled = true;
                         let that = this;
-                        //remove commented code to check invalid amount
-                        // let calcLimit = that.calcLimitAmount;
-                        // if(that.calcLimitAmount <= 0 || that.calcLimitAmount > that.usdBalance) {
-                        //     toastr.error('Invalid limit amount !!');
-                        //     return false;
-                        // }
                         showLoader('Processing...');
-                        axios.post('{{route("user-limit-buy")}}', {
+                        axios.post('{{route("user-limit-buy", app()->getLocale())}}', {
                             currency          : that.currency,
                             limitType         : 1,
                             priceLimit        : that.limitAmount,
@@ -1521,7 +1353,6 @@
                             transactionStatus : 1,
                             derivative        : derivative,
                             //id:idval
-
                         })
                             .then(function (response) {
                                 if(response.data.status){
@@ -1530,15 +1361,6 @@
                                     hideLoader();
                                     sellCheckBox.disabled = false;
                                     get_buy_sell_data(that.currency);
-
-                                    //if derivative buy/sell
-                                    {{--if(chk_derivative){--}}
-                                    {{--    window.location.href = '{{route("user-trade-derivative")}}';--}}
-                                    {{--}--}}
-                                    {{--else{--}}
-                                    {{--    window.location.href = '{{route("user-trade")}}';--}}
-                                    {{--}--}}
-
                                     return false;
                                 }
                                 toastr.error('Error occured(Limit) !!');
@@ -1562,36 +1384,21 @@
                     if (sellCheckedValue == 2){
                         buyCheckBox.disabled = true;
                         let that = this;
-
-                        //remove commented code to check invalid amount
-                        // if(that.calcLimitAmount <= 0 || that.totalLimitCurrency > that.balance) {
-                        //     toastr.error('Invalid Limit Sell amount !!');
-                        //     return false;
-                        // }
-
                         showLoader('Processing...');
-                        axios.post('{{route("user-limit-sell")}}', {
+                        axios.post('{{route("user-limit-sell", app()->getLocale())}}', {
                             currency            : that.currency,
                             limitType           : 2,
                             priceLimit          : that.limitAmount,
                             currencyAmount      : that.totalLimitCurrency,
                             transactionStatus   : 1,
-                            derivative:derivative
+                            derivative          : derivative
                         })
                             .then(function (response) {
                                 if(response.data.status){
                                     toastr.success('Limit Sell successfull');
-                                    {{--window.location.href = '{{route("user-wallets")}}';--}}
                                     buyCheckBox.disabled = false;
                                     hideLoader();
                                     get_buy_sell_data(that.currency);
-                                    {{--if(chk_derivative){--}}
-                                    {{--    window.location.href = '{{route("user-trade-derivative")}}';--}}
-                                    {{--}--}}
-                                    {{--else{--}}
-                                    {{--    window.location.href = '{{route("user-trade")}}';--}}
-                                    {{--}--}}
-
                                     return false;
                                 }
                                 toastr.error('Error occured(Limit Sell) !!');
@@ -1650,7 +1457,7 @@
            var confirm_message = confirm("Do you want to delete this Trade?");
            if (confirm_message == true) {
                showLoader('Processing...');
-                   axios.post('{{route("user-limit-delete")}}', {
+                   axios.post('{{route("user-limit-delete", app()->getLocale())}}', {
                        limitId: val_id,
                    })
                        .then(function (response) {
@@ -1661,45 +1468,9 @@
                                return false;
                            }
                        })
-
                }
-
-
        }
-       /*function updatelimit(id, pricelimit, amount, position){
 
-
-           var inputfield="<input type='text' id='limitAmountId'  class='form-control mb-1' >";
-           var currencyinput="<input type='text' id='totalLimitCurrencyId'  class='form-control mb-1' placeholder='' >";
-
-
-
-           $("#limitinputdiv").html(inputfield);
-           $("#currencyinputdiv").html(currencyinput);
-           $("#totalLimitCurrencyId").val(amount);
-           $("#limitAmountId").val(pricelimit);
-           var idval= $("#editId").val(id);
-           console.log(idval);
-
-           if (position ===1){
-               $("#limitBuyInput").prop('checked', true);
-               $("#limitSellInput").prop('disabled', true);
-               $("#limitSellInput").prop('checked', false);
-               $("#normalLimitBuyButton").prop('disabled', false);
-               $("#normalLimitSellButton").prop('disabled', true);
-           }
-           else{
-               $("#limitBuyInput").prop('disabled', false);
-               $("#limitBuyInput").prop('checked', false);
-               $("#limitSellInput").prop('checked', true);
-               $("#normalLimitBuyButton").prop('disabled', true);
-               $("#normalLimitSellButton").prop('disabled', false);
-           }
-           console.log(id);
-           console.log(pricelimit);
-           console.log(amount);
-           console.log(position);
-       }*/
         /**
          * Generates HTML table for Buy/Sell Pending
          * @param string coin name
@@ -1721,21 +1492,23 @@
                 }
             });
             $.ajax({
-                url     : '{{route("get-buy-sell-pending-data")}}',
+                url     : '{{route("get-buy-sell-pending-data", app()->getLocale())}}',
                 type    : "Get",
                 data    : {coin:coin, type:type}, // the value of input
-                success : function(response){ // What to do if we succeed
+                success : function(response){
+                    // What to do if we succeed
+                    // Ans: Try to solve the next problem.
                     var data = "";
                     if(response.length < 0 || response === "no data"){
-                        $("#tabledata").html("<div>No Pending Buy/Sell Data Found.</div>");
+                        $("#tabledata").html("<div>{{__('noBuySellData')}}.</div>");
                     }
                   else{
                         data+="<thead>" +
                                 "<tr>" +
-                                    "<th class='txtWhitecolor th5'>LIMIT</th>" +
-                                    "<th class='txtWhitecolor th6'>AMOUNT</th>" +
-                                    "<th class='txtWhitecolor th7'>POSITION</th>" +
-                                    "<th class='txtWhitecolor th8'>ACTION</th>"+
+                                    "<th class='txtWhitecolor th5'>{{__('limit')}}</th>" +
+                                    "<th class='txtWhitecolor th6'>{{__('col10')}}</th>" +
+                                    "<th class='txtWhitecolor th7'>{{__('col12')}}</th>" +
+                                    "<th class='txtWhitecolor th8'>{{__('action')}}</th>"+
                                 " </tr>" +
                               "</thead>";
                         data+="<tbody>";
@@ -1754,7 +1527,6 @@
                             var num = response[i].currencyAmount;
                             var decimal_count = num.toString().split('.');
 
-                            //decimal[1] is the number of digits after the decimal point
 
                             if (decimal_count.length>1 && decimal_count[1].length >5)
                             {
@@ -1784,57 +1556,7 @@
                 }
             });
         }
-        // function syncToInterval(interval) {
-        //     if (areaSeries) {
-        //         chart.removeSeries(areaSeries);
-        //         areaSeries = null;
-        //     }
-        //     candle = chart.addCandleSeries({
-        //         topColor: 'rgba(76, 175, 80, 0.56)',
-        //         bottomColor: 'rgba(76, 175, 80, 0.04)',
-        //         lineColor: 'rgba(76, 175, 80, 1)',
-        //         lineWidth: 2,
-        //     });
-        //     candle.setData(seriesesData.get(interval));
-        // }
-        // var intervals = ['1D', '1W', '1M', '1Y'];
-        // var switcherElement = createSimpleSwitcher(intervals, intervals[0], syncToInterval);
-        //
-        // var chartElement = document.createElement('div');
-        // function createSimpleSwitcher(items, activeItem, activeItemChangedCallback) {
-        //     var switcherElement = document.createElement('div');
-        //     switcherElement.classList.add('switcher');
-        //
-        //     var intervalElements = items.map(function(item) {
-        //         var itemEl = document.createElement('button');
-        //         itemEl.innerText = item;
-        //         itemEl.classList.add('switcher-item');
-        //         itemEl.classList.toggle('switcher-active-item', item === activeItem);
-        //         itemEl.addEventListener('click', function() {
-        //             onItemClicked(item);
-        //         });
-        //         switcherElement.appendChild(itemEl);
-        //         return itemEl;
-        //     });
-        //
-        //     function onItemClicked(item) {
-        //         if (item === activeItem) {
-        //             return;
-        //         }
-        //
-        //         intervalElements.forEach(function(element, index) {
-        //             element.classList.toggle('switcher-active-item', items[index] === item);
-        //         });
-        //
-        //         activeItem = item;
-        //
-        //         activeItemChangedCallback(item);
-        //     }
-        //
-        //     return switcherElement;
-        // }
-        // document.body.appendChild(chartElement);
-        // document.body.appendChild(switcherElement);
+
         function formatDate(date) {
             var d = new Date(date),
                 month = '' + (d.getMonth() + 1),
@@ -1846,7 +1568,6 @@
 
             return [year, month, day].join('-');
         }
-
         /***Load data for first time***/
         get_buy_sell_data('BTC');
     </script>

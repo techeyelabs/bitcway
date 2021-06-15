@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use App\Models\DepositHistory;
 
 use App\Mail\Common;
 
@@ -28,7 +30,7 @@ class AuthController extends Controller
         ]);
         
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password, 'is_email_verified' => true, 'status' => true], $request->remember)) {
-            return redirect()->intended(route('user-dashboard'));
+            return redirect()->intended(route('user-trade', app()->getLocale()));
         }
 
         return redirect()->back()->with('error_message', 'Wrong credentials..');
@@ -44,7 +46,7 @@ class AuthController extends Controller
         $validated = $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
-            'furigana' => 'required',
+//            'furigana' => 'required',
             'username' => 'required|min:6|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed',
@@ -54,7 +56,8 @@ class AuthController extends Controller
         $User = new User();
         $User->first_name = $request->first_name;
         $User->last_name = $request->last_name;
-        $User->furigana = $request->furigana;
+//        $User->furigana = $request->furigana;
+        $User->furigana = "null";
         $User->username = $request->username;
         $User->email = $request->email;
         $User->password = Hash::make($request->password);
@@ -66,7 +69,7 @@ class AuthController extends Controller
         Mail::to($User->email)
             ->send(new Common($User));
 
-        return redirect()->back()->with('success_message', 'Registration successfull,please check your email to activate your account.');
+        return redirect()->back()->with('success_message', 'Registration successfull, please check your email to activate your account.');
     }
 
     public function verify(Request $request)
@@ -76,10 +79,18 @@ class AuthController extends Controller
             $check->is_email_verified = true;
             $check->status = true;
             $check->verification_token = null;
+            $check->balance = 100;
             $check->save();
-            return redirect()->route('login')->with('success_message', 'Your account is active now.'); 
+
+            $DepositHistory = new DepositHistory();
+            $DepositHistory->equivalent_amount = 100;
+            $DepositHistory->status = 5;
+            $DepositHistory->user_id  = $check->id;
+            $DepositHistory->save();
+
+            return redirect()->route('login', app()->getLocale())->with('success_message', 'Your account is active now.');
         }
-        return redirect()->route('login')->with('error_message', 'Invalid token.');
+        return redirect()->route('login', app()->getLocale())->with('error_message', 'Invalid token.');
     }
 
     public function changePassword(Request $request)
@@ -131,7 +142,7 @@ class AuthController extends Controller
     {
         $User = User::where('verification_code', $request->token);
         if($User) return view('user.auth.reset');
-        return redirect()->route('user-dashboard')->with('error_message', 'Invalid request,please contact administrator!!');
+        return redirect()->route('user-dashboard', app()->getLocale())->with('error_message', 'Invalid request,please contact administrator!!');
 
     }
 

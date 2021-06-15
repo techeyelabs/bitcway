@@ -97,7 +97,7 @@
     left: 0;
     top: 10px;
     border-radius: 0 4px 4px 0px;
-    width: 35px;
+    /*width: 35px;*/
     transition-delay: 0.3s;
     z-index: 9999;
   }
@@ -490,3 +490,6 @@
   .chiller-theme .sidebar-footer>a:last-child {
       border-right: none;
   }
+.txtWhitecolor {
+  color: white !important;
+}

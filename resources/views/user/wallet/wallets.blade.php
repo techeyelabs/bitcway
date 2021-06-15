@@ -22,7 +22,7 @@
 
 @section('content')
     <div id="wrap" class="deposit">
-        <h3 class="txtHeadingColor">Assets</h3>
+        <h3 class="txtHeadingColor pageTitle">{{__('menuoption7')}}</h3>
         <hr>
 
         {{--Margin Balance Start--}}
@@ -31,17 +31,17 @@
                 <div class="" style="margin: auto">
                     <div class="row container-fluid" >
                         <div class="  text-left " style="margin-left: -15px;">
-                            <abbr title="Your Total Margin Balance"  class="txtWhitecolor text-left initialism">Total Margin Balance</abbr><br>
+                            <abbr title="{{__('your_total_margin_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_margin_balance')}}</abbr><br>
                             <h4 class="txtWhitecolor text-left mb-4" ><span id="totalMArginBalanceId">00.000000</span><span style="font-size: 10px">USD</span></h4>
                             <div class="col-md-12 row">
                                 <div class="col-md-8">
-                                    <abbr title="Your Total Wallet Balance"  class="txtWhitecolor text-left initialism">Total Wallet Balance</abbr><br>
+                                    <abbr title="{{__('your_total_wallet_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_wallet_balance')}}</abbr><br>
                                     <h4 class="txtWhitecolor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
                                 </div>
                                 <div class="col-md-4" style="margin-top: 3px;">
                                     <button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
                                             data-bs-target="#derivativeModal" style="width: 100px;"
-                                            onclick="setFlag(1)">Transfer
+                                            onclick="setFlag(1)">{{__('button11')}}
                                     </button>
                                 </div>
                             </div>
@@ -52,7 +52,6 @@
         </div>
         {{--Margin Balance End--}}
 
-
         {{--Trade Wallet New Start--}}
         <div class="card mt-3 ">
             <div class="card-body">
@@ -60,7 +59,7 @@
                     <div class="container-fluid" >
 
                         <div class="row  text-left mb-3" style="margin-left: -15px;">
-                            <abbr title="Trade Wallet"  class="txtWhitecolor text-left initialism">Trade Wallet</abbr><br>
+                            <abbr title="{{__('Btrade_wallet')}}"  class="txtWhitecolor text-left initialism">{{__('trade_wallet')}}</abbr><br>
                             <h4 class="txtWhitecolor text-left mb-2" id="totalAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
                         </div>
                     </div>
@@ -68,12 +67,12 @@
                 <div style="margin: auto; overflow-x: auto">
                     <ul class="container-fluid" style=" min-width: 600px;">
                         <li class="row list-group-item d-flex justify-content-between align-items-center ">
-                            <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">Symbol</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: left;">Size</p>
-                            <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: center;">Entry Price</p>
-                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin" style="text-align: center;">Mark Price</p>
+                            <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('column1')}}</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: left;">{{__('size')}}</p>
+                            <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: center;">{{__('entryprice')}}</p>
+                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin" style="text-align: center;">{{__('markprice')}}</p>
                             <p class="col txtWhitecolor" id="unrealizedpnl" style="text-align: right;">Unrealized PNL</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: right;">Action</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('action')}}</p>
                         </li>
                         <?php
                         $i = 0;
@@ -86,7 +85,7 @@
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}" style="text-align: center;">{!! number_format((double)($item->equivalent_trade_amount),5)!!}</p>
                             <p class="col txtWhitecolor" id="CoinpriceIntoMycoin{{$index}}" style="text-align: center;">00.000000</p>
                             <p class="col " id="unrealizedpnl{{$index}}" style="text-align: right;">00.000000</p>
-                            <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetTradeSell{{$index}}" style="cursor: pointer;">Trade</span></p>
+                            <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetTradeSell{{$index}}" style="cursor: pointer;">{{__('title9')}}</span></p>
                         </li>
                         <?php
                         }
@@ -104,24 +103,24 @@
                 <div class="mb-4" style="margin: auto">
                     <div class="container-fluid">
                         <div class="text-left">
-                            <abbr title="Derivative Wallet"  class="txtWhitecolor text-left initialism">Derivative Wallet</abbr><br>
+                            <abbr title="Derivative Wallet"  class="txtWhitecolor text-left initialism">{{__('title20')}}</abbr><br>
                             <h4 class="txtWhitecolor text-left mb-3" id="totalDerivativeAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
                         </div>
                         <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal"
-                                data-bs-target="#derivativeModal" style="width: 100px;" onclick="setFlag(2)">Transfer
+                                data-bs-target="#derivativeModal" style="width: 100px;" onclick="setFlag(2)">{{__('button11')}}
                         </button>
                     </div>
                 </div>
                 <div style="margin: auto; overflow-x: auto">
                     <ul class="container-fluid" style=" min-width: 600px;">
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
-                            <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">Symbol</p>
-                            <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: left; ">Size</p>
-                            <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">Entry Price</p>
-                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin2" style="text-align: center;">Mark Price</p>
+                            <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('column1')}}</p>
+                            <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: left; ">{{__('size')}}</p>
+                            <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('entryprice')}}</p>
+                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin2" style="text-align: center;">{{__('markprice')}}</p>
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: right;">Unrealized PNL</p>
-                            <p class="col txtWhitecolor" id="derivati8vePercent" style="text-align: right;">Leverage</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: right;">Action</p>
+                            <p class="col txtWhitecolor" id="derivati8vePercent" style="text-align: right;">{{__('col16')}}</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('action')}}</p>
                         </li>
                         <?php
                         $j = 0;
@@ -139,7 +138,7 @@
                                 <p class="d-none" id="derivativeAmountWithPNL{{$j}}">00.000000</p>
                                 <p class="col " id="derivativeUnrealizedPrice{{$j}}" style="text-align: right;color:white;">00.000000</p>
                                 <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: right; color:white;">{{$item->leverage}}</p>
-                                <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetDerivativeSell{{$j}}" style="cursor: pointer;">Trade</span></p>
+                                <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetDerivativeSell{{$j}}" style="cursor: pointer;">{{__('title9')}}</span></p>
                             </li>
                             <?php
                             }
@@ -159,7 +158,7 @@
                 <div class="" style="margin: auto">
                     <div class="container-fluid" >
                         <div class="text-left mb-3">
-                            <abbr title="Finance Wallet"  class="txtWhitecolor text-left initialism">Finance Wallet</abbr><br>
+                            <abbr title="Finance Wallet"  class="txtWhitecolor text-left initialism">{{__('title21')}}</abbr><br>
                             <h4 class="txtWhitecolor text-left mb-3" id="totalFinanceAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
                         </div>
                     </div>
@@ -167,11 +166,11 @@
                 <div style="margin: auto; overflow-x: auto">
                     <ul class="container-fluid" style=" min-width: 400px;">
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
-                            <p class="col txtWhitecolor" id="" style="text-align: left; ">Symbol</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: left; ">Lot</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: center;">Value Date</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: right;">Redemption Date</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: right;">Expected Interest</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: left; ">{{__('column1')}}</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: left; ">{{__('col4')}}</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: center;">{{__('col5')}} </p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('col6')}} </p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('col7')}}</p>
                         </li>
                         <?php
                         $k = 0;
@@ -205,12 +204,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             style="background-color: #ffffff;"></button>
                 </div>
-                <form class="formclas" action="{{route('derivativedeposit')}}" method="post">
+                <form class="formclas" action="{{route('derivativedeposit', app()->getLocale())}}" method="post">
                     @csrf
                     <div class="modal-body modalbg">
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label"
-                                   style="color: #ffffff; padding-top: 0px;">Input Amount:</label>
+                                   style="color: #ffffff; padding-top: 0px;">{{__('label3')}}:</label>
                             <input type="text" class="form-control" name="derivativeamount" id="derivative-name"
                                    onkeyup="manage(this)">
                             <input type="hidden" name="flag" id="flag" value="">
@@ -282,7 +281,7 @@
                 let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + s).html());
 
                 $( "#assetTradeSell" + s ).click(function() {
-                    axios.post('{{route("user-trade-sell")}}',{
+                    axios.post('{{route("user-trade-sell", app()->getLocale())}}',{
                         currency: currencyName,
                         sellAmount: tradeCurrencySize,
                         calcSellAmount: tradeMarkPrice
@@ -290,7 +289,7 @@
                         .then(function (response) {
                             if(response.data.status){
                                 toastr.success('Sell successfull');
-                                window.location.href = '{{route("user-wallets")}}';
+                                window.location.href = '{{route("user-wallets", app()->getLocale())}}';
                                 return false;
                             }
                             // toastr.error('Error occured !!');
@@ -344,7 +343,7 @@
                 let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + ds).html());
 
                 $( "#assetDerivativeSell" + ds ).click(function() {
-                    axios.post('{{route("user-trade-sell")}}',{
+                    axios.post('{{route("user-trade-sell", app()->getLocale())}}',{
                         currency: derivativeCurrencyName,
                         sellAmount: derivativeCurrencySize,
                         calcSellAmount: derivativeMarkPrice,
@@ -353,7 +352,7 @@
                         .then(function (response) {
                             if(response.data.status){
                                 toastr.success('Sell successfull');
-                                window.location.href = '{{route("user-wallets")}}';
+                                window.location.href = '{{route("user-wallets", app()->getLocale())}}';
                                 return false;
                             }
                             // toastr.error('Error occured !!');
@@ -441,6 +440,6 @@
         {
             window.location = window.location.href;
         }
-        setInterval('autoRefreshPage()', 600000);
+        setInterval('autoRefreshPage()', 300000);
     </script>
 @endsection

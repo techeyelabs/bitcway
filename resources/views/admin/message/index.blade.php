@@ -21,7 +21,7 @@
         <div class="card-body">
             <ul class="list-group">
                 <?php foreach($messages as $item){?>
-                <a class="item" href="{{route('admin-message-details', ['to_id' => $item->user_id])}}">
+                <a class="item" href="{{route('admin-message-details', ['to_id' => $item->user_id, app()->getLocale()])}}">
                     {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Open modal for @mdo</button> --}}
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         
