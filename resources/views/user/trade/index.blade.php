@@ -961,10 +961,6 @@
                         var end   =""
 
                     }
-
-
-
-
                     let that = this;
                     let currency = that.selectedItem[0];
                     // showLoader('Loading ...');
@@ -1058,6 +1054,7 @@
                         currency: that.currency,
                         buyAmount: that.amount,
                         calcBuyAmount: that.calcAmount,
+                        currency_price: that.selectedPrice,
                         derivativeUserMoney: 0,
                         derivativeLoan: 0
 
@@ -1118,6 +1115,7 @@
                     currency                : that.currency,
                         buyAmount           : that.amount,
                         calcBuyAmount       : that.calcAmount,
+                        derivative_currency_price : that.selectedPrice,
                         leverage            : $("#sliderRange").val(),
                         derivativeUserMoney : that.derivativeRange
                     })
