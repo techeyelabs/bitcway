@@ -360,7 +360,8 @@
     padding-left: 0px;
     padding-top: 20px;
   }
-  
+
+  /*sidebar fix*/
   .page-wrapper .page-content > div {
     padding: 20px 40px;
   }

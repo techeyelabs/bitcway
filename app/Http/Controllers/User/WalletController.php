@@ -93,7 +93,7 @@ class WalletController extends Controller
     }
 
     public function getwaycallback(Request $request){
-        if(isset($_GET) && !empty($_GET))
+        if(isset($_POST) && !empty($_POST))
         {
             //Get the parameters
             $trading_id = isset($_POST['trading']) && !empty($_POST['trading'])? $_POST['trading'] : NULL;
@@ -120,6 +120,10 @@ class WalletController extends Controller
             $callbackCheck->currency = $currency;
             $callbackCheck->custom = $custom;
             $callbackCheck->save();
+
+            $DepositHistory = DepositHistory::with('getwayPaymentReceipt')->where('getwayPaymentReceipt.trading_id', $trading_id)->first();
+            $DepositHistory->status = 1;
+            $DepositHistory->save();
         }
     }
 

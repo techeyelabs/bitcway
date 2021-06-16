@@ -61,7 +61,7 @@ class DepositController extends Controller
                 ->make();
     }
 
-    public function changeStatus($id, $status)
+    public function changeStatus($lang, $id, $status)
     {
         $DepositHistory = DepositHistory::find($id);
         $DepositHistory->status = $status;
