@@ -83,7 +83,7 @@ class WalletController extends Controller
     }
     public function getwayReturnUrl(Request $request)
     {
-        return redirect()->route('user-wallet');
+        return redirect()->route('user-wallet', app()->getLocale());
     }
     public function getwayPaymentReceipt(Request $request)
     {
