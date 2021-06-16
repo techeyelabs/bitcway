@@ -85,6 +85,35 @@ class WalletController extends Controller
     {
         return redirect()->route('user-wallet', app()->getLocale());
     }
+    public function getwaycallback(Request $request){
+        if(isset($_POST) && !empty($_POST))
+        {
+            //Get parameters
+            $trading_id = isset($_POST['trading']) && !empty($_POST['trading'])? $_POST['trading'] : NULL;
+            $amount = isset($_POST['amount']) && !empty($_POST['amount'])? $_POST['amount'] : NULL;
+            $currency = isset($_POST['type']) && !empty($_POST['type'])? $_POST['currency'] : NULL;
+            $hash = isset($_POST['hash']) && !empty($_POST['hash'])? $_POST['hash'] : NULL;
+            //Optional
+            $custom = isset($_POST['custom']) && !empty($_POST['custom'])? $_POST['custom'] : NULL;
+            //Check empty
+            if(empty($trading_id) || empty($amount) || empty($currency) || empty($hash))
+            {
+                exit();
+            }
+            //Validate data with hash key
+            $hash_key = 'INa7F6trT8A1nbJ6';
+            $hc_check = hash("sha256", $hash_key.$trading_id.$amount.$currency);
+            if($hc_check != $hash)
+            {
+                exit();
+            }
+            //Data is OK then process to update order status
+            $callbackCheck = GatewayReceipt::where('trading_id', $trading_id)->first();
+            $callbackCheck->status = 1;
+            $callbackCheck->custom = $custom;
+            $callbackCheck->save();
+        }
+    }
     public function getwayPaymentReceipt(Request $request)
     {
         $site_id = "00000168";

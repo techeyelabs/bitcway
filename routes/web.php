@@ -76,7 +76,7 @@ Route::group(['prefix'=>'{language}'], function (){
         Route::get('/update-profile', [AuthController::class, 'updateProfile'])->name('user-update-profile');
         Route::post('/update-profile', [AuthController::class, 'updateProfileAction'])->name('user-update-profile-action');
 
-        Route::get('/', [DashboardController::class, 'index'])->name('user-dashboard');
+//        Route::get('/', [DashboardController::class, 'index'])->name('user-dashboard');
         Route::get('/transactions', [BuySellController::class, 'index'])->name('user-transactions');
         Route::get('/wallets', [WalletController::class, 'wallets'])->name('user-wallets');
         Route::post('/wallets', [WalletController::class, 'derivativedeposit'])->name('derivativedeposit');
@@ -91,6 +91,7 @@ Route::group(['prefix'=>'{language}'], function (){
             //Gateway
             Route::post('/hcgenerate', [WalletController::class, 'hcgenerate'])->name('hcgenerate');
             Route::post('/getwayUriResponse', [WalletController::class, 'getwayUriResponse'])->name('getwayUriResponse');
+            Route::post('/getwaycallback', [WalletController::class, 'getwaycallback'])->name('getwaycallback');
             Route::get('/getwayPaymentReceipt', [WalletController::class, 'getwayPaymentReceipt'])->name('getwayPaymentReceipt');
             Route::get('/getwayReturnUrl', [WalletController::class, 'getwayReturnUrl'])->name('getwayReturnUrl');
         });

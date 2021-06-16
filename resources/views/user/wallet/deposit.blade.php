@@ -80,7 +80,7 @@
             methods:{
                 hcgenerate(){
                     let that = this;
-                    $('#rate').val(that.amount*that.rate);
+                    // $('#rate').val(that.amount*that.rate);
                     // showLoader('please wait...');
                     axios.post('{{route("hcgenerate", app()->getLocale())}}', {
                         hash_key: $('#hash_key').val(),
