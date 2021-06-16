@@ -2,12 +2,6 @@
 
 @section('custom_css')
     <style>
-        .txtWhitecolor{
-            color: white;
-        }
-        .txtHeadingColor{
-            color: yellow;
-        }
         table
         {
             table-layout: fixed !important;
@@ -22,9 +16,6 @@
         .walletBtn{
             width: 135px !important;
         }
-
-
-
 </style>
 @endsection
 @section('content')
