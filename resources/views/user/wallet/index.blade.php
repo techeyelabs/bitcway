@@ -117,7 +117,9 @@
                                     <th class="txtWhitecolor">{{__('status')}}</th>
                                 </thead>
                                 <tbody>
-                                    <?php foreach($deposit as $item){?>
+                                    <?php foreach($deposit as $item){
+                                        if(isset($item->getwayPaymentReceipt[0]->gateway_flag) && $item->getwayPaymentReceipt[0]->gateway_flag == 1) {
+                                        ?>
                                     <tr>
                                         <td class="txtWhitecolor">{{date('d/m/Y', strtotime($item->created_at->todatestring()))}}</td>
 {{--                                        <td class="txtWhitecolor">{!! number_format((float)($item->amount), 5) !!}</td>--}}
@@ -131,8 +133,7 @@
                                             else echo 'Pending';?>
                                         </td>
                                     </tr>
-                                    <?php }?>
-
+                                    <?php }}?>
                                 </tbody>
                             </table>
                         </div>

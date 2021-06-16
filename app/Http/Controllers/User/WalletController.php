@@ -28,6 +28,7 @@ class WalletController extends Controller
         }
         $data['deposit'] = DepositHistory::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
         $data['withdraw'] = WithdrawHistory::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
+        $data['gatewaypayments'] = GatewayReceipt::where('userId', Auth::user()->id)->orderBy('id', 'desc')->get();
         return view('user.wallet.index', $data);
     }
 
@@ -77,18 +78,24 @@ class WalletController extends Controller
         $getwayPaymentReceipt->hc = $request->hc;
         $getwayPaymentReceipt-> amount = $request->amount;
         $getwayPaymentReceipt-> status = 0;
+        $getwayPaymentReceipt-> gateway_flag = 0;
+        $getwayPaymentReceipt-> deposit_history_id = $DepositHistory -> id;
         $getwayPaymentReceipt->save();
 
         $data = json_decode($response, true);
     }
     public function getwayReturnUrl(Request $request)
     {
+        $gatewayTransaction = GatewayReceipt::where('userId',Auth::user()->id)->orderBy('id', 'desc')->first();
+        $gatewayTransaction->gateway_flag = 1;
+        $gatewayTransaction->save();
         return redirect()->route('user-wallet', app()->getLocale());
     }
+
     public function getwaycallback(Request $request){
-        if(isset($_POST) && !empty($_POST))
+        if(isset($_GET) && !empty($_GET))
         {
-            //Get parameters
+            //Get the parameters
             $trading_id = isset($_POST['trading']) && !empty($_POST['trading'])? $_POST['trading'] : NULL;
             $amount = isset($_POST['amount']) && !empty($_POST['amount'])? $_POST['amount'] : NULL;
             $currency = isset($_POST['type']) && !empty($_POST['type'])? $_POST['currency'] : NULL;
@@ -110,10 +117,12 @@ class WalletController extends Controller
             //Data is OK then process to update order status
             $callbackCheck = GatewayReceipt::where('trading_id', $trading_id)->first();
             $callbackCheck->status = 1;
+            $callbackCheck->currency = $currency;
             $callbackCheck->custom = $custom;
             $callbackCheck->save();
         }
     }
+
     public function getwayPaymentReceipt(Request $request)
     {
         $site_id = "00000168";

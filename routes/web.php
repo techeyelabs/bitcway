@@ -40,6 +40,7 @@ use App\Http\Controllers\Admin\LockedSavingsController as AdminLockedSavingsCont
 //     App::setLocale('en');
 //     dd(App::getLocale());
 // });
+Route::post('/getwaycallback', [WalletController::class, 'getwaycallback'])->name('getwaycallback');
 Route::redirect('/','/en');
 Route::group(['prefix'=>'{language}'], function (){
     Route::get('/', [HomeController::class, 'index'])->name('front-home');
@@ -47,7 +48,6 @@ Route::group(['prefix'=>'{language}'], function (){
     Route::get('/about', [HomeController::class, 'about'])->name('front-about');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/verify/{token}', [AuthController::class, 'verify'])->name('verify-email');
-
 
     Route::prefix('update')->group(function(){
         Route::get('/currencies', [UpdateController::class, 'getCurrencies']);
@@ -91,7 +91,6 @@ Route::group(['prefix'=>'{language}'], function (){
             //Gateway
             Route::post('/hcgenerate', [WalletController::class, 'hcgenerate'])->name('hcgenerate');
             Route::post('/getwayUriResponse', [WalletController::class, 'getwayUriResponse'])->name('getwayUriResponse');
-            Route::post('/getwaycallback', [WalletController::class, 'getwaycallback'])->name('getwaycallback');
             Route::get('/getwayPaymentReceipt', [WalletController::class, 'getwayPaymentReceipt'])->name('getwayPaymentReceipt');
             Route::get('/getwayReturnUrl', [WalletController::class, 'getwayReturnUrl'])->name('getwayReturnUrl');
         });

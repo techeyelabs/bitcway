@@ -12,4 +12,8 @@ class DepositHistory extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function getwayPaymentReceipt()
+    {
+        return $this->hasMany(GatewayReceipt::class,'deposit_history_id','id');
+    }
 }
