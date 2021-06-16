@@ -121,7 +121,7 @@
                             <table class="table col-md-6">
                                 <thead>
                                     <th class="txtWhitecolor">{{__('col8')}}</th>
-                                    <th class="txtWhitecolor">BTC</th>
+{{--                                    <th class="txtWhitecolor">BTC</th>--}}
                                     <th class="txtWhitecolor">USD</th>
                                     <th class="txtWhitecolor">{{__('status')}}</th>
                                 </thead>
@@ -129,7 +129,7 @@
                                     <?php foreach($deposit as $item){?>
                                     <tr>
                                         <td class="txtWhitecolor">{{date('d/m/Y', strtotime($item->created_at->todatestring()))}}</td>
-                                        <td class="txtWhitecolor">{!! number_format((float)($item->amount), 5) !!}</td>
+{{--                                        <td class="txtWhitecolor">{!! number_format((float)($item->amount), 5) !!}</td>--}}
                                         <td class="txtWhitecolor">{{$item->equivalent_amount}}</td>
                                         <td class="txtWhitecolor">
                                             <?php

@@ -105,7 +105,7 @@
                     <div class="container-fluid">
                         <div class="text-left">
                             <abbr title="Derivative Wallet"  class="txtWhitecolor text-left initialism">{{__('title20')}}</abbr><br>
-                            <span class="d-none" id="mainDerivativeBalance">{{$userDerivativeBalance->derivative}}</span>
+                            <span class="d-none" id="derivativeBalance">{{$userDerivativeBalance->derivative}}</span>
                             <h4 class="txtWhitecolor text-left mb-3" id="totalDerivativeAmount">{{$userDerivativeBalance->derivative}}<span style="font-size: 10px">USD</span></h4>
                         </div>
                         <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal"
@@ -122,29 +122,31 @@
                             <p class="col txtWhitecolor" id="CoinpriceIntoMycoin2" style="text-align: center;">{{__('markprice')}}</p>
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: right;">Unrealized PNL</p>
                             <p class="col txtWhitecolor" id="derivati8vePercent" style="text-align: right;">{{__('col16')}}</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('action')}}</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">Action</p>
                         </li>
                         <?php
                         $j = 0;
                         foreach($transactionHistory as $index =>$item ){
-                            if(($item->leverage) >= 1 ){
-                                $j++;
-                            ?>
-                            {{--{!! number_format((double)($item->equivalent_amount / $item->leverage),5) !!}--}}
-                            <li class="row list-group-item d-flex justify-content-between align-items-center">
-                                <p class="col txtWhitecolor" id="MyCoinCurrencyName2{{$j}}" style="text-align: left;">{{$item->currencyName->name}}</p>
-                                <p class="col txtWhitecolor" id="MyTotalCoinAmount2{{$j}}" style="text-align: left;">{!! number_format((double)($item->amount), 5) !!}</p>
-                                <p class="col txtWhitecolor d-none" id="derivativeEntryPrice{{$j}}" style="text-align: left;">{{($item->equivalent_amount)}}</p>
-                                <p class="col txtWhitecolor" id="derivativeEntryCurrencyPrice{{$j}}" style="text-align: left;">{{($item->derivative_currency_price)}}</p>
-                                <p class="d-none" id="derivativeLoan{{$j}}" >{{($item->derivativeLoan)}}</p>
-                                <p class="col txtWhitecolor" id="CoinpriceintoMycoin2{{$j}}" style="text-align: center;">00.000000</p>
-                                <p class="d-none" id="derivativeAmountWithPNL{{$j}}">00.000000</p>
-                                <p class="col " id="derivativeUnrealizedPrice{{$j}}" style="text-align: right;color:white;">00.000000</p>
-                                <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: right; color:white;">{{$item->leverage}}</p>
-                                <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetDerivativeSell{{$j}}" style="cursor: pointer;">{{__('title9')}}</span></p>
-                            </li>
-                            <?php
-                            }
+                        if(($item->leverage) >= 1 ){
+                        $j++;
+                        ?>
+                        {{--{!! number_format((double)($item->equivalent_amount / $item->leverage),5) !!}--}}
+                        <li class="row list-group-item d-flex justify-content-between align-items-center">
+                            <p class="col txtWhitecolor" id="MyCoinCurrencyName2{{$j}}" style="text-align: left;">{{$item->currencyName->name}}</p>
+                            <p class="col txtWhitecolor" id="MyTotalCoinAmount2{{$j}}" style="text-align: left;">{!! number_format((double)($item->amount), 5) !!}</p>
+                            <p class="col txtWhitecolor d-none previous" id="derivativeEntryPrice{{$j}}" style="text-align: left;">{{($item->equivalent_amount)}}</p>
+                            <p class="col txtWhitecolor" id="derivativeCurrencyEntryPrice{{$j}}" style="text-align: left;">{{($item->derivative_currency_price)}}</p>
+                            <p class="d-none" id="derivativeLoan{{$j}}" >{{($item->derivativeLoan)}}</p>
+                            <p class="col txtWhitecolor d-none previous" id="CoinpriceintoMycoin2{{$j}}" style="text-align: center;">00.000000</p>
+                            <p class="col txtWhitecolor" id="CoinpriceintoMyCurrency{{$j}}" style="text-align: center;">00.000000</p>
+                            <p class="d-none" id="derivativeAmountWithPNL{{$j}}">00.000000</p>
+                            <p class="col " id="derivativeUnrealizedPrice{{$j}}" style="text-align: right;color:white;">00.000000</p>
+                            <p class="col d-none previous" id="derivativeUnrealizedCurrencyPrice{{$j}}" style="text-align: right;color:white;">00.000000</p>
+                            <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: right; color:white;">{{$item->leverage}}</p>
+                            <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetDerivativeSell{{$j}}" style="cursor: pointer;">{{__('title9')}}</span></p>
+                        </li>
+                        <?php
+                        }
                         }
 
                         ?>
@@ -304,6 +306,55 @@
                 });
             }
 
+
+
+
+
+
+
+            // let indexNumber2 = $('#myCoinIndex2').html();
+            // for (let j = 1; j <= indexNumber2; j++) {
+            //     let currencyName = $('#MyCoinCurrencyName2' + j).html();
+            //     let currencyAmount = parseFloat($('#MyTotalCoinAmount2' + j).html());
+            //
+            //     let full_data = trackers.trackers;
+            //     full_data.forEach(async function (item) {
+            //         if (item[0] === 't' + currencyName + 'USD') {
+            //             let derivativeCurrentMarketPrice =  parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
+            //             console.log(derivativeCurrentMarketPrice);
+            //             // let derivativeCurrentMarketPrice =  parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
+            //             // parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
+            //             parseFloat($('#CoinpriceintoMycoin2' + j).html(( item[1]).toFixed(5)));
+            //         }
+            //     });
+            // }
+            // let mainDerivativeBalance = parseFloat($('#mainDerivativeBalance').text());
+            // for (let dv = 1; dv <= indexNumber2; dv++) {
+            //         totalDerivativeValue += parseFloat($('#derivativeAmountWithPNL' + dv).text());
+            //         parseFloat($('#totalDerivativeAmount').html((totalDerivativeValue+mainDerivativeBalance).toFixed(5)));
+            // }
+            // for (let dbPNL = 1; dbPNL<=indexNumber2; dbPNL++){
+            //     let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + dbPNL).html().replace(',',''));
+            //     let derivativeLoan = parseFloat($('#derivativeLoan' + dbPNL).html().replace(',',''));
+            //     derivativePNL = parseFloat(derivativeMarkPrice - derivativeLoan);
+            //     parseFloat($('#derivativeAmountWithPNL' + dbPNL).html(derivativePNL));
+            // }
+            //
+            // for (let dupnl = 1; dupnl <= indexNumber2; dupnl++) {
+            //     var derivativeUnrealizedpnlid = document.getElementById('derivativeUnrealizedPrice'+ dupnl);
+            //     // let derivativeEntryPrice = parseFloat($('#derivativeEntryPrice' + dupnl).html().replace(',',''));
+            //     let derivativeEntryPrice = parseFloat($('#derivativeEntryCurrencyPrice' + dupnl).html().replace(',',''));
+            //     let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + dupnl).html());
+            //     let derivativeUnrealizedpnl = parseFloat(derivativeMarkPrice-derivativeEntryPrice);
+            //     if (derivativeUnrealizedpnl < 0){
+            //         parseFloat($('#derivativeUnrealizedPrice'+ dupnl ).html((derivativeUnrealizedpnl).toFixed(5)));
+            //         derivativeUnrealizedpnlid.style.color = '#dc3545'
+            //     }else{
+            //         parseFloat($('#derivativeUnrealizedPrice'+ dupnl ).html((derivativeUnrealizedpnl).toFixed(5)));
+            //         derivativeUnrealizedpnlid.style.color = '#198754'
+            //     }
+            // }
+
             let indexNumber2 = $('#myCoinIndex2').html();
             for (let j = 1; j <= indexNumber2; j++) {
                 let currencyName = $('#MyCoinCurrencyName2' + j).html();
@@ -312,16 +363,16 @@
                 let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + currencyName + 'USD') {
-                        let derivativeCurrentMarketPrice =  parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
-                        // parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
-                        parseFloat($('#CoinpriceintoMycoin2' + j).html(( item[1]).toFixed(5)));
+                        parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
+                        parseFloat($('#CoinpriceintoMyCurrency' + j).html(( item[1]).toFixed(5)));
                     }
                 });
             }
-            let mainDerivativeBalance = parseFloat($('#mainDerivativeBalance').text());
+
             for (let dv = 1; dv <= indexNumber2; dv++) {
-                    totalDerivativeValue += parseFloat($('#derivativeAmountWithPNL' + dv).text());
-                    parseFloat($('#totalDerivativeAmount').html((totalDerivativeValue+mainDerivativeBalance).toFixed(5)));
+                let derivativeBalance = parseFloat($('#derivativeBalance').text());
+                totalDerivativeValue += parseFloat($('#derivativeAmountWithPNL' + dv).text());
+                parseFloat($('#totalDerivativeAmount').html((totalDerivativeValue+derivativeBalance).toFixed(5)));
             }
             for (let dbPNL = 1; dbPNL<=indexNumber2; dbPNL++){
                 let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + dbPNL).html().replace(',',''));
@@ -332,10 +383,11 @@
 
             for (let dupnl = 1; dupnl <= indexNumber2; dupnl++) {
                 var derivativeUnrealizedpnlid = document.getElementById('derivativeUnrealizedPrice'+ dupnl);
-                // let derivativeEntryPrice = parseFloat($('#derivativeEntryPrice' + dupnl).html().replace(',',''));
-                let derivativeEntryPrice = parseFloat($('#derivativeEntryCurrencyPrice' + dupnl).html().replace(',',''));
+                let derivativeEntryPrice = parseFloat($('#derivativeEntryPrice' + dupnl).html().replace(',',''));
                 let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + dupnl).html());
-                let derivativeUnrealizedpnl = parseFloat(derivativeMarkPrice-derivativeEntryPrice);
+                let derivativeCurrencyEntryPrice = parseFloat($('#derivativeCurrencyEntryPrice' + dupnl).html().replace(',',''));
+                let derivativeCurrencyMarkPrice = parseFloat($('#CoinpriceintoMyCurrency' + dupnl).html());
+                let derivativeUnrealizedpnl = parseFloat(derivativeCurrencyMarkPrice - derivativeCurrencyEntryPrice);
                 if (derivativeUnrealizedpnl < 0){
                     parseFloat($('#derivativeUnrealizedPrice'+ dupnl ).html((derivativeUnrealizedpnl).toFixed(5)));
                     derivativeUnrealizedpnlid.style.color = '#dc3545'
@@ -344,6 +396,8 @@
                     derivativeUnrealizedpnlid.style.color = '#198754'
                 }
             }
+
+
             for (let ds = 1; ds <= indexNumber2; ds++) {
                 let derivativeCurrencyName = $('#MyCoinCurrencyName2' + ds).html();
                 let derivativeCurrencySize = parseFloat($('#MyTotalCoinAmount2' + ds).html());
@@ -445,6 +499,7 @@
     <script>
         function autoRefreshPage()
         {
+            toastr.success('Auto reload');
             window.location = window.location.href;
         }
         setInterval('autoRefreshPage()', 300000);
