@@ -667,6 +667,15 @@
             if (Home.lastcurrency != currency) {
                 Home.lastcurrency = currency;
             }
+            console.log(currency);
+            if (currency == 'tMABUSD'){
+                var multiple = 123;
+                var realCurr = 'tADAUSD';
+            } else {
+                var multiple = 1;
+                realCurr = currency;
+            }
+            console.log(multiple);
             if (w) w.close();
             w = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
             w.onmessage = function(msg){
@@ -680,6 +689,8 @@
                         bids = [];
                         asks = [];
                         items[1].forEach(function (item) {
+                            item[0] = item[0]*multiple;
+                            console.log(item[0]);
                             if (item[2] > 0) {
                                 bids.push(item);
                             } else {
@@ -755,7 +766,7 @@
                 event   : 'subscribe',
                 channel : 'book',
                 freq    : 'F1',
-                symbol  : currency
+                symbol  : realCurr
             })
 
             w.onopen = function(event){
