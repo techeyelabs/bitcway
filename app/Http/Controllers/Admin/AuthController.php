@@ -14,7 +14,12 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        return view('admin.auth.login');
+
+        if (Auth::guard('admin')){
+            return redirect()->intended(route('admin-user-list', app()->getLocale()));
+        }else{
+            return view('admin.auth.login');
+        }
     }
 
     public function loginAction(Request $request)
@@ -25,7 +30,7 @@ class AuthController extends Controller
         ]);
         
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password, 'status' => true], $request->remember)) {
-            return redirect()->intended(route('admin-dashboard', app()->getLocale()));
+            return redirect()->intended(route('admin-user-list', app()->getLocale()));
         }
 
         return redirect()->back()->with('error_message', 'Wrong credentials..');
@@ -57,7 +62,8 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::guard('admin')->logout();
-        $request->session()->invalidate();
+//        $request->session()->invalidate();
+        $request->session()->flush();;
         $request->session()->regenerateToken();
         return redirect()->route('admin-login', app()->getLocale());
     }
