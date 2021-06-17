@@ -14,7 +14,6 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-
         if (Auth::guard('admin')){
             return redirect()->intended(route('admin-user-list', app()->getLocale()));
         }else{
