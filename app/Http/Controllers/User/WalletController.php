@@ -57,12 +57,13 @@ class WalletController extends Controller
         $DepositHistory->user_id = Auth::user()->id;
         $DepositHistory->amount = 0;
         $DepositHistory->equivalent_amount = $request->amount;
+        $DepositHistory->percentage_amount = $request->percentAmount;
         $DepositHistory->save();
 
         $post = [
             'site_id' => $request->site_id,
             'trading_id' => $request->trading_id,
-            'amount' => $request->amount,
+            'amount' => $request->percentAmount,
             'hc' => $request->hc,
         ];
         $ch = curl_init('https://api.saiwin.co/generate');
@@ -89,6 +90,7 @@ class WalletController extends Controller
         $gatewayTransaction = GatewayReceipt::where('userId',Auth::user()->id)->orderBy('id', 'desc')->first();
         $gatewayTransaction->gateway_flag = 1;
         $gatewayTransaction->save();
+
         return redirect()->route('user-wallet', app()->getLocale());
     }
 
