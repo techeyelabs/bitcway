@@ -89,6 +89,7 @@ class WalletController extends Controller
         $gatewayTransaction = GatewayReceipt::where('userId',Auth::user()->id)->orderBy('id', 'desc')->first();
         $gatewayTransaction->gateway_flag = 1;
         $gatewayTransaction->save();
+
         return redirect()->route('user-wallet', app()->getLocale());
     }
 
