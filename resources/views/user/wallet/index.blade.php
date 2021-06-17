@@ -44,7 +44,6 @@
                             <a class="nav-link active txtWhitecolor" id="withdraw-histoty-tab" data-bs-toggle="tab" href="#withdraw-histoty" role="tab"
                                 aria-controls="withdraw-histoty" aria-selected="true">{{__('button6')}}</a>
                         </li>
-
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade row" id="deposit-history" role="tabpanel" aria-labelledby="home-tab" >
@@ -66,7 +65,6 @@
                                         </td>
                                     </tr>
                                     <?php }?>
-
                                 </tbody>
                             </table>
                         </div>
@@ -105,7 +103,6 @@
                             <a class="nav-link txtWhitecolor" id="withdraw-histoty-tab" data-bs-toggle="tab" href="#withdraw-histoty" role="tab"
                                 aria-controls="withdraw-histoty" aria-selected="false">{{__('button6')}} </a>
                         </li>
-
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active row" id="deposit-history" role="tabpanel" aria-labelledby="home-tab" >

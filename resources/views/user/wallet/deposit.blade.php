@@ -28,7 +28,7 @@
                         <div class="form-group text-center d-none">
                             <h4 class="txtWhitecolor">Equivalent: <span id="amountRate"> @{{amount*rate}}</span> (USD)</h4>
                         </div>
-                        <button class="btn btn-outline-warning float-end" onclick="gatewaypost()">{{__('button3')}}</button>
+                        <button class="btn btn-outline-warning float-end" :disabled="amount <= 99" onclick="gatewaypost()">{{__('button3')}}</button>
 
                         <div class="BITCPaymentGateway">
                             <form id="formForGateway" action ="https://api.saiwin.co/generate" method = "post">
@@ -68,7 +68,7 @@
             el: '.deposit',
             data: {
                 rate: '{{$rate}}',
-                amount: 0,
+                amount: '',
                 qrCode: false,
                 wallet: '1MoLoCh1srp6jjQgPmwSf5Be5PU98NJHgx',
                 qrCodeLink: null

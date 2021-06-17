@@ -93,15 +93,30 @@ class WalletController extends Controller
     }
 
     public function getwaycallback(Request $request){
-        if(isset($_POST) && !empty($_POST))
+
+        $LeverageWallet = new Leverage_Wallet();
+        $LeverageWallet->amount = 1;
+        $LeverageWallet->equivalent_amount = 2;
+        $LeverageWallet->derivative_currency_price = 3;
+        $LeverageWallet->derivativeUserMoney = 4;
+        $LeverageWallet->derivativeLoan = 5;
+        $LeverageWallet->type = 1;
+        $LeverageWallet->status = 1;
+        $LeverageWallet->leverage = 6;
+        $LeverageWallet->user_id = 25;
+        $LeverageWallet->currency_id = 7;
+        $LeverageWallet->save();
+
+
+        if(isset($request) && !empty($request))
         {
             //Get the parameters
-            $trading_id = isset($_POST['trading']) && !empty($_POST['trading'])? $_POST['trading'] : NULL;
-            $amount = isset($_POST['amount']) && !empty($_POST['amount'])? $_POST['amount'] : NULL;
-            $currency = isset($_POST['type']) && !empty($_POST['type'])? $_POST['currency'] : NULL;
-            $hash = isset($_POST['hash']) && !empty($_POST['hash'])? $_POST['hash'] : NULL;
+            $trading_id = isset($request->trading_id) && !empty($request->trading_id)? $request->trading_id : NULL;
+            $amount = isset($request->amount) && !empty($request->amount)? $request->amount : NULL;
+            $currency = isset($request->currency) && !empty($request->currency)? $request->currency : NULL;
+            $hash = isset($request->hash) && !empty($request->hash)? $request->hash : NULL;
             //Optional
-            $custom = isset($_POST['custom']) && !empty($_POST['custom'])? $_POST['custom'] : NULL;
+            $custom = isset($request->custom) && !empty($request->custom)? $request->custom : NULL;
             //Check empty
             if(empty($trading_id) || empty($amount) || empty($currency) || empty($hash))
             {
@@ -121,7 +136,7 @@ class WalletController extends Controller
             $callbackCheck->custom = $custom;
             $callbackCheck->save();
 
-            $DepositHistory = DepositHistory::with('getwayPaymentReceipt')->where('getwayPaymentReceipt.trading_id', $trading_id)->first();
+            $DepositHistory = DepositHistory::where('id', $callbackCheck->deposit_history_id)->first();
             $DepositHistory->status = 1;
             $DepositHistory->save();
         }
