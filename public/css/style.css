@@ -468,6 +468,9 @@ table,th, td {
 .txtHeadingColor {
     color: yellow;
 }
+.DarkGrayColor {
+    color: darkgray !important;
+}
 .fs14px{
     font-size: 14px;
 }
