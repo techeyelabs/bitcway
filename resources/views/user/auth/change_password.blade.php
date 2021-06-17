@@ -13,9 +13,9 @@
 
 @section('content')
 <div id="wrap">
-    <h3 class="txtHeadingColor pageTitle">Change password</h3>
-    <hr>
 
+    <h3 class="txtHeadingColor pageTitle">{{__('title24')}}</h3>
+    <hr>
     <div class="row">
         <div class="col-md-8 col-lg-6">
             <div class="card">
@@ -25,33 +25,33 @@
                     <form action="" method="POST">
                     @csrf
                         <div class="form-group">
-                            <label for="" class="txtWhitecolor">Old Password</label>
+                            <label for="" class="txtWhitecolor">{{__('label10')}}</label>
                             <input type="password" class="form-control" aria-describedby="" name="old_password"
-                                value="{{old('old_password')}}" placeholder="Enter old password here..." required>
+                                value="{{old('old_password')}}" placeholder="{{__('placeholder4')}}" required>
                             @error('old_password')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="" class="txtWhitecolor">New Password</label>
+                            <label for="" class="txtWhitecolor">{{__('label11')}}</label>
                             <input type="password" class="form-control" aria-describedby="" name="password"
-                                value="{{old('password')}}" placeholder="Enter new password here..." required>
+                                value="{{old('password')}}" placeholder="{{__('placeholder5')}}" required>
                             @error('password')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
 
                         </div>
                         <div class="form-group">
-                            <label for="" class="txtWhitecolor">Confirm Password</label>
+                            <label for="" class="txtWhitecolor">{{__('label12')}}</label>
                             <input type="password" class="form-control" aria-describedby="" name="password_confirmation"
-                                value="{{old('password_confirmation')}}" placeholder="Enter password again here..." required>
+                                value="{{old('password_confirmation')}}" placeholder="{{__('placeholder6')}}" required>
                             @error('password_confirmation')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
 
                         </div>
-                        <button type="submit" class="btn btn-outline-warning float-end">Change</button>
-                        <a href="{{route('user-dashboard')}}" class="btn btn-outline-info float-end me-2">Cancel</a>
+                        <button type="submit" class="btn btn-outline-warning float-end">{{__('button13')}}</button>
+                        <a href="{{route('user-dashboard', app()->getLocale())}}" class="btn btn-outline-info float-end me-2">{{__('button12')}}</a>
 
                     </form>
                 </div>

@@ -47,7 +47,7 @@
             processing: true,
             serverSide: true,
             order: [[ 7, "desc" ]],
-            ajax: '{!! route("admin-user-list-data") !!}',
+            ajax: '{!! route("admin-user-list-data", app()->getLocale()) !!}',
             columns: [
                 { data: 'name', name: 'name' },
                 { data: 'furigana', name: 'furigana' },

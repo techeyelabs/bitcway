@@ -5,17 +5,17 @@
 @section('content')
 
 <div id="wrap">
-    <h3 class="txtHeadingColor pageTitle">Buy/Sell</h3>
+    <h3 class="txtHeadingColor pageTitle">{{__('title17')}}</h3>
     <hr>
     <div class="card">
         <div class="card-body historyTable">
             <table class="table">
                 <thead>
-                    <th class="txtWhitecolor fs14px">Date</th>
-                    <th class="txtWhitecolor fs14px">Symbol</th>
-                    <th class="txtWhitecolor fs14px">Amount</th>
+                    <th class="txtWhitecolor fs14px">{{__('col8')}}</th>
+                    <th class="txtWhitecolor fs14px">{{__('column1')}}</th>
+                    <th class="txtWhitecolor fs14px">{{__('col10')}}</th>
                     <th class="txtWhitecolor fs14px">USD</th>
-                    <th class="txtWhitecolor fs14px">Type</th>
+                    <th class="txtWhitecolor fs14px">{{__('col12')}}</th>
                 </thead>
                 <tbody>
                     <?php foreach($transactions as $item){?>

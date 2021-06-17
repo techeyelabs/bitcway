@@ -34,12 +34,12 @@
                     <div class="card-body">
                         @if(isset($user))
                             @foreach ($user as $u)
-                                <form action="{{ route('admin-locked-savings-edit-action', \Crypt::encrypt($u->id)) }}" method="post">
+                                <form action="{{route('admin-locked-savings-edit-action', [\Crypt::encrypt($u->id), app()->getLocale()])}}" method="post">
                                     @csrf
 
                                     <div class="form-group">
                                         <label for="" class="txtWhitecolor">Select Currency</label>
-                                        <select id="coinOption" class="form-control form-select lockedSavingInputFroup" name="selectCoinName" aria-label="Default select example" >
+                                        <select id="coinOption" class="form-control form-select" name="selectCoinName" aria-label="Default select example" >
                                             <option value="{{$u->currency->name}}">{{$u->currency->name}}</option>
                                         </select>
                                         <small class="text-danger"></small>
@@ -73,7 +73,7 @@
                                 </form>
                             @endforeach
                         @else
-                                <form action="{{ route('admin-locked-savings-settings') }}" method="post">
+                                <form action="{{route('admin-locked-savings-settings', app()->getLocale())}}" method="post">
                             @csrf
                             <div class="form-group">
                                 <label for="" class="txtWhitecolor">Select Currency</label>
@@ -117,8 +117,6 @@
         {{--New locked Saving Setting End--}}
 
 
-
-
         {{--New locked Saving Setting Div2 End--}}
         <div class="card mt-3">
             <div class="card-body">
@@ -146,8 +144,8 @@
                                     </p>
                                     <p class="col txtWhitecolor" id="lotSize{{$index}}" style="text-align: right;">{{$FinanceSetting->lot_size}}</p>
                                     <p class="col txtWhitecolor" id="" style="text-align: right;">
-                                        <a style="margin-right: 20px" class="txtHeadingColor" href="{{route('admin-locked-savings-edit', \Crypt::encrypt($FinanceSetting->id))}}"><i class="fas fa-edit"></i></a>
-                                        <a class="txtHeadingColor" href="{{route('admin-locked-savings-delete-action', \Crypt::encrypt($FinanceSetting->id))}}"><i class="fas fa-trash-alt"></i></a>
+                                        <a style="margin-right: 20px" class="txtHeadingColor" href="{{route('admin-locked-savings-edit',[\Crypt::encrypt($FinanceSetting->id), app()->getLocale()])}}"><i class="fas fa-edit"></i></a>
+                                        <a class="txtHeadingColor" href="{{route('admin-locked-savings-delete-action', [\Crypt::encrypt($FinanceSetting->id), app()->getLocale()])}}"><i class="fas fa-trash-alt"></i></a>
                                     </p>
                                 </li>
                             @endforeach
@@ -159,7 +157,6 @@
         </div>
         {{--New locked Saving Setting Div2 End--}}
     </div>
-
 
     <div class="dynamic-content">
         <div class="parent">

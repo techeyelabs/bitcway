@@ -88,7 +88,7 @@
   
   @media screen and (min-width: 768px) {
     .page-wrapper.toggled .page-content {
-      padding-left: 300px;
+      padding-left: 250px;
     }
   }
   /*----------------show sidebar button----------------*/
@@ -360,7 +360,8 @@
     padding-left: 0px;
     padding-top: 20px;
   }
-  
+
+  /*sidebar fix*/
   .page-wrapper .page-content > div {
     padding: 20px 40px;
   }
@@ -490,3 +491,6 @@
   .chiller-theme .sidebar-footer>a:last-child {
       border-right: none;
   }
+.txtWhitecolor {
+  color: white !important;
+}

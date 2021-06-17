@@ -45,7 +45,7 @@
             processing: true,
             serverSide: true,
             order: [[ 5, "desc" ]],
-            ajax: '{!! route("admin-deposit-list-data") !!}',
+            ajax: '{!! route("admin-deposit-list-data", app()->getLocale()) !!}',
             columns: [
                 { data: 'name', name: 'name' },
                 { data: 'email', name: 'email' },

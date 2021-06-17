@@ -64,49 +64,20 @@
 @section('content')
 
     <div id="wrap" class="trade">
-        <h3 class="txtHeadingColor pageTitle">Finance</h3>
+        <h3 class="txtHeadingColor">{{__('nav4')}}</h3>
         <hr>
-{{--        <div class="card">--}}
-{{--            <div class="card-body text-center">--}}
-{{--                <h4 class="txtHeadingColor">Locked Savings Amount:  {{$total}} USD</h4>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-
-{{--        <div class="card mt-3">--}}
-{{--            <div class="card-body">--}}
-{{--                <ul class="container-fluid" style="max-width: 700px">--}}
-{{--                    <li class="list-group-item d-flex justify-content-between align-items-center">--}}
-{{--                        <span class="txtWhitecolor">Rate</span>--}}
-{{--                        <span class="txtWhitecolor">Duration</span>--}}
-{{--                        <span class="txtWhitecolor" style="margin-right: 60px;">Interest Per Lot</span>--}}
-{{--                        <span class="txtWhitecolor"></span>--}}
-{{--                    </li>--}}
-{{--                    @foreach($settings as $item)--}}
-{{--                        <li class="list-group-item d-flex justify-content-between align-items-center">--}}
-{{--                            <span class="txtWhitecolor">{{$item->rate}}</span>--}}
-{{--                            <span class="txtWhitecolor">{{$item->duration}}</span>--}}
-{{--                            <span class="txtWhitecolor">{{$item->interest_per_lot}}</span>--}}
-{{--                            <span class="btn-outline-warning btn  cursor-pointer"  onclick="changeData({{$item->id}}, {{$item->rate}}, {{$item->duration}}, {{$item->interest_per_lot}})">Transfer</span>--}}
-{{--                            <span class="btn-outline-warning btn  cursor-pointer"  onclick="changeData({{$item->id}}, 6.31, 14, {{$item->interest_per_lot}})">Transfer</span>--}}
-{{--                        </li>--}}
-{{--                    @endforeach--}}
-{{--                </ul>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-
         {{--Finance locked Saving Setting Div2 End--}}
-
         <div class="card mt-3">
             <div class="card-body">
 
                 <div style="margin: auto; overflow-x: auto">
                     <ul class="container-fluid" style=" min-width: 700px;">
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
-                            <p class="col txtWhitecolor" id="" style="text-align: left; ">Symbol</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: left; ">Annualized Interest Rate</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: center;">Duration (Days)</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: right;">Interest Per Lot</p>
-                            <p class="col txtWhitecolor" id="" style="text-align: right;">Action</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: left; ">{{__('column1')}}</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: left; ">{{__('annualized_interest_rate')}}</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: center;">{{__('col2')}} ({{__('days')}})</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('col3')}}</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('action')}}</p>
                         </li>
                         <div id="btnDurationId">
                             @foreach($lockedFinanceSettings as $index => $FinanceSetting)
@@ -125,7 +96,7 @@
                                 </p>
                                 <p class="col txtWhitecolor" id="interestPerLot{{$index}}" style="text-align: right;">{!! number_format((float)(($FinanceSetting->rate_1/365)*$FinanceSetting->duration_1), 4) !!}</p>
                                 <p class="col txtWhitecolor" id="" style="text-align: right;">
-                                    <button class="btn-outline-warning btn cursor-pointer" id="transferBtn{{$index}}"  onclick="changeData({{$index}});" disabled>Transfer</button>
+                                    <button class="btn-outline-warning btn cursor-pointer" id="transferBtn{{$index}}"  onclick="changeData({{$index}});" disabled>{{__('button11')}}</button>
 
                                     <span style="display: none" id="lotCurrencyAmount{{$index}}">{{isset($dummy_coin_balance[$FinanceSetting->currency_id]) ? $dummy_coin_balance[$FinanceSetting->currency_id]:0}}</span>
                                 </p>
@@ -139,16 +110,16 @@
         </div>
         {{--Finance locked Saving Setting Div2 End--}}
 
-        <form method="post" action="{{route('user-trade-finance-entry')}}">
+        <form method="post" action="{{route('user-trade-finance-entry', app()->getLocale())}}">
             @csrf
             <div class="card mt-3 confirmation" id="confirmation" style="display: none">
                 <div class="card-body list-group col-md-8 offset-md-2">
                    <div class="row col-md-12">
                        <div class="col-md-6 mb-5 mt-4" style="padding-left: 5%">
-                           <div class="txtWhitecolor" id="coinName">Coin<br/><h4>MAB</h4></div>
+                           <div class="txtWhitecolor" id="coinName">{{__('transfertitle1')}}<br/><h4>MAB</h4></div>
                            <span class="d-none" id="coinName_hidden">Coin</span>
-                           <div class="txtWhitecolor">Activity Duration <span class="day-block"><span id="duration"></span> days</span></div><br/>
-                           <div class="txtWhitecolor" >Lot amount (Available Lot: <span id="lotCurrency">00</span>)</div>
+                           <div class="txtWhitecolor">{{__('transferlabel1')}} <span class="day-block"><span id="duration"></span> {{__('days')}}</span></div><br/>
+                           <div class="txtWhitecolor" >{{__('transferlabel2')}} <span id="lotCurrency">00</span>)</div>
                            <div>
                                <input type="number" class="lot-input" name="lot" id="lot" onkeyup="setTotalInterest(this)">
                                <input type="hidden" id="ratePerLot" name="ratePerLot" value="">
@@ -156,33 +127,33 @@
                                <input class="d-none" type="number" id="coiId" name="coinId" value="">
 {{--                               <input type="hidden" id="balance" name="balance" value="">--}}
                            </div>
-                           <div class="txtWhitecolor">= <span id="total">0</span>&nbsp;<span id="totalCoinName">Coin</span></div>
+                           <div class="txtWhitecolor">= <span id="total">0</span>&nbsp;<span id="totalCoinName"></span></div>
                            <input type="hidden" id="totalCoin" name="totalCoin" value="">
                        </div>
                        <div class="row col-md-6 mb-5 mt-4">
                            <div>
-                               <span class="txtWhitecolor" style="float: left">Lot Size</span>
+                               <span class="txtWhitecolor" style="float: left">{{__('transfertext1')}}</span>
                                <span class="txtWhitecolor" id="lotSizeId" style="float: right">5 MAB</span>
                                <span class="d-none" id="lotSizeId_hidden"></span>
                                <input class="d-none" type="number" id="coinLotSize" name="coinLotSize" value="">
                            </div>
                            <div>
-                               <span class="txtWhitecolor" style="float: left">Interest Per Lot</span>
-                               <span class="txtWhitecolor"  style="float: right" id="ipl">0.0000 (0.00% Annually)</span>
+                               <span class="txtWhitecolor" style="float: left">{{__('transfertext2')}}</span>
+                               <span class="txtWhitecolor"  style="float: right" id="ipl">0.0000 (0.00% {{__('annually')}})</span>
                                <span class="d-none" id="ipl_hidden"></span>
                            </div>
                            <div>
-                               <span class="txtWhitecolor" style="float: left">Value Date</span>
+                               <span class="txtWhitecolor" style="float: left">{{__('transfertext3')}}</span>
                                <span class="txtWhitecolor" style="float: right">{!! date('Y-m-d h:i:s') !!}</span>
                            </div>
                            <div>
-                               <span class="txtWhitecolor" style="float: left">Redemption Date</span>
+                               <span class="txtWhitecolor" style="float: left">{{__('transfertext4')}}</span>
                                <span class="txtWhitecolor" style="float: right" id="termination">2021-00-00 00:00</span>
                                <input type="hidden" id="redemptionTimeId" name="redemptionTime" value="">
                            </div>
                            <div>
-                               <span class="txtWhitecolor" style="float: left">Expected Interest</span>
-                               <span class="txtWhitecolor" style="float: right" id="interest">0 Coin</span>
+                               <span class="txtWhitecolor" style="float: left">{{__('transfertext5')}}</span>
+                               <span class="txtWhitecolor" style="float: right" id="interest">0 {{__('transfertitle1')}}</span>
                                <input type="hidden" id="expected_interest" name="expected_interest" value="">
                            </div>
                        </div>
@@ -192,44 +163,18 @@
                     <div class="row col-md-12 txtWhitecolor" style="text-align: right">
                         <span>
                             <input type="checkbox" id="acceptance" name="acceptance" value="confirm" onchange="confirmButtonCheck()">
-                            <label for="vehicle1"> I have read and accepted the terms and conditions of <span id="termCoinName">MAB</span> Coin</label>
+                            <label for="vehicle1">{{__('transfercheckbox')}}<span id="termCoinName">MAB</span> {{__('transfertitle1')}}</label>
                         </span>
                     </div>
                     <div class="row col-md-12" style="text-align: right">
                         <span>
-                            <button class="confirm-button btn-outline-warning" disabled>Confirm Transaction</button>
+                            <button class="confirm-button btn-outline-warning" disabled>{{__('transferbtn')}}</button>
                         </span>
                     </div>
                 </div>
             </div>
         </form>
-
-
-{{--        <div class="card mt-3">--}}
-{{--            <div class="card-body">--}}
-{{--                <ul class="container-fluid" style="max-width: 968px">--}}
-{{--                    <li class="list-group-item d-flex justify-content-between align-items-center">--}}
-{{--                        <p class="col-1 txtWhitecolor ">Lot</p>--}}
-{{--                        <p class="col-4 txtWhitecolor">Value Date</p>--}}
-{{--                        <p class="col-4 txtWhitecolor">Redemption Date</p>--}}
-{{--                        <p class="col-2 txtWhitecolor">Expected Interest</p>--}}
-{{--                    </li>--}}
-{{--                    @foreach($history as $item)--}}
-{{--                        <li class="list-group-item d-flex justify-content-between align-items-center">--}}
-{{--                            <p class="col-1 txtWhitecolor">{{$item->lot_count}}</p>--}}
-{{--                            <p class="col-4 txtWhitecolor">{{date('d/m/Y ', strtotime($item->value_date))}}</p>--}}
-{{--                            <p class="col-4 txtWhitecolor">{{date('d/m/Y ', strtotime($item->redemption_date))}}</p>--}}
-{{--                            <p class="col-2 txtWhitecolor">{{$item->expected_interest}}</p>--}}
-{{--                        </li>--}}
-{{--                    @endforeach--}}
-{{--                </ul>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-
-
     </div>
-
-
 @endsection
 
 @section('custom_js')
@@ -284,7 +229,7 @@
             $('#coinName').html(currencyName);
             $('#duration').html(selectedDuration);
             $('#lotSizeId').html(lotSize+' '+currencyName);
-            $('#ipl').html(perLotInterest+' ('+ selectedRate+' Annually)');
+            $('#ipl').html(perLotInterest+' ('+ selectedRate+' {{__('annually')}})');
             let myDate = new Date(new Date().getTime()+(parseInt(selectedDuration)*24*60*60*1000));
             $('#termination').html(myDate.getFullYear()+'-'+("0" + myDate.getMonth()).slice(-2)+'-'+("0" + myDate.getDate()).slice(-2)+' '+myDate.getHours()+':'+myDate.getMinutes()+':'+myDate.getSeconds());
 
@@ -294,15 +239,6 @@
             }else{
                 $('#lotCurrency').html(0);
             }
-
-
-            // $('#days').html(duration);
-            // $('#ratePerLot').val(interest);
-            // $('#plan').val(id);
-            // $('#ipl').html(interest+' ('+rate+'%'+' Annually)');
-            //
-            // let myDate = new Date(new Date().getTime()+(parseInt(duration)*24*60*60*1000));
-            // $('#termination').html(myDate.getFullYear()+'-'+("0" + myDate.getMonth()).slice(-2)+'-'+("0" + myDate.getDate()).slice(-2)+' '+myDate.getHours()+':'+myDate.getMinutes()+':'+myDate.getSeconds());
             var elmnt = document.getElementById("confirmation");
             elmnt.scrollIntoView();
 
@@ -330,15 +266,6 @@
             $('#total').html(hiddenLotSize * value.value);
             $('#totalCoinName').html(currencyName);
             $('#totalCoin').val(hiddenLotSize * value.value);
-
-
-            // let totalinterest = $('#ratePerLot').val() * (value.value);
-            // $('#total').html(value.value * 5);
-            // if (value.value > 0 && $('input[id="acceptance"]:checked').length > 0 && parseInt($('#balance').val()/5) >= value.value){
-            //     $('.confirm-button').attr('disabled', false);
-            // } else {
-            //     $('.confirm-button').attr('disabled', true);
-            // }
         }
     </script>
     <script>
@@ -360,9 +287,5 @@
                 this.className += " active";
             });
         }
-
-    </script>
-    <script>
-
     </script>
 @endsection

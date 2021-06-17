@@ -36,130 +36,138 @@ use App\Http\Controllers\Admin\LockedSavingsController as AdminLockedSavingsCont
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
+// Route::get('/loc', function () {
+//     App::setLocale('en');
+//     dd(App::getLocale());
 // });
+Route::post('/getwaycallback', [WalletController::class, 'getwaycallback'])->name('getwaycallback');
+Route::redirect('/','/en');
+Route::group(['prefix'=>'{language}'], function (){
+    Route::get('/', [HomeController::class, 'index'])->name('front-home');
+    Route::get('/terms', [HomeController::class, 'terms'])->name('front-terms');
+    Route::get('/about', [HomeController::class, 'about'])->name('front-about');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/verify/{token}', [AuthController::class, 'verify'])->name('verify-email');
+
+    Route::prefix('update')->group(function(){
+        Route::get('/currencies', [UpdateController::class, 'getCurrencies']);
+    });
+    Route::get('/get-order', [UpdateController::class, 'getfirstbook']);
+    Route::get('/get-order-dummy', [UpdateController::class, 'getOrderDummy']);
+
+    Route::middleware(['guest'])->group(function(){
+        Route::get('/login', [AuthController::class, 'login'])->name('login');
+        Route::post('/login', [AuthController::class, 'loginAction'])->name('login-action');
+
+        Route::get('/signup', [AuthController::class, 'signup'])->name('signup');
+        Route::post('/signup', [AuthController::class, 'signupAction'])->name('signup-action');
+
+        Route::get('/forgot', [AuthController::class, 'forgot'])->name('forgot');
+        Route::post('/forgot', [AuthController::class, 'forgotAction'])->name('forgot-action');
 
 
-Route::get('/', [HomeController::class, 'index'])->name('front-home');
-Route::get('/terms', [HomeController::class, 'terms'])->name('front-terms');
-Route::get('/about', [HomeController::class, 'about'])->name('front-about');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/verify/{token}', [AuthController::class, 'verify'])->name('verify-email');
-
-Route::get('/get-order', [UpdateController::class, 'getfirstbook']);
-Route::get('/get-order-dummy', [UpdateController::class, 'getOrderDummy']);
-
-
-Route::prefix('update')->group(function(){
-    Route::get('/currencies', [UpdateController::class, 'getCurrencies']);
-});
-
-Route::middleware(['guest'])->group(function(){
-    Route::get('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/login', [AuthController::class, 'loginAction'])->name('login-action');
-
-    Route::get('/signup', [AuthController::class, 'signup'])->name('signup');
-    Route::post('/signup', [AuthController::class, 'signupAction'])->name('signup-action');
-
-    Route::get('/forgot', [AuthController::class, 'forgot'])->name('forgot');
-    Route::post('/forgot', [AuthController::class, 'forgotAction'])->name('forgot-action');
-
-    Route::get('/reset', [AuthController::class, 'reset'])->name('reset');
-    Route::post('/reset', [AuthController::class, 'resetAction'])->name('reset-action');
-});
-
-Route::prefix('user')->middleware(['auth'])->group(function(){
-    Route::get('/change-password', [AuthController::class, 'changePassword'])->name('user-change-password');
-    Route::post('/change-password', [AuthController::class, 'changePasswordAction'])->name('user-change-password-action');
-    Route::get('/update-profile', [AuthController::class, 'updateProfile'])->name('user-update-profile');
-    Route::post('/update-profile', [AuthController::class, 'updateProfileAction'])->name('user-update-profile-action');
-    
-    Route::get('/', [DashboardController::class, 'index'])->name('user-dashboard');
-    Route::get('/transactions', [BuySellController::class, 'index'])->name('user-transactions');
-    Route::get('/wallets', [WalletController::class, 'wallets'])->name('user-wallets');
-    Route::post('/wallets', [WalletController::class, 'derivativedeposit'])->name('derivativedeposit');
-    Route::prefix('wallet')->group(function(){
-        Route::get('/', [WalletController::class, 'index'])->name('user-wallet');
-        Route::get('/deposit', [WalletController::class, 'deposit'])->name('user-deposit');
-        Route::post('/deposit', [WalletController::class, 'depositAction'])->name('user-deposit-action');
-        Route::get('/withdraw', [WalletController::class, 'withdraw'])->name('user-withdraw');
-        Route::post('/withdraw', [WalletController::class, 'withdrawAction'])->name('user-withdraw-action');
-
-        //Gateway
-        Route::post('/hcgenerate', [WalletController::class, 'hcgenerate'])->name('hcgenerate');
-        Route::post('/getwayUriResponse', [WalletController::class, 'getwayUriResponse'])->name('getwayUriResponse');
-        Route::get('/getwayReturnUrl', [WalletController::class, 'getwayReturnUrl'])->name('getwayReturnUrl');
-        Route::get('/getwayPaymentReceipt', [WalletController::class, 'getwayPaymentReceipt'])->name('getwayPaymentReceipt');
+        Route::get('/reset', [AuthController::class, 'reset'])->name('reset');
+        Route::post('/reset', [AuthController::class, 'resetAction'])->name('reset-action');
     });
 
-    Route::get('/message', [MessageController::class, 'index'])->name('user-message');
-    Route::post('/send-message', [MessageController::class, 'send'])->name('user-send-message');
-    Route::get('/get-message', [MessageController::class, 'getMessages'])->name('user-get-message');
+    Route::prefix('user')->middleware(['auth'])->group(function(){
+        Route::get('/change-password', [AuthController::class, 'changePassword'])->name('user-change-password');
+        Route::post('/change-password', [AuthController::class, 'changePasswordAction'])->name('user-change-password-action');
+        Route::get('/update-profile', [AuthController::class, 'updateProfile'])->name('user-update-profile');
+        Route::post('/update-profile', [AuthController::class, 'updateProfileAction'])->name('user-update-profile-action');
 
-    Route::get('/trade', [TradeController::class, 'index'])->name('user-trade');
-    Route::get('/trade?type=derivative', [TradeController::class, 'index'])->name('user-trade-derivative');
-    Route::get('/trade-finance', [TradeController::class, 'finance'])->name('user-trade-finance');
-    Route::post('/trade-finance-entry', [TradeController::class, 'insertFinance'])->name('user-trade-finance-entry');
-    Route::get('/get-chart-data', [TradeController::class, 'getChartData'])->name('user-get-chart-data');
-    Route::post('/trade-buy', [TradeController::class, 'buy'])->name('user-trade-buy');
-    Route::post('/trade-sell', [TradeController::class, 'sell'])->name('user-trade-sell');
-    Route::get('/get-buy-orders', [TradeController::class, 'getBuyOrders'])->name('user-get-buy-orders');
-    Route::get('/locked-savings-invest', [CronController::class, 'myaction'])->name('user-locked-savings-invest');
-    Route::post('/limit-buy', [TradeController::class, 'limitBuy'])->name('user-limit-buy');
-    Route::post('/limit-sell', [TradeController::class, 'limitSell'])->name('user-limit-sell');
-    Route::post('/limit-delete', [TradeController::class, 'limitDelete'])->name('user-limit-delete');
-    Route::get('/getBuySellPendingData', [TradeController::class, 'getBuySellPendingData'])->name('get-buy-sell-pending-data');
+//        Route::get('/', [DashboardController::class, 'index'])->name('user-dashboard');
+        Route::get('/transactions', [BuySellController::class, 'index'])->name('user-transactions');
+        Route::get('/wallets', [WalletController::class, 'wallets'])->name('user-wallets');
+        Route::post('/wallets', [WalletController::class, 'derivativedeposit'])->name('derivativedeposit');
 
-    //Limit BuySell Cron Job
-    Route::get('/limitcronjob', [LimitCronController::class, 'limitCronJob'])->name('limit-buysell-cronjob');
-    Route::get('/testjobbuy', [LimitCronController::class, 'updateLimitBuyTable']);
-    Route::get('/testjobsell', [LimitCronController::class, 'updateLimitSellTable']);
-});
+        Route::prefix('wallet')->group(function(){
+            Route::get('/', [WalletController::class, 'index'])->name('user-wallet');
+            Route::get('/deposit', [WalletController::class, 'deposit'])->name('user-deposit');
+            Route::post('/deposit', [WalletController::class, 'depositAction'])->name('user-deposit-action');
+            Route::get('/withdraw', [WalletController::class, 'withdraw'])->name('user-withdraw');
+            Route::post('/withdraw', [WalletController::class, 'withdrawAction'])->name('user-withdraw-action');
 
-Route::prefix('admin')->group(function(){
-    Route::get('/', [AdminAuthController::class, 'login'])->name('admin-login');
-    Route::post('/', [AdminAuthController::class, 'loginAction'])->name('admin-login-action');
-    Route::middleware(['auth:admin'])->group(function(){
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard');
-        Route::get('/logout', [AdminAuthController::class, 'logout'])->name('admin-logout');
-        Route::get('/admin-change-password', [AdminAuthController::class, 'changePassword'])->name('admin-change-password');
-        Route::post('/admin-change-password', [AdminAuthController::class, 'changePasswordAction'])->name('admin-change-password-action');
+            //Gateway
+            Route::post('/hcgenerate', [WalletController::class, 'hcgenerate'])->name('hcgenerate');
+            Route::post('/getwayUriResponse', [WalletController::class, 'getwayUriResponse'])->name('getwayUriResponse');
+            Route::get('/getwayPaymentReceipt', [WalletController::class, 'getwayPaymentReceipt'])->name('getwayPaymentReceipt');
+            Route::get('/getwayReturnUrl', [WalletController::class, 'getwayReturnUrl'])->name('getwayReturnUrl');
+        });
 
-        Route::get('/user/list', [AdminUserController::class, 'index'])->name('admin-user-list');
-        Route::post('/user/list', [AdminUserController::class, 'withdrawNotification'])->name('admin-withdraw-notification');
-        Route::get('/user/list/data', [AdminUserController::class, 'data'])->name('admin-user-list-data');
-        Route::get('/user/change-status/{id}/{status}', [AdminUserController::class, 'changeStatus'])->name('admin-user-change-status');
-        Route::get('/user/destroy', [AdminUserController::class, 'destroy'])->name('admin-user-destroy');
-        Route::get('/user/wallets/{id}', [AdminUserController::class, 'wallets'])->name('admin-user-wallets');
-        Route::get('/user/memo/{id}', [AdminUserController::class, 'memo'])->name('admin-user-memo');
-        Route::post('/user/memo/{id}', [AdminUserController::class, 'memoAction'])->name('admin-user-memo-action');
+        Route::get('/message', [MessageController::class, 'index'])->name('user-message');
+        Route::post('/send-message', [MessageController::class, 'send'])->name('user-send-message');
+        Route::get('/get-message', [MessageController::class, 'getMessages'])->name('user-get-message');
 
-        Route::get('/deposit/list', [AdminDepositController::class, 'index'])->name('admin-deposit-list');
-        Route::get('/deposit/list/data', [AdminDepositController::class, 'data'])->name('admin-deposit-list-data');
-        Route::get('/deposit/change-status/{id}/{status}', [AdminDepositController::class, 'changeStatus'])->name('admin-deposit-change-status');
-        Route::get('/deposit/destroy', [AdminDepositController::class, 'destroy'])->name('admin-deposit-destroy');
+        Route::get('/trade', [TradeController::class, 'index'])->name('user-trade');
+        Route::get('/trade?type=derivative', [TradeController::class, 'index'])->name('user-trade-derivative');
+        Route::get('/trade-finance', [TradeController::class, 'finance'])->name('user-trade-finance');
+        Route::post('/trade-finance-entry', [TradeController::class, 'insertFinance'])->name('user-trade-finance-entry');
+        Route::get('/get-chart-data', [TradeController::class, 'getChartData'])->name('user-get-chart-data');
+        Route::post('/trade-buy', [TradeController::class, 'buy'])->name('user-trade-buy');
+        Route::post('/trade-sell', [TradeController::class, 'sell'])->name('user-trade-sell');
+        Route::get('/get-buy-orders', [TradeController::class, 'getBuyOrders'])->name('user-get-buy-orders');
+        Route::get('/locked-savings-invest', [CronController::class, 'myaction'])->name('user-locked-savings-invest');
+        Route::post('/limit-buy', [TradeController::class, 'limitBuy'])->name('user-limit-buy');
+        Route::post('/limit-sell', [TradeController::class, 'limitSell'])->name('user-limit-sell');
+        Route::post('/limit-delete', [TradeController::class, 'limitDelete'])->name('user-limit-delete');
+        Route::get('/getBuySellPendingData', [TradeController::class, 'getBuySellPendingData'])->name('get-buy-sell-pending-data');
 
-        Route::get('/withdraw/list', [AdminWithdrawController::class, 'index'])->name('admin-withdraw-list');
-        Route::get('/withdraw/list/data', [AdminWithdrawController::class, 'data'])->name('admin-withdraw-list-data');
-        Route::get('/withdraw/change-status/{id}/{status}', [AdminWithdrawController::class, 'changeStatus'])->name('admin-withdraw-change-status');
-        Route::get('/withdraw/destroy/{id}', [AdminWithdrawController::class, 'destroy'])->name('admin-withdraw-destroy');
+        //Limit BuySell Cron Job
+        Route::get('/limitcronjob', [LimitCronController::class, 'limitCronJob'])->name('limit-buysell-cronjob');
+        Route::get('/testjobbuy', [LimitCronController::class, 'updateLimitBuyTable']);
+        Route::get('/testjobsell', [LimitCronController::class, 'updateLimitSellTable']);
+
+    });
+
+    Route::prefix('admin')->group(function(){
+        Route::get('/', [AdminAuthController::class, 'login'])->name('admin-login');
+        Route::post('/', [AdminAuthController::class, 'loginAction'])->name('admin-login-action');
+        Route::middleware(['auth:admin'])->group(function(){
+            Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard');
+            Route::get('/logout', [AdminAuthController::class, 'logout'])->name('admin-logout');
+            Route::get('/admin-change-password', [AdminAuthController::class, 'changePassword'])->name('admin-change-password');
+            Route::post('/admin-change-password', [AdminAuthController::class, 'changePasswordAction'])->name('admin-change-password-action');
+
+            Route::get('/user/list', [AdminUserController::class, 'index'])->name('admin-user-list');
+            Route::post('/user/list', [AdminUserController::class, 'withdrawNotification'])->name('admin-withdraw-notification');
+            Route::get('/user/list/data', [AdminUserController::class, 'data'])->name('admin-user-list-data');
+            Route::get('/user/change-status/{id}/{status}', [AdminUserController::class, 'changeStatus'])->name('admin-user-change-status');
+            Route::get('/user/destroy', [AdminUserController::class, 'destroy'])->name('admin-user-destroy');
+            Route::get('/user/wallets/{id}', [AdminUserController::class, 'wallets'])->name('admin-user-wallets');
+            Route::get('/user/memo/{id}', [AdminUserController::class, 'memo'])->name('admin-user-memo');
+            Route::post('/user/memo/{id}', [AdminUserController::class, 'memoAction'])->name('admin-user-memo-action');
+
+            Route::get('/deposit/list', [AdminDepositController::class, 'index'])->name('admin-deposit-list');
+            Route::get('/deposit/list/data', [AdminDepositController::class, 'data'])->name('admin-deposit-list-data');
+            Route::get('/deposit/change-status/{id}/{status}', [AdminDepositController::class, 'changeStatus'])->name('admin-deposit-change-status');
+            Route::get('/deposit/destroy', [AdminDepositController::class, 'destroy'])->name('admin-deposit-destroy');
+
+            Route::get('/withdraw/list', [AdminWithdrawController::class, 'index'])->name('admin-withdraw-list');
+            Route::get('/withdraw/list/data', [AdminWithdrawController::class, 'data'])->name('admin-withdraw-list-data');
+            Route::get('/withdraw/change-status/{id}/{status}', [AdminWithdrawController::class, 'changeStatus'])->name('admin-withdraw-change-status');
+            Route::get('/withdraw/destroy/{id}', [AdminWithdrawController::class, 'destroy'])->name('admin-withdraw-destroy');
 
 
-        Route::get('/message', [AdminMessageController::class, 'index'])->name('admin-message-list');
-        Route::get('/message-details/{to_id}', [AdminMessageController::class, 'details'])->name('admin-message-details');
-        Route::post('/send-message', [AdminMessageController::class, 'send'])->name('admin-send-message');
-        Route::get('/get-message', [AdminMessageController::class, 'getMessages'])->name('admin-get-message');
+            Route::get('/message', [AdminMessageController::class, 'index'])->name('admin-message-list');
+            Route::get('/message-details/{to_id}', [AdminMessageController::class, 'details'])->name('admin-message-details');
+            Route::post('/send-message', [AdminMessageController::class, 'send'])->name('admin-send-message');
+            Route::get('/get-message', [AdminMessageController::class, 'getMessages'])->name('admin-get-message');
 
-        Route::get('/dmg-coin', [AdminDmgCoinController::class, 'index'])->name('admin-dmg-coin');
-        Route::post('/dmg-coin', [AdminDmgCoinController::class, 'action'])->name('admin-dmg-coin-action');
+            Route::get('/dmg-coin', [AdminDmgCoinController::class, 'index'])->name('admin-dmg-coin');
+            Route::post('/dmg-coin', [AdminDmgCoinController::class, 'action'])->name('admin-dmg-coin-action');
 
-        Route::get('/locked-savings', [AdminLockedSavingsController::class, 'index'])->name('admin-locked-savings');
-        Route::post('/locked-savings', [AdminLockedSavingsController::class, 'action'])->name('admin-locked-savings-action');
-        Route::post('/locked-savings-settings', [AdminLockedSavingsController::class, 'lockedSavingsSettings'])->name('admin-locked-savings-settings');
-        Route::get('/locked-savings-delete-action/{id}', [AdminLockedSavingsController::class, 'lockedSavingsDeleteAction'])->name('admin-locked-savings-delete-action');
-        Route::post('/locked-savings-edit-action/{id}', [AdminLockedSavingsController::class, 'lockedSavingsEditAction'])->name('admin-locked-savings-edit-action');
-        Route::get('/locked-savings-edit/{id}', [AdminLockedSavingsController::class, 'lockedSavingsEdit'])->name('admin-locked-savings-edit');
+            Route::get('/locked-savings', [AdminLockedSavingsController::class, 'index'])->name('admin-locked-savings');
+            Route::post('/locked-savings', [AdminLockedSavingsController::class, 'action'])->name('admin-locked-savings-action');
+            Route::post('/locked-savings-settings', [AdminLockedSavingsController::class, 'lockedSavingsSettings'])->name('admin-locked-savings-settings');
+            Route::get('/locked-savings-delete-action/{id}', [AdminLockedSavingsController::class, 'lockedSavingsDeleteAction'])->name('admin-locked-savings-delete-action');
+            Route::post('/locked-savings-edit-action/{id}', [AdminLockedSavingsController::class, 'lockedSavingsEditAction'])->name('admin-locked-savings-edit-action');
+            Route::get('/locked-savings-edit/{id}', [AdminLockedSavingsController::class, 'lockedSavingsEdit'])->name('admin-locked-savings-edit');
+
+            Route::get('/admindeposit', [AdminDepositController::class, 'adminDeposit'])->name('adminDeposit');
+            Route::post('/admindeposit-action', [AdminDepositController::class, 'adminDepositAction'])->name('adminDeposit-action');
+            Route::get('/admindeposit-history', [AdminDepositController::class, 'adminDepositHistory'])->name('adminDeposit-history');
+        });
     });
 });
 
