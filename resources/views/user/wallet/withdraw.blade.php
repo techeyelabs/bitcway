@@ -1,16 +1,11 @@
 @extends('user.layouts.main')
 
 @section('custom_css')
-    <style>
-        .txtWhitecolor{
-            color: white;
-        }
-    </style>
 @endsection
 
 @section('content')
 <div id="wrap" class="deposit">
-    <h3 class="txtWhitecolor">{{__('button4')}}</h3>
+    <h3 class="txtWhitecolor pageTitle">{{__('button4')}}</h3>
     <hr>
 
     <div class="row">

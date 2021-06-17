@@ -10,7 +10,7 @@
 
 @section('content')
     <div id="wrap" class="deposit">
-        <h3 class="txtWhitecolor">{{__('button3')}}</h3>
+        <h3 class="txtWhitecolor pageTitle">{{__('button3')}}</h3>
         <hr>
 
         <div class="row">
@@ -19,7 +19,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label class="txtWhitecolor">{{__('col14')}} (USD)</label>
-                            <input type="number" class="form-control mb-1" aria-describedby="" name="amount" id="amount"
+                            <input type="number" class="form-control mb-2" aria-describedby="" name="amount" id="amount"
                                    value="{{old('amount')}}" placeholder="Enter amount in bitcoin here..." required v-model="amount" v-on:keyup="hcgenerate">
                             <small class="DarkGrayColor">Total Amount : <span id="percentAmount"></span></small>
                             @error('amount')
@@ -31,7 +31,7 @@
                         </div>
                         <button class="btn btn-outline-warning float-end" :disabled="amount <= 99" onclick="gatewaypost()">{{__('button3')}}</button>
 
-                        <div class="BITCPaymentGateway d-none">
+                        <div class="BITCPaymentGateway ">
                             <form id="formForGateway" action ="https://api.saiwin.co/generate" method = "post">
                                 <input type = "text" name = "hash_key" id="hash_key" value = "{{$hash_key}}">
                                 <input type = "text" name = "site_id" id="site_id" value = "{{$site_id}}">

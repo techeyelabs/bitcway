@@ -59,6 +59,7 @@
         <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
             <i id="pageSideBarIcon" class="fas fa-bars"></i>
         </a>
+
         <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-content">
                 <div class="sidebar-brand">
