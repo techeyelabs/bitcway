@@ -133,7 +133,8 @@
                         <div id="btnDurationId">
                             @foreach($settings as $index => $FinanceSetting)
                                 <li class="row list-group-item d-flex justify-content-between align-items-center">
-                                    <p class="col txtWhitecolor" id="currencyName{{$index}}" style="text-align: left;">{{$FinanceSetting->currency->name}}</p>
+{{--                                    <p class="col txtWhitecolor" id="currencyName{{$index}}" style="text-align: left;">{{$FinanceSetting->currency->name}}</p>--}}
+                                    <p class="col txtWhitecolor" id="currencyName{{$index}}" style="text-align: left;"> @php if($FinanceSetting->currency->name == "ADA"){echo "MAB";}else{echo $FinanceSetting->currency->name;} @endphp </p>
                                     <p class="col txtWhitecolor" id="selectedRate{{$index}}" style="text-align: left;">{{$FinanceSetting->rate_1}}%</p>
                                     <p style="display: none" id="selectedDuration"></p>
                                     <p class="col btn-group"  role="group" aria-label="Basic outlined example" style="width: 10px !important; text-align: center">
