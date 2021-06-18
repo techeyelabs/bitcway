@@ -39,6 +39,14 @@ class WithdrawController extends Controller
                 ->addColumn('email', function ($row) {
                     return $row->user->email;
                 })
+                ->addColumn('walletAddress', function ($row) {
+                    return $row->walletAddress;
+                 })
+                ->addColumn('copy', function ($row) {
+                    $copy = '';
+                    $copy = '<button class="btn btn-sm btn-outline-success" onclick="copyToClipboard('."'".$row->walletAddress."'".')"><i class="far fa-copy fa-2x"></i></button>';
+                    return $copy;
+                })
                 ->editColumn('created_at', function ($row) {
                     return date('d M Y', strtotime($row->created_at));
                 })
@@ -53,7 +61,7 @@ class WithdrawController extends Controller
                     return $action;
                     
                 })
-                ->rawColumns(['status', 'action'])
+                ->rawColumns(['status', 'action', 'copy'])
                 ->make();
     }
 

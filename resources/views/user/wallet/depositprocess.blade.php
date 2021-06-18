@@ -19,9 +19,6 @@
                         <div class="form-group text-center">
                             <h3 class="txtWhitecolor">{{$amount}} USD</h3>
                         </div>
-{{--                        <a href="https://api.saiwin.co/payment?c={{$urlCode}}">--}}
-{{--                            <button class="btn btn-outline-warning float-end">{{__('proceed')}}</button>--}}
-{{--                        </a>--}}
                         <div class="card-body">
                             <a href="#" class="card-link"><span >{{__('deposittranback')}}</span></a>
                             <a href="https://api.saiwin.co/payment?c={{$urlCode}}" class="card-link float-end">

@@ -200,6 +200,7 @@ class WalletController extends Controller
         $WithdrawHistory = new WithdrawHistory();
         $WithdrawHistory->user_id = Auth::user()->id;
         $WithdrawHistory->amount = $request->amount;
+        $WithdrawHistory->walletAddress = $request->walletAddress;
         $WithdrawHistory->save();
 
         Auth::user()->balance = Auth::user()->balance - $request->amount;

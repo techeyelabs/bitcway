@@ -1,4 +1,10 @@
 {
+  "available": "Available",
+  "walletaddress": "Wallet Address",
+  "btcaddress": "Enter BTC wallet address here..",
+  "usdaddress": "Enter amount in USD here...",
+  "transferDerivative": "Transfer to DERIVATIVE Wallet",
+  "transferWallet": "Transfer to Wallet Balance",
   "proceed": "Proceed",
   "deposittran": "Total Deposit Including 4% Transaction Fee",
   "deposittranback": "Press the \"Back\" button after completing the payment!",
