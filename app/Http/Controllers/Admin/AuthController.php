@@ -14,11 +14,11 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        if (Auth::guard('admin')){
-            return redirect()->intended(route('admin-user-list', app()->getLocale()));
-        }else{
+//        if (Auth::guard('admin')){
+//            return redirect()->intended(route('admin-user-list', app()->getLocale()));
+//        }else{
             return view('admin.auth.login');
-        }
+//        }
     }
 
     public function loginAction(Request $request)

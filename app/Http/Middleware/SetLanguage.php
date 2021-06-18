@@ -16,7 +16,12 @@ class SetLanguage
      */
     public function handle(Request $request, Closure $next)
     {
-        \App::setLocale($request->language);
+        $selectedLanguage = $request->language;
+        if ($selectedLanguage == "jp" || $selectedLanguage == "en" || $selectedLanguage == "cn" || $selectedLanguage == "JP" || $selectedLanguage == "EN" || $selectedLanguage == "CN") {
+            \App::setLocale($request->language);
+        }else{
+            \App::setLocale("jp");
+        }
 
         return $next($request);
     }

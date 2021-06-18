@@ -1,11 +1,6 @@
 @extends('user.layouts.main')
 
 @section('custom_css')
-    <style>
-        .txtWhitecolor{
-            color: white;
-        }
-    </style>
 @endsection
 
 @section('content')
@@ -18,10 +13,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
-                            <label class="txtWhitecolor">{{__('col14')}} (USD)</label>
+                            <label class="txtWhitecolor">{{__('col14')}} ({{__('minimumdeposit')}})</label>
                             <input type="number" class="form-control mb-2" aria-describedby="" name="amount" id="amount"
-                                   value="{{old('amount')}}" placeholder="Enter amount in bitcoin here..." required v-model="amount" v-on:keyup="hcgenerate">
-                            <small class="DarkGrayColor">Total Amount : <span id="percentAmount"></span></small>
+                                   value="{{old('amount')}}" placeholder="Enter amount in USD here..." required v-model="amount" v-on:keyup="hcgenerate">
+                            <small class="DarkGrayColor">{{__('tranfee1')}}<span id="percentAmount">00</span> USD ({{__('tranfee2')}})</small>
                             @error('amount')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -31,14 +26,12 @@
                         </div>
                         <button class="btn btn-outline-warning float-end" :disabled="amount <= 99" onclick="gatewaypost()">{{__('button3')}}</button>
 
-                        <div class="BITCPaymentGateway ">
-                            <form id="formForGateway" action ="https://api.saiwin.co/generate" method = "post">
+                        <div class="BITCPaymentGateway d-none ">
                                 <input type = "text" name = "hash_key" id="hash_key" value = "{{$hash_key}}">
                                 <input type = "text" name = "site_id" id="site_id" value = "{{$site_id}}">
                                 <input type ="number" name = "trading_id" id="trading_id" value = "{{$trading_id}}">
                                 <input type = "number" name ="amount" id="rate" value = "">
                                 <input type ="text" name = "hc" id="hc" value = "">
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -51,6 +44,7 @@
 @section('custom_js')
     <script>
         function gatewaypost() {
+            let totalAmount = parseInt($('#amount').val());
             axios.post('{{route("getwayUriResponse", app()->getLocale())}}', {
                 site_id: $('#site_id').val(),
                 trading_id: $('#trading_id').val(),
@@ -60,8 +54,17 @@
 
             })
                 .then(function (response) {
-                    let url = response.data;
-                    location.href = url.url;
+                    let responseUrl = response.data;
+                    let urlCode = responseUrl.url.split("=")
+                    let lang = "{{app()->getLocale()}}";
+
+                    var processUrl = '{{ url(":lang/user/wallet/getwaylinkprocess/:amount/:link") }}';
+                    processUrl = processUrl.replace(':lang', lang);
+                    processUrl = processUrl.replace(':amount', totalAmount);
+                    processUrl = processUrl.replace(':link', urlCode[1]);
+                    document.location.href = processUrl;
+                    
+                    // location.href = responseUrl.url;
                     hideLoader();
                 })
         }

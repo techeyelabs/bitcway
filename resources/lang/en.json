@@ -1,4 +1,10 @@
 {
+  "proceed": "Proceed",
+  "deposittran": "Total Deposit Including 4% Transaction Fee",
+  "deposittranback": "Press the \"Back\" button after completing the payment!",
+  "tranfee1": "Total Amount : ",
+  "tranfee2": "Transaction Fee 4%",
+  "minimumdeposit": "Minimum Deposit 100 USD",
   "bbannertext1": "Join BitC-Way and start",
   "bbannertext2": "trading today",
   "bbutton2": "Log In",

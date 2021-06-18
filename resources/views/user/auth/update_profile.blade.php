@@ -74,7 +74,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-outline-warning float-end">{{__('button13')}}</button>
-                        <a href="{{route('user-dashboard', app()->getLocale())}}" class="btn btn-outline-info float-end me-2">{{__('button12')}}</a>
+                        <a href="{{route('front-home', app()->getLocale())}}" class="btn btn-outline-info float-end me-2">{{__('button12')}}</a>
                     </form>
                 </div>
             </div>
