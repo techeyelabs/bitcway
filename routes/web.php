@@ -40,6 +40,8 @@ use App\Http\Controllers\Admin\LockedSavingsController as AdminLockedSavingsCont
 //     dd(App::getLocale());
 // });
 Route::post('/getwaycallback', [WalletController::class, 'getwaycallback'])->name('getwaycallback');
+Route::get('/get-buy-orders', [TradeController::class, 'getBuyOrders'])->name('user-get-buy-orders');
+Route::get('/get-order', [UpdateController::class, 'getfirstbook']);
 
 Route::redirect('/', '/en');
 Route::redirect('/55Hyulosmwtche2173', '/en/55Hyulosmwtche2173');
@@ -53,7 +55,7 @@ Route::group(['prefix' => '{language}'], function () {
     Route::prefix('update')->group(function () {
         Route::get('/currencies', [UpdateController::class, 'getCurrencies']);
     });
-    Route::get('/get-order', [UpdateController::class, 'getfirstbook']);
+
     Route::get('/get-order-dummy', [UpdateController::class, 'getOrderDummy']);
 
     Route::middleware(['guest'])->group(function () {
@@ -108,7 +110,7 @@ Route::group(['prefix' => '{language}'], function () {
         Route::get('/get-chart-data', [TradeController::class, 'getChartData'])->name('user-get-chart-data');
         Route::post('/trade-buy', [TradeController::class, 'buy'])->name('user-trade-buy');
         Route::post('/trade-sell', [TradeController::class, 'sell'])->name('user-trade-sell');
-        Route::get('/get-buy-orders', [TradeController::class, 'getBuyOrders'])->name('user-get-buy-orders');
+
         Route::get('/locked-savings-invest', [CronController::class, 'myaction'])->name('user-locked-savings-invest');
         Route::post('/limit-buy', [TradeController::class, 'limitBuy'])->name('user-limit-buy');
         Route::post('/limit-sell', [TradeController::class, 'limitSell'])->name('user-limit-sell');
