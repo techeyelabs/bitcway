@@ -142,7 +142,7 @@ class AuthController extends Controller
     {
         $User = User::where('verification_code', $request->token);
         if($User) return view('user.auth.reset');
-        return redirect()->route('user-dashboard', app()->getLocale())->with('error_message', 'Invalid request,please contact administrator!!');
+        return redirect()->route('user-wallet', app()->getLocale())->with('error_message', 'Invalid request,please contact administrator!!');
 
     }
 
