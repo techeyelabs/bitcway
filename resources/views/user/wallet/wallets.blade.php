@@ -198,7 +198,7 @@
         <div class="modal-dialog modal-dialog-centered ">
             <div class="modal-content border-light">
                 <div class="modal-header modalbg">
-                    <h5 class="modal-title" id="modalFlag"></h5>
+                    <h5 class="modal-title txtWhitecolor" id="modalFlag"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             style="background-color: #ffffff;"></button>
                 </div>
@@ -468,9 +468,9 @@
             $('#flag').val(type);
             var flag = document.getElementById('flag').value;
             if (flag == 1){
-                $('#modalFlag').append("{{__('transferDerivative')}}");
+                $('#modalFlag').html("{{__('transferDerivative')}}");
             }else if(flag == 2){
-                $('#modalFlag').append("{{__('transferWallet')}}");
+                $('#modalFlag').html("{{__('transferWallet')}}");
             }
         }
     </script>

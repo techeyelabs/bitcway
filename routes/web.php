@@ -42,6 +42,7 @@ use App\Http\Controllers\Admin\LockedSavingsController as AdminLockedSavingsCont
 Route::post('/getwaycallback', [WalletController::class, 'getwaycallback'])->name('getwaycallback');
 
 Route::redirect('/', '/en');
+Route::redirect('/55Hyulosmwtche2173', '/en/55Hyulosmwtche2173');
 Route::group(['prefix' => '{language}'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('front-home');
     Route::get('/terms', [HomeController::class, 'terms'])->name('front-terms');
