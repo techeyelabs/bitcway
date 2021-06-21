@@ -35,9 +35,4 @@
 @endsection
 
 @section('custom_js')
-    <script>
-        function gatewaypost() {
-
-        }
-    </script>
 @endsection

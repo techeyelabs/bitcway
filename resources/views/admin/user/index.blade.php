@@ -16,7 +16,7 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Furigana</th>
+{{--                            <th>Furigana</th>--}}
                             <th>Email</th>
                             <th>Username</th>
                             <th>Phone</th>
@@ -50,7 +50,7 @@
             ajax: '{!! route("admin-user-list-data", app()->getLocale()) !!}',
             columns: [
                 { data: 'name', name: 'name' },
-                { data: 'furigana', name: 'furigana' },
+                // { data: 'furigana', name: 'furigana' },
                 { data: 'email', name: 'email' },
                 { data: 'username', name: 'username' },
                 { data: 'phone', name: 'phone' },

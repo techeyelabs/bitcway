@@ -121,7 +121,7 @@ Route::group(['prefix' => '{language}'], function () {
 
     });
 
-    Route::prefix('1100waysoccer19999')->group(function () {
+    Route::prefix('55Hyulosmwtche2173')->group(function () {
         Route::get('/', [AdminAuthController::class, 'login'])->name('admin-login');
         Route::post('/', [AdminAuthController::class, 'loginAction'])->name('admin-login-action');
         Route::middleware(['auth:admin'])->group(function () {
