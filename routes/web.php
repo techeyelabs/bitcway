@@ -15,7 +15,6 @@ use App\Http\Controllers\LimitCronController;
 use App\Libraries\test;
 
 
-
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -41,21 +40,23 @@ use App\Http\Controllers\Admin\LockedSavingsController as AdminLockedSavingsCont
 //     dd(App::getLocale());
 // });
 Route::post('/getwaycallback', [WalletController::class, 'getwaycallback'])->name('getwaycallback');
-Route::redirect('/','/en');
-Route::group(['prefix'=>'{language}'], function (){
+
+Route::redirect('/', '/en');
+Route::redirect('/55Hyulosmwtche2173', '/en/55Hyulosmwtche2173');
+Route::group(['prefix' => '{language}'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('front-home');
     Route::get('/terms', [HomeController::class, 'terms'])->name('front-terms');
     Route::get('/about', [HomeController::class, 'about'])->name('front-about');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/verify/{token}', [AuthController::class, 'verify'])->name('verify-email');
 
-    Route::prefix('update')->group(function(){
+    Route::prefix('update')->group(function () {
         Route::get('/currencies', [UpdateController::class, 'getCurrencies']);
     });
     Route::get('/get-order', [UpdateController::class, 'getfirstbook']);
     Route::get('/get-order-dummy', [UpdateController::class, 'getOrderDummy']);
 
-    Route::middleware(['guest'])->group(function(){
+    Route::middleware(['guest'])->group(function () {
         Route::get('/login', [AuthController::class, 'login'])->name('login');
         Route::post('/login', [AuthController::class, 'loginAction'])->name('login-action');
 
@@ -70,18 +71,18 @@ Route::group(['prefix'=>'{language}'], function (){
         Route::post('/reset', [AuthController::class, 'resetAction'])->name('reset-action');
     });
 
-    Route::prefix('user')->middleware(['auth'])->group(function(){
+    Route::prefix('user')->middleware(['auth'])->group(function () {
         Route::get('/change-password', [AuthController::class, 'changePassword'])->name('user-change-password');
         Route::post('/change-password', [AuthController::class, 'changePasswordAction'])->name('user-change-password-action');
         Route::get('/update-profile', [AuthController::class, 'updateProfile'])->name('user-update-profile');
         Route::post('/update-profile', [AuthController::class, 'updateProfileAction'])->name('user-update-profile-action');
 
-//        Route::get('/', [DashboardController::class, 'index'])->name('user-dashboard');
+        //        Route::get('/', [DashboardController::class, 'index'])->name('user-dashboard');
         Route::get('/transactions', [BuySellController::class, 'index'])->name('user-transactions');
         Route::get('/wallets', [WalletController::class, 'wallets'])->name('user-wallets');
         Route::post('/wallets', [WalletController::class, 'derivativedeposit'])->name('derivativedeposit');
 
-        Route::prefix('wallet')->group(function(){
+        Route::prefix('wallet')->group(function () {
             Route::get('/', [WalletController::class, 'index'])->name('user-wallet');
             Route::get('/deposit', [WalletController::class, 'deposit'])->name('user-deposit');
             Route::post('/deposit', [WalletController::class, 'depositAction'])->name('user-deposit-action');
@@ -93,6 +94,7 @@ Route::group(['prefix'=>'{language}'], function (){
             Route::post('/getwayUriResponse', [WalletController::class, 'getwayUriResponse'])->name('getwayUriResponse');
             Route::get('/getwayPaymentReceipt', [WalletController::class, 'getwayPaymentReceipt'])->name('getwayPaymentReceipt');
             Route::get('/getwayReturnUrl', [WalletController::class, 'getwayReturnUrl'])->name('getwayReturnUrl');
+            Route::get('/getwaylinkprocess/{amount}/{gatewaylink}', [WalletController::class, 'getwayLinkProcess'])->name('getwayLinkProcess');
         });
 
         Route::get('/message', [MessageController::class, 'index'])->name('user-message');
@@ -120,10 +122,10 @@ Route::group(['prefix'=>'{language}'], function (){
 
     });
 
-    Route::prefix('admin')->group(function(){
+    Route::prefix('55Hyulosmwtche2173')->group(function () {
         Route::get('/', [AdminAuthController::class, 'login'])->name('admin-login');
         Route::post('/', [AdminAuthController::class, 'loginAction'])->name('admin-login-action');
-        Route::middleware(['auth:admin'])->group(function(){
+        Route::middleware(['auth:admin'])->group(function () {
             Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard');
             Route::get('/logout', [AdminAuthController::class, 'logout'])->name('admin-logout');
             Route::get('/admin-change-password', [AdminAuthController::class, 'changePassword'])->name('admin-change-password');

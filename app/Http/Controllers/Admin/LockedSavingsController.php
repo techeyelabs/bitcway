@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Currency;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 
@@ -46,6 +47,9 @@ class LockedSavingsController extends Controller
 
     public function lockedSavingsSettings(Request $request)
     {
+        if($request->selectCoinName == "MAB") {
+            $request->selectCoinName = "ADA";
+        }
         $currency = Currency::where('name', $request->selectCoinName)->first();
         $data = new LockedSavingsSetting();
         $data->currency_id = $currency->id;
@@ -58,8 +62,7 @@ class LockedSavingsController extends Controller
         $data->rate_2 = $request->rate2;
         $data->rate_3 = $request->rate3;
         $data->rate_4 = $request->rate4;
-
-//        $data->interest_per_lot = (($request->interest_rate)*($request->duration))/365;
+        // $data->interest_per_lot = (($request->interest_rate)*($request->duration))/365;
         $data->save();
 
         return redirect()->back()->with('success_message', 'successfully updated');

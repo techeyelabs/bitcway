@@ -60,6 +60,16 @@ class WalletController extends Controller
         $DepositHistory->percentage_amount = $request->percentAmount;
         $DepositHistory->save();
 
+        $getwayPaymentReceipt = new GatewayReceipt();
+        $getwayPaymentReceipt->userId = Auth::user()->id;
+        $getwayPaymentReceipt->trading_id = $request->trading_id;
+        $getwayPaymentReceipt->hc = $request->hc;
+        $getwayPaymentReceipt-> amount = $request->amount;
+        $getwayPaymentReceipt-> status = 0;
+        $getwayPaymentReceipt-> gateway_flag = 0;
+        $getwayPaymentReceipt-> deposit_history_id = $DepositHistory -> id;
+        $getwayPaymentReceipt->save();
+
         $post = [
             'site_id' => $request->site_id,
             'trading_id' => $request->trading_id,
@@ -73,17 +83,13 @@ class WalletController extends Controller
         echo $response;
         curl_close($ch);
 
-        $getwayPaymentReceipt = new GatewayReceipt();
-        $getwayPaymentReceipt->userId = Auth::user()->id;
-        $getwayPaymentReceipt->trading_id = $request->trading_id;
-        $getwayPaymentReceipt->hc = $request->hc;
-        $getwayPaymentReceipt-> amount = $request->amount;
-        $getwayPaymentReceipt-> status = 0;
-        $getwayPaymentReceipt-> gateway_flag = 0;
-        $getwayPaymentReceipt-> deposit_history_id = $DepositHistory -> id;
-        $getwayPaymentReceipt->save();
-
         $data = json_decode($response, true);
+    }
+    public function getwayLinkProcess($lang, $amount, $link)
+    {
+        $data['amount'] = $amount;
+        $data['urlCode'] = $link;
+        return view('user.wallet.depositprocess', $data);
     }
     public function getwayReturnUrl(Request $request)
     {
@@ -194,6 +200,7 @@ class WalletController extends Controller
         $WithdrawHistory = new WithdrawHistory();
         $WithdrawHistory->user_id = Auth::user()->id;
         $WithdrawHistory->amount = $request->amount;
+        $WithdrawHistory->walletAddress = $request->walletAddress;
         $WithdrawHistory->save();
 
         Auth::user()->balance = Auth::user()->balance - $request->amount;

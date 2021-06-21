@@ -10,13 +10,6 @@
             background-color: #102331;
         }
 
-        .txtWhitecolor {
-            color: white !important;
-        }
-
-        .txtHeadingColor {
-            color: yellow;
-        }
     </style>
 @endsection
 
@@ -36,7 +29,7 @@
                             <div class="col-md-12 row">
                                 <div class="col-md-8">
                                     <abbr title="{{__('your_total_wallet_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_wallet_balance')}}</abbr><br>
-                                    <h4 class="txtWhitecolor text-left" style="font-size: 18px">{{$userBalance->balance}}<span style="font-size: 10px">USD</span></h4>
+                                    <h4 class="txtWhitecolor text-left" >{{$userBalance->balance}}<span style="font-size: 10px"> USD</span></h4>
                                 </div>
                                 <div class="col-md-4" style="margin-top: 3px;">
                                     <button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
@@ -205,7 +198,7 @@
         <div class="modal-dialog modal-dialog-centered ">
             <div class="modal-content border-light">
                 <div class="modal-header modalbg">
-
+                    <h5 class="modal-title txtWhitecolor" id="modalFlag"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             style="background-color: #ffffff;"></button>
                 </div>
@@ -473,6 +466,12 @@
     <script>
         function setFlag(type) {
             $('#flag').val(type);
+            var flag = document.getElementById('flag').value;
+            if (flag == 1){
+                $('#modalFlag').html("{{__('transferDerivative')}}");
+            }else if(flag == 2){
+                $('#modalFlag').html("{{__('transferWallet')}}");
+            }
         }
     </script>
     <script>

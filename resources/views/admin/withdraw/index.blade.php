@@ -41,6 +41,8 @@
                         <tr>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Address</th>
+                            <th>Copy</th>
                             <th>(USD)</th>
                             <th>Status</th>
                             <th>Created</th>
@@ -73,6 +75,8 @@
                 columns: [
                     {data: 'name', name: 'name'},
                     {data: 'email', name: 'email'},
+                    {data: 'walletAddress', name: 'walletAddress'},
+                    {data: 'copy', name: 'copy'},
                     {data: 'amount', name: 'amount'},
                     {data: 'status', name: 'status'},
                     {data: 'created_at', name: 'created_at'},
@@ -92,6 +96,18 @@
                 $('.withdrawSubmitBtn').attr('disabled', true);
             }
         }
+    </script>
+    <script>
+        function copyToClipboard(address) {
+            const str = address;
+            const el = document.createElement("input");
+            document.body.appendChild(el);
+            el.value = str;
+            el.select();
+            document.execCommand("copy");
+            document.body.removeChild(el);
+        }
+
     </script>
 
 @endsection
