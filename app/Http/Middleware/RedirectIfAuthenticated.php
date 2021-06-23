@@ -28,7 +28,7 @@ class RedirectIfAuthenticated
 
             if (Auth::guard($guard)->check()) {
                 // return redirect(RouteServiceProvider::HOME);
-                return redirect(route('user-dashboard'));
+                return redirect(route('user-wallet', app()->getLocale()));
             }
         }
 

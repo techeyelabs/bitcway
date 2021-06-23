@@ -64,7 +64,7 @@
 @section('content')
 
     <div id="wrap" class="trade">
-        <h3 class="txtHeadingColor">{{__('nav4')}}</h3>
+        <h3 class="txtHeadingColor pageTitle">{{__('nav4')}}</h3>
         <hr>
         {{--Finance locked Saving Setting Div2 End--}}
         <div class="card mt-3">

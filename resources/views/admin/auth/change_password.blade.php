@@ -52,7 +52,7 @@
                        
 
                         <button type="submit" class="btn btn-outline-primary float-end">Change</button>
-                        <a href="{{route('user-dashboard', app()->getLocale())}}" class="btn btn-outline-danger float-end me-2">Cancel</a>
+                        <a href="{{route('admin-user-list', app()->getLocale())}}" class="btn btn-outline-danger float-end me-2">Cancel</a>
 
                     </form>
                 </div>

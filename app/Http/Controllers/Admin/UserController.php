@@ -54,10 +54,10 @@ class UserController extends Controller
                     return $row->first_name.' '.$row->last_name;
                 })
                 ->addColumn('asset', function ($row) {
-                    return '<a href="'.route('admin-user-wallets', [$row->id, app()->getLocale()]).'" class="btn btn-sm btn-outline-info">Asset</a>';
+                    return '<a href="'.route('admin-user-wallets', [app()->getLocale(), $row->id]).'" class="btn btn-sm btn-outline-info">Asset</a>';
                 })
                 ->editColumn('memo', function ($row) {
-                    return '<a href="'.route('admin-user-memo', [$row->id, app()->getLocale()]).'" class="btn btn-sm btn-outline-info">Memo</a>';
+                    return '<a href="'.route('admin-user-memo', [app()->getLocale(), $row->id]).'" class="btn btn-sm btn-outline-info">Memo</a>';
                 })
                 ->editColumn('created_at', function ($row) {
                     return date('d M Y', strtotime($row->created_at));
@@ -97,6 +97,7 @@ class UserController extends Controller
 
     public function memo(Request $request)
     {
+
         return view('admin.user.memo', ['user' => User::find($request->id)]);
     }
     public function memoAction(Request $request)
@@ -106,9 +107,6 @@ class UserController extends Controller
         $User->save();
         return redirect()->route('admin-user-list', app()->getLocale());
     }
-
-
-
     public function destroy($id)
     {
         User::find($id)->delete();

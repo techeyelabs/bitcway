@@ -1,14 +1,6 @@
 @extends('user.layouts.main')
 
 @section('custom_css')
-    <style>
-        .txtWhitecolor{
-            color: white;
-        }
-        .txtHeadingColor{
-            color: yellow;
-        }
-    </style>
 @endsection
 
 @section('content')
@@ -48,11 +40,9 @@
                             @error('password_confirmation')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
-
                         </div>
                         <button type="submit" class="btn btn-outline-warning float-end">{{__('button13')}}</button>
-                        <a href="{{route('user-dashboard', app()->getLocale())}}" class="btn btn-outline-info float-end me-2">{{__('button12')}}</a>
-
+                        <a href="{{route('user-wallet', app()->getLocale())}}" class="btn btn-outline-info float-end me-2">{{__('button12')}}</a>
                     </form>
                 </div>
             </div>

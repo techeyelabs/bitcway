@@ -526,37 +526,40 @@
     </script>
     <script>
         // var dumCoin = ["tOMGC:USD", 3.00, 3.01111, 3.411, 311.1100000, -0.0999, -0.000222, 301.00111, 115.88027091, 372.28, 356];
-        const socket = io('http://192.144.82.234:3000/');
+        const socket = io('https://bitc-way.com:3000/');
         // showLoader('Loading...');
         let loaded = false;
         //showLoader("Loading");
-        socket.on('trackers', (trackers) => {
-            Home.trackers   = trackers.trackers;
-            let volumeIndex = Home.trackers;
-            for (let i = 0; i < volumeIndex.length; i++)
-            {
-                let volume = trackers.trackers[i][7] * trackers.trackers[i][8];
-                trackers.trackers[i][11] = volume;
-            }
-            // Home.trackers.push(dumCoin);
-            let coinData = Home.trackers;
-
-            for (let i = 0; i < coinData.length; i++ ){
-                if (coinData[i][0] == "tADAUSD" ){
-                    Home.trackers[i][0] = "tMABUSD";
+        socket.on('connect', () => {
+            console.log('connected to backend');
+            socket.on('trackers', (trackers) => {
+                console.log("here");
+                Home.trackers = trackers.trackers;
+                let volumeIndex = Home.trackers;
+                for (let i = 0; i < volumeIndex.length; i++) {
+                    let volume = trackers.trackers[i][7] * trackers.trackers[i][8];
+                    trackers.trackers[i][11] = volume;
                 }
-            }
+                // Home.trackers.push(dumCoin);
+                let coinData = Home.trackers;
 
-            if(loaded == false){
-                hideLoader();
-                Home.selectedItem = Home.trackers[0];
-                Home.getChartData();
-                setInterval(function(){
-                    Home.getOrders();
-                }, 2000);
-                loaded = true;
-            }
-        })
+                for (let i = 0; i < coinData.length; i++) {
+                    if (coinData[i][0] == "tADAUSD") {
+                        Home.trackers[i][0] = "tMABUSD";
+                    }
+                }
+
+                if (loaded == false) {
+                    hideLoader();
+                    Home.selectedItem = Home.trackers[0];
+                    Home.getChartData();
+                    setInterval(function () {
+                        Home.getOrders();
+                    }, 2000);
+                    loaded = true;
+                }
+            })
+        });
 
         let w               = null;
         var totalSellAmount = 0;
@@ -576,7 +579,7 @@
             } else {
                 CurrencyApi = 'https://api.bitfinex.com/v2/book/'+currency+'/P0';
             }
-            CurrencyApi = 'http://bitc-way.com/get-order';
+            CurrencyApi = 'https://bitc-way.com/get-order';
             axios.get(CurrencyApi, {params: {currency: currency}})
                 .then(response => {
                     items = response.data;
@@ -661,6 +664,15 @@
             if (Home.lastcurrency != currency) {
                 Home.lastcurrency = currency;
             }
+            console.log(currency);
+            if (currency == 'tMABUSD'){
+                var multiple = 123;
+                var realCurr = 'tADAUSD';
+            } else {
+                var multiple = 1;
+                realCurr = currency;
+            }
+            console.log(multiple);
             if (w) w.close();
             w = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
             w.onmessage = function(msg){
@@ -674,6 +686,8 @@
                         bids = [];
                         asks = [];
                         items[1].forEach(function (item) {
+                            item[0] = item[0]*multiple;
+                            console.log(item[0]);
                             if (item[2] > 0) {
                                 bids.push(item);
                             } else {
@@ -749,7 +763,7 @@
                 event   : 'subscribe',
                 channel : 'book',
                 freq    : 'F1',
-                symbol  : currency
+                symbol  : realCurr
             })
 
             w.onopen = function(event){
@@ -989,10 +1003,6 @@
                         var range_value = "";
 
                     }
-
-
-
-
                     let that = this;
                     let currency = that.selectedItem[0];
                     // showLoader('Loading ...');
@@ -1221,6 +1231,7 @@
                         currency: that.currency,
                         buyAmount: that.amount,
                         calcBuyAmount: that.calcAmount,
+                        currency_price: that.selectedPrice,
                         derivativeUserMoney: 0,
                         derivativeLoan: 0
 
@@ -1281,6 +1292,7 @@
                     currency                : that.currency,
                         buyAmount           : that.amount,
                         calcBuyAmount       : that.calcAmount,
+                        derivative_currency_price : that.selectedPrice,
                         leverage            : $("#sliderRange").val(),
                         derivativeUserMoney : that.derivativeRange
                     })

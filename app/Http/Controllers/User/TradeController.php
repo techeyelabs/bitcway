@@ -173,10 +173,12 @@ class TradeController extends Controller
                 $UserWallet = new UserWallet();
                 $UserWallet->balance = $request->buyAmount;
                 $UserWallet->equivalent_trade_amount = $request->calcBuyAmount;
+                $UserWallet->currency_price = $request->currency_price;
 
             }else{
                 $UserWallet->balance = $UserWallet->balance+$request->buyAmount;
                 $UserWallet->equivalent_trade_amount = $UserWallet->equivalent_trade_amount + $request->calcBuyAmount;
+                $UserWallet->currency_price = $request->currency_price;
             }
             $UserWallet->user_id = Auth::user()->id;
             $UserWallet->currency_id = $currency->id;
@@ -213,6 +215,7 @@ class TradeController extends Controller
                 $LeverageWallet = new Leverage_Wallet();
                 $LeverageWallet->amount = $request->buyAmount;
                 $LeverageWallet->equivalent_amount = $request->calcBuyAmount;
+                $LeverageWallet->derivative_currency_price = $request->derivative_currency_price;
                 $LeverageWallet->derivativeUserMoney = $request->derivativeUserMoney;
                 $LeverageWallet->derivativeLoan = $request->calcBuyAmount - $request->derivativeUserMoney;
                 $LeverageWallet->type = 1;

@@ -1,16 +1,11 @@
 @extends('user.layouts.main')
 
 @section('custom_css')
-    <style>
-        .txtWhitecolor{
-            color: white;
-        }
-    </style>
 @endsection
 
 @section('content')
     <div id="wrap" class="deposit">
-        <h3 class="txtWhitecolor">{{__('button3')}}</h3>
+        <h3 class="txtWhitecolor pageTitle">{{__('button3')}}</h3>
         <hr>
 
         <div class="row">
@@ -18,9 +13,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
-                            <label class="txtWhitecolor">{{__('col14')}} (USD)</label>
-                            <input type="number" class="form-control" aria-describedby="" name="amount" id="amount"
-                                   value="{{old('amount')}}" placeholder="Enter amount in bitcoin here..." required v-model="amount" v-on:keyup="hcgenerate">
+                            <label class="txtWhitecolor">{{__('col14')}} ({{__('minimumdeposit')}})</label>
+                            <input type="number" class="form-control mb-2" aria-describedby="" name="amount" id="amount"
+                                   value="{{old('amount')}}" placeholder="Enter amount in USD here..." required v-model="amount" v-on:keyup="hcgenerate">
+                            <small class="DarkGrayColor">{{__('tranfee1')}}<span id="percentAmount">00</span> USD ({{__('tranfee2')}})</small>
                             @error('amount')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -28,16 +24,14 @@
                         <div class="form-group text-center d-none">
                             <h4 class="txtWhitecolor">Equivalent: <span id="amountRate"> @{{amount*rate}}</span> (USD)</h4>
                         </div>
-                        <button class="btn btn-outline-warning float-end" onclick="gatewaypost()">{{__('button3')}}</button>
+                        <button class="btn btn-outline-warning float-end" :disabled="amount <= 99" onclick="gatewaypost()">{{__('button3')}}</button>
 
-                        <div class="BITCPaymentGateway">
-                            <form id="formForGateway" action ="https://api.saiwin.co/generate" method = "post">
+                        <div class="BITCPaymentGateway d-none ">
                                 <input type = "text" name = "hash_key" id="hash_key" value = "{{$hash_key}}">
                                 <input type = "text" name = "site_id" id="site_id" value = "{{$site_id}}">
                                 <input type ="number" name = "trading_id" id="trading_id" value = "{{$trading_id}}">
                                 <input type = "number" name ="amount" id="rate" value = "">
                                 <input type ="text" name = "hc" id="hc" value = "">
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -50,15 +44,27 @@
 @section('custom_js')
     <script>
         function gatewaypost() {
+            let totalAmount = parseInt($('#amount').val());
             axios.post('{{route("getwayUriResponse", app()->getLocale())}}', {
                 site_id: $('#site_id').val(),
                 trading_id: $('#trading_id').val(),
-                amount: $('#amount').val(),
-                hc: $('#hc').val()
+                percentAmount: parseInt($('#percentAmount').html()),
+                hc: $('#hc').val(),
+                amount: parseInt($('#amount').val())
+
             })
                 .then(function (response) {
-                    let url = response.data;
-                    location.href = url.url;
+                    let responseUrl = response.data;
+                    let urlCode = responseUrl.url.split("=")
+                    let lang = "{{app()->getLocale()}}";
+
+                    var processUrl = '{{ url(":lang/user/wallet/getwaylinkprocess/:amount/:link") }}';
+                    processUrl = processUrl.replace(':lang', lang);
+                    processUrl = processUrl.replace(':amount', totalAmount);
+                    processUrl = processUrl.replace(':link', urlCode[1]);
+                    document.location.href = processUrl;
+                    
+                    // location.href = responseUrl.url;
                     hideLoader();
                 })
         }
@@ -68,7 +74,7 @@
             el: '.deposit',
             data: {
                 rate: '{{$rate}}',
-                amount: 0,
+                amount: '',
                 qrCode: false,
                 wallet: '1MoLoCh1srp6jjQgPmwSf5Be5PU98NJHgx',
                 qrCodeLink: null
@@ -80,13 +86,16 @@
             methods:{
                 hcgenerate(){
                     let that = this;
-                    $('#rate').val(that.amount*that.rate);
-                    // showLoader('please wait...');
+                    let inputAmount = parseInt($('#amount').val());
+                    let percentAmount = parseInt(( 4 / 100) * inputAmount);
+                    let amount =  parseInt(inputAmount+percentAmount);
+                    parseInt($('#percentAmount').html(amount));
+
                     axios.post('{{route("hcgenerate", app()->getLocale())}}', {
                         hash_key: $('#hash_key').val(),
                         site_id: $('#site_id').val(),
                         trading_id: $('#trading_id').val(),
-                        rate: that.amount
+                        rate: amount
                     })
                         .then(function (response) {
                             console.log(response);

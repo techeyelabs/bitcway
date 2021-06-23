@@ -2,12 +2,6 @@
 
 @section('custom_css')
     <style>
-        .txtWhitecolor{
-            color: white;
-        }
-        .txtHeadingColor{
-            color: yellow;
-        }
         table
         {
             table-layout: fixed !important;
@@ -22,9 +16,6 @@
         .walletBtn{
             width: 135px !important;
         }
-
-
-
 </style>
 @endsection
 @section('content')
@@ -53,7 +44,6 @@
                             <a class="nav-link active txtWhitecolor" id="withdraw-histoty-tab" data-bs-toggle="tab" href="#withdraw-histoty" role="tab"
                                 aria-controls="withdraw-histoty" aria-selected="true">{{__('button6')}}</a>
                         </li>
-
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade row" id="deposit-history" role="tabpanel" aria-labelledby="home-tab" >
@@ -75,7 +65,6 @@
                                         </td>
                                     </tr>
                                     <?php }?>
-
                                 </tbody>
                             </table>
                         </div>
@@ -114,22 +103,23 @@
                             <a class="nav-link txtWhitecolor" id="withdraw-histoty-tab" data-bs-toggle="tab" href="#withdraw-histoty" role="tab"
                                 aria-controls="withdraw-histoty" aria-selected="false">{{__('button6')}} </a>
                         </li>
-
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active row" id="deposit-history" role="tabpanel" aria-labelledby="home-tab" >
                             <table class="table col-md-6">
                                 <thead>
                                     <th class="txtWhitecolor">{{__('col8')}}</th>
-                                    <th class="txtWhitecolor">BTC</th>
+{{--                                    <th class="txtWhitecolor">BTC</th>--}}
                                     <th class="txtWhitecolor">USD</th>
                                     <th class="txtWhitecolor">{{__('status')}}</th>
                                 </thead>
                                 <tbody>
-                                    <?php foreach($deposit as $item){?>
+                                    <?php foreach($deposit as $item){
+                                        if(isset($item->getwayPaymentReceipt[0]->gateway_flag) && $item->getwayPaymentReceipt[0]->gateway_flag == 1) {
+                                        ?>
                                     <tr>
                                         <td class="txtWhitecolor">{{date('d/m/Y', strtotime($item->created_at->todatestring()))}}</td>
-                                        <td class="txtWhitecolor">{!! number_format((float)($item->amount), 5) !!}</td>
+{{--                                        <td class="txtWhitecolor">{!! number_format((float)($item->amount), 5) !!}</td>--}}
                                         <td class="txtWhitecolor">{{$item->equivalent_amount}}</td>
                                         <td class="txtWhitecolor">
                                             <?php
@@ -140,8 +130,7 @@
                                             else echo 'Pending';?>
                                         </td>
                                     </tr>
-                                    <?php }?>
-
+                                    <?php }}?>
                                 </tbody>
                             </table>
                         </div>

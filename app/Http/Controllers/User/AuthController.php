@@ -142,7 +142,7 @@ class AuthController extends Controller
     {
         $User = User::where('verification_code', $request->token);
         if($User) return view('user.auth.reset');
-        return redirect()->route('user-dashboard', app()->getLocale())->with('error_message', 'Invalid request,please contact administrator!!');
+        return redirect()->route('user-wallet', app()->getLocale())->with('error_message', 'Invalid request,please contact administrator!!');
 
     }
 
@@ -170,15 +170,15 @@ class AuthController extends Controller
 
     public function updateProfileAction(Request $request)
     {
+//        dd($request);
         $validated = $request->validate([
             'first_name' => 'required',
-            'last_name' => 'required',
-            'furigana' => 'required'
+            'last_name' => 'required'
         ]);
         $User = User::find(Auth::user()->id);
         $User->first_name = $request->first_name;
         $User->last_name = $request->last_name;
-        $User->furigana = $request->furigana;
+        $User->furigana = null;
         $User->phone = $request->phone;
         $User->save();
         return redirect()->back()->with('success_message', 'Profile information updated!!');

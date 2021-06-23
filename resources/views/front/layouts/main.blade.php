@@ -60,7 +60,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top bgco">
         <div class="container-fluid">
             <a class="siteLogo" href="{{route('front-home', app()->getLocale())}}" >
-                <img src="./images/logo.png" alt="" width="150" height="50%">
+                <img src="../images/logo.png" alt="" width="150" height="50%">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"

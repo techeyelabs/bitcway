@@ -84,15 +84,15 @@
         <div class="volume-totals">
             <div class="vol_sec_list row">
                 <div class="vol_sec_item col-md-4">
-                    <div class="vol_sec_fig">$<span class=" ">1,755,277,181</span></div>
+                    <div class="vol_sec_fig">$<span class=" ">1,869,037,849</span></div>
                     <div>{{__('24hvolume')}}</div>
                 </div>
                 <div class="vol_sec_item col-md-4">
-                    <div class="vol_sec_fig">$<span class=" ">20,203,861,379</span></div>
+                    <div class="vol_sec_fig">$<span class=" ">17,688,693,886</span></div>
                     <div>{{__('7dvolume')}}</div>
                 </div>
                 <div class="vol_sec_item col-md-4">
-                    <div class="vol_sec_fig">$<span class=" ">155,241,416,679</span></div>
+                    <div class="vol_sec_fig">$<span class=" ">146,050,057,901</span></div>
                     <div>{{__('30dvolume')}}</div>
                 </div>
             </div>
