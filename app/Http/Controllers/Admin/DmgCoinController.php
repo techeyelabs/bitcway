@@ -39,7 +39,7 @@ class DmgCoinController extends Controller
             $DmgCoin -> price_update = $request -> price_update;
             $DmgCoin -> save();
         } else {
-            $get_prev_row = DmgCoin ::latest() -> first();
+            $get_prev_row = DmgCoin ::orderBy('id', 'desc') -> first();
             if ($get_prev_row) {
                 $date_db = new DateTime($get_prev_row -> end_date);
                 $date_input = new DateTime($request -> start_date);
