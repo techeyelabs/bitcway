@@ -21,7 +21,6 @@ class DmgCoinController extends Controller
     public function index()
     {
         $data['coin'] = DmgCoin ::where ('display_status', 2)->orderBy('id', 'desc')->get();
-        //dd( $data);
         return view('admin.dmg_coin.index', $data);
     }
 
@@ -51,11 +50,9 @@ class DmgCoinController extends Controller
                     $end_day = strtotime($request -> start_date . " 00:00:00 GMT") * 1000 - (24 * 3600 * 1000);
                     $start_date = gmdate("Y-m-d", $start_day / 1000);
                     $end_date = gmdate("Y-m-d", $end_day / 1000);
-                    $missing_input = ['start_date' => $start_date, 'end_date' => $end_date, 'price_update' => ($request -> price_update + $get_prev_row -> price_update) / 2, 'display_status' => 1];
 
-                    echo "<pre>"."got prev row";
-                    print_r($missing_input);
-                     //DmgCoin ::create($missing_input);
+                    $missing_input = ['start_date' => $start_date, 'end_date' => $end_date, 'price_update' => ($request -> price_update + $get_prev_row -> price_update) / 2, 'display_status' => 1];
+                    DmgCoin ::create($missing_input);
                 }
             } else {
                 $initial_day = new DateTime('2021-05-17');
@@ -73,17 +70,14 @@ class DmgCoinController extends Controller
                     $req_diff = $request_date_difference -> days;
 
                     $missing_input = ['start_date' => $start_date, 'end_date' => $end_date, 'price_update' => (($request -> price_update / $req_diff) * $diff), 'display_status' => 1];
-                    echo "<pre>"."got no prev rows";
-                    print_r($missing_input);
-                    // DmgCoin ::create($missing_input);
+                    DmgCoin ::create($missing_input);
                 }
             }
             $inputs = ['start_date' => $request -> start_date, 'end_date' => $request -> end_date, 'price_update' => $request -> price_update, 'display_status' => 2];
-           // DmgCoin ::create($inputs);
+            DmgCoin ::create($inputs);
         }
-       /* $datagenerator = new DataGenerator();
-        $datagenerator -> index();*/
-      exit();
+        $datagenerator = new DataGenerator();
+        $datagenerator -> index();
         return redirect()
             -> route('admin-dmg-coin', app() -> getLocale())
             -> with('success_message', 'successfully updated');
