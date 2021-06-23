@@ -133,7 +133,7 @@ class TradeController extends Controller
 
             }
             else{
-                $response = $Bitfinex->getCandle('tADAUSD', '','','' );
+                $response = $Bitfinex->getCandle('tADAUSD', '','','','' );
             }
         }
         else{

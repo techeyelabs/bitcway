@@ -919,7 +919,6 @@
 
                     }
                     if (type ==='range'){
-                        //alert(value);
                         var range_value = value;
                         var current_date = new Date();
                         var enddate = current_date.getTime();
@@ -997,16 +996,18 @@
                     let that = this;
                     let currency = that.selectedItem[0];
                     // showLoader('Loading ...');
-                    axios.get('{{route("user-get-chart-data", app()->getLocale())}}', {params: {currency: currency, user_currency: that.currency, interval:interval_value, start:startdate, end:enddate}})
+                    axios.get('{{route("user-get-chart-data", app()->getLocale())}}', {params: {currency: currency, user_currency: that.currency, interval:interval_value, start:startdate, end:enddate, range:range_value}})
                     .then(function (response) {
                         let chartData = [];
                         if(response.data.status){
                             that.balance = response.data.balance;
+                            console.log(response);
                             response.data.chartData.forEach(function(item){
                                 let newChartData = { time: item[0]/1000 , open: item[1], high: item[3], low: item[4], close: item[2]};
                                 chartData.push(newChartData);
 
                             });
+                            console.log(chartData);
                             if(currency == 'tMABUSD'){
                                 var coindata=[
                                     { "time":1621604,"open": 39252, "high":39839,"low":39252, "close":39821.73222635},
@@ -1047,12 +1048,12 @@
                         var date_ago = new Date(
                             new Date().getFullYear(),
                             new Date().getMonth(),
-                            new Date().getDate()-parseInt(range[0])
+                            new Date().getDate()-parseInt(range[0]) + 1
                         );
                     }
                     if(range === '6h' || range === '1h'){
                         var date_1day_ago = new Date();
-                        startdate = date_1day_ago.getTime()-(parseInt(range[0])*3600*1000);
+                        startdate = date_1day_ago.getTime() - (parseInt(range[0]) * 3600 * 1000);
 
                     }
                     else{

@@ -18,66 +18,84 @@
             <div class="card">
                 <div class="card-body">
                     @include('includes.message')
-                   <form action="" method="post">
+                   <form action="" id="update_form" method="post">
                        @csrf
-                       <div class="form-group">
+<!--                       <div class="form-group">
                            <label for="">Start Price</label>
-                           <input type="number" step="any" class="form-control" name="start_price" placeholder="Enter start price..." value="{{$coin->start_price}}" required>
+                           <input type="number" step="any" class="form-control" name="start_price" placeholder="Enter start price..." value="" required>
                            @error('start_price')
                            <small class="text-danger">{{ $message }}</small>
                            @enderror
-                       </div>
+                       </div>-->
                        <div class="form-group">
                            <label for="">Start Date</label>
-                           <input type="date" class="form-control" name="start_date" placeholder="Enter start price..." value="{{$coin->start_date}}" required>
+                           <input type="date" class="form-control" id='start_date' name="start_date" placeholder="Enter start price..." value="" required>
+                           <input type="hidden" name="edit_id" id="edit_id" value="">
                            @error('start_date')
                            <small class="text-danger">{{ $message }}</small>
                            @enderror
                        </div>
                        <div class="form-group">
                            <label for="">End Date</label>
-                           <input type="date" class="form-control" name="end_date" placeholder="Enter start price..." value="{{$coin->end_date}}" required>
+                           <input type="date" class="form-control" id="end_date" name="end_date" placeholder="Enter start price..." value="" required>
                            @error('end_date')
                            <small class="text-danger">{{ $message }}</small>
                            @enderror
                        </div>
                        <div class="form-group">
                            <label for="">Price Update (%)</label>
-                           <input type="number" step="any" class="form-control" name="price_update" placeholder="Enter start price..." value="{{$coin->price_update}}" required>
+                           <input type="number" step="any" class="form-control" id="price_update" name="price_update" placeholder="Enter start price..." value="" required>
                            @error('price_update')
                            <small class="text-danger">{{ $message }}</small>
                            @enderror
                        </div>
 
-                       <?php foreach ($periods as $key => $value) {?>
-                            <div class="parent">
-                                <hr>
-                                <div class="form-group">
-                                    <label for="">Start Date</label> <button type="button" class="btn btn-outline-danger float-end btn-sm remove">remove</button>
-                                    <input type="date" class="form-control" name="pstart_date[]" value="{{$value->start_date}}" placeholder="Enter start price..." required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">End Date</label>
-                                    <input type="date" class="form-control" name="pend_date[]" value="{{$value->end_date}}" placeholder="Enter start price..." required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Price Update (%)</label>
-                                    <input type="number" step="any" class="form-control" value="{{$value->price_update}}" name="pprice_update[]" placeholder="Enter start price..." required>
-                                </div>
-                            </div>
-                       <?php }?>
 
-                       <button type="button" class="btn btn-outline-success add">Add periodic price change</button>
+<!--                       <button type="button" class="btn btn-outline-success add">Add periodic price change</button>-->
                        <hr>
-                       <button type="submit" class="btn btn-primary btn-block float-right">Update</button>
+                       <button type="submit" class="btn btn-primary btn-block float-right">Submit</button>
+<!--                       <button class="btn btn-primary btn-block float-right" id='reset_form' style="display: none" onclick="reset()">Reset</button>-->
                    </form>
                 </div>
             </div>
 
         </div>
     </div>
-</div>
+    <br>
+    <div class="row" id="" >
+        <div class="col-md-8 col-lg-6">
 
+            <div class="card" style="padding-top: 5%; padding-bottom: 5%;">
+                <div class="card-body">
+                    <label> Update History</label>
+                    <hr>
+                    <table class="tables" id="tabledata">
+                        <th  style="width:20%">Start Date</th>
+                        <th  style="width:20%">End Date</th>
+                        <th  style="width:20%;">Price Update(%)</th>
+                        <th  style="width:20%">Action</th>
+                        <tbody>
+                        <?php $i = 0;
+                            foreach($coin as $c) { ?>
+                            <tr>
+                                <td >{{$c['start_date']}}</td>
+                                <td >{{$c['end_date']}}</td>
+                                <td >{{$c['price_update']}}</td>
+                                <td  style="cursor: pointer; color:green;" id="{{$c['id']}}" onclick="edit(this.id)">
+                                    <?php if($i == 0){ ?>
+                                        <i class="fa fa-pen"></i>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                        <?php $i++; } ?>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <div class="dynamic-content">
@@ -112,5 +130,20 @@
                 $(this).parents('.parent').remove();
             })
         })
+        function edit(id){
+           var price_update = $('#'+id).prev().text();
+          var end_date= $('#'+id).prev().prev().text();
+          var start_date= $('#'+id).prev().prev().prev().text();
+          //alert(start_date);
+          var put_start_date=$('input#start_date').val(start_date);
+          var put_end_date=$('input#end_date').val(end_date);
+          var put_price_update=$('input#price_update').val(price_update);
+          var edit_id=$('input#edit_id').val(id);
+          $('#reset_form').show();
+        }
+        function reset(){
+            document.getElementById("update_form").reset();
+             $('#reset_form').hide();
+        }
     </script>
 @endsection
