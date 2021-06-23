@@ -47,6 +47,17 @@ class TradeController extends Controller
             $data['currency'] = $currency;
             return view('user.trade.index', $data);
         }
+        /********************************************************
+         * TO GET THE CURRENT DAY PRICE FOR ADA FROM DATA       *
+         * ******************************************************/
+
+        $get_json = file_get_contents('./dataJson/1d.json');
+        $json_data = json_decode($get_json, 'true');
+        $current_date = strtotime(date("Y-m-d") . " 00:00:00 GMT") * 1000;
+        $find_date_index = array_search($current_date, array_column($json_data, 'time'));
+        $data['current_price'] = $json_data[$find_date_index]['open'];
+
+
         return view('user.trade.index', $data);
     }
 
@@ -340,23 +351,25 @@ class TradeController extends Controller
         $Bitfinex = new Bitfinex();
         return $Bitfinex->getOrderBook($request->currency);
     }
-    public function limitBuy(Request $request){
 
-        $currency = Currency::where('name', $request->currency)->first();
-            $limitBuy = new LimitBuySell();
-            $limitBuy->limitType = $request->limitType;
-            $limitBuy->priceLimit = $request->priceLimit;
-            $limitBuy->currencyAmount = $request->currencyAmount;
-            $limitBuy->transactionStatus = $request->transactionStatus;
-            $limitBuy->user_id = Auth::user()->id;
-            $limitBuy->currency_id = $currency->id;
-            if($request->derivative){
-                $limitBuy->derivative = $request->derivative;
-            }
-            $limitBuy->save();
+    public function limitBuy(Request $request)
+    {
+
+        $currency = Currency ::where('name', $request -> currency) -> first();
+        $limitBuy = new LimitBuySell();
+        $limitBuy -> limitType = $request -> limitType;
+        $limitBuy -> priceLimit = $request -> priceLimit;
+        $limitBuy -> currencyAmount = $request -> currencyAmount;
+        $limitBuy -> transactionStatus = $request -> transactionStatus;
+        $limitBuy -> user_id = Auth ::user() -> id;
+        $limitBuy -> currency_id = $currency -> id;
+        if ($request -> derivative) {
+            $limitBuy -> derivative = $request -> derivative;
+        }
+        $limitBuy -> save();
 
 
-        return response()->json(['status' => true]);
+        return response() -> json(['status' => true]);
 
 
     }
@@ -378,43 +391,36 @@ class TradeController extends Controller
         return response()->json(['status' => true]);
     }
 
-    public function getBuySellPendingData(Request $coinid){
+    public function getBuySellPendingData(Request $coinid)
+    {
 
-        if($coinid->coin == 'MAB')
-        {
+        if ($coinid -> coin == 'MAB') {
             $coinname = 'ADA';
+        } else {
+            $coinname = $coinid -> coin;
         }
-        else{
-            $coinname=$coinid->coin;
+        $currency = Currency ::where('name', $coinname) -> first();
+        if ($coinid -> type === 'derivative') {
+            $data = limitBuySell ::select('id', 'priceLimit', 'currencyAmount', 'limitType') -> where('user_id', Auth ::user() -> id) -> where('currency_id', $currency -> id) -> where('transactionStatus', 1) -> where('derivative', '>', 0) -> orderBy('created_at', 'DESC') -> get();
+        } else {
+            $data = limitBuySell ::select('id', 'priceLimit', 'currencyAmount', 'limitType') -> where('user_id', Auth ::user() -> id) -> where('currency_id', $currency -> id) -> where('transactionStatus', 1) -> orderBy('created_at', 'DESC') -> get();
         }
-        $currency = Currency::where('name', $coinname)->first();
-        if($coinid->type === 'derivative')
-        {
-            $data = limitBuySell::select('id','priceLimit','currencyAmount','limitType')->where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->where('transactionStatus', 1)->where('derivative','>', 0)->orderBy('created_at', 'DESC')->get();
-        }
-        else
-        {
-            $data = limitBuySell::select('id','priceLimit','currencyAmount','limitType')->where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->where('transactionStatus', 1)->orderBy('created_at', 'DESC')->get();
-        }
-        if($data && count($data) > 0)
-        {
-            foreach ($data as $key => $val)
-            {
+        if ($data && count($data) > 0) {
+            foreach ($data as $key => $val) {
                 $table_data[$key] = $val;
             }
-            return response()->json($table_data);
-        }
-        else
-        {
-           return "no data";
+            return response() -> json($table_data);
+        } else {
+            return "no data";
 
         }
     }
 
-    public function limitDelete(Request $request){
-        $limitBuy   = LimitBuySell::find($request->limitId);
-        $limitBuy->delete();
-        return response()->json(['status' => true]);
+    public function limitDelete(Request $request)
+    {
+        $limitBuy = LimitBuySell ::find($request -> limitId);
+        $limitBuy -> delete();
+        return response() -> json(['status' => true]);
     }
 
 }
