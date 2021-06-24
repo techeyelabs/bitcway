@@ -246,7 +246,7 @@
                 let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + i).html());
 
 
-                let full_data = trackers.trackers;
+                let full_data = trackers.trackers.trackers;
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + currencyName + 'USD') {
                         // parseFloat($('#CoinpriceIntoMycoin' + i).html((tradeCurrencySize * item[1]).toFixed(5)));
