@@ -1244,7 +1244,7 @@
                 derivativeBuy(){
 
                     let that = this;
-                    if(that.calcAmount <= 0 || that.calcAmount > that.usdBalance) {
+                    if(that.calcAmount <= 0 || that.calcAmount > that.derivativeBalance) {
                         toastr.error('Invalid amount !!');
                         return false;
                     }

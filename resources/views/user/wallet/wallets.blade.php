@@ -363,9 +363,19 @@
                 let currencyName = $('#MyCoinCurrencyName2' + j).html();
                 let currencyAmount = parseFloat($('#MyTotalCoinAmount2' + j).html());
 
+                let realcurrname2 = '';
+                if (currencyName == 'MAB') {
+                    realcurrname2 = 'ADA';
+                } else {
+                    realcurrname2 = currencyName;
+                }
+
                 let full_data = trackers.trackers.trackers;
                 full_data.forEach(async function (item) {
-                    if (item[0] === 't' + currencyName + 'USD') {
+                    if (item[0] === 't' + realcurrname2 + 'USD') {
+                        if (realcurrname == 'ADA'){
+                            item[1] = item[1] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[1] ;
+                        }
                         parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
                         parseFloat($('#CoinpriceintoMyCurrency' + j).html(( item[1]).toFixed(5)));
                     }

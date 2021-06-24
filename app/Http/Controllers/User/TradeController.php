@@ -351,7 +351,6 @@ class TradeController extends Controller
 
     public function limitBuy(Request $request)
     {
-
         $currency = Currency ::where('name', $request -> currency) -> first();
         $limitBuy = new LimitBuySell();
         $limitBuy -> limitType = $request -> limitType;
