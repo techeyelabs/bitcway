@@ -582,7 +582,7 @@ table,th, td {
         margin-right: 10px !important;
     }
     .tableClass{
-        width: 150% !important;
+        width: 160% !important;
     }
     .buttons_row{
         margin-left: 30px !important;
@@ -619,7 +619,16 @@ table,th, td {
         margin-bottom: .5em;
         width: auto;
     }
+    .features-grid{
+        display: none !important;
+    }
+    .mobile-feature-grid{
+        display: block !important;
+    }
 
+}
+.mobile-feature-grid{
+    display: none;
 }
 .navbar-dark .navbar-toggler {
      color: #081420 !important;

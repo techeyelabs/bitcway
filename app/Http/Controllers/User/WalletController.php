@@ -221,7 +221,6 @@ class WalletController extends Controller
         $data['transactionHistory'] = Leverage_Wallet::where('user_id', Auth::user()->id)->where('leverage', '>', 0)->with('leveragehistory')->orderBy('id', 'DESC')->get();
         $currentTime = Carbon\Carbon::now();
         $data['finances'] = LockedSaving::where('user_id', Auth::user()->id)->where('redemption_date', '>', $currentTime)->with('currency')->orderBy('id', 'DESC')->get();
-//        dd( $data['finances']);
 
         foreach ($data['wallets'] as $item) {
             $data['total'] += $item->balance * (is_numeric($Bitfinex->getRate($item->currency->name) ? $Bitfinex->getRate($item->currency->name) : 1));
