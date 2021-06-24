@@ -30,8 +30,8 @@
                         <div class="form-group text-center">
                             <h4 class="txtWhitecolor" >Available: @{{balance}} USD</h4>
                         </div>
-                        <span class="" id="mainBalance">@{{balance}}</span>
-                        <span class="" id="availableBalance">@{{availableBalance}}</span>
+                        <span class="d-none" id="mainBalance">@{{balance}}</span>
+                        <span class="d-none" id="availableBalance">@{{availableBalance}}</span>
 
                         <div class="form-group">
                             <label class="txtWhitecolor" for="">{{__('col10')}} (USD)</label>
