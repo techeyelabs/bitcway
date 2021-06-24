@@ -68,22 +68,16 @@
                             <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('action')}}</p>
                         </li>
                         <?php
-                            $i = 0;
-
-                            foreach($wallets as $index => $item ){
-                                if ($item->currency->name == 'ADA'){
-                                    $multiplier = $current_price / $index;
-                                } else {
-                                    $multiplier = 1;
-                                }
-                                $i++;
+                        $i = 0;
+                        foreach($wallets as $index =>$item ){
+                        $i++;
                         ?>
                         <li class="row list-group-item d-flex justify-content-between align-items-center ">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName{{$index}}" style="text-align: left;">{{($item->currency->name == 'ADA') ? 'MAB' : $item->currency->name}}</p>
                             <p class="col txtWhitecolor" id="MyTotalCoinSize{{$index}}" style="text-align: left;">{!! number_format((double)($item->balance),5)!!}</p>
 {{--                            <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}" style="text-align: center;">{!! number_format((double)($item->equivalent_trade_amount),5)!!}</p>--}}
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}" style="text-align: center;">{!! number_format((double)($item->currency_price),5)!!}</p>
-                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin{{ $index * $multiplier }}" style="text-align: center;">00.000000</p>
+                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin{{$index}}" style="text-align: center;">00.000000</p>
                             <p class="col " id="unrealizedpnl{{$index}}" style="text-align: right;">00.000000</p>
                             <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetTradeSell{{$index}}" style="cursor: pointer;">{{__('title9')}}</span></p>
                         </li>
@@ -256,6 +250,9 @@
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + currencyName + 'USD') {
                         // parseFloat($('#CoinpriceIntoMycoin' + i).html((tradeCurrencySize * item[1]).toFixed(5)));
+                        if (currencyName == 'ADA'){
+                            item[1] = item[1] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[1] ;
+                        }
                         parseFloat($('#CoinpriceIntoMycoin' + i).html((item[1]).toFixed(5)));
                     }
                 });
