@@ -579,7 +579,7 @@
             } else {
                 CurrencyApi = 'https://api.bitfinex.com/v2/book/'+currency+'/P0';
             }
-            CurrencyApi = 'http://127.0.0.1:8000/get-order';
+            CurrencyApi = 'http://bitc-way.com/get-order';
             axios.get(CurrencyApi, {params: {currency: currency}})
                 .then(response => {
                     items = response.data;
@@ -799,7 +799,8 @@
                 totalLimitCurrency: '',
                 bidincreased:  '',
                 askincreased: '',
-                lastcurrency: 'tBTCUSD'
+                lastcurrency: 'tBTCUSD',
+                currentPrice: {{$current_price}}
             },
             mounted() {
 

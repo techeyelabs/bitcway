@@ -7,6 +7,13 @@
             white-space:nowrap;
             max-width:32px;
         }
+        table th {
+            /*//position: -webkit-sticky !important; // this is for all Safari (Desktop & iOS), not for Chrome*/
+            position: sticky !important;
+            top: 0;
+            z-index: 10;
+            background-color: #081420 !important;
+        }
         /*.hide-text {*/
         /*    text-indent: 100%;*/
         /*    text-overflow: ellipsis;*/
@@ -80,7 +87,7 @@
         </div>
     </div>
 
-    <div class="section2 vol_sec bgco dwhite center_cls">
+    {{--<div class="section2 vol_sec bgco dwhite center_cls">
         <div class="volume-totals">
             <div class="vol_sec_list row">
                 <div class="vol_sec_item col-md-4">
@@ -97,7 +104,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--}}
 
     <div class="section3">
         <section class="features dark">
@@ -281,7 +288,7 @@
         // const socket = io('http://localhost:3000');
         socket.on('trackers', (trackers) => {
             console.log(trackers);
-            Home.trackers = trackers.trackers;
+            Home.trackers = trackers.trackers.trackers;
         })
 
         let Home = new Vue({
@@ -302,4 +309,5 @@
         });
 
     </script>
+
 @endsection
