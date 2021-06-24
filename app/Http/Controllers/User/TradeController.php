@@ -242,7 +242,9 @@ class TradeController extends Controller
     {
         $leverageRequestSellAmount = $request->sellAmount;
         $equivalentSellAmount = $request->calcSellAmount;
-
+        if ($request->currency == 'MAB'){
+            $request->currency = 'ADA';
+        }
         $currency = Currency::where('name', $request->currency)->first();
         if(!$currency){
             return response()->json(['status' => false]);

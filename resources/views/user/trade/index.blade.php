@@ -1242,9 +1242,8 @@
                     });
                 },
                 derivativeBuy(){
-
                     let that = this;
-                    if(that.calcAmount <= 0 || that.calcAmount > that.derivativeBalance) {
+                    if(that.calcAmount <= 0 || (that.calcAmount / that.derivativeValue) > that.derivativeBalance) {
                         toastr.error('Invalid amount !!');
                         return false;
                     }
