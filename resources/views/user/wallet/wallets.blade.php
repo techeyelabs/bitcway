@@ -385,6 +385,7 @@
             for (let dv = 1; dv <= indexNumber2; dv++) {
                 let derivativeBalance = parseFloat($('#derivativeBalance').text());
                 totalDerivativeValue += parseFloat($('#derivativeAmountWithPNL' + dv).text());
+                totalDerivativeValue += (parseFloat($('#MyTotalCoinAmount2' + dv).text()) * parseFloat($('#CoinpriceintoMycoin2' + dv).text()))/parseFloat($('#derivativePercent' + dv).text());
                 parseFloat($('#totalDerivativeAmount').html((totalDerivativeValue+derivativeBalance).toFixed(5)));
             }
             for (let dbPNL = 1; dbPNL<=indexNumber2; dbPNL++){
