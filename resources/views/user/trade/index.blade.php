@@ -526,14 +526,14 @@
     </script>
     <script>
         // var dumCoin = ["tOMGC:USD", 3.00, 3.01111, 3.411, 311.1100000, -0.0999, -0.000222, 301.00111, 115.88027091, 372.28, 356];
-        const socket = io('http://192.144.82.234:3000/');
+        // const socket = io('http://192.144.82.234:3000/');
+        const socket = io('https://bitc-way.com:3000/');
         // showLoader('Loading...');
         let loaded = false;
         //showLoader("Loading");
         socket.on('connect', () => {
             console.log('connected to backend');
             socket.on('trackers', (trackers) => {
-                console.log("here");
                 Home.trackers = trackers.trackers;
                 let volumeIndex = Home.trackers;
                 for (let i = 0; i < volumeIndex.length; i++) {
@@ -545,6 +545,7 @@
 
                 for (let i = 0; i < coinData.length; i++) {
                     if (coinData[i][0] == "tADAUSD") {
+                        Home.trackers[i][7] = Home.MABcurrentPrice;
                         Home.trackers[i][0] = "tMABUSD";
                     }
                 }
@@ -579,15 +580,25 @@
             } else {
                 CurrencyApi = 'https://api.bitfinex.com/v2/book/'+currency+'/P0';
             }
-            CurrencyApi = 'http://bitc-way.com/get-order';
+            // CurrencyApi = 'http://127.0.0.1:8000/get-order';
+            CurrencyApi = 'https://bitc-way.com/get-order';
             axios.get(CurrencyApi, {params: {currency: currency}})
                 .then(response => {
                     items = response.data;
                     if(items){
+                        if (currency == 'tMABUSD') {
+                            var num = Home.MABcurrentPrice / parseFloat(items[0][0]);
+                            var multiple = parseFloat(num);
+                            var multiple = multiple.toFixed(4);
+                        } else {
+                            var multiple = 1;
+                        }
                         if(items.length > 3){
                             bids = [];
                             asks = [];
                             items.forEach(function(item){
+                                var temp = item[0] * multiple;
+                                item[0] = temp.toFixed(4);
                                 if(item[2] > 0){
                                     bids.push(item);
                                 }else{
@@ -664,15 +675,11 @@
             if (Home.lastcurrency != currency) {
                 Home.lastcurrency = currency;
             }
-            console.log(currency);
             if (currency == 'tMABUSD'){
-                var multiple = 123;
                 var realCurr = 'tADAUSD';
             } else {
-                var multiple = 1;
                 realCurr = currency;
             }
-            console.log(multiple);
             if (w) w.close();
             w = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
             w.onmessage = function(msg){
@@ -682,12 +689,21 @@
                 Home.bidsprev = Home.bids;
                 Home.asksprev = Home.asks;
                 if (items[1]) {
+                    if (currency == 'tMABUSD'){
+                        var num = Home.MABcurrentPrice / parseFloat(items[1][0]);
+                        console.log(Home.MABcurrentPrice);
+                        console.log(items[1][0]);
+                        var multiple = parseFloat(num);
+                        var multiple = multiple.toFixed(4);
+                    } else {
+                        var multiple = 1;
+                    }
                     if (items[1].length > 3) {
                         bids = [];
                         asks = [];
                         items[1].forEach(function (item) {
-                            item[0] = item[0]*multiple;
-                            console.log(item[0]);
+                            var temp = item[0] * multiple;
+                            item[0] = temp.toFixed(4);
                             if (item[2] > 0) {
                                 bids.push(item);
                             } else {
@@ -800,7 +816,11 @@
                 bidincreased:  '',
                 askincreased: '',
                 lastcurrency: 'tBTCUSD',
+<<<<<<< HEAD
                 currentPrice: {{$current_price}}
+=======
+                MABcurrentPrice: {{$current_price}}
+>>>>>>> 72cdf1732361664cf98816167c17ad5f743d5293
             },
             mounted() {
 
@@ -938,65 +958,6 @@
                         var current_date = new Date();
                         var enddate = current_date.getTime();
                         var startdate= this.getStartDate(range_value);
-
-                        /*if (range_value === '3Y'){
-                           var date_3years_ago = new Date(year - 3, month, day);
-                           var startdate=date_3years_ago.getTime();
-
-                        }
-                        if (range_value === '1Y'){
-                            var date_1year_ago = new Date(year - 1, month, day);
-                            var startdate=date_1year_ago.getTime();
-                        }
-                        if (range_value === '3M'){
-                            var date_3months_ago = new Date(
-                                new Date().getFullYear(),
-                                new Date().getMonth() - 3,
-                                new Date().getDate()
-                            );
-                            startdate=date_3months_ago.getTime();
-                            console.log("3months date:"+startdate);
-                        }
-                        if (range_value === '1M'){
-                            var date_1months_ago = new Date(
-                                new Date().getFullYear(),
-                                new Date().getMonth() - 1,
-                                new Date().getDate()
-                            );
-                            startdate = date_1months_ago.getTime();
-                            console.log("1months date:"+startdate);
-                        }
-                        if (range_value === '7D'){
-                            var date_7days_ago = new Date(
-                                new Date().getFullYear(),
-                                new Date().getMonth() ,
-                                new Date().getDate()-7
-                            );
-                            startdate = date_7days_ago.getTime();
-                        }
-                        if (range_value === '3D'){
-                            var date_3days_ago = new Date(
-                                new Date().getFullYear(),
-                                new Date().getMonth() ,
-                                new Date().getDate()-3
-                            );
-                            startdate = date_3days_ago.getTime();
-                        }
-                        if (range_value === '1D'){
-                            var date_1day_ago = new Date(
-                                new Date().getFullYear(),
-                                new Date().getMonth() ,
-                                new Date().getDate()-1
-                            );
-                            startdate = date_1day_ago.getTime();
-                        }
-                        if (range_value === '6h'){
-                            var date_1day_ago = new Date();
-                            startdate = date_1day_ago.getTime()-(6*3600*1000);
-                        }
-                        if (range_value === '1h'){
-                            startdate=enddate-(1000*3600)
-                        }*/
                     }
                     else{
                         var startdate = "";
@@ -1012,22 +973,25 @@
                         let chartData = [];
                         if(response.data.status){
                             that.balance = response.data.balance;
-                            console.log(response);
                             response.data.chartData.forEach(function(item){
                                 let newChartData = { time: item[0]/1000 , open: item[1], high: item[3], low: item[4], close: item[2]};
                                 chartData.push(newChartData);
 
                             });
-                            console.log(chartData);
                             if(currency == 'tMABUSD'){
-                                var coindata=[
-                                    { "time":1621604,"open": 39252, "high":39839,"low":39252, "close":39821.73222635},
-                                    { "time":1621518,"open": 39689, "high":39037,"low":631.40783786, "close":39252}
+                                var coindata = [
+                                    {
+                                        "time": 1621604,
+                                        "open": 39252,
+                                        "high": 39839,
+                                        "low": 39252,
+                                        "close": 39821.73222635
+                                    },
+                                    {"time": 1621518, "open": 39689, "high": 39037, "low": 631.40783786, "close": 39252}
                                 ]
                                 //chartData.push(coindata);
                             }
                             setTimeout(function(){
-                                console.log(chartData);
                                 that.drawChart(chartData);
                             }, 100);
                         }

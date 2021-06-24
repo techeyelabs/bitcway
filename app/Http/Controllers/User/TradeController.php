@@ -30,6 +30,17 @@ class TradeController extends Controller
         $data['userInfo'] = UserWallet::where('user_id', Auth::user()->id)->get();
         $currency = array();
         $data['currency'] = 0;
+
+        /********************************************************
+         * TO GET THE CURRENT DAY PRICE FOR ADA FROM DATA       *
+         * ******************************************************/
+
+        $get_json = file_get_contents('./dataJson/1d.json');
+        $json_data = json_decode($get_json, 'true');
+        $current_date = strtotime(date("Y-m-d") . " 00:00:00 GMT") * 1000;
+        $find_date_index = array_search($current_date, array_column($json_data, 'time'));
+        $data['current_price'] = $json_data[$find_date_index]['open'];
+
         if(isset($request->type)){
             $data['type'] = $request->type;
             $leverageAmount= Leverage_Wallet::select('currency_id')
@@ -47,17 +58,6 @@ class TradeController extends Controller
             $data['currency'] = $currency;
             return view('user.trade.index', $data);
         }
-        /********************************************************
-         * TO GET THE CURRENT DAY PRICE FOR ADA FROM DATA       *
-         * ******************************************************/
-
-        $get_json = file_get_contents('./dataJson/1d.json');
-        $json_data = json_decode($get_json, 'true');
-        $current_date = strtotime(date("Y-m-d") . " 00:00:00 GMT") * 1000;
-        $find_date_index = array_search($current_date, array_column($json_data, 'time'));
-        $data['current_price'] = $json_data[$find_date_index]['open'];
-
-
         return view('user.trade.index', $data);
     }
 
