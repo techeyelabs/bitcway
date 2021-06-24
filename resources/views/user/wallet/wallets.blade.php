@@ -230,8 +230,8 @@
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-        const socket = io('http://192.144.82.234:3000/');
-        // const socket = io('https://bitc-way.com:3000/');
+        // const socket = io('http://192.144.82.234:3000/');
+        const socket = io('https://bitc-way.com:3000/');
         let loaded = false;
         socket.on('trackers', (trackers) => {
             // console.log(trackers);
@@ -246,7 +246,7 @@
                 let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + i).html());
 
 
-                let full_data = trackers.trackers;
+                let full_data = trackers.trackers.trackers;
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + currencyName + 'USD') {
                         // parseFloat($('#CoinpriceIntoMycoin' + i).html((tradeCurrencySize * item[1]).toFixed(5)));
@@ -354,7 +354,7 @@
                 let currencyName = $('#MyCoinCurrencyName2' + j).html();
                 let currencyAmount = parseFloat($('#MyTotalCoinAmount2' + j).html());
 
-                let full_data = trackers.trackers;
+                let full_data = trackers.trackers.trackers;
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + currencyName + 'USD') {
                         parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
@@ -430,7 +430,7 @@
                
                
                 let full_data = trackers.trackers.trackers;
-                
+
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + currencyName + 'USD') {
                         parseFloat($('#coinWithInterest' + k).html((totalCoinValue * item[1]).toFixed(5)));
