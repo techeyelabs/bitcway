@@ -429,7 +429,7 @@
                 let totalCoinValue  = parseFloat(((coinLot*coinLotSize) + coinExpectedInterest));
                
                
-                let full_data = trackers.trackers;
+                let full_data = trackers.trackers.trackers;
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + currencyName + 'USD') {
                         parseFloat($('#coinWithInterest' + k).html((totalCoinValue * item[1]).toFixed(5)));
