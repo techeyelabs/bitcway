@@ -175,6 +175,9 @@ class TradeController extends Controller
 
     public function buy(Request $request)
     {
+        if ($request->currency == 'MAB'){
+            $request->currency = 'ADA';
+        }
         $currency = Currency::where('name', $request->currency)->first();
         if(!$currency) return response()->json(['status' => false]);
         $UserWallet = UserWallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->first();
