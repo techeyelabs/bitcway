@@ -244,13 +244,19 @@
                 let currencyAmount = parseFloat($('#MyTotalCoinAmount' + i).html());
                 let tradeCurrencySize = parseFloat($('#MyTotalCoinSize' + i).html());
                 let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + i).html());
-
+                let realcurrname = '';
+                if (currencyName == 'MAB') {
+                    realcurrname = 'ADA';
+                } else {
+                    realcurrname = currencyName;
+                }
 
                 let full_data = trackers.trackers.trackers;
                 full_data.forEach(async function (item) {
-                    if (item[0] === 't' + currencyName + 'USD') {
+                    if (item[0] === 't' + realcurrname + 'USD') {
+                        console.log(realcurrname);
                         // parseFloat($('#CoinpriceIntoMycoin' + i).html((tradeCurrencySize * item[1]).toFixed(5)));
-                        if (currencyName == 'ADA'){
+                        if (realcurrname == 'ADA'){
                             item[1] = item[1] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[1] ;
                         }
                         parseFloat($('#CoinpriceIntoMycoin' + i).html((item[1]).toFixed(5)));
@@ -259,7 +265,7 @@
             }
 
             for (let t = 0; t < indexNumber; t++) {
-                totalValue += parseFloat($('#CoinpriceIntoMycoin' + t).text());
+                totalValue += parseFloat($('#CoinpriceIntoMycoin' + t).text()) * parseFloat($('#MyTotalCoinSize' + t).text());
                 parseFloat($('#totalAmount').html((totalValue).toFixed(5)));
             }
 
