@@ -4,10 +4,6 @@
     </IfModule>
 
     RewriteEngine On
-    # Redirect to HTTPS
-    RewriteEngine On
-    RewriteCond %{SERVER_PORT} 80
-    RewriteRule ^(.*)$ https://www.bitc-way.com/$1 [R,L]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
