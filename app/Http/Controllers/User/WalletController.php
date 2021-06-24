@@ -19,8 +19,11 @@ use App\Models\User;
 use App\Models\LockedSaving;
 use Carbon;
 
+use App\Traits\CurrentMABPrice;
+
 class WalletController extends Controller
 {
+    use CurrentMABPrice;
     public function index(Request $request)
     {
         if (isset($request->id)) {
@@ -221,8 +224,7 @@ class WalletController extends Controller
         $data['transactionHistory'] = Leverage_Wallet::where('user_id', Auth::user()->id)->where('leverage', '>', 0)->with('leveragehistory')->orderBy('id', 'DESC')->get();
         $currentTime = Carbon\Carbon::now();
         $data['finances'] = LockedSaving::where('user_id', Auth::user()->id)->where('redemption_date', '>', $currentTime)->with('currency')->orderBy('id', 'DESC')->get();
-//        dd( $data['finances']);
-
+        $data['current_price'] = $this->getCurrentPrice();
         foreach ($data['wallets'] as $item) {
             $data['total'] += $item->balance * (is_numeric($Bitfinex->getRate($item->currency->name) ? $Bitfinex->getRate($item->currency->name) : 1));
         }
