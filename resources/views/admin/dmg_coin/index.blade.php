@@ -29,7 +29,7 @@
                        </div>-->
                        <div class="form-group">
                            <label for="">Start Date</label>
-                           <input type="date" class="form-control" id='start_date' name="start_date" placeholder="Enter start price..." value="" required>
+                           <input type="datetime-local" class="form-control" id='start_date' name="start_date" placeholder="Enter start price..." value="" required>
                            <input type="hidden" name="edit_id" id="edit_id" value="">
                            @error('start_date')
                            <small class="text-danger">{{ $message }}</small>
@@ -37,7 +37,7 @@
                        </div>
                        <div class="form-group">
                            <label for="">End Date</label>
-                           <input type="date" class="form-control" id="end_date" name="end_date" placeholder="Enter start price..." value="" required>
+                           <input type="datetime-local" class="form-control" id="end_date" name="end_date" placeholder="Enter start price..." value="" required>
                            @error('end_date')
                            <small class="text-danger">{{ $message }}</small>
                            @enderror
@@ -131,14 +131,13 @@
             })
         })
         function edit(id){
-           var price_update = $('#'+id).prev().text();
-          var end_date= $('#'+id).prev().prev().text();
-          var start_date= $('#'+id).prev().prev().prev().text();
-          //alert(start_date);
-          var put_start_date=$('input#start_date').val(start_date);
-          var put_end_date=$('input#end_date').val(end_date);
-          var put_price_update=$('input#price_update').val(price_update);
-          var edit_id=$('input#edit_id').val(id);
+            var price_update = $('#' + id).prev().text();
+            var end_date = $('#' + id).prev().prev().text();
+            var start_date = $('#' + id).prev().prev().prev().text();
+            var put_start_date = $('input#start_date').val(start_date);
+            var put_end_date = $('input#end_date').val(end_date);
+            var put_price_update = $('input#price_update').val(price_update);
+            var edit_id = $('input#edit_id').val(id);
           $('#reset_form').show();
         }
         function reset(){
