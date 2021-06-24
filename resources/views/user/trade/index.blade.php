@@ -816,7 +816,11 @@
                 bidincreased:  '',
                 askincreased: '',
                 lastcurrency: 'tBTCUSD',
+<<<<<<< HEAD
+                currentPrice: {{$current_price}}
+=======
                 MABcurrentPrice: {{$current_price}}
+>>>>>>> 72cdf1732361664cf98816167c17ad5f743d5293
             },
             mounted() {
 
