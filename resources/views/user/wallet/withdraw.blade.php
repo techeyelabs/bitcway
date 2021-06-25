@@ -83,7 +83,6 @@
                 balance: '{{Auth::user()->balance}}',
                 done: false,
                 availableBalance:''
-
             },
             mounted(){
             },
