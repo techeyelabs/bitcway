@@ -253,9 +253,6 @@ class TradeController extends Controller
         DB::beginTransaction();
         try {
             if (isset($request->derivativeType)) {
-//                $UserWallet->balance = $UserWallet->balance - $leverageRequestSellAmount;
-//                $UserWallet->save();
-
                 $leverageWalletCurrency = Leverage_Wallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->orderBy('id', 'desc')->get();
                 $leverageSellAmount = $leverageRequestSellAmount;
 

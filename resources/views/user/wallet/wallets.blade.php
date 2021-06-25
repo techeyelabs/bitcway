@@ -234,8 +234,6 @@
         const socket = io('https://bitc-way.com:3000/');
         let loaded = false;
         socket.on('trackers', (trackers) => {
-            // console.log(trackers);
-            // Home.trackers = trackers.trackers;
             let totalValue = 0;
             let totalDerivativeValue = 0
             let indexNumber = $('#myCoinIndex').html();
