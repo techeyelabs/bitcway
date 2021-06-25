@@ -25,7 +25,7 @@
 
 @section('content')
     <div id="wrap" class="deposit">
-        <h3><u>Locked Savings Setting</u> <span style="font-size: 14px;">Flexible deposits, higher profits</span></h3>
+        <h3>Finance Setting<span style="font-size: 14px;"></span></h3>
         <hr>
         {{--New locked Saving Setting Start--}}
         <div class="row">

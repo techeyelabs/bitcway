@@ -125,7 +125,7 @@
                         ?>
                         {{--{!! number_format((double)($item->equivalent_amount / $item->leverage),5) !!}--}}
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
-                            <p class="col txtWhitecolor" id="MyCoinCurrencyName2{{$j}}" style="text-align: left;">{{$item->currencyName->name}}</p>
+                            <p class="col txtWhitecolor" id="MyCoinCurrencyName2{{$j}}" style="text-align: left;">{{($item->currencyName->name == 'ADA') ? 'MAB' : $item->currencyName->name}}</p>
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount2{{$j}}" style="text-align: left;">{!! number_format((double)($item->amount), 5) !!}</p>
                             <p class="col txtWhitecolor d-none previous" id="derivativeEntryPrice{{$j}}" style="text-align: left;">{{($item->equivalent_amount)}}</p>
                             <p class="col txtWhitecolor" id="derivativeCurrencyEntryPrice{{$j}}" style="text-align: left;">{{($item->derivative_currency_price)}}</p>
@@ -234,8 +234,6 @@
         const socket = io('https://bitc-way.com:3000/');
         let loaded = false;
         socket.on('trackers', (trackers) => {
-            // console.log(trackers);
-            // Home.trackers = trackers.trackers;
             let totalValue = 0;
             let totalDerivativeValue = 0
             let indexNumber = $('#myCoinIndex').html();
@@ -244,13 +242,19 @@
                 let currencyAmount = parseFloat($('#MyTotalCoinAmount' + i).html());
                 let tradeCurrencySize = parseFloat($('#MyTotalCoinSize' + i).html());
                 let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + i).html());
-
+                let realcurrname = '';
+                if (currencyName == 'MAB') {
+                    realcurrname = 'ADA';
+                } else {
+                    realcurrname = currencyName;
+                }
 
                 let full_data = trackers.trackers.trackers;
                 full_data.forEach(async function (item) {
-                    if (item[0] === 't' + currencyName + 'USD') {
+                    if (item[0] === 't' + realcurrname + 'USD') {
+                        console.log(realcurrname);
                         // parseFloat($('#CoinpriceIntoMycoin' + i).html((tradeCurrencySize * item[1]).toFixed(5)));
-                        if (currencyName == 'ADA'){
+                        if (realcurrname == 'ADA'){
                             item[1] = item[1] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[1] ;
                         }
                         parseFloat($('#CoinpriceIntoMycoin' + i).html((item[1]).toFixed(5)));
@@ -259,7 +263,7 @@
             }
 
             for (let t = 0; t < indexNumber; t++) {
-                totalValue += parseFloat($('#CoinpriceIntoMycoin' + t).text());
+                totalValue += parseFloat($('#CoinpriceIntoMycoin' + t).text()) * parseFloat($('#MyTotalCoinSize' + t).text());
                 parseFloat($('#totalAmount').html((totalValue).toFixed(5)));
             }
 
@@ -357,9 +361,19 @@
                 let currencyName = $('#MyCoinCurrencyName2' + j).html();
                 let currencyAmount = parseFloat($('#MyTotalCoinAmount2' + j).html());
 
+                let realcurrname2 = '';
+                if (currencyName == 'MAB') {
+                    realcurrname2 = 'ADA';
+                } else {
+                    realcurrname2 = currencyName;
+                }
+
                 let full_data = trackers.trackers.trackers;
                 full_data.forEach(async function (item) {
-                    if (item[0] === 't' + currencyName + 'USD') {
+                    if (item[0] === 't' + realcurrname2 + 'USD') {
+                        if (realcurrname == 'ADA'){
+                            item[1] = item[1] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[1] ;
+                        }
                         parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
                         parseFloat($('#CoinpriceintoMyCurrency' + j).html(( item[1]).toFixed(5)));
                     }
@@ -368,8 +382,8 @@
 
             for (let dv = 1; dv <= indexNumber2; dv++) {
                 let derivativeBalance = parseFloat($('#derivativeBalance').text());
-                totalDerivativeValue += parseFloat($('#derivativeAmountWithPNL' + dv).text());
-                parseFloat($('#totalDerivativeAmount').html((totalDerivativeValue+derivativeBalance).toFixed(5)));
+                totalDerivativeValue += (parseFloat($('#CoinpriceintoMycoin2' + dv).text())/parseFloat($('#derivativePercent' + dv).text()));
+                parseFloat($('#totalDerivativeAmount').html((totalDerivativeValue + derivativeBalance).toFixed(5)));
             }
             for (let dbPNL = 1; dbPNL<=indexNumber2; dbPNL++){
                 let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + dbPNL).html().replace(',',''));

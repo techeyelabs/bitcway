@@ -221,7 +221,7 @@ class WalletController extends Controller
         $data['userBalance'] = User::where('id', Auth::user()->id)->first('balance');
         $data['userDerivativeBalance'] = User::where('id', Auth::user()->id)->first('derivative');
         $data['leverage_wallets'] = Leverage_Wallet::where('user_id', Auth::user()->id)->with('currencyName')->orderBy('id', 'DESC')->get();
-        $data['transactionHistory'] = Leverage_Wallet::where('user_id', Auth::user()->id)->where('leverage', '>', 0)->with('leveragehistory')->orderBy('id', 'DESC')->get();
+        $data['transactionHistory'] = Leverage_Wallet::where('user_id', Auth::user()->id)->where('leverage', '>', 0)->with('leveragehistory')->with('currencyName')->orderBy('id', 'DESC')->get();
         $currentTime = Carbon\Carbon::now();
         $data['finances'] = LockedSaving::where('user_id', Auth::user()->id)->where('redemption_date', '>', $currentTime)->with('currency')->orderBy('id', 'DESC')->get();
         $data['current_price'] = $this->getCurrentPrice();

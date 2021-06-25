@@ -242,7 +242,9 @@ class TradeController extends Controller
     {
         $leverageRequestSellAmount = $request->sellAmount;
         $equivalentSellAmount = $request->calcSellAmount;
-
+        if ($request->currency == 'MAB'){
+            $request->currency = 'ADA';
+        }
         $currency = Currency::where('name', $request->currency)->first();
         if(!$currency){
             return response()->json(['status' => false]);
@@ -251,9 +253,6 @@ class TradeController extends Controller
         DB::beginTransaction();
         try {
             if (isset($request->derivativeType)) {
-//                $UserWallet->balance = $UserWallet->balance - $leverageRequestSellAmount;
-//                $UserWallet->save();
-
                 $leverageWalletCurrency = Leverage_Wallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->orderBy('id', 'desc')->get();
                 $leverageSellAmount = $leverageRequestSellAmount;
 
@@ -351,7 +350,6 @@ class TradeController extends Controller
 
     public function limitBuy(Request $request)
     {
-
         $currency = Currency ::where('name', $request -> currency) -> first();
         $limitBuy = new LimitBuySell();
         $limitBuy -> limitType = $request -> limitType;
