@@ -25,7 +25,7 @@
                     <div class="row container-fluid" >
                         <div class="  text-left " style="margin-left: -15px;">
                             <abbr title="{{__('your_total_margin_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_margin_balance')}}</abbr><br>
-                            <h4 class="txtWhitecolor text-left mb-4" ><span id="totalMArginBalanceId">00.000000</span><span style="font-size: 10px">USD</span></h4>
+                            <h4 class="txtWhitecolor text-left mb-4" ><span id="totalMArginBalanceId">00.00</span><span style="font-size: 10px">USD</span></h4>
                             <div class="col-md-12 row">
                                 <div class="col-md-8">
                                     <abbr title="{{__('your_total_wallet_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_wallet_balance')}}</abbr><br>
@@ -53,7 +53,7 @@
 
                         <div class="row  text-left mb-3" style="margin-left: -15px;">
                             <abbr title="{{__('Btrade_wallet')}}"  class="txtWhitecolor text-left initialism">{{__('trade_wallet')}}</abbr><br>
-                            <h4 class="txtWhitecolor text-left mb-2" id="totalAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
+                            <h4 class="txtWhitecolor text-left mb-2" id="totalAmount">00.00 <span style="font-size: 10px">USD</span></h4>
                         </div>
                     </div>
                 </div>
@@ -77,9 +77,10 @@
                             <p class="col txtWhitecolor" id="MyTotalCoinSize{{$index}}" style="text-align: left;">{!! number_format((double)($item->balance),5)!!}</p>
 {{--                            <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}" style="text-align: center;">{!! number_format((double)($item->equivalent_trade_amount),5)!!}</p>--}}
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}" style="text-align: center;">{!! number_format((double)($item->currency_price),5)!!}</p>
-                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin{{$index}}" style="text-align: center;">00.000000</p>
-                            <p class="col " id="unrealizedpnl{{$index}}" style="text-align: right;">00.000000</p>
-                            <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetTradeSell{{$index}}" style="cursor: pointer;">{{__('title9')}}</span></p>
+                            <p class="col txtWhitecolor" id="CoinpriceIntoMycoin{{$index}}" style="text-align: center;">00.00</p>
+                            <p class="col " id="unrealizedpnl{{$index}}" style="text-align: right;">00.00</p>
+                            <p class="col d-none" id="totalTradeAmount{{$index}}" style="text-align: right;color: #00aced">000.00</p>
+                            <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetTradeSell{{$index}}" style="cursor: pointer;" onclick="trade_Sell_Function('{{$index}}')" >{{__('title9')}}</span></p>
                         </li>
                         <?php
                         }
@@ -130,13 +131,14 @@
                             <p class="col txtWhitecolor d-none previous" id="derivativeEntryPrice{{$j}}" style="text-align: left;">{{($item->equivalent_amount)}}</p>
                             <p class="col txtWhitecolor" id="derivativeCurrencyEntryPrice{{$j}}" style="text-align: left;">{{($item->derivative_currency_price)}}</p>
                             <p class="d-none" id="derivativeLoan{{$j}}" >{{($item->derivativeLoan)}}</p>
-                            <p class="col txtWhitecolor d-none previous" id="CoinpriceintoMycoin2{{$j}}" style="text-align: center;">00.000000</p>
+                            <p class="col txtWhitecolor d-none previous" id="CoinpriceintoMycoin2{{$j}}" style="text-align: center;">00.00</p>
                             <p class="col txtWhitecolor" id="CoinpriceintoMyCurrency{{$j}}" style="text-align: center;">00.000000</p>
                             <p class="d-none" id="derivativeAmountWithPNL{{$j}}">00.000000</p>
-                            <p class="col " id="derivativeUnrealizedPrice{{$j}}" style="text-align: right;color:white;">00.000000</p>
-                            <p class="col d-none previous" id="derivativeUnrealizedCurrencyPrice{{$j}}" style="text-align: right;color:white;">00.000000</p>
+                            <p class="col " id="derivativeUnrealizedPrice{{$j}}" style="text-align: right;color:white;">00.00</p>
+                            <p class="col d-none previous" id="derivativeUnrealizedCurrencyPrice{{$j}}" style="text-align: right;color:white;">00.00</p>
                             <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: right; color:white;">{{$item->leverage}}</p>
-                            <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetDerivativeSell{{$j}}" style="cursor: pointer;">{{__('title9')}}</span></p>
+                            <p class="col d-none" id="totalDerivativeAmount{{$j}}" style="text-align: right;color: #00aced">000.00</p>
+                            <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetDerivativeSell{{$j}}"  style="cursor: pointer;" onclick="derivative_Sell_Function('{{$j}}')">{{__('title9')}}</span></p>
                         </li>
                         <?php
                         }
@@ -157,7 +159,7 @@
                     <div class="container-fluid" >
                         <div class="text-left mb-3">
                             <abbr title="Finance Wallet"  class="txtWhitecolor text-left initialism">{{__('title21')}}</abbr><br>
-                            <h4 class="txtWhitecolor text-left mb-3" id="totalFinanceAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
+                            <h4 class="txtWhitecolor text-left mb-3" id="totalFinanceAmount">00.00 <span style="font-size: 10px">USD</span></h4>
                         </div>
                     </div>
                 </div>
@@ -250,6 +252,7 @@
                 }
 
                 let full_data = trackers.trackers.trackers;
+                // let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + realcurrname + 'USD') {
                         console.log(realcurrname);
@@ -258,9 +261,11 @@
                             item[1] = item[1] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[1] ;
                         }
                         parseFloat($('#CoinpriceIntoMycoin' + i).html((item[1]).toFixed(5)));
+                        parseFloat($('#totalTradeAmount' + i).html((tradeCurrencySize*item[1]).toFixed(5)));
                     }
                 });
             }
+
 
             for (let t = 0; t < indexNumber; t++) {
                 totalValue += parseFloat($('#CoinpriceIntoMycoin' + t).text()) * parseFloat($('#MyTotalCoinSize' + t).text());
@@ -281,37 +286,6 @@
                     tradeUnrealizedpnlid.style.color = '#198754'
                 }
             }
-            for (let s = 0; s < indexNumber; s++) {
-                let currencyName = $('#MyCoinCurrencyName' + s).html();
-                let currencyAmount = parseFloat($('#MyTotalCoinAmount' + s).html());
-                let tradeCurrencySize = parseFloat($('#MyTotalCoinSize' + s).html());
-                let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + s).html());
-
-                $( "#assetTradeSell" + s ).click(function() {
-                    axios.post('{{route("user-trade-sell", app()->getLocale())}}',{
-                        currency: currencyName,
-                        sellAmount: tradeCurrencySize,
-                        calcSellAmount: tradeMarkPrice
-                    })
-                        .then(function (response) {
-                            if(response.data.status){
-                                toastr.success('Sell successfull');
-                                window.location.href = '{{route("user-wallets", app()->getLocale())}}';
-                                return false;
-                            }
-                            // toastr.error('Error occured !!');
-                        })
-                        .catch(function (error) {
-                            toastr.error('Error occured !!');
-                        });
-                });
-            }
-
-
-
-
-
-
 
             // let indexNumber2 = $('#myCoinIndex2').html();
             // for (let j = 1; j <= indexNumber2; j++) {
@@ -369,13 +343,15 @@
                 }
 
                 let full_data = trackers.trackers.trackers;
+                // let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + realcurrname2 + 'USD') {
-                        if (realcurrname == 'ADA'){
+                        if (realcurrname2 == 'ADA'){
                             item[1] = item[1] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[1] ;
                         }
                         parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
                         parseFloat($('#CoinpriceintoMyCurrency' + j).html(( item[1]).toFixed(5)));
+                        parseFloat($('#totalDerivativeAmount' + j).html(( currencyAmount*item[1]).toFixed(5)));
                     }
                 });
             }
@@ -409,32 +385,6 @@
             }
 
 
-            for (let ds = 1; ds <= indexNumber2; ds++) {
-                let derivativeCurrencyName = $('#MyCoinCurrencyName2' + ds).html();
-                let derivativeCurrencySize = parseFloat($('#MyTotalCoinAmount2' + ds).html());
-                let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + ds).html());
-
-                $( "#assetDerivativeSell" + ds ).click(function() {
-                    axios.post('{{route("user-trade-sell", app()->getLocale())}}',{
-                        currency: derivativeCurrencyName,
-                        sellAmount: derivativeCurrencySize,
-                        calcSellAmount: derivativeMarkPrice,
-                        derivativeType: '0'
-                    })
-                        .then(function (response) {
-                            if(response.data.status){
-                                toastr.success('Sell successfull');
-                                window.location.href = '{{route("user-wallets", app()->getLocale())}}';
-                                return false;
-                            }
-                            // toastr.error('Error occured !!');
-                        })
-                        .catch(function (error) {
-                            toastr.error('Error occured !!');
-                        });
-                });
-            }
-
             let totalFinanceValue = 0.00;
             let indexNumber3 = $('#myCoinIndex3').html();
         
@@ -447,6 +397,7 @@
                
                
                 let full_data = trackers.trackers.trackers;
+                // let full_data = trackers.trackers;
 
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + currencyName + 'USD') {
@@ -456,7 +407,7 @@
                 for (let a = 1; a <= indexNumber3; a++) {
                     totalFinanceValue += parseFloat($('#coinWithInterest' + a).html());
                     if (isNaN(totalFinanceValue)){
-                    parseFloat($('#totalFinanceAmount').html("00.00000"));
+                    parseFloat($('#totalFinanceAmount').html("00.00"));
                     }else{
                     parseFloat($('#totalFinanceAmount').html((totalFinanceValue).toFixed(5)));
                     }
@@ -474,12 +425,62 @@
             let financeMargin = parseFloat($('#totalFinanceAmount').html());
             totalMargin = parseFloat(tradeMargin + derivativeMargin + financeMargin);
             if (isNaN(totalMargin)) {
-                parseFloat($('#totalMArginBalanceId').html("00.000000"));
+                parseFloat($('#totalMArginBalanceId').html("00.00"));
             }
             else{
                 parseFloat($('#totalMArginBalanceId').html((totalMargin).toFixed(5)));
             }
         })
+    </script>
+    <script>
+       function trade_Sell_Function(index) {
+           console.log(index);
+           let currencyName = $('#MyCoinCurrencyName' + index).html();
+           let tradeCurrencySize = parseFloat($('#MyTotalCoinSize' + index).html());
+           let tradeSellAmount = parseFloat($('#totalTradeAmount' + index).html());
+
+            axios.post('{{route("user-trade-sell", app()->getLocale())}}', {
+                currency: currencyName,
+                sellAmount: tradeCurrencySize,
+                calcSellAmount: tradeSellAmount
+            })
+                .then(function (response) {
+                    if (response.data.status) {
+                        toastr.success('Sell successfull');
+                        window.location.href = '{{route("user-wallets", app()->getLocale())}}';
+                            return false;
+                    }
+                    toastr.error('Error occured !!');
+                })
+                .catch(function (error) {
+                    toastr.error('Error occured !!');
+                });
+        }
+    </script>
+    <script>
+        function derivative_Sell_Function(index) {
+            let derivativeCurrencyName = $('#MyCoinCurrencyName2' + index).html();
+            let derivativeCurrencySize = parseFloat($('#MyTotalCoinAmount2' + index).html());
+            let totalDerivativeAmount = parseFloat($('#totalDerivativeAmount' + index).html());
+
+                axios.post('{{route("user-trade-sell", app()->getLocale())}}',{
+                    currency: derivativeCurrencyName,
+                    sellAmount: derivativeCurrencySize,
+                    calcSellAmount: totalDerivativeAmount,
+                    derivativeType: '0'
+                })
+                    .then(function (response) {
+                        if(response.data.status){
+                            toastr.success('Sell successfull');
+                            window.location.href = '{{route("user-wallets", app()->getLocale())}}';
+                            return false;
+                        }
+                        toastr.error('Error occured !!');
+                    })
+                    .catch(function (error) {
+                        toastr.error('Error occured !!');
+                    });
+        }
     </script>
 
     <script>
@@ -513,13 +514,5 @@
                 }
             }
         }
-    </script>
-    <script>
-        function autoRefreshPage()
-        {
-            toastr.success('Auto reload');
-            window.location = window.location.href;
-        }
-        setInterval('autoRefreshPage()', 300000);
     </script>
 @endsection

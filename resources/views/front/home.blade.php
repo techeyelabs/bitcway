@@ -389,6 +389,7 @@
         socket.on('trackers', (trackers) => {
             console.log(trackers);
             Home.trackers = trackers.trackers.trackers;
+            // Home.trackers = trackers.trackers;
         })
 
         let Home = new Vue({

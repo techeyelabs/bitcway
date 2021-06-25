@@ -111,11 +111,11 @@
                     .then(function (response) {
                         console.log(response);
                         if(response.data.status) that.done = true;
-                        else toastr.error('error occured,please try again');
+                        else toastr.error('Error occured, please try again');
                         hideLoader();
                     })
                     .catch(function (error) {
-                        toastr.error('error occured,please try again');
+                        toastr.error('Error occured, please try again');
                         hideLoader();
                     });
                 }
