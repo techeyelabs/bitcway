@@ -55,6 +55,7 @@
                         </div>
                         <a href="#" class="btn btn-outline-warning float-end" v-on:click="withdraw" :class="{disabled: amount<=99}">{{__('button4')}}</a>
                             @endif
+=
                     </template>
                     @endif
                 </div>
