@@ -4,7 +4,7 @@
 @endsection
 
 @section('content')
-<div id="wrap" class="deposit">
+{{--<div id="wrap" class="deposit">
     <h2>Assets</h2>
     <hr>
     <div class="card">
@@ -15,7 +15,7 @@
     <div class="card mt-3">
         <div class="card-body">
             <div class="text-center"><h4>Asset Breakdown</h4></div>
-            
+
 
             <ul class="list-group col-md-6 offset-md-3">
                 <?php foreach($wallets as $item){?>
@@ -27,8 +27,205 @@
             </ul>
         </div>
     </div>
+</div>--}}
+<div id="wrap" class="deposit">
+    <h3 class="txtHeadingColor pageTitle">{{__('menuoption7')}}</h3>
+    <hr>
+
+    {{--Margin Balance Start--}}
+    <div class="card mt-3 " style="width: 400px">
+        <div class="card-body">
+            <div class="" style="margin: auto">
+                <div class="row container-fluid" >
+                    <div class="  text-left " style="margin-left: -15px;">
+                        <abbr title="{{__('your_total_margin_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_margin_balance')}}</abbr><br>
+                        <h4 class="txtWhitecolor text-left mb-4" ><span id="totalMArginBalanceId">Margin Balance 00.000000</span><span style="font-size: 10px">USD</span></h4>
+                        <div class="col-md-12 row">
+                            <div class="col-md-8">
+                                <abbr title="{{__('your_total_wallet_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_wallet_balance')}}</abbr><br>
+                                <h4 class="txtWhitecolor text-left" >{{$userBalance->balance}}<span style="font-size: 10px"> USD</span></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{--Margin Balance End--}}
+
+    {{--Trade Wallet New Start--}}
+    <div class="card mt-3 ">
+        <div class="card-body">
+            <div class="" style="margin: auto;">
+                <div class="container-fluid" >
+
+                    <div class="row  text-left mb-3" style="margin-left: -15px;">
+                        <abbr title="{{__('Btrade_wallet')}}"  class="txtWhitecolor text-left initialism">{{__('trade_wallet')}}</abbr><br>
+                        <h4 class="txtWhitecolor text-left mb-2" id="totalAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
+                    </div>
+                </div>
+            </div>
+            <div style="margin: auto; overflow-x: auto">
+                <ul class="container-fluid" style=" min-width: 600px;">
+                    <li class="row list-group-item d-flex justify-content-between align-items-center ">
+                        <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('column1')}}</p>
+                        <p class="col txtWhitecolor" id="" style="text-align: left;">{{__('size')}}</p>
+                        <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: center;">{{__('entryprice')}}</p>
+                        <p class="col txtWhitecolor" id="CoinpriceIntoMycoin" style="text-align: center;">{{__('markprice')}}</p>
+                        <p class="col txtWhitecolor" id="unrealizedpnl" style="text-align: right;">Unrealized PNL</p>
+                        <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('action')}}</p>
+                    </li>
+                    @php
+                        $i = 0;
+                        foreach($wallets as $index =>$item ){
+                        $i++;
+                    @endphp
+                    <li class="row list-group-item d-flex justify-content-between align-items-center ">
+                        <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{($item->currency->name == 'ADA') ? 'MAB' : $item->currency->name}}</p>
+                        <p class="col txtWhitecolor" id="MyTotalCoinSize" style="text-align: left;">{!! number_format((double)($item->balance),5)!!}</p>
+                        <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: center;">{!! number_format((double)($item->currency_price),5)!!}</p>
+                        <p class="col txtWhitecolor" id="CoinpriceIntoMycoin" style="text-align: center;">00.000000</p>
+                        <p class="col " id="unrealizedpnl" style="text-align: right;">00.000000</p>
+                        <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetTradeSell" style="cursor: pointer;">{{__('title9')}}</span></p>
+                    </li>
+                    @php
+                        }
+                    @endphp
+                    <p style="display: none;" id="myCoinIndex">{{$i}}</p>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {{--Trade Wallet New End--}}
+
+    {{--Derivative Wallet Start--}}
+     <div class="card mt-3">
+        <div class="card-body">
+            <div class="mb-4" style="margin: auto">
+                <div class="container-fluid">
+                    <div class="text-left">
+                        <abbr title="Derivative Wallet"  class="txtWhitecolor text-left initialism">{{__('title20')}}</abbr><br>
+                        <span class="d-none" id="derivativeBalance">{{$userDerivativeBalance->derivative}}</span>
+                        <h4 class="txtWhitecolor text-left mb-3" id="totalDerivativeAmount">{{$userDerivativeBalance->derivative}}<span style="font-size: 10px">USD</span></h4>
+                    </div>
+                </div>
+            </div>
+            <div style="margin: auto; overflow-x: auto">
+                <ul class="container-fluid" style=" min-width: 600px;">
+                    <li class="row list-group-item d-flex justify-content-between align-items-center">
+                        <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('column1')}}</p>
+                        <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: left; ">{{__('size')}}</p>
+                        <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('entryprice')}}</p>
+                        <p class="col txtWhitecolor" id="CoinpriceIntoMycoin2" style="text-align: center;">{{__('markprice')}}</p>
+                        <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: right;">Unrealized PNL</p>
+                        <p class="col txtWhitecolor" id="derivati8vePercent" style="text-align: right;">{{__('col16')}}</p>
+                        <p class="col txtWhitecolor" id="" style="text-align: right;">Action</p>
+                    </li>
+                    @php
+                        $j = 0;
+                        foreach($transactionHistory as $index =>$item ){
+                        if(($item->leverage) >= 1 ){
+                        $j++;
+                    @endphp
+                    <li class="row list-group-item d-flex justify-content-between align-items-center">
+                        <p class="col txtWhitecolor" id="MyCoinCurrencyName2 " style="text-align: left;">{{($item->currencyName->name == 'ADA') ? 'MAB' : $item->currencyName->name}}</p>
+                        <p class="col txtWhitecolor" id="MyTotalCoinAmount2 " style="text-align: left;">{!! number_format((double)($item->amount), 5) !!}</p>
+                        <p class="col txtWhitecolor" id="derivativeCurrencyEntryPrice " style="text-align: left;">{{($item->derivative_currency_price)}}</p>
+                        <p class="col txtWhitecolor" id="CoinpriceintoMyCurrency " style="text-align: center;">00.000000</p>
+                        <p class="col " id="derivativeUnrealizedPrice " style="text-align: right;color:white;">00.000000</p>
+                        <p class="col txtWhitecolor" id="derivativePercent " style="text-align: right; color:white;">{{$item->leverage}}</p>
+                        <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetDerivativeSell " style="cursor: pointer;">{{__('title9')}}</span></p>
+                    </li>
+                    @php
+                        }
+                           }
+                    @endphp
+                    <p style="display: none;" id="myCoinIndex2">{{$j}}</p>
+                </ul>
+            </div>
+        </div>
+    </div> 
+    {{--Derivative Wallet End--}}
+
+    {{--Finance Wallet Start--}}
+    <div class="card mt-3">
+        <div class="card-body">
+            <div class="" style="margin: auto">
+                <div class="container-fluid" >
+                    <div class="text-left mb-3">
+                        <abbr title="Finance Wallet"  class="txtWhitecolor text-left initialism">{{__('title21')}}</abbr><br>
+                        <h4 class="txtWhitecolor text-left mb-3" id="totalFinanceAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
+                    </div>
+                </div>
+            </div>
+            <div style="margin: auto; overflow-x: auto">
+                <ul class="container-fluid" style=" min-width: 400px;">
+                    <li class="row list-group-item d-flex justify-content-between align-items-center">
+                        <p class="col txtWhitecolor" id="" style="text-align: left; ">{{__('column1')}}</p>
+                        <p class="col txtWhitecolor" id="" style="text-align: left; ">{{__('col4')}}</p>
+                        <p class="col txtWhitecolor" id="" style="text-align: center;">{{__('col5')}} </p>
+                        <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('col6')}} </p>
+                        <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('col7')}}</p>
+                    </li>
+                   @php
+                       $k = 0;
+                       foreach($finances as $index=>$finance){
+                       $k++;
+                   @endphp
+                    <li class="row list-group-item d-flex justify-content-between align-items-center">
+                        <p class="col txtWhitecolor" id="currencyName  " style="text-align: left;">{{($finance->currency->name == 'ADA') ? 'MAB' : $finance->currency->name}}</p>
+                        <p class="col txtWhitecolor" id="lot  " style="text-align: left;">{{$finance->lot_count}}</p>
+                        <p class="col txtWhitecolor" id="valueDate  " style="text-align: center;">{{date('d/m/Y', strtotime($finance->value_date))}}</p>
+                        <p class="col txtWhitecolor" id="redeamDate  " style="text-align: right;">{{date('d/m/Y', strtotime($finance->redemption_date))}}</p>
+                        <p class="col txtWhitecolor" id="expectedInterest  " style="text-align: right;"></p>
+                        <p class="d-none" id="lotSize  " style="text-align: left;">{{$finance->lot_size}}</p>
+                        <p class="d-none" id="coinWithInterest  " style="text-align: left;"></p>
+                    </li>
+                    @php
+                        }
+                    @endphp
+                    <p style="display: none;" id="myCoinIndex3">{{$k}}</p>
+                </ul>
+            </div>
+        </div> 
+        {{--Finance Wallet End--}}
+    </div>
 </div>
 @endsection
 
 @section('custom_js')
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        // const socket = io('http://192.144.82.234:3000/');
+        const socket = io('https://bitc-way.com:3000/');
+        let loaded = false;
+        socket.on('trackers', (trackers) => {
+            let indexNumber = $('#myCoinIndex').html();
+            for (let i = 0; i < indexNumber; i++) {
+                let currencyName = $('#MyCoinCurrencyName' + i).html();
+                let currencyAmount = parseFloat($('#MyTotalCoinAmount' + i).html());
+                let tradeCurrencySize = parseFloat($('#MyTotalCoinSize' + i).html());
+                let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + i).html());
+                let realcurrname = '';
+                if (currencyName == 'MAB') {
+                    realcurrname = 'ADA';
+                } else {
+                    realcurrname = currencyName;
+                }
+
+                // let full_data = trackers.trackers.trackers;
+                let full_data = trackers.trackers;
+                full_data.forEach(async function (item) {
+                    if (item[0] === 't' + realcurrname + 'USD') {
+                        if (realcurrname == 'ADA'){
+                            item[1] = item[1] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[1] ;
+                        }
+                        parseFloat($('#CoinpriceIntoMycoin' + i).html((item[1]).toFixed(5)));
+                    }
+                });
+            }
+
+        })
+    </script>
 @endsection

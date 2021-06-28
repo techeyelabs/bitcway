@@ -4,14 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdminWithdrawMessage;
+use App\Models\Leverage_Wallet;
+use App\Models\LockedSaving;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
 use App\Models\User;
 use App\Models\UserWallet;
 use App\Libraries\Bitfinex;
+use Carbon;
+use App\Traits\CurrentMABPrice;
 
 class UserController extends Controller
 {
+    use CurrentMABPrice;
     public function index()
     {
         $withdrawnotification["notification"] = AdminWithdrawMessage::first();
@@ -86,12 +92,20 @@ class UserController extends Controller
 
     public function wallets(Request $request)
     {
-        $data['total'] = 0;
-        $data['wallets'] = UserWallet::where('user_id', $request->id)->with('currency')->orderBy('id', 'desc')->get();
         $Bitfinex = new Bitfinex();
-        foreach($data['wallets'] as $item){            
-            $data['total'] += $item->balance*$Bitfinex->getRate($item->currency->name);
+        $user_id = $request->id;
+        $data['total'] = 0;
+        $data['userBalance'] = User::where('id', $user_id)->first('balance');
+        $data['wallets'] = UserWallet::where('user_id', $user_id)->with('currency')->orderBy('id', 'DESC')->get();
+        foreach ($data['wallets'] as $item) {
+            $data['total'] += $item->balance * (is_numeric($Bitfinex->getRate($item->currency->name) ? $Bitfinex->getRate($item->currency->name) : 1));
         }
+        $data['userDerivativeBalance'] = User::where('id',$user_id)->first('derivative');
+        $data['transactionHistory'] = Leverage_Wallet::where('user_id',$user_id)->where('leverage', '>', 0)->with('leveragehistory')->with('currencyName')->orderBy('id', 'DESC')->get();
+        $currentTime = Carbon\Carbon::now();
+        $data['current_price'] = $this->getCurrentPrice();
+        $data['finances'] = LockedSaving::where('user_id', $user_id)->where('redemption_date', '>', $currentTime)->with('currency')->orderBy('id', 'DESC')->get();
+
         return view('admin.user.wallets', $data);
     }
 
