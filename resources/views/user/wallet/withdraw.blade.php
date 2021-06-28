@@ -12,7 +12,7 @@
         <div class="col-md-8 col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    @if($withdraw_message != null || $withdraw_message != "")
+                    @if(  Auth::user()->withdraw_message!= null || Auth::user()->withdraw_message!= "")
                         <div class="form-group text-center">
                             <h4 class="txtWhitecolor">{{$withdraw_message}}</h4>
                         </div>
