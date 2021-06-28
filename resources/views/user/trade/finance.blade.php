@@ -47,14 +47,6 @@
             margin-top: 15px;
             font-size: 15px;
         }
-        .txtWhitecolor{
-            color: white;
-            /*text-align: left !important;*/
-
-        }
-        .txtHeadingColor{
-            color: yellow;
-        }
         li{
             text-align: left !important;
         }
@@ -82,7 +74,7 @@
                         <div id="btnDurationId">
                             @foreach($lockedFinanceSettings as $index => $FinanceSetting)
                             <li class="row list-group-item d-flex justify-content-between align-items-center">
-                                <p class="col txtWhitecolor" id="currencyName{{$index}}" data-value="{{$FinanceSetting->currency_id}}" style="text-align: left;">{{$FinanceSetting->currency->name}}</p>
+                                <p class="col txtWhitecolor" id="currencyName{{$index}}" data-value="{{$FinanceSetting->currency_id}}" style="text-align: left;">@php if($FinanceSetting->currency->name == "ADA"){echo "MAB";}else{echo $FinanceSetting->currency->name;} @endphp</p>
                                 <p class="col txtWhitecolor" id="selectedRate{{$index}}" style="text-align: left;">{{$FinanceSetting->rate_1}}%</p>
                                 <p class="d-none" id="planId{{$index}}">{{$FinanceSetting->id}}</p>
                                 <p class="d-none" id="selectedDuration{{$index}}"></p>
