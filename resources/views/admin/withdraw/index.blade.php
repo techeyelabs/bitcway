@@ -9,30 +9,6 @@
     <div id="wrap">
         <h2>Withdraw List</h2>
         <hr>
-        <div class="card mb-5">
-            <div class="card-body col-md-8 text-center offset-2">
-                <h4 class="txtHeadingColor">Withdraw Message Box</h4>
-                <hr>
-                <form action="{{route('admin-withdraw-notification', app()->getLocale())}}" method="post">
-                    @csrf
-                    <div class="form-group">
-                <textarea type="text" class="form-control withdrawMessageArea" id="withdrawMessageArea" aria-describedby="" name="withdrawMessage" rows="5"
-                           onkeypress="withdrawModifyButtonCheck()" required>{{ $notification->message }}</textarea>
-                        <br>
-                        <span>
-                            @if($notification->display_message == 0)
-                            <input type="checkbox" id="checkbox" name="checkbox" onchange="withdrawModifyButtonCheck()">
-                            @elseif($notification->display_message == 1)
-                            <input type="checkbox" id="checkbox" name="checkbox" checked onchange="withdrawModifyButtonCheck()">
-                            @endif
-                            <label for="notification"> Disable Withdraw & Send Notification</label>
-                        </span>
-                    </div>
-                    <button href="#" class="btn btn-outline-warning text-center withdrawSubmitBtn" disabled>Submit</button>
-                </form>
-            </div>
-        </div>
-
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive mt-5 text-center">
@@ -54,11 +30,7 @@
                 </div>
             </div>
         </div>
-
-
     </div>
-
-
 
 @endsection
 
@@ -86,9 +58,8 @@
         });
     </script>
     <script>
-        function withdrawModifyButtonCheck()
-        {
-            if ($('textarea#withdrawMessageArea').val() != null  ||  $('input[id="checkbox"]:checked').length > 0){
+        function withdrawModifyButtonCheck() {
+            if ($('textarea#withdrawMessageArea').val() != null || $('input[id="checkbox"]:checked').length > 0) {
 
                 $('.withdrawSubmitBtn').attr('disabled', false);
             } else {
@@ -107,7 +78,6 @@
             document.execCommand("copy");
             document.body.removeChild(el);
         }
-
     </script>
 
 @endsection
