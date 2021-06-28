@@ -25,7 +25,7 @@
 
 @section('content')
     <div id="wrap" class="deposit">
-        <h3><u>Locked Savings Setting</u> <span style="font-size: 14px;">Flexible deposits, higher profits</span></h3>
+        <h3>Finance Setting<span style="font-size: 14px;"></span></h3>
         <hr>
         {{--New locked Saving Setting Start--}}
         <div class="row">
@@ -191,11 +191,11 @@
             response++;
             if (response == 1){
                 let options = "";
-                for (let i = 0; i < trackers.trackers.length; i++){
-                    if (trackers.trackers[i][0] == "tADAUSD" ){
-                        trackers.trackers[i][0] = "tMABUSD";
+                for (let i = 0; i < trackers.trackers.trackers.length; i++){
+                    if (trackers.trackers.trackers[i][0] == "tADAUSD" ){
+                        trackers.trackers.trackers[i][0] = "tMABUSD";
                     }
-                    let c = trackers.trackers[i][0];
+                    let c = trackers.trackers.trackers[i][0];
 
                     let name = splitCurrency(c);
                     options += "<option value ="+name+">"+name+"</option>";

@@ -582,7 +582,7 @@ table,th, td {
         margin-right: 10px !important;
     }
     .tableClass{
-        width: 150% !important;
+        width: 160% !important;
     }
     .buttons_row{
         margin-left: 30px !important;
@@ -619,7 +619,16 @@ table,th, td {
         margin-bottom: .5em;
         width: auto;
     }
+    .features-grid{
+        display: none !important;
+    }
+    .mobile-feature-grid{
+        display: block !important;
+    }
 
+}
+.mobile-feature-grid{
+    display: none;
 }
 .navbar-dark .navbar-toggler {
      color: #081420 !important;
@@ -761,6 +770,20 @@ section {
 .siteLogo{
     margin-right:20px;
     margin-left: 40px
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    /*border: 1px solid green;*/
+    -webkit-text-fill-color: darkgray !important;
+    /*-webkit-box-shadow: 0 0 0px 1000px #000 inset;*/
+    /*transition: background-color 5000s ease-in-out 0s;*/
 }
 
 

@@ -14,13 +14,6 @@
             z-index: 10;
             background-color: #081420 !important;
         }
-        /*.hide-text {*/
-        /*    text-indent: 100%;*/
-        /*    text-overflow: ellipsis;*/
-        /*    white-space: nowrap;*/
-        /*    overflow: hidden;*/
-        /*}*/
-
         /*.features .features-grid {*/
         /*    display: flex;*/
         /*    flex-direction: row;*/
@@ -71,7 +64,7 @@
                     <td class="txtWhitecolor"></td>
                     <td v-cloak class="txtWhitecolor">
                         <div class="indexTableTextHide">
-                            @{{splitCurrency(item[0])}}
+                            @{{splitCurrency(item[0].substring(0,4))}}
                         </div>
                     </td>
                     <td v-cloak class="txtWhitecolor">@{{item[7]}} USD</td>
@@ -106,14 +99,14 @@
         </div>
     </div>--}}
 
-    <div class="section3">
+    <div class="section3 vol_sec">
         <section class="features dark">
             <div class="content content_wrapper">
                 <div>
                     <div class="lp_title">{{__('hfeatures')}}</div>
                     <div class="lp_subtitle">{{__('hfeaturestitle')}}</div>
                 </div>
-                <div class="row features-grid">
+                <div class="row features-grid pc-feature-grid">
                     <div class="col-md-4 ">
                         <div class="box">
                             <div id="" style="display:flex;flex-direction:row" class="">
@@ -148,6 +141,59 @@
                             <div id="" style="display:flex;flex-direction:row" class="">
                                 <img src="./images/trademerge.png" alt="exchange"
                                      style="min-width:120px;width:120px;height:120px;margin-right:20px">
+                                <div id="" style="display:flex;flex-direction:column" class="">
+                                    <h1 class="boxh1">{{__('hfeaturessubtitle3')}}</h1>
+                                    <div class="description">
+                                        <p>
+                                            {{__('hfeaturessubdetails3')}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mobile-feature-grid">
+                    <div class="col-md-1">
+                        <img src="./images/exchange.png" alt="exchange"
+                             style="min-width:120px;width:120px;height:120px;margin-right:20px">
+                    </div>
+                    <div class="col-md-3 ">
+                        <div class="box">
+                            <div id="" style="display:flex;flex-direction:row" class="">
+                                <div id="" style="display:flex;flex-direction:column" class="">
+                                    <h1 class="boxh1">{{__('hfeaturessubtitle1')}}</h1>
+                                    <div class="description">
+                                        <p>{{__('hfeaturessubdetails1')}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <img src="./images/fundmerge.png" alt="exchange"
+                             style="min-width:120px;width:120px;height:120px;margin-right:20px">
+                    </div>
+                    <div class="col-md-3 ">
+                        <div class="box">
+                            <div id="" style="display:flex;flex-direction:row" class="">
+                                <div id="" style="display:flex;flex-direction:column" class="">
+                                    <h1 class="boxh1">{{__('hfeaturessubtitle2')}}</h1>
+                                    <div class="description">
+                                        <p>{{__('hfeaturessubdetails2')}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-1">
+                        <img src="./images/trademerge.png" alt="exchange"
+                             style="min-width:120px;width:120px;height:120px;margin-right:20px">
+                    </div>
+                    <div class="col-md-3 ">
+                        <div class="box">
+                            <div id="" style="display:flex;flex-direction:row" class="">
                                 <div id="" style="display:flex;flex-direction:column" class="">
                                     <h1 class="boxh1">{{__('hfeaturessubtitle3')}}</h1>
                                     <div class="description">
@@ -197,6 +243,60 @@
                             <div id="" style="display:flex;flex-direction:row" class="">
                                 <img src="./images/security.png" alt="exchange"
                                      style="min-width:120px;width:120px;height:120px;margin-right:20px">
+                                <div id="" style="display:flex;flex-direction:column" class="">
+                                    <h1 class="boxh1">{{__('hfeaturessubtitle6')}}</h1>
+                                    <div class="description">
+                                        <p>{{__('hfeaturessubdetails6')}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mobile-feature-grid">
+                    <div class="col-md-1">
+                        <img src="./images/ordertype.png" alt="exchange"
+                             style="min-width:120px;width:120px;height:120px;margin-right:20px">
+                    </div>
+                    <div class="col-md-3 ">
+                        <div class="box">
+                            <div id="" style="display:flex;flex-direction:row" class="">
+                                <div id="" style="display:flex;flex-direction:column" class="">
+                                    <h1 class="boxh1">{{__('hfeaturessubtitle4')}}</h1>
+                                    <div class="description">
+                                        <p>{{__('hfeaturessubdetails4')}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-1">
+                        <img src="./images/custominterface.png" alt="exchange"
+                             style="min-width:120px;width:120px;height:120px;margin-right:20px">
+                    </div>
+                    <div class="col-md-3 ">
+                        <div class="box">
+                            <div id="" style="display:flex;flex-direction:row" class="">
+
+                                <div id="" style="display:flex;flex-direction:column" class="">
+                                    <h1 class="boxh1">{{__('hfeaturessubtitle5')}}</h1>
+                                    <div class="description">
+                                        <p>{{__('hfeaturessubdetails5')}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-1">
+                        <img src="./images/security.png" alt="exchange"
+                             style="min-width:120px;width:120px;height:120px;margin-right:20px">
+                    </div>
+                    <div class="col-md-3 ">
+                        <div class="box">
+                            <div id="" style="display:flex;flex-direction:row" class="">
                                 <div id="" style="display:flex;flex-direction:column" class="">
                                     <h1 class="boxh1">{{__('hfeaturessubtitle6')}}</h1>
                                     <div class="description">
@@ -289,6 +389,7 @@
         socket.on('trackers', (trackers) => {
             console.log(trackers);
             Home.trackers = trackers.trackers.trackers;
+            // Home.trackers = trackers.trackers;
         })
 
         let Home = new Vue({

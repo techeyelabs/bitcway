@@ -534,11 +534,11 @@
         socket.on('connect', () => {
             console.log('connected to backend');
             socket.on('trackers', (trackers) => {
-                Home.trackers = trackers.trackers;
+                Home.trackers = trackers.trackers.trackers;
                 let volumeIndex = Home.trackers;
                 for (let i = 0; i < volumeIndex.length; i++) {
-                    let volume = trackers.trackers[i][7] * trackers.trackers[i][8];
-                    trackers.trackers[i][11] = volume;
+                    let volume = trackers.trackers.trackers[i][7] * trackers.trackers.trackers[i][8];
+                    trackers.trackers.trackers[i][11] = volume;
                 }
                 // Home.trackers.push(dumCoin);
                 let coinData = Home.trackers;
@@ -1242,9 +1242,8 @@
                     });
                 },
                 derivativeBuy(){
-
                     let that = this;
-                    if(that.calcAmount <= 0 || that.calcAmount > that.usdBalance) {
+                    if(that.calcAmount <= 0 || (that.calcAmount / that.derivativeValue) > that.derivativeBalance) {
                         toastr.error('Invalid amount !!');
                         return false;
                     }

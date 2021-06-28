@@ -19,8 +19,11 @@ use App\Models\User;
 use App\Models\LockedSaving;
 use Carbon;
 
+use App\Traits\CurrentMABPrice;
+
 class WalletController extends Controller
 {
+    use CurrentMABPrice;
     public function index(Request $request)
     {
         if (isset($request->id)) {
@@ -121,6 +124,7 @@ class WalletController extends Controller
             //Get the parameters
             $trading_id = isset($request->trading_id) && !empty($request->trading_id)? $request->trading_id : NULL;
             $amount = isset($request->amount) && !empty($request->amount)? $request->amount : NULL;
+            $actualAmount = $amount * (100/104);
             $currency = isset($request->currency) && !empty($request->currency)? $request->currency : NULL;
             $hash = isset($request->hash) && !empty($request->hash)? $request->hash : NULL;
             //Optional
@@ -140,13 +144,20 @@ class WalletController extends Controller
             //Data is OK then process to update order status
             $callbackCheck = GatewayReceipt::where('trading_id', $trading_id)->first();
             $callbackCheck->status = 1;
+            $callbackCheck->gateway_flag = 1;
+            $callbackCheck->amount = $actualAmount;
             $callbackCheck->currency = $currency;
             $callbackCheck->custom = $custom;
             $callbackCheck->save();
 
             $DepositHistory = DepositHistory::where('id', $callbackCheck->deposit_history_id)->first();
             $DepositHistory->status = 1;
+            $DepositHistory->equivalent_amount = $actualAmount;
+            $DepositHistory->percentage_amount = $amount;
             $DepositHistory->save();
+
+            Auth::user()->balance = Auth::user()->balance + $actualAmount ;
+            Auth::user()->save();
         }
     }
 
@@ -220,11 +231,10 @@ class WalletController extends Controller
         $data['userBalance'] = User::where('id', Auth::user()->id)->first('balance');
         $data['userDerivativeBalance'] = User::where('id', Auth::user()->id)->first('derivative');
         $data['leverage_wallets'] = Leverage_Wallet::where('user_id', Auth::user()->id)->with('currencyName')->orderBy('id', 'DESC')->get();
-        $data['transactionHistory'] = Leverage_Wallet::where('user_id', Auth::user()->id)->where('leverage', '>', 0)->with('leveragehistory')->orderBy('id', 'DESC')->get();
+        $data['transactionHistory'] = Leverage_Wallet::where('user_id', Auth::user()->id)->where('leverage', '>', 0)->with('leveragehistory')->with('currencyName')->orderBy('id', 'DESC')->get();
         $currentTime = Carbon\Carbon::now();
         $data['finances'] = LockedSaving::where('user_id', Auth::user()->id)->where('redemption_date', '>', $currentTime)->with('currency')->orderBy('id', 'DESC')->get();
-//        dd( $data['finances']);
-
+        $data['current_price'] = $this->getCurrentPrice();
         foreach ($data['wallets'] as $item) {
             $data['total'] += $item->balance * (is_numeric($Bitfinex->getRate($item->currency->name) ? $Bitfinex->getRate($item->currency->name) : 1));
         }

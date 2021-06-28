@@ -115,7 +115,7 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach($deposit as $item){
-                                        if(isset($item->getwayPaymentReceipt[0]->gateway_flag) && $item->getwayPaymentReceipt[0]->gateway_flag == 1) {
+                                        if(isset($item->getwayPaymentReceipt[0]->gateway_flag) && $item->getwayPaymentReceipt[0]->gateway_flag == 1 || $item->status == 5) {
                                         ?>
                                     <tr>
                                         <td class="txtWhitecolor">{{date('d/m/Y', strtotime($item->created_at->todatestring()))}}</td>

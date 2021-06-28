@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 
+use App\Traits\CurrentMABPrice;
+
 use Illuminate\Support\Facades\Auth;
 
 use App\Libraries\Bitfinex;
@@ -25,21 +27,14 @@ use function PHPUnit\Framework\countOf;
 
 class TradeController extends Controller
 {
+    use CurrentMABPrice;
     public function index(Request $request)
     {
         $data['userInfo'] = UserWallet::where('user_id', Auth::user()->id)->get();
         $currency = array();
         $data['currency'] = 0;
 
-        /********************************************************
-         * TO GET THE CURRENT DAY PRICE FOR ADA FROM DATA       *
-         * ******************************************************/
-
-        $get_json = file_get_contents('./dataJson/1d.json');
-        $json_data = json_decode($get_json, 'true');
-        $current_date = strtotime(date("Y-m-d") . " 00:00:00 GMT") * 1000;
-        $find_date_index = array_search($current_date, array_column($json_data, 'time'));
-        $data['current_price'] = $json_data[$find_date_index]['open'];
+        $data['current_price'] = $this->getCurrentPrice();
 
         if(isset($request->type)){
             $data['type'] = $request->type;
@@ -160,7 +155,6 @@ class TradeController extends Controller
             else{
 
                 $response = $Bitfinex->getCandle($request->currency,'','','','');
-                //dd($response);
             }
            // $response = $Bitfinex->getCandle($request->currency,$interval_value,$start,$end);
         }
@@ -175,6 +169,9 @@ class TradeController extends Controller
 
     public function buy(Request $request)
     {
+        if ($request->currency == 'MAB'){
+            $request->currency = 'ADA';
+        }
         $currency = Currency::where('name', $request->currency)->first();
         if(!$currency) return response()->json(['status' => false]);
         $UserWallet = UserWallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->first();
@@ -245,7 +242,9 @@ class TradeController extends Controller
     {
         $leverageRequestSellAmount = $request->sellAmount;
         $equivalentSellAmount = $request->calcSellAmount;
-
+        if ($request->currency == 'MAB'){
+            $request->currency = 'ADA';
+        }
         $currency = Currency::where('name', $request->currency)->first();
         if(!$currency){
             return response()->json(['status' => false]);
@@ -254,9 +253,6 @@ class TradeController extends Controller
         DB::beginTransaction();
         try {
             if (isset($request->derivativeType)) {
-//                $UserWallet->balance = $UserWallet->balance - $leverageRequestSellAmount;
-//                $UserWallet->save();
-
                 $leverageWalletCurrency = Leverage_Wallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->orderBy('id', 'desc')->get();
                 $leverageSellAmount = $leverageRequestSellAmount;
 
@@ -354,7 +350,6 @@ class TradeController extends Controller
 
     public function limitBuy(Request $request)
     {
-
         $currency = Currency ::where('name', $request -> currency) -> first();
         $limitBuy = new LimitBuySell();
         $limitBuy -> limitType = $request -> limitType;

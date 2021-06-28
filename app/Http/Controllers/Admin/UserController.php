@@ -66,11 +66,11 @@ class UserController extends Controller
                     $action = '';
                     // $action .= ' <a href="'.route('admin-user-wallets', [$row->id, app()->getLocale()]).'" class="btn btn-sm btn-outline-info">Asset</a>';
 
-                    if($row->status == 0) $action .= ' <a href="'.route('admin-user-change-status', ['id' => $row->id, 'status' => 1, app()->getLocale()]).'" class="btn btn-sm btn-outline-success">Active</a>';
-                    else $action .= ' <a href="'.route('admin-user-change-status', ['id' => $row->id, 'status' => 0, app()->getLocale()]).'" class="btn btn-sm btn-outline-warning">Inactive</a>';
+                    if($row->status == 0) $action .= ' <a href="'.route('admin-user-change-status', [app()->getLocale(), 'id' => $row->id, 'status' => 1]).'" class="btn btn-sm btn-outline-success">Active</a>';
+                    else $action .= ' <a href="'.route('admin-user-change-status', [app()->getLocale(), 'id' => $row->id, 'status' => 0]).'" class="btn btn-sm btn-outline-warning">Inactive</a>';
                     // $action .= ' <a href="'.route('admin-user-destroy', [$row->id, app()->getLocale()]).'" class="btn btn-sm btn-outline-danger delete-button-new">Delete</a>';
                     
-                    $action .= ' <a href="'.route('admin-message-details', [$row->id, app()->getLocale()]).'" class="btn btn-sm btn-outline-info">Chat</a>';
+                    $action .= ' <a href="'.route('admin-message-details', [app()->getLocale(), $row->id]).'" class="btn btn-sm btn-outline-info">Chat</a>';
 
                     return $action;
                 })
@@ -78,7 +78,7 @@ class UserController extends Controller
                 ->make();
     }
 
-    public function changeStatus($id, $status)
+    public function changeStatus($lang, $id, $status)
     {
         User::where('id', $id)->update(['status' => $status, 'is_email_verified' => true]);
         return redirect()->back()->with('success_message', 'Status changed');

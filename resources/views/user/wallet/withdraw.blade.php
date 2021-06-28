@@ -20,7 +20,6 @@
                     @else
 
                     <template v-if='done'>
-
                         <div class="alert alert-success alert-dismissible fade show mb-3 bg-transparent " role="alert" style="color:white !important;" >
                             Withdraw request has been sent.
                         </div>
@@ -34,13 +33,15 @@
                             </div>
                         @else
                         <div class="form-group text-center">
-                            <h4 class="txtWhitecolor">Available: @{{balance}} USD</h4>
+                            <h4 class="txtWhitecolor" >Available: @{{balance}} USD</h4>
                         </div>
-                        
+                        <span class="d-none" id="mainBalance">@{{balance}}</span>
+                        <span class="d-none" id="availableBalance">@{{availableBalance}}</span>
+
                         <div class="form-group">
                             <label class="txtWhitecolor" for="">{{__('col10')}} (USD)</label>
-                            <input type="number" class="form-control" aria-describedby="" name="amount"
-                                value="{{old('amount')}}" placeholder="Enter amount in USD here..." required v-model="amount" :disabled="balance<=199">
+                            <input type="number" class="form-control" aria-describedby="" name="amount" id="amount"
+                                value="{{old('amount')}}" placeholder="Enter amount in USD here..." required v-model="amount" :disabled="lockedBalanceFun<99" onkeyup="isBalanceAvailable()">
                             @error('amount')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -66,22 +67,44 @@
 
 @section('custom_js')
     <script>
+        function isBalanceAvailable() {
+            let availableBalance = parseFloat($('#availableBalance').text());
+            $("#amount").keyup(function() {
+                let amountInput = parseFloat($('#amount').val());
+                if (amountInput > 99 && amountInput <= availableBalance){
+                    $("#withdrawBtn").attr("disabled", false);
+                }else{
+                    $("#withdrawBtn").attr("disabled", true);
+                }
+            });
+        }
+    </script>
+    <script>
         let deposit = new Vue({
             el: '.deposit',
             data: {
                 amount: '',
                 walletAddress: '',
                 balance: '{{Auth::user()->balance}}',
-                done: false
+                done: false,
+                availableBalance:''
             },
             mounted(){
-
             },
-
+            computed: {
+                lockedBalanceFun: function(){
+                    let that = this;
+                    if (that.balance > 199){
+                        return that.availableBalance = that.balance - 100;
+                    }else{
+                        return that.availableBalance = 0;
+                    }
+                }
+            },
             methods:{
                 withdraw(){
                     let that = this;
-                    if(that.amount > this.balance){
+                    if(that.amount >= this.balance){
                         toastr.error('invalid amount or rate!!');
                         return false;
                     }
@@ -93,11 +116,11 @@
                     .then(function (response) {
                         console.log(response);
                         if(response.data.status) that.done = true;
-                        else toastr.error('error occured,please try again');
+                        else toastr.error('Error occured, please try again');
                         hideLoader();
                     })
                     .catch(function (error) {
-                        toastr.error('error occured,please try again');
+                        toastr.error('Error occured, please try again');
                         hideLoader();
                     });
                 }
