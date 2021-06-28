@@ -251,6 +251,7 @@
                 }
 
                 let full_data = trackers.trackers.trackers;
+                // let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + realcurrname + 'USD') {
                         console.log(realcurrname);
@@ -370,6 +371,7 @@
                 }
 
                 let full_data = trackers.trackers.trackers;
+                // let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + realcurrname2 + 'USD') {
                         if (realcurrname == 'ADA'){
@@ -448,6 +450,7 @@
                
                
                 let full_data = trackers.trackers.trackers;
+                // let full_data = trackers.trackers;
 
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + currencyName + 'USD') {
