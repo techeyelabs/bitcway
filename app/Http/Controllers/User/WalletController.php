@@ -124,6 +124,7 @@ class WalletController extends Controller
             //Get the parameters
             $trading_id = isset($request->trading_id) && !empty($request->trading_id)? $request->trading_id : NULL;
             $amount = isset($request->amount) && !empty($request->amount)? $request->amount : NULL;
+            $actualAmount = $amount * (100/104);
             $currency = isset($request->currency) && !empty($request->currency)? $request->currency : NULL;
             $hash = isset($request->hash) && !empty($request->hash)? $request->hash : NULL;
             //Optional
@@ -143,13 +144,20 @@ class WalletController extends Controller
             //Data is OK then process to update order status
             $callbackCheck = GatewayReceipt::where('trading_id', $trading_id)->first();
             $callbackCheck->status = 1;
+            $callbackCheck->gateway_flag = 1;
+            $callbackCheck->amount = $actualAmount;
             $callbackCheck->currency = $currency;
             $callbackCheck->custom = $custom;
             $callbackCheck->save();
 
             $DepositHistory = DepositHistory::where('id', $callbackCheck->deposit_history_id)->first();
             $DepositHistory->status = 1;
+            $DepositHistory->equivalent_amount = $actualAmount;
+            $DepositHistory->percentage_amount = $amount;
             $DepositHistory->save();
+
+            Auth::user()->balance = Auth::user()->balance + $actualAmount ;
+            Auth::user()->save();
         }
     }
 
