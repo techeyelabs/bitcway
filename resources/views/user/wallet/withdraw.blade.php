@@ -12,11 +12,10 @@
         <div class="col-md-8 col-lg-6">
             <div class="card">
                 <div class="card-body">
-
-                    @if($notification->display_message == 1)
-                    <div class="form-group text-center">
-                        <h4 class="txtWhitecolor">{{$notification->message}}</h4>
-                    </div>
+                    @if($withdraw_message != null || $withdraw_message != "")
+                        <div class="form-group text-center">
+                            <h4 class="txtWhitecolor">{{$withdraw_message}}</h4>
+                        </div>
                     @else
 
                     <template v-if='done'>
@@ -28,11 +27,7 @@
                     </template>
 
                     <template v-else>
-                        @if($withdraw_message != null || $withdraw_message != "")
-                            <div class="form-group text-center">
-                                <h4 class="txtWhitecolor">{{$withdraw_message}}</h4>
-                            </div>
-                        @else
+
                         <div class="form-group text-center">
                             <h4 class="txtWhitecolor">Available: @{{balance}} USD</h4>
                         </div>
@@ -53,7 +48,6 @@
                             @enderror
                         </div>
                         <a href="#" class="btn btn-outline-warning float-end" v-on:click="withdraw" :class="{disabled: amount<=99}">{{__('button4')}}</a>
-                            @endif
                     </template>
                     @endif
                 </div>
