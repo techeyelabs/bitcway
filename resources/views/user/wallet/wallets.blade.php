@@ -177,8 +177,8 @@
                         foreach($finances as $index=>$finance){
                             $k++;
                         ?>
-                            <li class="row list-group-item d-flex justify-content-between align-items-center">
-                                <p class="col txtWhitecolor" id="currencyName{{$k}}" style="text-align: left;">{{$finance->currency->name}}</p>
+                            <li class="row list-group-item d-flex justify-content-between align-items-center">{{--$finance->currency->name--}}
+                                <p class="col txtWhitecolor" id="currencyName{{$k}}" style="text-align: left;">@php if($finance->currency->name == "ADA"){echo "MAB";}else{echo $finance->currency->name;} @endphp</p>
                                 <p class="col txtWhitecolor" id="lot{{$k}}" style="text-align: left;">{{$finance->lot_count}}</p>
                                 <p class="col txtWhitecolor" id="valueDate{{$k}}" style="text-align: center;">{{date('d/m/Y', strtotime($finance->value_date))}}</p>
                                 <p class="col txtWhitecolor" id="redeamDate{{$k}}" style="text-align: right;">{{date('d/m/Y', strtotime($finance->redemption_date))}}</p>
@@ -209,7 +209,7 @@
                     <div class="modal-body modalbg">
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label"
-                                   style="color: #ffffff; padding-top: 0px;">{{__('label3')}}:</label>
+                                   style="color: #ffffff; padding-top: 0px;">{{__('label3')}}</label>
                             <input type="text" class="form-control" name="derivativeamount" id="derivative-name"
                                    onkeyup="manage(this)">
                             <input type="hidden" name="flag" id="flag" value="">
