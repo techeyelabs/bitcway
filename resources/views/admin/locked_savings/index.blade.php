@@ -191,11 +191,11 @@
             response++;
             if (response == 1){
                 let options = "";
-                for (let i = 0; i < trackers.trackers.length; i++){
-                    if (trackers.trackers[i][0] == "tADAUSD" ){
-                        trackers.trackers[i][0] = "tMABUSD";
+                for (let i = 0; i < trackers.trackers.trackers.length; i++){
+                    if (trackers.trackers.trackers[i][0] == "tADAUSD" ){
+                        trackers.trackers.trackers[i][0] = "tMABUSD";
                     }
-                    let c = trackers.trackers[i][0];
+                    let c = trackers.trackers.trackers[i][0];
 
                     let name = splitCurrency(c);
                     options += "<option value ="+name+">"+name+"</option>";
