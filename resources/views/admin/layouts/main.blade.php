@@ -83,6 +83,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{route('adminWithdrawMessage', app()->getLocale())}}">
+                                <i class="fas fa-coins"></i>
+                                <span>Set Withdraw Message</span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{route('admin-withdraw-list', app()->getLocale())}}">
                                 <i class="fas fa-hand-holding-usd"></i>
                                 <span>Withdraw History</span>

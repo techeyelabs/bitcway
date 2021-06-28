@@ -18,38 +18,54 @@ class DataGenerator
         foreach ($get_all_row as $row) {
             $date1 = new DateTime($row['start_date']);
             $date2 = new DateTime($row['end_date']);
-            $start = strtotime($row['start_date'] . " 00:00:00 GMT") * 1000;
-            $end = strtotime($row['end_date'] . " 00:00:00 GMT") * 1000;
+            $start = strtotime($row['start_date'] ) * 1000;
+            $end = strtotime($row['end_date']) * 1000;
+            $start = strtotime($row['start_date']."GMT") * 1000;
+            $end = strtotime($row['end_date']."GMT" ) * 1000;
 
-            $difference = $date1 -> diff($date2);
-            $days_diff = $difference -> days;
+            $diff_min = ($end - $start) / (60*1000);
 
-            $date_range[$l]['week'] = $this -> date_generator($start, $end, $days_diff, 'week');
+            //$difference = $date1 -> diff($date2);
+            //$days_diff = $difference -> days;
+
+            /*$date_range[$l]['week'] = $this -> date_generator($start, $end, $days_diff, 'week');
             $date_range[$l]['day'] = $this -> date_generator($start, $end, $days_diff, 'day');
             $date_range[$l]['30m'] = $this -> date_generator($start, $end, $days_diff, '30m');
             $date_range[$l]['15m'] = $this -> date_generator($start, $end, $days_diff, '15m');
-            $date_range[$l]['5m'] = $this -> date_generator($start, $end, $days_diff, '5m');
-            $date_range[$l]['1m'] = $this -> date_generator($start, $end, $days_diff, '1m');
-            $date_range[$l]['1h'] = $this -> date_generator($start, $end, $days_diff, '1h');
-            $date_range[$l]['6h'] = $this -> date_generator($start, $end, $days_diff, '6h');
+            $date_range[$l]['5m'] = $this -> date_generator($start, $end, $days_diff, '5m');*/
+
+            //$date_range[$l]['1m'] = $this -> date_generator($start, $end, $days_diff, '1m');
+
+            $date_range[$l]['1m'] = $this -> date_generator($start, $end, $diff_min, '1m');
+
+            /*$date_range[$l]['1h'] = $this -> date_generator($start, $end, $days_diff, '1h');
+            $date_range[$l]['6h'] = $this -> date_generator($start, $end, $days_diff, '6h');*/
             if ($l == 0) {
                 $response_data = Http ::get('https://api-pub.bitfinex.com/v2/candles/trade:1D:tADAUSD/hist?limit=10000');
+                //$response_data = Http ::get('https://api-pub.bitfinex.com/v2/candles/trade:1m:tADAUSD/hist?limit=10000');
                 $key = array_search(($start - (3600 * 24 * 1000)), array_column(json_decode($response_data), 0));
+                //$key = array_search(($start - (60 * 24 * 1000)), array_column(json_decode($response_data), 0));
                 $response_original = array_slice(json_decode($response_data), $key);
                 $min_val[$l] = $response_original[0][1];
+                //dd($start - (3600 * 24 * 1000));
                 $max_val[$l] = $min_val[$l] + ($min_val[$l] * $row['price_update']) / 100;
             } else {
                 $min_val[$l] = $max_val[$l - 1];
                 $max_val[$l] = $min_val[$l] + ($min_val[$l] * $row['price_update']) / 100;
             }
 
+          /*  echo $max_val[$l]-$min_val[$l]."\n";
+            echo "llll:".$l."\n";*/
             $min_1_generator[$l] = $this -> data_generator($min_val[$l], $max_val[$l], $date_range[$l]['1m']);
-
             $min_1_data[$l] = $this -> get_final_data($min_1_generator[$l]);
 
             $l++;
         }
-
+        /*echo "<pre>";
+        print_r($min_val);
+        echo "<pre>";
+        print_r($max_val);
+        exit();*/
         $min_1 = $this -> get_full_data($min_1_data);
         $week_json = json_encode($this -> segmented_data($min_1, 'week'), JSON_PRETTY_PRINT);
         $day_json = json_encode($this -> segmented_data($min_1, 'day'), JSON_PRETTY_PRINT);
@@ -115,9 +131,11 @@ class DataGenerator
      */
     public function data_generator($min_val, $max_val, array $date, $interval = 1)
     {
+        //print_r(count($date));
         $data = [];
         $prevOpen = 0;
         $incrementer = ($max_val - $min_val) / (count($date));
+       //echo " ".$max_val."-".$min_val."/".count($date)."space      ";
         foreach ($date as $key => $val) {
             if ( ($min_val <= $max_val && $incrementer > 0 ) || ($min_val >= $max_val && $incrementer < 0 ) ) {
                 $rand_flactuate = $this -> mt_rand_float(-0.001, 0.002);
@@ -151,7 +169,7 @@ class DataGenerator
     public function date_generator($start, $end, $days_diff, $interval)
     {
         $date = [];
-        if ($interval == 'week') {
+        /*if ($interval == 'week') {
             $multiplier = (int)($days_diff / 7);
         }
         if ($interval == 'day') {
@@ -174,11 +192,12 @@ class DataGenerator
         }
         if ($interval == '6h') {
             $multiplier = $days_diff * 4;
-        }
+        }*/
 
-        for ($i = 0; $i < $multiplier; $i++) {
+        //for ($i = 0; $i < $multiplier; $i++) {
+        for ($i = 0; $i < $days_diff; $i++) {
             if ($start <= $end) {
-                if ($interval == 'week') {
+                /*if ($interval == 'week') {
                     $date[$start] = $start + (7 * 3600 * 24 * 1000);
                     $start = $start + (7 * 3600 * 24 * 1000);
                 }
@@ -209,11 +228,15 @@ class DataGenerator
                 if ($interval == '6h') {
                     $date[$start] = $start + (6 * 60 * 60 * 1000);
                     $start = $start + (6 * 60 * 60 * 1000);
-                }
+                }*/
+                $date[$start] = $start + (1 * 60 * 1000);
+                $start = $start + (1 * 60 * 1000);
             }
 
         }
+        //dd($date);
         return $date;
+
     }
 
     /**

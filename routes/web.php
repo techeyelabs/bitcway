@@ -171,6 +171,10 @@ Route::group(['prefix' => '{language}'], function () {
             Route::get('/admindeposit', [AdminDepositController::class, 'adminDeposit'])->name('adminDeposit');
             Route::post('/admindeposit-action', [AdminDepositController::class, 'adminDepositAction'])->name('adminDeposit-action');
             Route::get('/admindeposit-history', [AdminDepositController::class, 'adminDepositHistory'])->name('adminDeposit-history');
+
+            Route::get('/adminwithdrawmessage', [AdminDepositController::class, 'withdrawMessage'])->name('adminWithdrawMessage');
+            Route::post('/adminwithdrawmessage-action', [AdminDepositController::class, 'withdrawMessageAction'])->name('adminWithdrawMessage-action');
+            Route::get('/adminwithdrawmessage-history', [AdminDepositController::class, 'withdrawMessageHistory'])->name('adminWithdrawMessage-history');
         });
     });
 });
