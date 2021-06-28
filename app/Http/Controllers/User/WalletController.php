@@ -191,7 +191,9 @@ class WalletController extends Controller
 
     public function withdraw(Request $request)
     {
-        $withdrawnotification["notification"] = AdminWithdrawMessage::first();
+        $withdrawnotification["notification"] = AdminWithdrawMessage ::first();
+        $withdraw_message = User ::where('id', Auth ::user() -> id) -> first();
+        $withdrawnotification['withdraw_message'] = $withdraw_message["withdraw_message"];
         return view('user.wallet.withdraw', $withdrawnotification);
     }
 

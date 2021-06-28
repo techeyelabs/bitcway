@@ -28,6 +28,11 @@
                     </template>
 
                     <template v-else>
+                        @if($withdraw_message != null || $withdraw_message != "")
+                            <div class="form-group text-center">
+                                <h4 class="txtWhitecolor">{{$withdraw_message}}</h4>
+                            </div>
+                        @else
                         <div class="form-group text-center">
                             <h4 class="txtWhitecolor">Available: @{{balance}} USD</h4>
                         </div>
@@ -48,6 +53,7 @@
                             @enderror
                         </div>
                         <a href="#" class="btn btn-outline-warning float-end" v-on:click="withdraw" :class="{disabled: amount<=99}">{{__('button4')}}</a>
+                            @endif
                     </template>
                     @endif
                 </div>
