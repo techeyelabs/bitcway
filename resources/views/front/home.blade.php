@@ -388,8 +388,8 @@
         const socket = io('https://bitc-way.com:3000/');
         socket.on('trackers', (trackers) => {
             console.log(trackers);
-            Home.trackers = trackers.trackers.trackers;
-            // Home.trackers = trackers.trackers;
+            // Home.trackers = trackers.trackers.trackers;
+            Home.trackers = trackers.trackers;
         })
 
         let Home = new Vue({

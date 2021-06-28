@@ -52,7 +52,7 @@ class DepositController extends Controller
                         $action .= '<a href="'.route('admin-deposit-change-status',['id' => $row->id, 'status' => 1, app()->getLocale()]).'" class="btn btn-sm btn-outline-success">Approve</a>';
                         $action .= ' <a href="'.route('admin-deposit-change-status',['id' => $row->id, 'status' => 2, app()->getLocale()]).'" class="btn btn-sm btn-outline-success">Cancel</a>';
                     }elseif($row->status == 2){
-                        $action .= ' <a href="'.route('admin-deposit-destroy', [$row->id, app()->getLocale()]).'" class="btn btn-sm btn-outline-danger delete-button-new">delete</a>';
+                        $action .= ' <a href="'.route('admin-deposit-destroy', [ $row->id,app()->getLocale()]).'" class="btn btn-sm btn-outline-danger delete-button-new">Delete</a>';
                     }
                     
                     return $action;
