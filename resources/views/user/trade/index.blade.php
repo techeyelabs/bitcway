@@ -88,7 +88,6 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         .ui-tabs--padding-bottom {
             padding-bottom: 1px;
         }
@@ -148,6 +147,11 @@
             font-size: 12px;
             padding: 5px 8px 3px;
         }
+        .tv-lightweight-charts{
+            position: absolute;
+            width: 100% !important;
+            height: 100% !important;
+        }
     </style>
 @endsection
 @section('content')
@@ -159,6 +163,7 @@
         @endif
         <hr>
         <div class="row" style="display: flex;">
+            <button class="accordion txtHeadingColor d-none">Tickers</button>
             <div class="col-md-3 sidebar">
                 <div class="card tickersDiv" >
                     <div class="card-body" style="padding-right: 0px">
@@ -394,6 +399,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col main-app-container">
                 <div class="card">
                     <div class="card-body graphDiv" >
@@ -408,7 +414,7 @@
                             <span class="interval" id="6h"  v-on:click="getChartData('interval','6h')">6h</span>
                             <span class="interval" style="margin-left: 10px">BitcWay</span>
                         </div>
-                        <div id="chart" style="height:465px; display: block; color: white; background-color: #171b26">
+                        <div class="chart" id="chart" ref="chart" style="height:465px; display: block; color: white; background-color: #171b26;">
                             <div class="loader" style="display: none">
                             </div>
                         </div>
@@ -424,7 +430,7 @@
                             <span class="interval border-removal" id="6h" v-on:click="getChartData('range', '6h')">6h</span>
                             <span class="interval border-removal" id="1h" v-on:click="getChartData('range', '1h')">1h</span>
                         </div>
-                        <div id="tradingview_f7648" class="d-none"></div>
+                        <div id="tradingview_f7648" class="d-none" ></div>
                     </div>
                 </div>
                 <div class="card mt-3 orderBookDiv">
@@ -481,6 +487,14 @@
 
 @section('custom_js')
     <script type="text/javascript" src="/dataJson/coindata.json"></script>
+    <script>
+        $(document).ready(function(){
+            $(".accordion").click(function(){
+                $(".sidebar").slideToggle("slow");
+                this.classList.toggle("active");
+            });
+        });
+    </script>
     <script>
         function limitLength() {
             var buyCheckBox = document.getElementById("limitBuyInput");
@@ -620,13 +634,11 @@
     </script>
     <script>
         // var dumCoin = ["tOMGC:USD", 3.00, 3.01111, 3.411, 311.1100000, -0.0999, -0.000222, 301.00111, 115.88027091, 372.28, 356];
-        // const socket = io('http://192.144.82.234:3000/');
-       const socket = io('https://bitc-way.com:3000/');
-        // showLoader('Loading...');
+        //  const socket = io('http://192.144.82.234:3000/');
+        const socket = io('https://bitc-way.com:3000/');
         let loaded = false;
         //showLoader("Loading");
         socket.on('connect', () => {
-            console.log('connected to backend');
             socket.on('trackers', (trackers) => {
                 Home.trackers = trackers.trackers.trackers;
                 let volumeIndex = Home.trackers;
@@ -886,7 +898,7 @@
             data: {
                 message: 'Hello Vue!',
                 trackers: [],
-                chart: null,
+                chart:null,
                 selectedItem: [],
                 buyAmount: 0,
                 sellAmount: 0,
@@ -914,6 +926,25 @@
             },
             mounted() {
 
+                this.chart = LightweightCharts.createChart(this.$refs.chart, {
+                    width: this.$refs.chart.innerWidth,
+                    height: this.$refs.chart.innerHeight
+                });
+
+                // var lineSeries = this.chart.addLineSeries();
+                // lineSeries.setData(arr);
+
+                // resize observer (native JS)
+                const ro = new ResizeObserver((entries) => {
+                    const cr = entries[0].contentRect;
+                    this.resize(cr.width, cr.height);
+                });
+
+                ro.observe(this.$refs.chart);
+
+                window.addEventListener("resize", () => {
+                    this.resize(this.$refs.chart.innerWidth, this.$refs.chart.innerHeight);
+                });
             },
             computed:{
                 currency(){
@@ -949,8 +980,10 @@
             },
             methods: {
                 logbid(bidincreased) {
+
                 },
                 logask(askincreased) {
+
                 },
                /* log(leverageWalletAmount) {
                 },*/
@@ -1475,13 +1508,15 @@
                             });
                     }
                 },
-
                 getOrders(){
                     let that = this;
                     let currency = that.selectedItem[0];
                     getOrders(currency);
                     // getInitialOrder(currency);
                 },
+                resize(width, height) {
+                    this.chart.resize(width, height);
+                }
             },
             beforeMount(){
             },

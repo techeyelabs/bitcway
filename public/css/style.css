@@ -466,7 +466,7 @@ table,th, td {
 }
 
 .txtHeadingColor {
-    color: yellow;
+    color: yellow !important;
 }
 .DarkGrayColor {
     color: darkgray !important;
@@ -530,7 +530,16 @@ table,th, td {
     border: none;
     font-size: 11px;
 }
+@media (max-width:450px) {
+    .accordion{
+        display: block !important;
+    }
+}
 @media (max-width:768px) {
+    .tickersDiv{
+        /*display: none;*/
+    }
+
     #userIcon {
         display: none;
     }
@@ -558,7 +567,7 @@ table,th, td {
         height: 415px !important;
     }
     .main-app-container{
-        margin: 20px 0px 0px 0px !important;
+        margin: 0px 0px 0px 0px !important;
     }
     .sidebar{
         width: 450px !important;
@@ -566,7 +575,7 @@ table,th, td {
         /*margin-left: 6px !important;*/
     }
     .graphDiv{
-        padding: 5px !important;
+        /*padding: 0px !important;*/
     }
     .historyTable{
         overflow-x: auto;
@@ -784,6 +793,33 @@ select:-webkit-autofill:focus {
     -webkit-text-fill-color: darkgray !important;
     /*-webkit-box-shadow: 0 0 0px 1000px #000 inset;*/
     /*transition: background-color 5000s ease-in-out 0s;*/
+}
+.accordion{
+    width: 94.5%;
+    min-width: 350px;
+    text-align: left;
+    background-color: #102331;
+    color: white;
+    border: none;
+    height: 40px;
+    margin-left: 12px;
+    border-radius: 3px;
+    outline: none !important;
+}
+.active, .accordion:hover {
+    /*background-color: #ccc;*/
+}
+
+.accordion:after {
+    content: '\002B';
+    color: #777;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+.active:after {
+    content: "\2212";
 }
 
 
