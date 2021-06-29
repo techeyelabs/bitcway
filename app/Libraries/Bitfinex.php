@@ -34,21 +34,20 @@ class Bitfinex
     public function getCandle($currency, $interval, $start, $end, $range)
     {
         $get_start_date_for_coin = DmgCoin ::select('start_date') -> where('name', 'DMGCoin') -> first();
-        if(!$get_start_date_for_coin){
+        if (!$get_start_date_for_coin) {
             $get_start_date_for_coin = new DmgCoin();
-            $get_start_date_for_coin->start_date = '2021-05-17 00:00:00';
-            $get_start_date_for_coin->end_date = '2021-06-30 23:59:59';
-            $get_start_date_for_coin->price_update = 40.00;
-            $get_start_date_for_coin->display_status = 0;
-            $get_start_date_for_coin->save();
+            $get_start_date_for_coin -> start_date = '2021-05-17 00:00:00';
+            $get_start_date_for_coin -> end_date = '2021-06-30 23:59:59';
+            $get_start_date_for_coin -> price_update = 40.00;
+            $get_start_date_for_coin -> display_status = 0;
+            $get_start_date_for_coin -> save();
 
             $datagenerator = new DataGenerator();
             $datagenerator -> index();
         }
 
         if ($get_start_date_for_coin) {
-            $dmg_start_date = strtotime($get_start_date_for_coin -> start_date."GMT") * 1000;
-            //dd($dmg_start_date);
+            $dmg_start_date = strtotime($get_start_date_for_coin -> start_date . "GMT") * 1000;
             $date_before_start_date = $dmg_start_date - (3600 * 24 * 1000);
         }
         $current_date = strtotime(date("Y-m-d") . " 00:00:00 GMT") * 1000;
@@ -112,23 +111,18 @@ class Bitfinex
                 } else {
                     $response = $json_data;
                     $response_original = Http ::get('https://api-pub.bitfinex.com/v2/candles/trade:' . $interval_range . ':' . $currency . '/hist?limit=10000&start=' . $start . '&end=' . $end);
-                    //dd($response_original);
                     $end_key = array_search($date_before_start_date, array_column(json_decode($response_original), 0));
                     $response_end = array_slice(json_decode($response_original), $end_key);
                     $start_key = array_search($start, array_column($response_end, 0));
-                    //dd($response_original[$start_key]);
                     $find_date_index = array_search($current_date, array_column($response, 'time'));
-                    //dd($find_date_index);
                     $dmg_response = array_slice($response, 0, $find_date_index, true);
                     if ($range == '3Y') {
                         $data = json_decode($response_original);
-                        //dd($date_before_start_date);
                         foreach ($data as $d) {
                             if ($d['0'] <= $date_before_start_date) {
                                 $da[] = $d;
                             }
                         }
-
                         foreach ($response as $r) {
                             if ($r['time'] <= $current_date) {
                                 $dmg_ar[] = array_values($r);
@@ -136,20 +130,11 @@ class Bitfinex
                         }
                     }
                     if ($range == '1M' || $range == '7D' || $range == '3D' || $range == '1D' || $range == '6h' || $range == '1h') {
-                       // echo "<pre>"."start:".$start." "."end:".$end." ";
-                        /*print_r($response)*/;
-                        //$test= end($response);
-                        //echo " ".$test['time'];
-                       // exit();
                         foreach ($response as $key => $value) {
-                            //echo ($value["time"])."\n";
-
                             if ($value["time"] >= $start && $value["time"] <= $end) {
                                 $arr[] = [$value["time"], $value["open"], $value["close"], $value["high"], $value["low"]];
                             }
                         }
-                      /*  exit();
-                        dd($arr);*/
                         return $arr;
                     }
 
@@ -162,13 +147,11 @@ class Bitfinex
                     foreach ($dmg_response as $d) {
                         $data_ar[] = array_values($d);
                     }
-                    //dd($response_start);
                     if ($interval_range == '7D') {
                         $response = array_merge($da, $dmg_ar);
                     } else {
                         $response = array_merge($response_start, $data_ar);
                     }
-                    //dd($response);
                     return $response;
                 }
                 $date_diff = round(($end - $start) / (1000 * 3600 * 24 * 365));
@@ -227,6 +210,7 @@ class Bitfinex
             if ($currency == 'tADAUSD') {
                 $response_data = Http ::get('https://api-pub.bitfinex.com/v2/candles/trade:1D:' . $currency . '/hist?limit=10000');
                 $key = array_search($date_before_start_date, array_column(json_decode($response_data), 0));
+                //dd($date_before_start_date);
                 $response_original = array_slice(json_decode($response_data), $key);
                 $get_json = file_get_contents('./dataJson/1d.json');
                 $json_data = json_decode($get_json, 'true');

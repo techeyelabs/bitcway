@@ -81,11 +81,12 @@
                                 <td >{{$c['start_date']}}</td>
                                 <td >{{$c['end_date']}}</td>
                                 <td >{{$c['price_update']}}</td>
-                                <td  style="cursor: pointer; color:green;" id="{{$c['id']}}" onclick="edit(this.id)">
-                                    <?php if($i == 0){ ?>
+
+                                <?php if($i == 0){ ?>
+                                    <td  style="cursor: pointer; color:green;" id="{{$c['id']}}" onclick="edit(this.id)">
                                         <i class="fa fa-pen"></i>
-                                    <?php } ?>
-                                </td>
+                                    </td>
+                                <?php }?>
                             </tr>
                         <?php $i++; } ?>
                         </tbody>
@@ -134,8 +135,15 @@
             var price_update = $('#' + id).prev().text();
             var end_date = $('#' + id).prev().prev().text();
             var start_date = $('#' + id).prev().prev().prev().text();
-            var put_start_date = $('input#start_date').val(start_date);
-            var put_end_date = $('input#end_date').val(end_date);
+            var res_start = start_date.split(" ");
+            var res_end = end_date.split(" ");
+            //console.log(res[1]);
+            var length = 16;
+            var enddate = end_date.substring(0,length);
+            console.log(enddate)
+            var startdate = start_date.substring(0,length);
+            var put_start_date = $('input#start_date').val(res_start[0]+'T'+res_start[1]);
+            var put_end_date = $('input#end_date').val(res_end[0]+'T'+res_end[1]);
             var put_price_update = $('input#price_update').val(price_update);
             var edit_id = $('input#edit_id').val(id);
           $('#reset_form').show();
