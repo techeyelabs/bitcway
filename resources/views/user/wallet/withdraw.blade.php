@@ -42,7 +42,7 @@
                             @enderror
 
                             <label class="txtWhitecolor mt-3" for="">BTC Wallet Address</label>
-                            <input type="text" class="form-control" aria-describedby="" name="walletAddress"
+                            <input type="text" class="form-control" aria-describedby="" name="walletAddress" id="walletAddress"
                                 value="{{old('walletAddress')}}" placeholder="Enter BTC wallet address here..." required v-model="walletAddress">
                             @error('amount')
                             <small class="text-danger">{{ $message }}</small>
@@ -66,7 +66,8 @@
             let availableBalance = parseFloat($('#availableBalance').text());
             $("#amount").keyup(function() {
                 let amountInput = parseFloat($('#amount').val());
-                if (amountInput >= 100 && amountInput <= availableBalance){
+                let walletaddress = $('#walletAddress').val();
+                if (amountInput >= 100 && amountInput <= availableBalance && walletaddress != ''){
                     $("#withdrawBtn").attr("disabled", false);
                 }else{
                     $("#withdrawBtn").attr("disabled", true);
