@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div style="margin: auto; overflow-x: auto">
-                    <ul class="container-fluid" style=" min-width: 600px;">
+                    <ul class="container-fluid" style=" min-width: 1000px;">
                         <li class="row list-group-item d-flex justify-content-between align-items-center ">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('column1')}}</p>
                             <p class="col txtWhitecolor" id="" style="text-align: left;">{{__('size')}}</p>
@@ -108,7 +108,7 @@
                     </div>
                 </div>
                 <div style="margin: auto; overflow-x: auto">
-                    <ul class="container-fluid" style=" min-width: 600px;">
+                    <ul class="container-fluid" style=" min-width: 1000px;">
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('column1')}}</p>
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: left; ">{{__('size')}}</p>
@@ -164,7 +164,7 @@
                     </div>
                 </div>
                 <div style="margin: auto; overflow-x: auto">
-                    <ul class="container-fluid" style=" min-width: 400px;">
+                    <ul class="container-fluid" style=" min-width: 1000px;">
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
                             <p class="col txtWhitecolor" id="" style="text-align: left; ">{{__('column1')}}</p>
                             <p class="col txtWhitecolor" id="" style="text-align: left; ">{{__('col4')}}</p>
@@ -287,49 +287,6 @@
                     tradeUnrealizedpnlid.style.color = '#198754'
                 }
             }
-
-            // let indexNumber2 = $('#myCoinIndex2').html();
-            // for (let j = 1; j <= indexNumber2; j++) {
-            //     let currencyName = $('#MyCoinCurrencyName2' + j).html();
-            //     let currencyAmount = parseFloat($('#MyTotalCoinAmount2' + j).html());
-            //
-            //     let full_data = trackers.trackers;
-            //     full_data.forEach(async function (item) {
-            //         if (item[0] === 't' + currencyName + 'USD') {
-            //             let derivativeCurrentMarketPrice =  parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
-            //             console.log(derivativeCurrentMarketPrice);
-            //             // let derivativeCurrentMarketPrice =  parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
-            //             // parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
-            //             parseFloat($('#CoinpriceintoMycoin2' + j).html(( item[1]).toFixed(5)));
-            //         }
-            //     });
-            // }
-            // let mainDerivativeBalance = parseFloat($('#mainDerivativeBalance').text());
-            // for (let dv = 1; dv <= indexNumber2; dv++) {
-            //         totalDerivativeValue += parseFloat($('#derivativeAmountWithPNL' + dv).text());
-            //         parseFloat($('#totalDerivativeAmount').html((totalDerivativeValue+mainDerivativeBalance).toFixed(5)));
-            // }
-            // for (let dbPNL = 1; dbPNL<=indexNumber2; dbPNL++){
-            //     let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + dbPNL).html().replace(',',''));
-            //     let derivativeLoan = parseFloat($('#derivativeLoan' + dbPNL).html().replace(',',''));
-            //     derivativePNL = parseFloat(derivativeMarkPrice - derivativeLoan);
-            //     parseFloat($('#derivativeAmountWithPNL' + dbPNL).html(derivativePNL));
-            // }
-            //
-            // for (let dupnl = 1; dupnl <= indexNumber2; dupnl++) {
-            //     var derivativeUnrealizedpnlid = document.getElementById('derivativeUnrealizedPrice'+ dupnl);
-            //     // let derivativeEntryPrice = parseFloat($('#derivativeEntryPrice' + dupnl).html().replace(',',''));
-            //     let derivativeEntryPrice = parseFloat($('#derivativeEntryCurrencyPrice' + dupnl).html().replace(',',''));
-            //     let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + dupnl).html());
-            //     let derivativeUnrealizedpnl = parseFloat(derivativeMarkPrice-derivativeEntryPrice);
-            //     if (derivativeUnrealizedpnl < 0){
-            //         parseFloat($('#derivativeUnrealizedPrice'+ dupnl ).html((derivativeUnrealizedpnl).toFixed(5)));
-            //         derivativeUnrealizedpnlid.style.color = '#dc3545'
-            //     }else{
-            //         parseFloat($('#derivativeUnrealizedPrice'+ dupnl ).html((derivativeUnrealizedpnl).toFixed(5)));
-            //         derivativeUnrealizedpnlid.style.color = '#198754'
-            //     }
-            // }
 
             let indexNumber2 = $('#myCoinIndex2').html();
             for (let j = 1; j <= indexNumber2; j++) {
