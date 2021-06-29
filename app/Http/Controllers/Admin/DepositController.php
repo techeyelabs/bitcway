@@ -23,10 +23,10 @@ class DepositController extends Controller
 
     public function data(Request $request)
     {
-        $users = DepositHistory::all();
+        $users = DepositHistory::where('status', '!=', 4)->get();
         return Datatables::of($users)
                 ->editColumn('status', function ($row) {
-                    if ($row->status==1) {
+                    if ($row->status == 1) {
                         return '<span class="text-success">Approved</span>';
                     }
                     elseif ($row->status==2) {

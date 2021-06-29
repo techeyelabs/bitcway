@@ -15,10 +15,10 @@
                 <table class="table" id="data-table">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Email</th>
+                            <th style="width: 10%">Name</th>
+                            <th style="width: 25%">Email</th>
                             {{--<th>Amount (BTC)</th>--}}
-                            <th>Equivalent Amount (USD)</th>
+                            <th style="width: 20%">Equivalent Amount (USD)</th>
                             <th>Status</th>
                             <th>Created</th>
                             {{--<th style="min-width: 150px; display: none">Action</th>--}}
