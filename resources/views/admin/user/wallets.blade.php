@@ -4,30 +4,6 @@
 @endsection
 
 @section('content')
-{{--<div id="wrap" class="deposit">
-    <h2>Assets</h2>
-    <hr>
-    <div class="card">
-        <div class="card-body text-center">
-            <h4>Equivalent Asset Amount:  {{$total}} USD</h4>
-        </div>
-    </div>
-    <div class="card mt-3">
-        <div class="card-body">
-            <div class="text-center"><h4>Asset Breakdown</h4></div>
-
-
-            <ul class="list-group col-md-6 offset-md-3">
-                <?php foreach($wallets as $item){?>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{$item->currency->name}}
-                    <span class="badge bg-primary pill">{{$item->balance}}</span>
-                </li>
-                <?php }?>
-            </ul>
-        </div>
-    </div>
-</div>--}}
 <div id="wrap" class="deposit">
     <h3 class="txtHeadingColor pageTitle">{{$userBalance->username}}</h3>
     <hr>
@@ -43,7 +19,7 @@
                         <div class="col-md-12 row">
                             <div class="col-md-8">
                                 <abbr title="{{__('your_total_wallet_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_wallet_balance')}}</abbr><br>
-                                <h4 class="txtWhitecolor text-left" >{{$userBalance->balance}}<span style="font-size: 10px">&nbsp; USD</span></h4>
+                                <h4 class="txtWhitecolor text-left" >{{($userBalance->balance == '0') ? '00.00' : $userBalance->balance}}<span style="font-size: 10px">&nbsp; USD</span></h4>
                             </div>
                         </div>
                     </div>
@@ -104,8 +80,8 @@
                 <div class="container-fluid">
                     <div class="text-left">
                         <abbr title="Derivative Wallet"  class="txtWhitecolor text-left initialism">{{__('title20')}}</abbr><br>
-                        <span class="d-none" id="derivativeBalance">{{$userDerivativeBalance->derivative}}</span>
-                        <h4 class="txtWhitecolor text-left mb-3" id="totalDerivativeAmount">{{$userDerivativeBalance->derivative}}<span style="font-size: 10px">&nbsp; USD</span></h4>
+                        <span class="d-none" id="derivativeBalance">{{($userDerivativeBalance->derivative == '0') ? '00.00' : $userDerivativeBalance->derivative}}</span>
+                        <h4 class="txtWhitecolor text-left mb-3" id="totalDerivativeAmount">{{($userDerivativeBalance->derivative == '0') ? '00.00' : $userDerivativeBalance->derivative}}<span style="font-size: 10px">&nbsp; USD</span></h4>
                     </div>
                 </div>
             </div>
@@ -321,7 +297,7 @@
                 for (let a = 1; a <= indexNumber3; a++) {
                     totalFinanceValue += parseFloat($('#coinWithInterest' + a).html());
                     if (isNaN(totalFinanceValue)){
-                        parseFloat($('#totalFinanceAmount').html("00.00000"));
+                        parseFloat($('#totalFinanceAmount').html("00.00"));
                     }else{
                         parseFloat($('#totalFinanceAmount').html((totalFinanceValue).toFixed(5)));
                     }
@@ -333,9 +309,11 @@
             let financeMargin = parseFloat($('#totalFinanceAmount').html());
             totalMargin = parseFloat(tradeMargin + derivativeMargin + financeMargin);
             if (isNaN(totalMargin)) {
-                parseFloat($('#totalMArginBalanceId').html("00.000000"));
+                parseFloat($('#totalMArginBalanceId').html("00.00"));
             }
-            else{
+            else if (totalMargin == 0){
+                parseFloat($('#totalMArginBalanceId').html("00.00"));
+            }else{
                 parseFloat($('#totalMArginBalanceId').html((totalMargin).toFixed(5)));
             }
         })

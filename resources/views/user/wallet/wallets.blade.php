@@ -25,11 +25,11 @@
                     <div class="row container-fluid" >
                         <div class="  text-left " style="margin-left: -15px;">
                             <abbr title="{{__('your_total_margin_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_margin_balance')}}</abbr><br>
-                            <h4 class="txtWhitecolor text-left mb-4" ><span id="totalMArginBalanceId">00.00</span><span style="font-size: 10px">USD</span></h4>
+                            <h4 class="txtWhitecolor text-left mb-4" ><span id="totalMArginBalanceId">00.00</span><span style="font-size: 10px">&nbsp; USD</span></h4>
                             <div class="col-md-12 row">
                                 <div class="col-md-8">
                                     <abbr title="{{__('your_total_wallet_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_wallet_balance')}}</abbr><br>
-                                    <h4 class="txtWhitecolor text-left" >{{$userBalance->balance}}<span style="font-size: 10px"> USD</span></h4>
+                                    <h4 class="txtWhitecolor text-left" >{{($userBalance->balance == '0') ? '00.00' : $userBalance->balance}}<span style="font-size: 10px">&nbsp; USD</span></h4>
                                 </div>
                                 <div class="col-md-4" style="margin-top: 3px;">
                                     <button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
@@ -53,7 +53,7 @@
 
                         <div class="row  text-left mb-3" style="margin-left: -15px;">
                             <abbr title="{{__('Btrade_wallet')}}"  class="txtWhitecolor text-left initialism">{{__('trade_wallet')}}</abbr><br>
-                            <h4 class="txtWhitecolor text-left mb-2" id="totalAmount">00.00 <span style="font-size: 10px">USD</span></h4>
+                            <h4 class="txtWhitecolor text-left mb-2" id="totalAmount">00.00<span style="font-size: 10px">&nbsp; USD</span></h4>
                         </div>
                     </div>
                 </div>
@@ -99,8 +99,8 @@
                     <div class="container-fluid">
                         <div class="text-left">
                             <abbr title="Derivative Wallet"  class="txtWhitecolor text-left initialism">{{__('title20')}}</abbr><br>
-                            <span class="d-none" id="derivativeBalance">{{$userDerivativeBalance->derivative}}</span>
-                            <h4 class="txtWhitecolor text-left mb-3" id="totalDerivativeAmount">{{$userDerivativeBalance->derivative}}<span style="font-size: 10px">USD</span></h4>
+                            <span class="d-none" id="derivativeBalance">{{($userDerivativeBalance->derivative == '0') ? '00.00' : $userDerivativeBalance->derivative}}</span>
+                            <h4 class="txtWhitecolor text-left mb-3" id="totalDerivativeAmount">{{($userDerivativeBalance->derivative == '0') ? '00.00' : $userDerivativeBalance->derivative}}<span style="font-size: 10px">&nbsp; USD</span></h4>
                         </div>
                         <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal"
                                 data-bs-target="#derivativeModal" style="width: 100px;" onclick="setFlag(2)">{{__('button11')}}
@@ -159,7 +159,7 @@
                     <div class="container-fluid" >
                         <div class="text-left mb-3">
                             <abbr title="Finance Wallet"  class="txtWhitecolor text-left initialism">{{__('title21')}}</abbr><br>
-                            <h4 class="txtWhitecolor text-left mb-3" id="totalFinanceAmount">00.00 <span style="font-size: 10px">USD</span></h4>
+                            <h4 class="txtWhitecolor text-left mb-3" id="totalFinanceAmount">00.00<span style="font-size: 10px">&nbsp; USD</span></h4>
                         </div>
                     </div>
                 </div>
@@ -428,7 +428,9 @@
             if (isNaN(totalMargin)) {
                 parseFloat($('#totalMArginBalanceId').html("00.00"));
             }
-            else{
+            else if (totalMargin == 0){
+                parseFloat($('#totalMArginBalanceId').html("00.00"));
+            }else{
                 parseFloat($('#totalMArginBalanceId').html((totalMargin).toFixed(5)));
             }
         })

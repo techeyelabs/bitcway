@@ -12,7 +12,8 @@
     .message-input{
         width: 100%;
         position: relative;
-        bottom: 0px;
+        bottom: 5px;
+        border: none;
     }
     .message-list{
         height: calc(100% - 80px);
@@ -48,7 +49,7 @@
 
         <div class="card message-list">
             <div class="card-body">
-                <div class="list-group" style="height: 650px;background-color: #081420;display:none;">
+                <div class="list-group" style="height: 500px;background-color: #081420;display:none;">
                                 
                         <div v-for="item in messages" class="list-group-item  align-items-center" :class="{'right': item.type==2}" style="border: 0px solid ;">
                             
