@@ -12,7 +12,7 @@
             /*max-height: calc(100vh - 420px);*/
             margin-bottom: 8px;
         }
-        .trackers table th {
+        .trackers th {
             position: sticky !important;
             top: 0;
             z-index: 10;
