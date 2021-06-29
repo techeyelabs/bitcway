@@ -322,8 +322,8 @@
                             <span class="interval" style="margin-left: 10px">BitcWay</span>
                         </div>
                         <div class="chart" id="chart" ref="chart" style="height:465px; display: block; color: white; background-color: #171b26;">
-                            <div class="loader" style="display: none">
-                            </div>
+{{--                            <div class="loader" style="display: none">--}}
+{{--                            </div>--}}
                         </div>
 
                         <div id='buttonrow' class="chart-top-row">
@@ -803,7 +803,7 @@
         let Home = new Vue({
             el: '.trade',
             data: {
-                message: 'Hello Vue!',
+                message: 'Hello BitC-Way!',
                 trackers: [],
                 chart:null,
                 selectedItem: [],
@@ -832,10 +832,9 @@
                 MABcurrentPrice: {{$current_price}}
             },
             mounted() {
-
                 this.chart = LightweightCharts.createChart(this.$refs.chart, {
-                    width: this.$refs.chart.innerWidth,
-                    height: this.$refs.chart.innerHeight
+                    width: this.$refs.chart.offsetWidth,
+                    height: this.$refs.chart.offsetHeight
                 });
 
                 // var lineSeries = this.chart.addLineSeries();
@@ -850,7 +849,7 @@
                 ro.observe(this.$refs.chart);
 
                 window.addEventListener("resize", () => {
-                    this.resize(this.$refs.chart.innerWidth, this.$refs.chart.innerHeight);
+                    this.resize(this.$refs.chart.offsetWidth, this.$refs.chart.offsetHeight );
                 });
             },
             computed:{
