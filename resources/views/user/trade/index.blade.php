@@ -85,7 +85,7 @@
     </style>
 @endsection
 @section('content')
-    <div id="wrap" class="trade">
+    <div id="wrap" class="trade" style="min-width: 1100px; overflow-x: scroll;">
         @if(isset($type))
             <h3 class="txtHeadingColor pageTitle">{{__('menuoption4')}}</h3>
         @else
