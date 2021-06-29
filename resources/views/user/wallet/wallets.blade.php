@@ -29,7 +29,7 @@
                             <div class="col-md-12 row">
                                 <div class="col-md-8">
                                     <abbr title="{{__('your_total_wallet_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_wallet_balance')}}</abbr><br>
-                                    <h4 class="txtWhitecolor text-left" >{{($userBalance->balance == '0') ? '00.00' : $userBalance->balance}}<span style="font-size: 10px">&nbsp; USD</span></h4>
+                                    <h4 class="txtWhitecolor text-left" >{{($userBalance->balance == '0') ? '00.00' : number_format((float) ($userBalance->balance),2,'.', '')}}<span style="font-size: 10px">&nbsp; USD</span></h4>
                                 </div>
                                 <div class="col-md-4" style="margin-top: 3px;">
                                     <button type="button" class="btn btn-outline-info" data-bs-toggle="modal"

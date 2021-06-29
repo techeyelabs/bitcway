@@ -30,7 +30,6 @@
                     </div>
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1" name="remember" value="" placeholder="">
-                        <label class="form-check-label" for="exampleCheck1">Remember me</label>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block float-right">Login</button>
 
