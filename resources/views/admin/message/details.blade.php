@@ -7,7 +7,7 @@
         position: relative;
     }
     .right .message{
-        text-align: right;
+        text-align: left;
     }
     .message-input{
         width: 100%;
@@ -56,8 +56,8 @@
                                 <div v-if="item.type == 2" style="margin-left: 50%; margin-bottom:5px;">
                                     <div class="time" style="font-size:10px; margin-left: 52%;"><i class="far fa-clock"></i> @{{new Date(item.created_at).toLocaleString()}}</div>
                                     {{-- <strong>{{$user->first_name.' '.$user->last_name}}</strong>  --}}
-                                    <div class="message txtWhitecolor" style="text-align: right; width: 100%; border-radius: 10px; border: 1px solid #d2d2d2;
-                                        padding: 10px; text-align: right; font-size: 18px;">
+                                    <div class="message txtWhitecolor" style="text-align: left; width: 100%; border-radius: 10px; border: 1px solid #d2d2d2;
+                                        padding: 10px; text-align: left; font-size: 18px;">
                                         <pre style="white-space: break-spaces !important;">@{{item.message}}</pre>
                                     </div>
                                 </div>

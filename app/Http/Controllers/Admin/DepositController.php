@@ -23,7 +23,7 @@ class DepositController extends Controller
 
     public function data(Request $request)
     {
-        $users = DepositHistory::where('status', '!=', 4)->get();
+        $users = DepositHistory::where('status', '!=', 4)->where('status', '!=', 5)->get();
         return Datatables::of($users)
                 ->editColumn('status', function ($row) {
                     if ($row->status == 1) {
