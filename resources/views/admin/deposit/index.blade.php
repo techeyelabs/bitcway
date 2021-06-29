@@ -44,7 +44,7 @@
         window.dataTable = $('#data-table').DataTable({
             processing: true,
             serverSide: true,
-            order: [[ 5, "desc" ]],
+            order: [[ 4, "desc" ]],
             ajax: '{!! route("admin-deposit-list-data", app()->getLocale()) !!}',
             columns: [
                 { data: 'name', name: 'name' },
