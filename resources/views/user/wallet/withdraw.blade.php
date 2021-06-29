@@ -36,7 +36,7 @@
                         <div class="form-group">
                             <label class="txtWhitecolor" for="">{{__('col10')}} (USD)</label>
                             <input type="number" class="form-control" aria-describedby="" name="amount" id="amount"
-                                value="{{old('amount')}}" placeholder="Enter amount in USD here..." required v-model="amount" :disabled="lockedBalanceFun<99" onkeyup="isBalanceAvailable()">
+                                   value="{{old('amount')}}" placeholder="Enter amount in USD here..." required v-model="amount" :disabled="lockedBalanceFun<99" onkeyup="isBalanceAvailable()">
                             @error('amount')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -48,7 +48,7 @@
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <a href="#" class="btn btn-outline-warning float-end" v-on:click="withdraw" :class="{disabled: amount<=99}">{{__('button4')}}</a>
+                        <button class="btn btn-outline-warning float-end" id="withdrawBtn" v-on:click="withdraw"  disabled >{{__('button4')}}</button>
                             @endif
                     </template>
                     @endif
