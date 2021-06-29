@@ -12,11 +12,10 @@
         <div class="col-md-8 col-lg-6">
             <div class="card">
                 <div class="card-body">
-
-                    @if($notification->display_message == 1)
-                    <div class="form-group text-center">
-                        <h4 class="txtWhitecolor">{{$notification->message}}</h4>
-                    </div>
+                    @if(  Auth::user()->withdraw_message!= null || Auth::user()->withdraw_message!= "")
+                        <div class="form-group text-center">
+                            <h4 class="txtWhitecolor">{{$withdraw_message}}</h4>
+                        </div>
                     @else
 
                     <template v-if='done'>
@@ -27,6 +26,7 @@
                     </template>
 
                     <template v-else>
+
                         <div class="form-group text-center">
                             <h4 class="txtWhitecolor" >Available: @{{balance}} USD</h4>
                         </div>
@@ -48,8 +48,8 @@
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <p></p>
-                        <button class="btn btn-outline-warning float-end" id="withdrawBtn" v-on:click="withdraw"  disabled >{{__('button4')}}</button href="#">
+                        <a href="#" class="btn btn-outline-warning float-end" v-on:click="withdraw" :class="{disabled: amount<=99}">{{__('button4')}}</a>
+                            @endif
                     </template>
                     @endif
                 </div>
@@ -111,11 +111,11 @@
                     .then(function (response) {
                         console.log(response);
                         if(response.data.status) that.done = true;
-                        else toastr.error('error occured,please try again');
+                        else toastr.error('Error occured, please try again');
                         hideLoader();
                     })
                     .catch(function (error) {
-                        toastr.error('error occured,please try again');
+                        toastr.error('Error occured, please try again');
                         hideLoader();
                     });
                 }

@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\DepositController as AdminDepositController;
 use App\Http\Controllers\Admin\WithdrawController as AdminWithdrawController;
+use App\Http\Controllers\Admin\WithdrawMessageController as AdminWithdrawMessageController;
 use App\Http\Controllers\Admin\MessageController as AdminMessageController;
 use App\Http\Controllers\Admin\DmgCoinController as AdminDmgCoinController;
 use App\Http\Controllers\Admin\LockedSavingsController as AdminLockedSavingsController;
@@ -171,6 +172,11 @@ Route::group(['prefix' => '{language}'], function () {
             Route::get('/admindeposit', [AdminDepositController::class, 'adminDeposit'])->name('adminDeposit');
             Route::post('/admindeposit-action', [AdminDepositController::class, 'adminDepositAction'])->name('adminDeposit-action');
             Route::get('/admindeposit-history', [AdminDepositController::class, 'adminDepositHistory'])->name('adminDeposit-history');
+
+            Route::get('/admin-withdraw-message', [AdminWithdrawMessageController::class, 'adminWithdrawMessage'])->name('admin-withdraw-message');
+            Route::post('/admin-withdraw-message-action', [AdminWithdrawMessageController::class, 'adminWithdrawMessageAction'])->name('admin-withdraw-message-action');
+            Route::get('/admin-withdraw-message-history', [AdminWithdrawMessageController::class, 'adminWithdrawMessageHistory'])->name('admin-withdraw-message-history');
+            Route::get('/admin-withdraw-message/destroy', [AdminWithdrawMessageController::class, 'destroy'])->name('admin-withdraw-message-destroy');
         });
     });
 });

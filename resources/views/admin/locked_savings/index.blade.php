@@ -184,18 +184,18 @@
 @section('custom_js')
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
     <script>
-        const socket = io('http://192.144.82.234:3000/');
-        // const socket = io('https://bitc-way.com:3000/');
+        // const socket = io('http://192.144.82.234:3000/');
+        const socket = io('https://bitc-way.com:3000/');
         let response = 0;
         socket.on('trackers', (trackers) => {
             response++;
             if (response == 1){
                 let options = "";
-                for (let i = 0; i < trackers.trackers.length; i++){
-                    if (trackers.trackers[i][0] == "tADAUSD" ){
-                        trackers.trackers[i][0] = "tMABUSD";
+                for (let i = 0; i < trackers.trackers.trackers.length; i++){
+                    if (trackers.trackers.trackers[i][0] == "tADAUSD" ){
+                        trackers.trackers.trackers[i][0] = "tMABUSD";
                     }
-                    let c = trackers.trackers[i][0];
+                    let c = trackers.trackers.trackers[i][0];
 
                     let name = splitCurrency(c);
                     options += "<option value ="+name+">"+name+"</option>";
