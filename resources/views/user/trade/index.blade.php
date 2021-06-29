@@ -140,11 +140,6 @@
             font-size: 12px;
             padding: 5px 8px 3px;
         }
-        /*.tv-lightweight-charts{*/
-        /*    position: absolute;*/
-        /*    width: 100% !important;*/
-        /*    height: 100% !important;*/
-        /*}*/
     </style>
 @endsection
 @section('content')
