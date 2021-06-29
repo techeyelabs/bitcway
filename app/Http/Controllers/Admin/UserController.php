@@ -65,6 +65,9 @@ class UserController extends Controller
                 ->editColumn('memo', function ($row) {
                     return '<a href="'.route('admin-user-memo', [app()->getLocale(), $row->id]).'" class="btn btn-sm btn-outline-info">Memo</a>';
                 })
+                ->editColumn('chat', function ($row) {
+                    return '<a href="'.route('admin-message-details', [app()->getLocale(), $row->id]).'" class="btn btn-sm btn-outline-info">Chat</a>';
+                })
                 ->editColumn('created_at', function ($row) {
                     return date('d M Y', strtotime($row->created_at));
                 })
@@ -76,11 +79,11 @@ class UserController extends Controller
                     else $action .= ' <a href="'.route('admin-user-change-status', [app()->getLocale(), 'id' => $row->id, 'status' => 0]).'" class="btn btn-sm btn-outline-warning">Inactive</a>';
                     // $action .= ' <a href="'.route('admin-user-destroy', [$row->id, app()->getLocale()]).'" class="btn btn-sm btn-outline-danger delete-button-new">Delete</a>';
                     
-                    $action .= ' <a href="'.route('admin-message-details', [app()->getLocale(), $row->id]).'" class="btn btn-sm btn-outline-info">Chat</a>';
+//                    $action .= ' <a href="'.route('admin-message-details', [app()->getLocale(), $row->id]).'" class="btn btn-sm btn-outline-info">Chat</a>';
 
                     return $action;
                 })
-                ->rawColumns(['status', 'action', 'asset', 'memo'])
+                ->rawColumns(['status', 'action', 'asset', 'memo', 'chat'])
                 ->make();
     }
 

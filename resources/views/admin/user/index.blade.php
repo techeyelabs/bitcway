@@ -21,6 +21,7 @@
                             <th>Username</th>
                             <th>Phone</th>
                             <th>Memo</th>
+                            <th>Chat</th>
                             <th>Asset</th>
                             <th>Created</th>
                             <th style="min-width: 170px;">Action</th>
@@ -56,6 +57,7 @@
                 { data: 'phone', name: 'phone' },
                 // { data: 'balance', name: 'balance' },
                 { data: 'memo', name: 'memo' },
+                { data: 'chat', name: 'chat' },
                 // { data: 'status', name: 'status' },
                 { data: 'asset', name: 'asset' },
                 { data: 'created_at', name: 'created_at' },
