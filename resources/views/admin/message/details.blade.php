@@ -7,12 +7,13 @@
         position: relative;
     }
     .right .message{
-        text-align: right;
+        text-align: left;
     }
     .message-input{
         width: 100%;
         position: relative;
-        bottom: 0px;
+        bottom: 5px;
+        border: none;
     }
     .message-list{
         height: calc(100% - 80px);
@@ -48,15 +49,15 @@
 
         <div class="card message-list">
             <div class="card-body">
-                <div class="list-group" style="height: 650px;background-color: #081420;display:none;">
+                <div class="list-group" style="height: 500px;background-color: #081420;display:none;">
                                 
                         <div v-for="item in messages" class="list-group-item  align-items-center" :class="{'right': item.type==2}" style="border: 0px solid ;">
                             
                                 <div v-if="item.type == 2" style="margin-left: 50%; margin-bottom:5px;">
                                     <div class="time" style="font-size:10px; margin-left: 52%;"><i class="far fa-clock"></i> @{{new Date(item.created_at).toLocaleString()}}</div>
                                     {{-- <strong>{{$user->first_name.' '.$user->last_name}}</strong>  --}}
-                                    <div class="message txtWhitecolor" style="text-align: right; width: 100%; border-radius: 10px; border: 1px solid #d2d2d2;
-                                        padding: 10px; text-align: right; font-size: 18px;">
+                                    <div class="message txtWhitecolor" style="text-align: left; width: 100%; border-radius: 10px; border: 1px solid #d2d2d2;
+                                        padding: 10px; text-align: left; font-size: 18px;">
                                         <pre style="white-space: break-spaces !important;">@{{item.message}}</pre>
                                     </div>
                                 </div>

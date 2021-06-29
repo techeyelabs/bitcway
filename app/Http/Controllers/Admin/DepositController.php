@@ -23,10 +23,10 @@ class DepositController extends Controller
 
     public function data(Request $request)
     {
-        $users = DepositHistory::all();
+        $users = DepositHistory::where('status', '!=', 4)->where('status', '!=', 5)->get();
         return Datatables::of($users)
                 ->editColumn('status', function ($row) {
-                    if ($row->status==1) {
+                    if ($row->status == 1) {
                         return '<span class="text-success">Approved</span>';
                     }
                     elseif ($row->status==2) {
@@ -52,7 +52,7 @@ class DepositController extends Controller
                         $action .= '<a href="'.route('admin-deposit-change-status',['id' => $row->id, 'status' => 1, app()->getLocale()]).'" class="btn btn-sm btn-outline-success">Approve</a>';
                         $action .= ' <a href="'.route('admin-deposit-change-status',['id' => $row->id, 'status' => 2, app()->getLocale()]).'" class="btn btn-sm btn-outline-success">Cancel</a>';
                     }elseif($row->status == 2){
-                        $action .= ' <a href="'.route('admin-deposit-destroy', [$row->id, app()->getLocale()]).'" class="btn btn-sm btn-outline-danger delete-button-new">delete</a>';
+                        $action .= ' <a href="'.route('admin-deposit-destroy', [ $row->id,app()->getLocale()]).'" class="btn btn-sm btn-outline-danger delete-button-new">Delete</a>';
                     }
                     
                     return $action;

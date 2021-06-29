@@ -23,16 +23,12 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Password</label>
-                        <a href="{{route('forgot', app()->getLocale())}}" style="float:right;font-size:12px;">Forgot password?</a>
                         <input type="password" class="form-control" id="exampleInputPassword1" name="password" value="{{old('password')}}" placeholder="Enter your password here..." required>
                         @error('password')
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="remember" value="" placeholder="">
-                        <label class="form-check-label" for="exampleCheck1">Remember me</label>
-                    </div>
+                    <br/>
                     <button type="submit" class="btn btn-primary btn-block float-right">Login</button>
 
                 </form>

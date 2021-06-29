@@ -83,9 +83,9 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('adminWithdrawMessage', app()->getLocale())}}">
-                                <i class="fas fa-coins"></i>
-                                <span>Set Withdraw Message</span>
+                            <a href="{{route('admin-withdraw-message', app()->getLocale())}}">
+                                <i class="fas fa-comments-dollar"></i>
+                                <span>Withdraw Message</span>
                             </a>
                         </li>
                         <li>
@@ -106,7 +106,7 @@
                         <li>
                             <a href="{{route('admin-dmg-coin', app()->getLocale())}}">
                                 <i class="fas fa-coins"></i>
-                                <span>DMG Coin</span>
+                                <span>MAB Chart Setting</span>
                                 {{-- <span class="badge badge-pill badge-primary">Beta</span> --}}
                             </a>
                         </li>
@@ -114,7 +114,7 @@
                         <li>
                             <a href="{{route('admin-locked-savings', app()->getLocale())}}">
                                 <i class="fas fa-coins"></i>
-                                <span>Locked Savings Settings</span>
+                                <span>Finance Settings</span>
 {{--                                 <span class="badge badge-pill badge-primary">Beta</span>--}}
                             </a>
                         </li>

@@ -10,7 +10,7 @@
 
 @section('content')
 <div id="wrap" class="deposit">
-    <h3>BITC-WAY Settings</h3>
+    <h3>MAB Chart Settings</h3>
     <hr>
 
     <div class="row">

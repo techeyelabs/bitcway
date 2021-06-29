@@ -15,13 +15,13 @@
                 <table class="table" id="data-table">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Amount (BTC)</th>
-                            <th>Equivalent Amount (USD)</th>
+                            <th style="width: 10%">Name</th>
+                            <th style="width: 25%">Email</th>
+                            {{--<th>Amount (BTC)</th>--}}
+                            <th style="width: 20%">Equivalent Amount (USD)</th>
                             <th>Status</th>
                             <th>Created</th>
-                            <th style="min-width: 150px;">Action</th>
+                            {{--<th style="min-width: 150px; display: none">Action</th>--}}
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -44,16 +44,16 @@
         window.dataTable = $('#data-table').DataTable({
             processing: true,
             serverSide: true,
-            order: [[ 5, "desc" ]],
+            order: [[ 4, "desc" ]],
             ajax: '{!! route("admin-deposit-list-data", app()->getLocale()) !!}',
             columns: [
                 { data: 'name', name: 'name' },
                 { data: 'email', name: 'email' },
-                { data: 'amount', name: 'amount' },
+                // { data: 'amount', name: 'amount' },
                 { data: 'equivalent_amount', name: 'equivalent_amount' },
                 { data: 'status', name: 'status' },
                 { data: 'created_at', name: 'created_at' },
-                { data: 'action', name: 'action', orderable: false, searchable: false }
+                // { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });
     });

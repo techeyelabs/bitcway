@@ -183,8 +183,9 @@
         let loaded = false;
         socket.on('trackers', (trackers) => {
             console.log(trackers);
-            Home.trackers = trackers.trackers;
-            
+            Home.trackers = trackers.trackers.trackers;
+            // Home.trackers = trackers.trackers;
+
             if(loaded == false){
                 console.log('working');
                 hideLoader();

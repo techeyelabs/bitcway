@@ -5,13 +5,24 @@
         #trackers {
             /*max-height: calc(100vh - 420px);*/
             overflow-y: scroll;
-            margin-top: 50px;
+            margin-top: -5px;
+            padding-right: 12px;
+        }
+        #trackers .title{
+            /*max-height: calc(100vh - 420px);*/
+            margin-bottom: 8px;
+        }
+        .trackers th {
+            position: sticky !important;
+            top: 0;
+            z-index: 10;
+            background-color: #102331 !important;
         }
         tr{
             cursor: pointer;
         }
         tr.active{
-            background-color: #081420;
+            background-color: #24384c;
         }
         .orders{
             max-height: 595px;
@@ -67,7 +78,7 @@
              /*animation: spin 2s linear infinite;*/
          }
 
-        / Safari /
+        /*Safari*/
         @-webkit-keyframes spin {
             0% { -webkit-transform: rotate(0deg); }
             100% { -webkit-transform: rotate(360deg); }
@@ -76,6 +87,63 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+        .ui-tabs--padding-bottom {
+            padding-bottom: 1px;
+        }
+        .ui-tabs--border-bottom {
+            border-bottom: 1px solid;
+        }
+        .ui-tabs--border-bottom {
+            border-bottom: 1px solid;
+        }
+        .ui-tabs {
+            cursor: pointer;
+            margin: 1px .2rem;
+            opacity: .6;
+            border-bottom: none;
+            padding: 0 .2rem 2px;
+        }
+        .ui-tabs:hover {
+            /*text-decoration:underline;*/
+            border-bottom: 1px solid white;
+        }
+        .nav_active {
+            border-bottom: 1px solid white;
+            /*text-decoration: underline;*/
+        }
+        #currency_input{
+            height: 20px!important;
+            margin-bottom: 0!important;
+            outline : none;
+            background-color: #273640;
+            color: white;
+            border: 1px solid #6798b7;
+            padding:8px;
+        }
+        .searchicon {
+            display: -webkit-flex;
+            display: flex;
+            -webkit-align-items: center;
+            align-items: center;
+            margin-left:-20px;
+        }
+        .fa-fw {
+            width: 1.28571429em;
+            text-align: center;
+        }
+        .tickerlist__sub-header {
+            display: -webkit-flex;
+            display: flex;
+            -webkit-align-items: center;
+            align-items: center;
+            font-size: 12px;
+            padding: 5px 8px 3px;
+        }
+        .tv-lightweight-charts{
+            position: absolute;
+            width: 100% !important;
+            height: 100% !important;
         }
     </style>
 @endsection
@@ -88,12 +156,36 @@
         @endif
         <hr>
         <div class="row" style="display: flex;">
+            <button class="accordion txtHeadingColor d-none">Tickers</button>
             <div class="col-md-3 sidebar">
                 <div class="card tickersDiv" >
-                    <div class="card-body">
+                    <div class="card-body" style="padding-right: 0px">
                         <div id="trackers">
                             <div class="text-center title txtHeadingColor"><h4>{{__('title11')}}</h4></div>
-                            <table class="tables trackers" style="width: 100%; table-layout: fixed">
+                            <div id="ticker_top_bar" style="margin-top:10px; margin-bottom:16px; margin-right:10px;">
+                                <div style="display: flex; font-size: 0.8rem; flex-direction: row; align-items: flex-end; justify-content: center;margin-bottom:16px;">
+                                    <div class="ui-tabs ui-tabs--opaque ui-tabs--border-bottom ui-tabs--padding-bottom"  id="trade_link" justify="center">
+                                        <a href="{{route('user-trade', app()->getLocale())}}">
+                                            <span class="sideBar">{{__('menuoption3')}}</span>
+                                        </a>
+                                    </div>
+                                    <div class="ui-tabs" id="derivative_link" justify="center">
+                                        <a href="{{route('user-trade', ['type' => 'derivative', app()->getLocale()])}}">
+                                            <span class="sideBar">{{__('menuoption4')}}</span>
+                                        </a>
+                                    </div>
+                                    <div class="ui-tabs"  justify="center">
+                                    </div>
+                                    <div class="ui-tabs"  justify="center">
+                                    </div>
+                                    <input style="padding-left: 5px;" type="text" id="currency_input" onkeyup="SearchBar()" title="Type in a name">
+                                    <div class="searchicon"><span class="show50"><i class="fa fa-search fa-fw"></i></span></div>
+                                </div>
+
+
+                            </div>
+
+                            <table class="tables trackers" id="currency_table" style="width: 100%; table-layout: fixed">
                                 <thead>
                                     <tr>
                                         <th class="txtWhitecolor th1">{{__('column1')}}</th>
@@ -105,7 +197,7 @@
                                 <tbody>
                                     <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}"  v-on:click="setCurrency(item);">
                                         <td v-cloak id="currencyNameid" class="txtWhitecolor td1">@{{splitCurrency(item[0])}}</td>
-                                        <td class="td2" ><span v-cloak style="color: white;font-size: 12px;">@{{item[7]}}</span> USD</td>
+                                        <td class="td2" ><span v-cloak style="color: white;font-size: 12px;">@{{item[7]}} USD</span></td>
                                         <td class="td3"  v-cloak :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
                                         <td v-cloak class="txtWhitecolor td4">@{{Math.round(item[7]*item[8])}}</td>
                                     </tr>
@@ -300,6 +392,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col main-app-container">
                 <div class="card">
                     <div class="card-body graphDiv" >
@@ -314,9 +407,9 @@
                             <span class="interval" id="6h"  v-on:click="getChartData('interval','6h')">6h</span>
                             <span class="interval" style="margin-left: 10px">BitcWay</span>
                         </div>
-                        <div id="chart" style="height:465px; display: block; color: white; background-color: #171b26">
-                            <div class="loader" style="display: none">
-                            </div>
+                        <div class="chart" id="chart" ref="chart" style="height:465px; display: block; color: white; background-color: #171b26;">
+{{--                            <div class="loader" style="display: none">--}}
+{{--                            </div>--}}
                         </div>
 
                         <div id='buttonrow' class="chart-top-row">
@@ -330,7 +423,7 @@
                             <span class="interval border-removal" id="6h" v-on:click="getChartData('range', '6h')">6h</span>
                             <span class="interval border-removal" id="1h" v-on:click="getChartData('range', '1h')">1h</span>
                         </div>
-                        <div id="tradingview_f7648" class="d-none"></div>
+                        <div id="tradingview_f7648" class="d-none" ></div>
                     </div>
                 </div>
                 <div class="card mt-3 orderBookDiv">
@@ -387,6 +480,14 @@
 
 @section('custom_js')
     <script type="text/javascript" src="/dataJson/coindata.json"></script>
+    <script>
+        $(document).ready(function(){
+            $(".accordion").click(function(){
+                $(".sidebar").slideToggle("slow");
+                this.classList.toggle("active");
+            });
+        });
+    </script>
     <script>
         function limitLength() {
             var buyCheckBox = document.getElementById("limitBuyInput");
@@ -526,19 +627,17 @@
     </script>
     <script>
         // var dumCoin = ["tOMGC:USD", 3.00, 3.01111, 3.411, 311.1100000, -0.0999, -0.000222, 301.00111, 115.88027091, 372.28, 356];
-        const socket = io('http://192.144.82.234:3000/');
-        //const socket = io('https://bitc-way.com:3000/');
-        // showLoader('Loading...');
+        //  const socket = io('http://192.144.82.234:3000/');
+        const socket = io('https://bitc-way.com:3000/');
         let loaded = false;
         //showLoader("Loading");
         socket.on('connect', () => {
-            console.log('connected to backend');
             socket.on('trackers', (trackers) => {
-                Home.trackers = trackers.trackers;
+                Home.trackers = trackers.trackers.trackers;
                 let volumeIndex = Home.trackers;
                 for (let i = 0; i < volumeIndex.length; i++) {
-                    let volume = trackers.trackers[i][7] * trackers.trackers[i][8];
-                    trackers.trackers[i][11] = volume;
+                    let volume = trackers.trackers.trackers[i][7] * trackers.trackers.trackers[i][8];
+                    trackers.trackers.trackers[i][11] = volume;
                 }
                 // Home.trackers.push(dumCoin);
                 let coinData = Home.trackers;
@@ -790,9 +889,9 @@
         let Home = new Vue({
             el: '.trade',
             data: {
-                message: 'Hello Vue!',
+                message: 'Hello BitC-Way!',
                 trackers: [],
-                chart: null,
+                chart:null,
                 selectedItem: [],
                 buyAmount: 0,
                 sellAmount: 0,
@@ -819,7 +918,25 @@
                 MABcurrentPrice: {{$current_price}}
             },
             mounted() {
+                this.chart = LightweightCharts.createChart(this.$refs.chart, {
+                    width: this.$refs.chart.offsetWidth,
+                    height: this.$refs.chart.offsetHeight
+                });
 
+                // var lineSeries = this.chart.addLineSeries();
+                // lineSeries.setData(arr);
+
+                // resize observer (native JS)
+                const ro = new ResizeObserver((entries) => {
+                    const cr = entries[0].contentRect;
+                    this.resize(cr.width, cr.height);
+                });
+
+                ro.observe(this.$refs.chart);
+
+                window.addEventListener("resize", () => {
+                    this.resize(this.$refs.chart.offsetWidth, this.$refs.chart.offsetHeight );
+                });
             },
             computed:{
                 currency(){
@@ -855,8 +972,10 @@
             },
             methods: {
                 logbid(bidincreased) {
+
                 },
                 logask(askincreased) {
+
                 },
                /* log(leverageWalletAmount) {
                 },*/
@@ -1242,9 +1361,8 @@
                     });
                 },
                 derivativeBuy(){
-
                     let that = this;
-                    if(that.calcAmount <= 0 || that.calcAmount > that.usdBalance) {
+                    if(that.calcAmount <= 0 || (that.calcAmount / that.derivativeValue) > that.derivativeBalance) {
                         toastr.error('Invalid amount !!');
                         return false;
                     }
@@ -1382,13 +1500,15 @@
                             });
                     }
                 },
-
                 getOrders(){
                     let that = this;
                     let currency = that.selectedItem[0];
                     getOrders(currency);
                     // getInitialOrder(currency);
                 },
+                resize(width, height) {
+                    this.chart.resize(width, height);
+                }
             },
             beforeMount(){
             },
@@ -1544,5 +1664,31 @@
         }
         /***Load data for first time***/
         get_buy_sell_data('BTC');
+
+        function SearchBar() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("currency_input");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("currency_table");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        var url_part = $(location).attr("href").split('/').pop();
+        if(url_part === 'trade'){
+            $('#trade_link').addClass('nav_active');
+        }
+        if(url_part === 'trade?type=derivative'){
+            $('#derivative_link').addClass('nav_active');
+        }
     </script>
 @endsection
