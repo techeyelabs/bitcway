@@ -531,6 +531,12 @@ table,th, td {
     font-size: 11px;
 }
 @media (max-width:768px) {
+    .tickersDiv{
+        /*display: none;*/
+    }
+    .accordion{
+        display: block !important;
+    }
     #userIcon {
         display: none;
     }

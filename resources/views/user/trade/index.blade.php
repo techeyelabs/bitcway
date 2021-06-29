@@ -77,6 +77,33 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        .accordion{
+            width: 94.5%;
+            min-width: 350px;
+            text-align: left;
+            background-color: #102331;
+            color: white;
+            border: none;
+            height: 40px;
+            margin-left: 12px;
+            border-radius: 3px;
+            outline: none !important;
+        }
+        .active, .accordion:hover {
+            /*background-color: #ccc;*/
+        }
+
+        .accordion:after {
+            content: '\002B';
+            color: #777;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+
+        .active:after {
+            content: "\2212";
+        }
     </style>
 @endsection
 @section('content')
@@ -88,7 +115,9 @@
         @endif
         <hr>
         <div class="row" style="display: flex;">
+            <button class="accordion d-none">Tickers</button>
             <div class="col-md-3 sidebar">
+{{--                onclick="accordion()"--}}
                 <div class="card tickersDiv" >
                     <div class="card-body">
                         <div id="trackers">
@@ -300,6 +329,8 @@
                     </div>
                 </div>
             </div>
+
+
             <div class="col main-app-container">
                 <div class="card">
                     <div class="card-body graphDiv" >
@@ -387,6 +418,14 @@
 
 @section('custom_js')
     <script type="text/javascript" src="/dataJson/coindata.json"></script>
+    <script>
+        $(document).ready(function(){
+            $(".accordion").click(function(){
+                $(".sidebar").slideToggle("slow");
+                this.classList.toggle("active");
+            });
+        });
+    </script>
     <script>
         function limitLength() {
             var buyCheckBox = document.getElementById("limitBuyInput");
