@@ -28,6 +28,7 @@
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
+                    <br/>
                     <button type="submit" class="btn btn-primary btn-block float-right">Login</button>
 
                 </form>
