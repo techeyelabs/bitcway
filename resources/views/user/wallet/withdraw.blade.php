@@ -73,6 +73,16 @@
                     $("#withdrawBtn").attr("disabled", true);
                 }
             });
+
+            $("#walletAddress").keyup(function() {
+                let amountInput = parseFloat($('#amount').val());
+                let walletaddress = $('#walletAddress').val();
+                if (amountInput >= 100 && amountInput <= availableBalance && walletaddress != ''){
+                    $("#withdrawBtn").attr("disabled", false);
+                }else{
+                    $("#withdrawBtn").attr("disabled", true);
+                }
+            });
         }
     </script>
     <script>
