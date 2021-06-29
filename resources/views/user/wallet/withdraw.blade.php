@@ -66,7 +66,7 @@
             let availableBalance = parseFloat($('#availableBalance').text());
             $("#amount").keyup(function() {
                 let amountInput = parseFloat($('#amount').val());
-                if (amountInput > 99 && amountInput <= availableBalance){
+                if (amountInput >= 100 && amountInput <= availableBalance){
                     $("#withdrawBtn").attr("disabled", false);
                 }else{
                     $("#withdrawBtn").attr("disabled", true);
