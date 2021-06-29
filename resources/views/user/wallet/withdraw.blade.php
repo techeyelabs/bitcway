@@ -49,7 +49,7 @@
                             @enderror
                         </div>
                         <p></p>
-                        <button class="btn btn-outline-warning float-end" id="withdrawBtn" v-on:click="withdraw"  disabled >{{__('button4')}}</button href="#">
+                        <button class="btn btn-outline-warning float-end" id="withdrawBtn" v-on:click="withdraw"  disabled >{{__('button4')}}</button>
                     </template>
                     @endif
                 </div>
