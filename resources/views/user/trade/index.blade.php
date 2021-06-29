@@ -12,7 +12,7 @@
             /*max-height: calc(100vh - 420px);*/
             margin-bottom: 8px;
         }
-        table th {
+        .trackers table th {
             position: sticky !important;
             top: 0;
             z-index: 10;
@@ -113,13 +113,6 @@
             border-bottom: 1px solid white;
             /*text-decoration: underline;*/
         }
-        input[type="text" i] {
-            padding: 1px 1px;
-            padding-top: 1px;
-            padding-right: 1px;
-            padding-bottom: 1px;
-            padding-left: 1px;
-        }
         #currency_input{
             height: 20px!important;
             margin-bottom: 0!important;
@@ -199,7 +192,7 @@
                                 <tbody>
                                     <tr v-for="item in trackers"  :class="{active: item[0] == selectedItem[0]}"  v-on:click="setCurrency(item);">
                                         <td v-cloak id="currencyNameid" class="txtWhitecolor td1">@{{splitCurrency(item[0])}}</td>
-                                        <td class="td2" ><span v-cloak style="color: white;font-size: 12px;">@{{item[7]}}</span> USD</td>
+                                        <td class="td2" ><span v-cloak style="color: white;font-size: 12px;">@{{item[7]}} USD</span></td>
                                         <td class="td3"  v-cloak :class="{'text-danger': item[6]<0, 'text-success': item[6]>0}">@{{Math.abs((item[6]*100).toFixed(2))}}%</td>
                                         <td v-cloak class="txtWhitecolor td4">@{{Math.round(item[7]*item[8])}}</td>
                                     </tr>
@@ -620,8 +613,8 @@
     </script>
     <script>
         // var dumCoin = ["tOMGC:USD", 3.00, 3.01111, 3.411, 311.1100000, -0.0999, -0.000222, 301.00111, 115.88027091, 372.28, 356];
-        // const socket = io('http://192.144.82.234:3000/');
-       const socket = io('https://bitc-way.com:3000/');
+         const socket = io('http://192.144.82.234:3000/');
+       //const socket = io('https://bitc-way.com:3000/');
         // showLoader('Loading...');
         let loaded = false;
         //showLoader("Loading");
@@ -1657,7 +1650,6 @@
             }
         }
         var url_part = $(location).attr("href").split('/').pop();
-        console.log(url_part);
         if(url_part === 'trade'){
             $('#trade_link').addClass('nav_active');
         }
