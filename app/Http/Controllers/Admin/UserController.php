@@ -95,7 +95,7 @@ class UserController extends Controller
         $Bitfinex = new Bitfinex();
         $user_id = $request->id;
         $data['total'] = 0;
-        $data['userBalance'] = User::where('id', $user_id)->first('balance');
+        $data['userBalance'] = User::where('id', $user_id)->first();
         $data['wallets'] = UserWallet::where('user_id', $user_id)->with('currency')->orderBy('id', 'DESC')->get();
         foreach ($data['wallets'] as $item) {
             $data['total'] += $item->balance * (is_numeric($Bitfinex->getRate($item->currency->name) ? $Bitfinex->getRate($item->currency->name) : 1));

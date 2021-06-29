@@ -29,7 +29,7 @@
     </div>
 </div>--}}
 <div id="wrap" class="deposit">
-    <h3 class="txtHeadingColor pageTitle">{{__('menuoption7')}}</h3>
+    <h3 class="txtHeadingColor pageTitle">{{$userBalance->username}}</h3>
     <hr>
 
     {{--Margin Balance Start--}}
@@ -39,11 +39,11 @@
                 <div class="row container-fluid" >
                     <div class="  text-left " style="margin-left: -15px;">
                         <abbr title="{{__('your_total_margin_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_margin_balance')}}</abbr><br>
-                        <h4 class="txtWhitecolor text-left mb-4" ><span id="totalMArginBalanceId">00.00</span><span style="font-size: 10px">USD</span></h4>
+                        <h4 class="txtWhitecolor text-left mb-4" ><span id="totalMArginBalanceId">00.00</span><span style="font-size: 10px">&nbsp; USD</span></h4>
                         <div class="col-md-12 row">
                             <div class="col-md-8">
                                 <abbr title="{{__('your_total_wallet_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_wallet_balance')}}</abbr><br>
-                                <h4 class="txtWhitecolor text-left" >{{$userBalance->balance}}<span style="font-size: 10px"> USD</span></h4>
+                                <h4 class="txtWhitecolor text-left" >{{$userBalance->balance}}<span style="font-size: 10px">&nbsp; USD</span></h4>
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
 
                     <div class="row  text-left mb-3" style="margin-left: -15px;">
                         <abbr title="{{__('Btrade_wallet')}}"  class="txtWhitecolor text-left initialism">{{__('trade_wallet')}}</abbr><br>
-                        <h4 class="txtWhitecolor text-left mb-2" id="totalAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
+                        <h4 class="txtWhitecolor text-left mb-2" id="totalAmount">00.00<span style="font-size: 10px">&nbsp; USD</span></h4>
                     </div>
                 </div>
             </div>
@@ -83,8 +83,8 @@
                         <p class="col txtWhitecolor" id="MyCoinCurrencyName{{$i}}" style="text-align: left;">{{($item->currency->name == 'ADA') ? 'MAB' : $item->currency->name}}</p>
                         <p class="col txtWhitecolor" id="MyTotalCoinSize{{$i}}" style="text-align: left;">{!! number_format((double)($item->balance),5)!!}</p>
                         <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$i}}" style="text-align: center;">{!! number_format((double)($item->currency_price),5)!!}</p>
-                        <p class="col txtWhitecolor" id="CoinpriceIntoMycoin{{$i}}" style="text-align: center;">00.000000</p>
-                        <p class="col " id="unrealizedpnl{{$i}}" style="text-align: right;">00.000000</p>
+                        <p class="col txtWhitecolor" id="CoinpriceIntoMycoin{{$i}}" style="text-align: center;">00.00</p>
+                        <p class="col " id="unrealizedpnl{{$i}}" style="text-align: right;">00.00</p>
                         <p class="col txtHeadingColor d-none"  style="text-align: right;"><span id="assetTradeSell{{$i}}" style="cursor: pointer;">{{__('title9')}}</span></p>
                     </li>
                     @php
@@ -105,7 +105,7 @@
                     <div class="text-left">
                         <abbr title="Derivative Wallet"  class="txtWhitecolor text-left initialism">{{__('title20')}}</abbr><br>
                         <span class="d-none" id="derivativeBalance">{{$userDerivativeBalance->derivative}}</span>
-                        <h4 class="txtWhitecolor text-left mb-3" id="totalDerivativeAmount">{{$userDerivativeBalance->derivative}}<span style="font-size: 10px">USD</span></h4>
+                        <h4 class="txtWhitecolor text-left mb-3" id="totalDerivativeAmount">{{$userDerivativeBalance->derivative}}<span style="font-size: 10px">&nbsp; USD</span></h4>
                     </div>
                 </div>
             </div>
@@ -132,11 +132,11 @@
                         <p class="col txtWhitecolor d-none previous" id="derivativeEntryPrice{{$j}}" style="text-align: left;">{{($item->equivalent_amount)}}</p>
                         <p class="col txtWhitecolor" id="derivativeCurrencyEntryPrice{{$j}}" style="text-align: left;">{{($item->derivative_currency_price)}}</p>
                         <p class="d-none" id="derivativeLoan{{$j}}" >{{($item->derivativeLoan)}}</p>
-                        <p class="col txtWhitecolor d-none previous" id="CoinpriceintoMycoin2{{$j}}" style="text-align: center;">00.000000</p>
-                        <p class="col txtWhitecolor" id="CoinpriceintoMyCurrency{{$j}}" style="text-align: center;">00.000000</p>
-                        <p class="d-none" id="derivativeAmountWithPNL{{$j}}">00.000000</p>
-                        <p class="col " id="derivativeUnrealizedPrice{{$j}}" style="text-align: right;color:white;">00.000000</p>
-                        <p class="col d-none previous" id="derivativeUnrealizedCurrencyPrice{{$j}}" style="text-align: right;color:white;">00.000000</p>
+                        <p class="col txtWhitecolor d-none previous" id="CoinpriceintoMycoin2{{$j}}" style="text-align: center;">00.00</p>
+                        <p class="col txtWhitecolor" id="CoinpriceintoMyCurrency{{$j}}" style="text-align: center;">00.00</p>
+                        <p class="d-none" id="derivativeAmountWithPNL{{$j}}">00.00</p>
+                        <p class="col " id="derivativeUnrealizedPrice{{$j}}" style="text-align: right;color:white;">00.00</p>
+                        <p class="col d-none previous" id="derivativeUnrealizedCurrencyPrice{{$j}}" style="text-align: right;color:white;">00.00</p>
                         <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: right; color:white;">{{$item->leverage}}</p>
                         <p class="col txtHeadingColor d-none"  style="text-align: right;"><span id="assetDerivativeSell{{$j}}" style="cursor: pointer;">{{__('title9')}}</span></p>
                     </li>
@@ -158,7 +158,7 @@
                 <div class="container-fluid" >
                     <div class="text-left mb-3">
                         <abbr title="Finance Wallet"  class="txtWhitecolor text-left initialism">{{__('title21')}}</abbr><br>
-                        <h4 class="txtWhitecolor text-left mb-3" id="totalFinanceAmount">00000000.00 <span style="font-size: 10px">USD</span></h4>
+                        <h4 class="txtWhitecolor text-left mb-3" id="totalFinanceAmount">00.00<span style="font-size: 10px">&nbsp; USD</span></h4>
                     </div>
                 </div>
             </div>
@@ -205,15 +205,12 @@
         const socket = io('https://bitc-way.com:3000/');
         let loaded = false;
         socket.on('trackers', (trackers) => {
-            let totalValue = 0;
-            let totalDerivativeValue = 0;
+            let totalValue = 0.00;
+            let totalDerivativeValue = 0.00;
             let totalFinanceValue = 0.00;
             let indexNumber = $('#myCoinIndex').html();
             for (let i = 0; i < indexNumber; i++) {
                 let currencyName = $('#MyCoinCurrencyName' + i).html();
-                let currencyAmount = parseFloat($('#MyTotalCoinAmount' + i).html());
-                let tradeCurrencySize = parseFloat($('#MyTotalCoinSize' + i).html());
-                let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + i).html());
                 let realcurrname = '';
                 if (currencyName == 'MAB') {
                     realcurrname = 'ADA';
@@ -341,8 +338,6 @@
             else{
                 parseFloat($('#totalMArginBalanceId').html((totalMargin).toFixed(5)));
             }
-
-
         })
     </script>
     <script>
