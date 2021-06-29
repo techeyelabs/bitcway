@@ -28,9 +28,6 @@
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="remember" value="" placeholder="">
-                    </div>
                     <button type="submit" class="btn btn-primary btn-block float-right">Login</button>
 
                 </form>
