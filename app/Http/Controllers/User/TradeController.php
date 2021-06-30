@@ -90,6 +90,7 @@ class TradeController extends Controller
             $lockedInvest->value_date = $date;
             $lockedInvest->redemption_date = date('Y-m-d', strtotime($date . ' + ' . $request->redemptionTime . ' days'));
             $lockedInvest->expected_interest = $request->expected_interest;
+            $lockedInvest->status = 1;
             $lockedInvest->currency_id = $request->coinId;
             $lockedInvest->lot_size = $request->coinLotSize;
             $lockedInvest->save();
