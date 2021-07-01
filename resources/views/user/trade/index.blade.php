@@ -62,12 +62,14 @@
             border: none;
         }
         .coloredbid{
-            background-color: #1142304d;;
+            background-color: #1142304d;
         }
         .coloredask{
-            background-color: #942f3e6e;;
+            background-color: #942f3e6e;
         }
-
+        canvas{
+            background-color: #171b26;
+        }
          .loader {
              border: 16px solid #f3f3f3;
              border-radius: 50%;
@@ -605,7 +607,7 @@
             "theme": "dark",
             "style": "1",
             "locale": "en",
-            "toolbar_bg": "#f1f3f6",
+            "toolbar_bg": "#171b26",
             "enable_publishing": false,
             "withdateranges": true,
             "range": "YTD",
@@ -1026,7 +1028,7 @@
                             "theme": "dark",
                             "style": "1",
                             "locale": "en",
-                            "toolbar_bg": "#f1f3f6",
+                            "toolbar_bg": "#171b26",
                             "enable_publishing": false,
                             "withdateranges": true,
                             "range": "YTD",
