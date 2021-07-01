@@ -175,6 +175,8 @@
                         <?php
                         $k = 0;
                         foreach($finances as $index=>$finance){
+                            if ($finance->status == 1){
+//                                dd($finance);
                             $k++;
                         ?>
                             <li class="row list-group-item d-flex justify-content-between align-items-center">{{--$finance->currency->name--}}
@@ -188,6 +190,7 @@
                             </li>
                         <?php
                             }
+                        }
                         ?>
                         <p style="display: none;" id="myCoinIndex3">{{$k}}</p>
                     </ul>
@@ -345,15 +348,15 @@
 
             let totalFinanceValue = 0.00;
             let indexNumber3 = $('#myCoinIndex3').html();
-        
+
             for (let k = 1; k <= indexNumber3; k++) {
                 let currencyName = $('#currencyName' + k).html();
                 let coinLot = parseFloat($('#lot' + k).html());
                 let coinLotSize = parseFloat($('#lotSize'+ k).html());
                 let coinExpectedInterest = parseFloat($('#expectedInterest' + k).html());
                 let totalCoinValue  = parseFloat(((coinLot*coinLotSize) + coinExpectedInterest));
-               
-               
+
+
                 let full_data = trackers.trackers.trackers;
                 // let full_data = trackers.trackers;
 
@@ -370,7 +373,7 @@
                     parseFloat($('#totalFinanceAmount').html((totalFinanceValue).toFixed(5)));
                     }
                 }
-              
+
             }
             if (loaded == false) {
                 setInterval(function () {

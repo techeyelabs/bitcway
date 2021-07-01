@@ -150,6 +150,7 @@
                    @php
                        $k = 0;
                        foreach($finances as $index=>$finance){
+                           if ($finance->status ==1){
                        $k++;
                    @endphp
                     <li class="row list-group-item d-flex justify-content-between align-items-center">
@@ -163,6 +164,7 @@
                     </li>
                     @php
                         }
+                    }
                     @endphp
                     <p style="display: none;" id="myCoinIndex3">{{$k}}</p>
                 </ul>

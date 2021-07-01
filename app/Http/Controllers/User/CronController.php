@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\DerivativeSell;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -18,25 +19,34 @@ use App\Models\Leverage_Wallet;
 use Illuminate\Support\Facades\DB;
 use mysql_xdevapi\Exception;
 use function PHPUnit\Framework\countOf;
+use App\Libraries\Bitfinex;
 
 class CronController extends Controller
 {
     public function myaction(Request $request)
     {
-        $date = date('Y-m-d H:i:s');
-        $data = LockedSaving::where('status', 1)->where('redemption_date', '<=' , $date)->get();
-        $currency = Currency::select('id')->where('name', 'ADA')->first();
-        $id = $currency->id;
-        foreach($data as $item){
-            $value = ((($item->lot_count)*5)+$item->expected_interest);
-            $newdata = new UserWallet();
-            $newdata->balance = $value;
-            $newdata->user_id = $item->user_id;
-            $newdata->currency_id = $id;
-            $newdata->save();
-            
-            LockedSaving::where('id', $item->id)
-                ->update(['status' => '0']);
+        $Bitfinex = new Bitfinex();
+        $CurrentDate = date('Y-m-d'); /* "2021-06-30" */
+        $redemptionData = LockedSaving::where('redemption_date', '=' , $CurrentDate)->get();
+        foreach ($redemptionData as $item){
+            $totalCoin = $item->lot_count * $item->lot_size;
+            $redemptionValue = $totalCoin + $item->expected_interest;
+            $UserWallet = UserWallet::where('user_id', $item->user_id)->where('currency_id', $item->currency_id)->with("currency")->first();
+            if(!$UserWallet) {
+                $UserWallet = new UserWallet();
+                $UserWallet->balance = $redemptionValue;
+                $UserWallet->equivalent_trade_amount = $totalCoin * ($Bitfinex->getRate($item->currency->name));
+            }else{
+                $UserWallet->balance = $UserWallet->balance + $redemptionValue;
+                $UserWallet->equivalent_trade_amount = $UserWallet->equivalent_trade_amount + ($totalCoin * $Bitfinex->getRate($item->currency->name));
+            }
+            $UserWallet->currency_price = $Bitfinex->getRate($item->currency->name);
+            $UserWallet->user_id = $item->user_id;
+            $UserWallet->currency_id = $item->currency_id;
+            $UserWallet->save();
+
+            $item->status = 2;
+            $item->update();
         }
     }
 }
