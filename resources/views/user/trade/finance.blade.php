@@ -102,7 +102,7 @@
         </div>
         {{--Finance locked Saving Setting Div2 End--}}
 
-        <form method="post" action="{{route('user-trade-finance-entry', app()->getLocale())}}">
+        <form method="post" action="{{route('user-trade-finance-entry', app()->getLocale())}}" novalidate>
             @csrf
             <div class="card mt-3 confirmation" id="confirmation" style="display: none">
                 <div class="card-body list-group col-md-8 offset-md-2">
@@ -127,7 +127,7 @@
                                <span class="txtWhitecolor" style="float: left">{{__('transfertext1')}}</span>
                                <span class="txtWhitecolor" id="lotSizeId" style="float: right">5 MAB</span>
                                <span class="d-none" id="lotSizeId_hidden"></span>
-                               <input class="d-none" type="number" id="coinLotSize" name="coinLotSize" value="">
+                               <input type="hidden" id="coinLotSize" name="coinLotSize" value="">
                            </div>
                            <div>
                                <span class="txtWhitecolor" style="float: left">{{__('transfertext2')}}</span>
@@ -160,7 +160,7 @@
                     </div>
                     <div class="row col-md-12" style="text-align: right">
                         <span>
-                            <button class="confirm-button btn-outline-warning" disabled>{{__('transferbtn')}}</button>
+                            <button type="button" class="confirm-button btn-outline-warning" disabled>{{__('transferbtn')}}</button>
                         </span>
                     </div>
                 </div>
