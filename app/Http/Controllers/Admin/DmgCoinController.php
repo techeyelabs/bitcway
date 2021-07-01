@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use DateTime;
 use Illuminate\Support\Facades\Http;
@@ -31,12 +32,30 @@ class DmgCoinController extends Controller
             'end_date' => 'required',
             'price_update' => 'required'
         ]);
+        if(strtotime($request->start_date) > strtotime($request->end_date)){
+           return redirect()->back()-> with('error_message', 'Start Date Must Be Smaller Than End Date');
+        }
+
         DmgCoin ::where('display_status', 0) -> delete();
+        DmgCoin ::where('start_date', '>=', $request->start_date) -> delete();
+
+        $newStartDate = date("Y-m-d H:i:s", strtotime("-1 minutes", strtotime($request->start_date)));
+
+        //Temper overlapping rows
+        $collapsingDate = DmgCoin ::where('start_date', '<', $request->start_date) -> where('end_date', '>', $request->start_date) -> first();
+        if ($collapsingDate){
+            $collapsingDate -> end_date = $newStartDate;
+            $collapsingDate -> save();
+        }
+
         if (($request -> edit_id != "")) {
-            //dd("here");
-            $DmgCoin = DmgCoin ::find($request -> edit_id, 'id');
+            $DmgCoin = DmgCoin ::find($request -> edit_id);
+            if (!$DmgCoin){
+                $DmgCoin = new DmgCoin();
+            }
             $DmgCoin -> start_date = $request -> start_date;
             $DmgCoin -> end_date = $request -> end_date;
+            $DmgCoin -> display_status = 2;
             $DmgCoin -> price_update = $request -> price_update;
             $DmgCoin -> save();
         } else {
@@ -51,7 +70,6 @@ class DmgCoinController extends Controller
                     $end_day = strtotime($request -> start_date) * 1000 - 60000;
                     $normal_start_date = date('Y-m-d H:i:s', $start_day / 1000);
                     $normal_end_date = date('Y-m-d H:i:s', $end_day / 1000);
-
                     $missing_input = ['start_date' => $normal_start_date, 'end_date' => $normal_end_date, 'price_update' => ($request -> price_update + $get_prev_row -> price_update) / 2, 'display_status' => 1];
                     DmgCoin ::create($missing_input);
                 }
@@ -73,6 +91,26 @@ class DmgCoinController extends Controller
             }
             $inputs = ['start_date' => $request -> start_date, 'end_date' => $request -> end_date, 'price_update' => $request -> price_update, 'display_status' => 2];
             DmgCoin ::create($inputs);
+        }
+
+        //If running date data is missing
+        if ($request->end_date < date("Y-m-d H:i:s")){
+            $adjustmentRowStart = date("Y-m-d H:i:s", strtotime("+1 minutes", strtotime($request->end_date)));
+            $adjustmentRowEnd =  date("Y-m-d 23:59:00");
+
+            //Missing price increase calculation
+            $startoflast = strtotime($request -> start_date);
+            $endoflast = strtotime($request -> end_date);
+            $datediff = $endoflast - $startoflast;
+            $diffInDays = round($datediff / (60 * 60 * 24));
+            $increasePerDay = (($request -> price_update) / $diffInDays);
+
+            $DmgCoin = new DmgCoin();
+            $DmgCoin -> start_date = $adjustmentRowStart;
+            $DmgCoin -> end_date = $adjustmentRowEnd;
+            $DmgCoin -> price_update = $increasePerDay;
+            $DmgCoin -> display_status = 1;
+            $DmgCoin -> save();
         }
         $datagenerator = new DataGenerator();
         $datagenerator -> index();

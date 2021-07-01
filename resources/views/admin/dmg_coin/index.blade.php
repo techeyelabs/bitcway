@@ -5,6 +5,9 @@
         .dynamic-content{
             display: none;
         }
+        .form_input_color{
+            background-color:#414452 !important;
+        }
     </style>
 @endsection
 
@@ -29,7 +32,7 @@
                        </div>-->
                        <div class="form-group">
                            <label for="">Start Date</label>
-                           <input type="datetime-local" class="form-control" id='start_date' name="start_date" placeholder="Enter start price..." value="" required>
+                           <input type="datetime-local" class="form-control form_input_color" id='start_date' name="start_date" placeholder="Enter start price..." value="" required>
                            <input type="hidden" name="edit_id" id="edit_id" value="">
                            @error('start_date')
                            <small class="text-danger">{{ $message }}</small>
@@ -37,14 +40,14 @@
                        </div>
                        <div class="form-group">
                            <label for="">End Date</label>
-                           <input type="datetime-local" class="form-control" id="end_date" name="end_date" placeholder="Enter start price..." value="" required>
+                           <input type="datetime-local" class="form-control form_input_color" id="end_date" name="end_date" placeholder="Enter start price..." value="" required>
                            @error('end_date')
                            <small class="text-danger">{{ $message }}</small>
                            @enderror
                        </div>
                        <div class="form-group">
                            <label for="">Price Update (%)</label>
-                           <input type="number" step="any" class="form-control" id="price_update" name="price_update" placeholder="Enter start price..." value="" required>
+                           <input type="number" step="any" class="form-control form_input_color" id="price_update" name="price_update" placeholder="Enter start price..." value="" required>
                            @error('price_update')
                            <small class="text-danger">{{ $message }}</small>
                            @enderror
