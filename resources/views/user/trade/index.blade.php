@@ -622,17 +622,17 @@
     </script>
     <script>
         // var dumCoin = ["tOMGC:USD", 3.00, 3.01111, 3.411, 311.1100000, -0.0999, -0.000222, 301.00111, 115.88027091, 372.28, 356];
-        //  const socket = io('http://192.144.82.234:3000/');
+         //const socket = io('http://192.144.82.234:3000/');
         const socket = io('https://bitc-way.com:3000/');
         let loaded = false;
         //showLoader("Loading");
         socket.on('connect', () => {
             socket.on('trackers', (trackers) => {
-                Home.trackers = trackers.trackers.trackers;
+                Home.trackers = trackers.trackers;
                 let volumeIndex = Home.trackers;
                 for (let i = 0; i < volumeIndex.length; i++) {
-                    let volume = trackers.trackers.trackers[i][7] * trackers.trackers.trackers[i][8];
-                    trackers.trackers.trackers[i][11] = volume;
+                    let volume = trackers.trackers[i][7] * trackers.trackers[i][8];
+                    trackers.trackers[i][11] = volume;
                 }
                 // Home.trackers.push(dumCoin);
                 let coinData = Home.trackers;

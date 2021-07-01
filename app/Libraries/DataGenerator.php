@@ -18,10 +18,11 @@ class DataGenerator
         foreach ($get_all_row as $row) {
             $date1 = new DateTime($row['start_date']);
             $date2 = new DateTime($row['end_date']);
+            $start_for_price = strtotime($row['start_date']." GMT") * 1000;
+            $end = strtotime($row['end_date']) * 1000;
             $start = strtotime($row['start_date']) * 1000;
             $end = strtotime($row['end_date']) * 1000;
-            $start = strtotime($row['start_date'] . "GMT") * 1000;
-            $end = strtotime($row['end_date'] . "GMT") * 1000;
+
 
             $diff_min = ($end - $start) / (60 * 1000);
 
@@ -29,7 +30,7 @@ class DataGenerator
 
             if ($l == 0) {
                 $response_data = Http ::get('https://api-pub.bitfinex.com/v2/candles/trade:1D:tADAUSD/hist?limit=10000');
-                $key = array_search(($start - (3600 * 24 * 1000)), array_column(json_decode($response_data), 0));
+                $key = array_search(($start_for_price - (3600 * 24 * 1000)), array_column(json_decode($response_data), 0));
                 $response_original = array_slice(json_decode($response_data), $key);
                 $min_val[$l] = $response_original[0][1];
                 $max_val[$l] = $min_val[$l] + ($min_val[$l] * $row['price_update']) / 100;
@@ -40,19 +41,19 @@ class DataGenerator
 
             $min_1_generator[$l] = $this -> data_generator($min_val[$l], $max_val[$l], $date_range[$l]['1m']);
             $min_1_data[$l] = $this -> get_final_data($min_1_generator[$l]);
-
             $l++;
         }
         $min_1 = $this -> get_full_data($min_1_data);
+        //dd(count($min_1));
         $week_json = json_encode($this -> segmented_data($min_1, 'week'), JSON_PRETTY_PRINT);
         $day_json = json_encode($this -> segmented_data($min_1, 'day'), JSON_PRETTY_PRINT);
-        $hour_6_json = json_encode($this -> segmented_data($min_1, '6h'), JSON_PRETTY_PRINT);
+       $hour_6_json = json_encode($this -> segmented_data($min_1, '6h'), JSON_PRETTY_PRINT);
         $hour_1_json = json_encode($this -> segmented_data($min_1, '1h'), JSON_PRETTY_PRINT);
         $min_30_json = json_encode($this -> segmented_data($min_1, '30m'), JSON_PRETTY_PRINT);
         $min_15_json = json_encode($this -> segmented_data($min_1, '15m'), JSON_PRETTY_PRINT);
         $min_5_json = json_encode($this -> segmented_data($min_1, '5m'), JSON_PRETTY_PRINT);
         $min_1_json = json_encode($min_1, JSON_PRETTY_PRINT);
-
+        //dd(count($this -> segmented_data($min_1, 'day')));
         file_put_contents(public_path() . DIRECTORY_SEPARATOR . 'dataJson' . DIRECTORY_SEPARATOR . '7d.json', "{$week_json}");
         file_put_contents(public_path() . DIRECTORY_SEPARATOR . 'dataJson' . DIRECTORY_SEPARATOR . '1d.json', "{$day_json}");
         file_put_contents(public_path() . DIRECTORY_SEPARATOR . 'dataJson' . DIRECTORY_SEPARATOR . '6h.json', "{$hour_6_json}");
@@ -107,7 +108,6 @@ class DataGenerator
      */
     public function data_generator($min_val, $max_val, array $date, $interval = 1)
     {
-        //print_r(count($date));
         $data = [];
         $prevOpen = 0;
         $incrementer = ($max_val - $min_val) / (count($date));
@@ -164,6 +164,7 @@ class DataGenerator
         foreach ($array_input as $array) {
             $final_array = array_merge($final_array, $array);
         }
+        //print_r ($final_array);
         return $final_array;
     }
 
@@ -174,6 +175,7 @@ class DataGenerator
      */
     public function segmented_data(array $data_array, $interval)
     {
+
         if ($interval == 'week') {
             $divider = (7 * 24 * 3600 * 1000);
         }
@@ -203,6 +205,7 @@ class DataGenerator
         $firstVal = $data_array[0]['time'];
         $startIndex = 0;
         $iteration = 0;
+        //dd($divider);
         foreach ($data_array as $insider) {
             if ($insider["high"] > $high) {
                 $high = $insider["high"];
@@ -210,7 +213,10 @@ class DataGenerator
             if ($insider["low"] < $low) {
                 $low = $insider["low"];
             }
-
+           /* if($insider['time'] > 1624924800000 && $insider['time'] < 1625184000000){
+                echo $insider['time'];
+                echo "<br>";
+            }*/
             if ($insider['time'] % $divider == 0) {
                 $lastVal = $insider['time'];
                 if ($insider["time"] >= $firstVal && $insider["time"] <= $lastVal) {

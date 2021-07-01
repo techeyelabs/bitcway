@@ -2,11 +2,12 @@
 
 namespace App\Libraries;
 
+use App\Libraries\DataGenerator;
 use App\Models\DmgCoin;
 use DateTime;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use App\Libraries\DataGenerator;
 
 class Bitfinex
 {
@@ -36,8 +37,8 @@ class Bitfinex
         $get_start_date_for_coin = DmgCoin ::select('start_date') -> where('name', 'DMGCoin') -> first();
         if (!$get_start_date_for_coin) {
             $get_start_date_for_coin = new DmgCoin();
-            $get_start_date_for_coin -> start_date = '2021-05-17 00:00:00';
-            $get_start_date_for_coin -> end_date = '2021-06-30 23:59:59';
+            $get_start_date_for_coin -> start_date = '2021-05-17 00:00:00 GMT';
+            $get_start_date_for_coin -> end_date = '2021-06-30 23:59:59 GMT';
             $get_start_date_for_coin -> price_update = 40.00;
             $get_start_date_for_coin -> display_status = 0;
             $get_start_date_for_coin -> save();
@@ -47,10 +48,42 @@ class Bitfinex
         }
 
         if ($get_start_date_for_coin) {
-            $dmg_start_date = strtotime($get_start_date_for_coin -> start_date . "GMT") * 1000;
+            //Entry for current_date
+            $get_last_date_for_coin = DmgCoin ::where('name', 'DMGCoin') -> orderBy('id','desc')->first();
+
+            if ($get_last_date_for_coin->end_date < date("Y-m-d H:i:s")){
+
+                //dd($get_last_date_for_coin->end_date);
+                $adjustmentRowStart = date("Y-m-d H:i:s", strtotime("+1 minutes", strtotime($get_last_date_for_coin->end_date)));
+                $adjustmentRowEnd =  date("Y-m-d 23:59:00");
+
+                //Missing price increase calculation
+                $startoflast = strtotime($get_last_date_for_coin -> start_date);
+                $endoflast = strtotime($get_last_date_for_coin -> end_date);
+                $datediff = $endoflast - $startoflast;
+                $diffInDays = round($datediff / (60 * 60 * 24));
+                $increasePerDay = (($get_last_date_for_coin -> price_update) / $diffInDays);
+
+                $DmgCoin = new DmgCoin();
+                $DmgCoin -> start_date = $adjustmentRowStart;
+                $DmgCoin -> end_date = $adjustmentRowEnd;
+                $DmgCoin -> price_update = $increasePerDay;
+                $DmgCoin -> display_status = 1;
+                $DmgCoin -> save();
+
+                $datagenerator = new DataGenerator();
+                $datagenerator -> index();
+            }
+            $dmg_start_date = strtotime($get_start_date_for_coin -> start_date." GMT") * 1000;
             $date_before_start_date = $dmg_start_date - (3600 * 24 * 1000);
+            $datagenerator = new DataGenerator();
+            $datagenerator -> index();
+            //dd($date_before_start_date);
         }
-        $current_date = strtotime(date("Y-m-d") . " 00:00:00 GMT") * 1000;
+
+
+
+        $current_date = strtotime(date("Y-m-d")." 00:00:00 GMT") * 1000;
         if ($start != "" && $end != "") {
             switch ($range) {
                 case '1h':
@@ -116,6 +149,8 @@ class Bitfinex
                     $start_key = array_search($start, array_column($response_end, 0));
                     $find_date_index = array_search($current_date, array_column($response, 'time'));
                     $dmg_response = array_slice($response, 0, $find_date_index, true);
+
+
                     if ($range == '3Y') {
                         $data = json_decode($response_original);
                         foreach ($data as $d) {
@@ -210,11 +245,16 @@ class Bitfinex
             if ($currency == 'tADAUSD') {
                 $response_data = Http ::get('https://api-pub.bitfinex.com/v2/candles/trade:1D:' . $currency . '/hist?limit=10000');
                 $key = array_search($date_before_start_date, array_column(json_decode($response_data), 0));
-                //dd($date_before_start_date);
                 $response_original = array_slice(json_decode($response_data), $key);
                 $get_json = file_get_contents('./dataJson/1d.json');
                 $json_data = json_decode($get_json, 'true');
+                /*print_r($response_original);
+                echo "BREAK";
+                echo "<br>";
+                echo "$current_date";
+                dd($json_data);*/
                 $find_date_index = array_search($current_date, array_column($json_data, 'time'));
+
                 $dmg_response = array_slice($json_data, 0, $find_date_index, true);
 
                 foreach ($dmg_response as $d) {
