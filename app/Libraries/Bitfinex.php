@@ -49,13 +49,13 @@ class Bitfinex
 
         if ($get_start_date_for_coin) {
             //Entry for current_date
-            $get_last_date_for_coin = DmgCoin ::where('name', 'DMGCoin') -> orderBy('id','desc')->first();
+            $get_last_date_for_coin = DmgCoin ::where('name', 'DMGCoin') -> orderBy('id', 'desc') -> first();
 
-            if ($get_last_date_for_coin->end_date < date("Y-m-d H:i:s")){
+            if ($get_last_date_for_coin -> end_date < date("Y-m-d H:i:s")) {
 
                 //dd($get_last_date_for_coin->end_date);
-                $adjustmentRowStart = date("Y-m-d H:i:s", strtotime("+1 minutes", strtotime($get_last_date_for_coin->end_date)));
-                $adjustmentRowEnd =  date("Y-m-d 23:59:00");
+                $adjustmentRowStart = date("Y-m-d H:i:s", strtotime("+1 minutes", strtotime($get_last_date_for_coin -> end_date)));
+                $adjustmentRowEnd = date("Y-m-d 23:59:00");
 
                 //Missing price increase calculation
                 $startoflast = strtotime($get_last_date_for_coin -> start_date);
@@ -74,16 +74,11 @@ class Bitfinex
                 $datagenerator = new DataGenerator();
                 $datagenerator -> index();
             }
-            $dmg_start_date = strtotime($get_start_date_for_coin -> start_date." GMT") * 1000;
+            $dmg_start_date = strtotime($get_start_date_for_coin -> start_date . " GMT") * 1000;
             $date_before_start_date = $dmg_start_date - (3600 * 24 * 1000);
-            $datagenerator = new DataGenerator();
-            $datagenerator -> index();
-            //dd($date_before_start_date);
         }
 
-
-
-        $current_date = strtotime(date("Y-m-d")." 00:00:00 GMT") * 1000;
+        $current_date = strtotime(date("Y-m-d") . " 00:00:00 GMT") * 1000;
         if ($start != "" && $end != "") {
             switch ($range) {
                 case '1h':

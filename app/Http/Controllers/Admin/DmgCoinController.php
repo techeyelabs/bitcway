@@ -102,7 +102,7 @@ class DmgCoinController extends Controller
             $startoflast = strtotime($request -> start_date);
             $endoflast = strtotime($request -> end_date);
             $datediff = $endoflast - $startoflast;
-            $diffInDays = round($datediff / (60 * 60 * 24));
+            $diffInDays = ceil($datediff / (60 * 60 * 24));
             $increasePerDay = (($request -> price_update) / $diffInDays);
 
             $DmgCoin = new DmgCoin();
