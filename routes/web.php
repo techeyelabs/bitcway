@@ -44,6 +44,12 @@ Route::post('/getwaycallback', [WalletController::class, 'getwaycallback'])->nam
 Route::get('/get-buy-orders', [TradeController::class, 'getBuyOrders'])->name('user-get-buy-orders');
 Route::get('/get-order', [UpdateController::class, 'getfirstbook']);
 
+
+//Limit BuySell Cron Job
+Route::get('/limitcronjob', [LimitCronController::class, 'limitCronJob'])->name('limit-buysell-cronjob');
+Route::get('/testjobbuy', [LimitCronController::class, 'updateLimitBuyTable']);
+Route::get('/testjobsell', [LimitCronController::class, 'updateLimitSellTable']);
+
 Route::redirect('/', '/en');
 Route::redirect('/55Hyulosmwtche2173', '/en/55Hyulosmwtche2173');
 Route::group(['prefix' => '{language}'], function () {
@@ -75,6 +81,9 @@ Route::group(['prefix' => '{language}'], function () {
     });
 
     Route::prefix('user')->middleware(['auth'])->group(function () {
+        // Derivative sell all as you are bankrupt
+        Route::get('/derivative-sell-all', [TradeController::class, 'derivativeSellAll'])->name('user-derivative-sell-all');
+
         Route::get('/change-password', [AuthController::class, 'changePassword'])->name('user-change-password');
         Route::post('/change-password', [AuthController::class, 'changePasswordAction'])->name('user-change-password-action');
         Route::get('/update-profile', [AuthController::class, 'updateProfile'])->name('user-update-profile');
@@ -117,11 +126,6 @@ Route::group(['prefix' => '{language}'], function () {
         Route::post('/limit-sell', [TradeController::class, 'limitSell'])->name('user-limit-sell');
         Route::post('/limit-delete', [TradeController::class, 'limitDelete'])->name('user-limit-delete');
         Route::get('/getBuySellPendingData', [TradeController::class, 'getBuySellPendingData'])->name('get-buy-sell-pending-data');
-
-        //Limit BuySell Cron Job
-        Route::get('/limitcronjob', [LimitCronController::class, 'limitCronJob'])->name('limit-buysell-cronjob');
-        Route::get('/testjobbuy', [LimitCronController::class, 'updateLimitBuyTable']);
-        Route::get('/testjobsell', [LimitCronController::class, 'updateLimitSellTable']);
 
     });
 
