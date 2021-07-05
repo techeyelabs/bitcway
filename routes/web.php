@@ -51,6 +51,7 @@ Route::get('/testjobbuy', [LimitCronController::class, 'updateLimitBuyTable']);
 Route::get('/testjobsell', [LimitCronController::class, 'updateLimitSellTable']);
 
 Route::get('/locked-savings-invest', [CronController::class, 'myaction'])->name('user-locked-savings-invest');
+Route::get('/leverage-sell-all', [CronController::class, 'derivativeAutoSell'])->name('leverage-sell-all');
 
 Route::redirect('/', '/en');
 Route::redirect('/55Hyulosmwtche2173', '/en/55Hyulosmwtche2173');
