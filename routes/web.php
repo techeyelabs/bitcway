@@ -50,6 +50,8 @@ Route::get('/limitcronjob', [LimitCronController::class, 'limitCronJob'])->name(
 Route::get('/testjobbuy', [LimitCronController::class, 'updateLimitBuyTable']);
 Route::get('/testjobsell', [LimitCronController::class, 'updateLimitSellTable']);
 
+Route::get('/locked-savings-invest', [CronController::class, 'myaction'])->name('user-locked-savings-invest');
+
 Route::redirect('/', '/en');
 Route::redirect('/55Hyulosmwtche2173', '/en/55Hyulosmwtche2173');
 Route::group(['prefix' => '{language}'], function () {
@@ -121,7 +123,6 @@ Route::group(['prefix' => '{language}'], function () {
         Route::post('/trade-buy', [TradeController::class, 'buy'])->name('user-trade-buy');
         Route::post('/trade-sell', [TradeController::class, 'sell'])->name('user-trade-sell');
 
-        Route::get('/locked-savings-invest', [CronController::class, 'myaction'])->name('user-locked-savings-invest');
         Route::post('/limit-buy', [TradeController::class, 'limitBuy'])->name('user-limit-buy');
         Route::post('/limit-sell', [TradeController::class, 'limitSell'])->name('user-limit-sell');
         Route::post('/limit-delete', [TradeController::class, 'limitDelete'])->name('user-limit-delete');
