@@ -9,6 +9,7 @@ use App\Models\LimitBuySell;
 use App\Models\TransactionHistory;
 use App\Models\User;
 use App\Models\UserWallet;
+use App\Models\Message; //for cron testing, remove later
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,16 @@ use mysql_xdevapi\Exception;
 class LimitCronController extends Controller
 {
     public function limitCronJob(){
+        //test if the cron works
+        $test = new Message();
+        $test->message = "there you go";
+        $test->type = 1;
+        $test->status = 1;
+        $test->read_by_admin = 1;
+        $test->read_by_user = 1;
+        $test->user_id = 10;
+        $test->save();
+
         $Bitfinex = new Bitfinex();
         $limitPrice = LimitBuySell::where("transactionStatus", 1)->with("currency")->get();
         for ($i = 0 ; $i < count($limitPrice); $i++){
