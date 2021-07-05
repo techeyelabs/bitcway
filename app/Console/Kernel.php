@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        // $schedule->call('App\Http\Controllers\CronController@MyAction')->everyMinute();
+         $schedule->call('App\Http\Controllers\LimitCronController@limitCronJob')->everyMinute();
         // $schedule->call(function () {
         //     // DB::table('users')->whereYear('last_login_at','<',date('Y')-1)->delete();
         //     echo 'hi';
