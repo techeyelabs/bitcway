@@ -252,5 +252,4 @@ class DataGenerator
         }
         return array_values($array);
     }
-
 }

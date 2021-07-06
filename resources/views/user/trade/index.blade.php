@@ -67,18 +67,15 @@
         .coloredask{
             background-color: #942f3e6e;
         }
-        canvas{
-            background-color: #171b26;
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            /*animation: spin 2s linear infinite;*/
         }
-         .loader {
-             border: 16px solid #f3f3f3;
-             border-radius: 50%;
-             border-top: 16px solid #3498db;
-             width: 120px;
-             height: 120px;
-             -webkit-animation: spin 2s linear infinite;
-             /*animation: spin 2s linear infinite;*/
-         }
 
         /*Safari*/
         @-webkit-keyframes spin {
@@ -264,7 +261,7 @@
                                         </div>
                                         <div class="form-group" id="tradeCoinForm" style="margin-top: 14px">
                                             <label v-cloak class="txtWhitecolor" for="">@{{currency}}:</label>
-                                            <input type="number" id='coinval' class="form-control mb-1" placeholder=" " v-model="amount">
+                                            <input type="number" id='coinval' class="form-control mb-1" placeholder="" v-model="amount">
                                         </div>
                                         <div class="form-group">
                                             <div id="askDiv" style="margin-bottom: 15px;">
@@ -359,7 +356,7 @@
                                     </div>
                                     <div class="form-group" id="tradeCoinForm" style="margin-top: 14px">
                                         <label v-cloak class="txtWhitecolor" for="">@{{currency}}:</label>
-                                        <input type="text" id='coinval' class="form-control mb-1" placeholder=" " v-model="amount">
+                                        <input type="text" id='coinval' class="form-control mb-1" placeholder="" v-model="amount">
                                     </div>
                                     <div id="askDiv" style="margin-bottom: 15px;">
                                         <small class="txtWhitecolor">ASK</small>

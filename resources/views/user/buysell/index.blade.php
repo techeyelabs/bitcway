@@ -21,7 +21,7 @@
                     <?php foreach($transactions as $item){?>
                     <tr>
                         <td class="txtWhitecolor fs14px">{{date('d/m/Y', strtotime($item->created_at))}}</td>
-                        <td class="txtWhitecolor fs14px">{{$item->currency->name}}</td>
+                        <td class="txtWhitecolor fs14px">{{ ($item->currency->name == 'ADA') ? 'MAB' : $item->currency->name}}</td>
                         <td class="txtWhitecolor fs14px">{!! number_format((double)($item->amount), 8) !!}</td>
                         <td class="txtWhitecolor fs14px">{{$item->equivalent_amount}}</td>
                         <td class="txtWhitecolor fs14px">

@@ -99,7 +99,7 @@ class TradeController extends Controller
             $UserWallet->save();
 
         } catch (Exception $e){
-            return route('user-trade-finance', app()->getLocale());
+            return route('user-wallets', app()->getLocale());
         }
         return redirect()->back();
     }
@@ -203,7 +203,7 @@ class TradeController extends Controller
             Auth::user()->balance = Auth::user()->balance - $request->calcBuyAmount;
         }
         Auth::user()->save();
-//        derivativeLoan
+        // derivativeLoan
         try{
             $TransactionHistory= new TransactionHistory();
             $TransactionHistory->amount = $request->buyAmount;
@@ -265,7 +265,7 @@ class TradeController extends Controller
                     $derivativeSells->currency_id = $item->currency_id;
                     $derivativeSells->leverage = $item->leverage;
 
-                   if ($item->amount <= $leverageSellAmount) {
+                    if ($item->amount <= $leverageSellAmount) {
                         $sellTimeValue = ($equivalentSellAmount * $item->amount) / $leverageRequestSellAmount;
                         $sellAmountToUserWallet = $sellTimeValue - ($item->equivalent_amount * (($item->leverage - 1) / $item->leverage));
 
@@ -340,6 +340,87 @@ class TradeController extends Controller
             return response()->json(['status' => false]);
         }
         DB::commit();
+        return response()->json(['status' => true]);
+    }
+
+    public function derivativeSellAll(Request $request)
+    {
+        $Bitfinex = new Bitfinex();
+            $leverageWalletCurrency = Leverage_Wallet::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
+            foreach ($leverageWalletCurrency as $item) {
+                // Data preparation
+                $equivalentSellAmount = $Bitfinex->getRate($item->currencyName->name) * $item->amount;
+                $leverageRequestSellAmount = $item->amount;
+                $currency = Currency::where('name', $item->currencyName->name)->first();
+
+                DB::beginTransaction();
+                try {
+                    $leverageWalletCurrency = Leverage_Wallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->orderBy('id', 'desc')->get();
+                    $leverageSellAmount = $leverageRequestSellAmount;
+
+                    foreach ($leverageWalletCurrency as $item) {
+                        $derivativeSells = new DerivativeSell();
+                        $derivativeSells->type = $item->type;
+                        $derivativeSells->status = $item->status;
+                        $derivativeSells->user_id = $item->user_id;
+                        $derivativeSells->currency_id = $item->currency_id;
+                        $derivativeSells->leverage = $item->leverage;
+
+                        if ($item->amount <= $leverageSellAmount) {
+                            $sellTimeValue = ($equivalentSellAmount * $item->amount) / $leverageRequestSellAmount;
+                            $sellAmountToUserWallet = $sellTimeValue - ($item->equivalent_amount * (($item->leverage - 1) / $item->leverage));
+
+                            $derivativeSells->amount = $item->amount;
+                            $derivativeSells->equivalent_amount = $item->equivalent_amount;
+                            $derivativeSells->priceAtSell = $sellTimeValue;
+                            $derivativeSells->profit = $sellTimeValue - $item->equivalent_amount;
+                            $derivativeSells->save();
+
+                            Auth::user()->derivative = Auth::user()->derivative + $sellAmountToUserWallet;
+                            Auth::user()->save();
+
+                            $leverageSellAmount -= $item->amount;
+                            $item->delete();
+                        } else {
+                            $sellTimeValue = ($equivalentSellAmount * $leverageSellAmount) / $leverageRequestSellAmount;
+                            $buyTimeValue = ($item->equivalent_amount * $leverageSellAmount) / $item->amount;
+                            $sellAmountToUserWallet = $sellTimeValue - ($buyTimeValue * (($item->leverage - 1) / $item->leverage));
+
+                            $derivativeSells->amount = $leverageSellAmount;
+                            $derivativeSells->equivalent_amount = $buyTimeValue;
+                            $derivativeSells->priceAtSell = $sellTimeValue;
+                            $derivativeSells->profit = $sellTimeValue - $buyTimeValue;
+                            $derivativeSells->save();
+
+                            $item->amount = $item->amount - $leverageSellAmount;
+                            $item->equivalent_amount = $item->equivalent_amount - $buyTimeValue;
+                            $item->save();
+                            $leverageSellAmount = 0;
+                        }
+                        if ($leverageSellAmount == 0) {
+                            break;
+                        }
+                    }
+
+                    $TransactionHistory = new TransactionHistory();
+                    $TransactionHistory->amount = $leverageRequestSellAmount;
+                    $TransactionHistory->equivalent_amount = $equivalentSellAmount;
+                    $TransactionHistory->type = 2;
+                    $TransactionHistory->user_id = Auth::user()->id;
+                    $TransactionHistory->currency_id = $currency->id;
+                    $TransactionHistory->save();
+                }
+                catch(\Exception $e)
+                {
+                    DB::rollback();
+                    return response()->json(['status' => $e]);
+                }
+                DB::commit();
+            }
+
+            Auth::user()->derivative = 0;
+            Auth::user()->save();
+
         return response()->json(['status' => true]);
     }
 

@@ -160,7 +160,7 @@
                     </div>
                     <div class="row col-md-12" style="text-align: right">
                         <span>
-                            <button type="button" class="confirm-button btn-outline-warning" disabled>{{__('transferbtn')}}</button>
+                            <button type="submit" class="confirm-button btn-outline-warning" disabled>{{__('transferbtn')}}</button>
                         </span>
                     </div>
                 </div>
@@ -239,15 +239,18 @@
         function confirmButtonCheck()
         {
             let availableLot = $('#lotCurrency').html();
-            if ($('input[class="lot-input"]').val() > 0 && $('input[id="acceptance"]:checked').length > 0 && availableLot >= $('input[class="lot-input"]').val()){
+            if (parseFloat($('input[class="lot-input"]').val()) > 0 && $('input[id="acceptance"]:checked').length > 0 && availableLot >= parseFloat($('input[class="lot-input"]').val())){
+                console.log("inside, enable it");
                 $('.confirm-button').attr('disabled', false);
             } else {
+                console.log("inside, disable it");
                 $('.confirm-button').attr('disabled', true);
             }
         }
 
         function setTotalInterest(value)
         {
+            confirmButtonCheck();
             let interestPerRate =$('#ipl_hidden').html();
             $('#ratePerLot').val(interestPerRate);
             let totalInterest = interestPerRate * value.value;
