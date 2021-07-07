@@ -168,6 +168,7 @@
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
                             <p class="col txtWhitecolor" id="" style="text-align: left; ">{{__('column1')}}</p>
                             <p class="col txtWhitecolor" id="" style="text-align: left; ">{{__('col4')}}</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: left; ">Total Coin</p>
                             <p class="col txtWhitecolor" id="" style="text-align: center;">{{__('col5')}} </p>
                             <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('col6')}} </p>
                             <p class="col txtWhitecolor" id="" style="text-align: right;">{{__('col7')}}</p>
@@ -176,12 +177,12 @@
                         $k = 0;
                         foreach($finances as $index=>$finance){
                             if ($finance->status == 1){
-//                                dd($finance);
                             $k++;
                         ?>
                             <li class="row list-group-item d-flex justify-content-between align-items-center">{{--$finance->currency->name--}}
                                 <p class="col txtWhitecolor" id="currencyName{{$k}}" style="text-align: left;">@php if($finance->currency->name == "ADA"){echo "MAB";}else{echo $finance->currency->name;} @endphp</p>
                                 <p class="col txtWhitecolor" id="lot{{$k}}" style="text-align: left;">{{$finance->lot_count}}</p>
+                                <p class="col txtWhitecolor" id="" style="text-align: left;">{{$finance->lot_count * $finance->lot_size}}</p>
                                 <p class="col txtWhitecolor" id="valueDate{{$k}}" style="text-align: center;">{{date('d/m/Y', strtotime($finance->value_date))}}</p>
                                 <p class="col txtWhitecolor" id="redeamDate{{$k}}" style="text-align: right;">{{date('d/m/Y', strtotime($finance->redemption_date))}}</p>
                                 <p class="col txtWhitecolor" id="expectedInterest{{$k}}" style="text-align: right;">{{$finance->expected_interest}}</p>
@@ -319,7 +320,9 @@
 
             for (let dv = 1; dv <= indexNumber2; dv++) {
                 let derivativeBalance = parseFloat($('#derivativeBalance').text());
-                totalDerivativeValue += (parseFloat($('#CoinpriceintoMycoin2' + dv).text())/parseFloat($('#derivativePercent' + dv).text()));
+                // totalDerivativeValue += (parseFloat($('#CoinpriceintoMycoin2' + dv).text())/parseFloat($('#derivativePercent' + dv).text()));
+                let loan = ((parseFloat($('#derivativePercent' + dv).text()) - 1) / parseFloat($('#derivativePercent' + dv).text())) * parseFloat($('#derivativeCurrencyEntryPrice' + dv).text());
+                totalDerivativeValue += (parseFloat($('#MyTotalCoinAmount2' + dv).text())) *( (parseFloat($('#CoinpriceintoMyCurrency' + dv).text())) - loan );
                 parseFloat($('#totalDerivativeAmount').html((totalDerivativeValue + derivativeBalance).toFixed(5)));
             }
             for (let dbPNL = 1; dbPNL<=indexNumber2; dbPNL++){
@@ -406,18 +409,16 @@
                 currency: currencyName,
                 sellAmount: tradeCurrencySize,
                 calcSellAmount: tradeSellAmount
-            })
-                .then(function (response) {
-                    if (response.data.status) {
-                        toastr.success('Sell successfull');
-                        window.location.href = '{{route("user-wallets", app()->getLocale())}}';
-                            return false;
-                    }
-                    toastr.error('Error occured !!');
-                })
-                .catch(function (error) {
-                    toastr.error('Error occured !!');
-                });
+            }).then(function (response) {
+                if (response.data.status) {
+                    toastr.success('Sell successfull');
+                    window.location.href = '{{route("user-wallets", app()->getLocale())}}';
+                        return false;
+                }
+                toastr.error('Error occured !!');
+            }).catch(function (error) {
+                toastr.error('Error occured !!');
+            });
         }
     </script>
     <script>

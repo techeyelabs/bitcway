@@ -104,7 +104,7 @@
 
         <form method="post" action="{{route('user-trade-finance-entry', app()->getLocale())}}" novalidate>
             @csrf
-            <div class="card mt-3 confirmation" id="confirmation" style="display: none">
+            <div class="card mt-3 confirmation" id="confirmation" style="display: none; margin-bottom: 35px;">
                 <div class="card-body list-group col-md-8 offset-md-2">
                    <div class="row col-md-12">
                        <div class="col-md-6 mb-5 mt-4" style="padding-left: 5%">
@@ -166,6 +166,49 @@
                 </div>
             </div>
         </form>
+
+        <div style="margin: auto; overflow-x: auto;">
+            <ul class="container-fluid" style=" min-width: 700px;">
+                <li class="row list-group-item d-flex justify-content-between align-items-center">
+                    <p class="col txtWhitecolor" id="" style="text-align: center; width: 5%">{{__('column1')}}</p>
+                    <p class="col txtWhitecolor" id="" style="text-align: center; width: 5%">{{__('col4')}}</p>
+                    <p class="col txtWhitecolor" id="" style="text-align: center;">{{__('transfertext1')}}</p>
+                    <p class="col txtWhitecolor" id="" style="text-align: center;">{{__('col7')}}</p>
+                    <p class="col txtWhitecolor" id="" style="text-align: center;">{{__('col5')}}</p>
+                    <p class="col txtWhitecolor" id="" style="text-align: center;">{{__('col6')}}</p>
+                </li>
+                <div id="btnDurationId">
+                    @foreach($history as $index => $his)
+                        <li class="row list-group-item d-flex justify-content-between align-items-center">
+                            <p class="col txtWhitecolor" style="text-align: center;">{{ ($his->currency->name == 'ADA') ? 'MAB': $his->currency->name}}</p>
+                            <p class="col txtWhitecolor" style="text-align: center; ">{{$his->lot_count}}</p>
+                            <p class="col txtWhitecolor" style="text-align: center;">{{$his->lot_size}}</p>
+                            <p class="col txtWhitecolor" style="text-align: center;">{{$his->expected_interest}}</p>
+                            <p class="col txtWhitecolor" style="text-align: center;">{{$his->value_date}}</p>
+                            <p class="col txtWhitecolor" style="text-align: center;">{{$his->redemption_date}}</p>
+                            {{--<p class="col txtWhitecolor" id="currencyName{{$index}}" data-value="{{$FinanceSetting->currency_id}}" style="text-align: left;">@php if($FinanceSetting->currency->name == "ADA"){echo "MAB";}else{echo $FinanceSetting->currency->name;} @endphp</p>
+                            <p class="col txtWhitecolor" id="selectedRate{{$index}}" style="text-align: left;">{{$FinanceSetting->rate_1}}%</p>
+                            <p class="d-none" id="planId{{$index}}">{{$FinanceSetting->id}}</p>
+                            <p class="d-none" id="selectedDuration{{$index}}"></p>
+                            <p class="d-none" id="currencyId{{$index}}">{{$FinanceSetting->currency_id}}</p>
+                            <p class="d-none" id="lotSize{{$index}}">{{$FinanceSetting->lot_size}}</p>
+                            <p class="col btn-group" role="group" aria-label="Basic outlined example" style="width: 10px !important; text-align: center">
+                                <button type="button" class="btn btn-outline-warning btnDuration shadow-none" id="durationBtn1{{$index}}" onclick="rateFun({{$FinanceSetting->rate_1}}, {{$index}}); rateDuration({{$FinanceSetting->duration_1}}, {{$index}}); interestPerLotFun({{$FinanceSetting->rate_1}}, {{$FinanceSetting->duration_1}}, {{$index}}); transerButFun({{$index}});">{{$FinanceSetting->duration_1}}</button>
+                                <button type="button" class="btn btn-outline-warning btnDuration shadow-none" id="durationBtn2{{$index}}" onclick="rateFun({{$FinanceSetting->rate_2}}, {{$index}}); rateDuration({{$FinanceSetting->duration_2}}, {{$index}}); interestPerLotFun({{$FinanceSetting->rate_2}}, {{$FinanceSetting->duration_2}}, {{$index}}); transerButFun({{$index}});">{{$FinanceSetting->duration_2}}</button>
+                                <button type="button" class="btn btn-outline-warning btnDuration shadow-none" id="durationBtn3{{$index}}" onclick="rateFun({{$FinanceSetting->rate_3}}, {{$index}}); rateDuration({{$FinanceSetting->duration_3}}, {{$index}}); interestPerLotFun({{$FinanceSetting->rate_3}}, {{$FinanceSetting->duration_3}}, {{$index}}); transerButFun({{$index}});">{{$FinanceSetting->duration_3}}</button>
+                                <button type="button" class="btn btn-outline-warning btnDuration shadow-none" id="durationBtn4{{$index}}" onclick="rateFun({{$FinanceSetting->rate_4}}, {{$index}}); rateDuration({{$FinanceSetting->duration_4}}, {{$index}}); interestPerLotFun({{$FinanceSetting->rate_4}}, {{$FinanceSetting->duration_4}}, {{$index}}); transerButFun({{$index}});">{{$FinanceSetting->duration_4}}</button>
+                            </p>
+                            <p class="col txtWhitecolor" id="interestPerLot{{$index}}" style="text-align: right;">{!! number_format((float)(($FinanceSetting->rate_1/365)*$FinanceSetting->duration_1), 4) !!}</p>
+                            <p class="col txtWhitecolor" id="" style="text-align: right;">
+                                <button class="btn-outline-warning btn cursor-pointer" id="transferBtn{{$index}}"  onclick="changeData({{$index}});" disabled>{{__('button11')}}</button>
+
+                                <span style="display: none" id="lotCurrencyAmount{{$index}}">{{isset($dummy_coin_balance[$FinanceSetting->currency_id]) ? $dummy_coin_balance[$FinanceSetting->currency_id]:0}}</span>
+                            </p>--}}
+                        </li>
+                    @endforeach
+                </div>
+            </ul>
+        </div>
     </div>
 @endsection
 

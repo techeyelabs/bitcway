@@ -67,7 +67,7 @@ class TradeController extends Controller
             $coinBalance[$wallet[$i]->currency_id] = $wallet[$i]->balance;
         }
         $data['dummy_coin_balance'] = $coinBalance;
-        $data['history'] = LockedSaving::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->get();
+        $data['history'] = LockedSaving::where('user_id', Auth::user()->id)->orderBy('redemption_date', 'DESC')->get();
         $data['total'] = 0;
         $data['lockedFinanceSettings'] = LockedSavingsSetting::with('currency')->get();
         return view('user.trade.finance', $data);
@@ -451,6 +451,9 @@ class TradeController extends Controller
 
     }
     public function limitSell(Request $request){
+        if ($request->currency == 'MAB'){
+            $request->currency = 'ADA';
+        }
         $currency = Currency::where('name', $request->currency)->first();
         $limitSell = new LimitBuySell();
         $limitSell->limitType = $request->limitType;
@@ -460,7 +463,6 @@ class TradeController extends Controller
         $limitSell->user_id = Auth::user()->id;
         $limitSell->currency_id = $currency->id;
         if($request->derivative){
-
             $limitSell->derivative = $request->derivative;
         }
         $limitSell->save();

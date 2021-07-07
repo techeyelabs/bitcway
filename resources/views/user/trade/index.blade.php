@@ -389,7 +389,7 @@
 
             <div class="col main-app-container">
                 <div class="card">
-                    <div class="card-body graphDiv" >
+                    <div class="card-body graphDiv">
                         <div class="text-center title mb-2 txtHeadingColor"></div>
 
                         <div id='buttonrow' class="chart-top-row">
@@ -417,7 +417,7 @@
                             <span class="interval border-removal" id="6h" v-on:click="getChartData('range', '6h')">6h</span>
                             <span class="interval border-removal" id="1h" v-on:click="getChartData('range', '1h')">1h</span>
                         </div>
-                        <div id="tradingview_f7648" class="d-none" ></div>
+                        <div id="tradingview_f7648" class="d-none" style="height: 400px; background-color: black;"></div>
                     </div>
                 </div>
                 <div class="card mt-3 orderBookDiv">
@@ -889,7 +889,7 @@
                 selectedItem: [],
                 buyAmount: 0,
                 sellAmount: 0,
-                amount: 0,
+                amount: '',
                 balance: 0,
                 usdBalance: '{{Auth::user()->balance}}',
                 derivativeBalance:'{{Auth::user()->derivative}}',

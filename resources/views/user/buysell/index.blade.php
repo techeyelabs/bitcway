@@ -14,7 +14,8 @@
                     <th class="txtWhitecolor fs14px">{{__('col8')}}</th>
                     <th class="txtWhitecolor fs14px">{{__('column1')}}</th>
                     <th class="txtWhitecolor fs14px">{{__('col10')}}</th>
-                    <th class="txtWhitecolor fs14px">USD</th>
+                    <th class="txtWhitecolor fs14px">{{__('col1')}} (USD)</th>
+                    <th class="txtWhitecolor fs14px">{{__('total')}} (USD)</th>
                     <th class="txtWhitecolor fs14px">{{__('col12')}}</th>
                 </thead>
                 <tbody>
@@ -23,6 +24,7 @@
                         <td class="txtWhitecolor fs14px">{{date('d/m/Y', strtotime($item->created_at))}}</td>
                         <td class="txtWhitecolor fs14px">{{ ($item->currency->name == 'ADA') ? 'MAB' : $item->currency->name}}</td>
                         <td class="txtWhitecolor fs14px">{!! number_format((double)($item->amount), 8) !!}</td>
+                        <td class="txtWhitecolor fs14px">{!! (double)($item->equivalent_amount / $item->amount) !!}</td>
                         <td class="txtWhitecolor fs14px">{{$item->equivalent_amount}}</td>
                         <td class="txtWhitecolor fs14px">
                             {{$item->type==1?'Buy':'Sell'}}
