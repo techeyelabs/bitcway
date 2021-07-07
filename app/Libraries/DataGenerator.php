@@ -6,6 +6,7 @@ use App\Models\DmgCoin;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 class DataGenerator
 {
@@ -19,9 +20,8 @@ class DataGenerator
             $date1 = new DateTime($row['start_date']);
             $date2 = new DateTime($row['end_date']);
             $start_for_price = strtotime($row['start_date']." GMT") * 1000;
-            $end = strtotime($row['end_date']) * 1000;
-            $start = strtotime($row['start_date']) * 1000;
-            $end = strtotime($row['end_date']) * 1000;
+            $end = (Carbon::parse($row['end_date'], 'UTC')->timestamp) * 1000;
+            $start = (Carbon::parse($row['start_date'], 'UTC')->timestamp) * 1000;
 
 
             $diff_min = ($end - $start) / (60 * 1000);
@@ -130,7 +130,6 @@ class DataGenerator
             $prevOpen = $data[$val]['close'];
             $min_val = $min_val + $incrementer + (mt_rand($incrementer * (-0.015), $incrementer * (0.015)));
         }
-
         return $data;
     }
 
@@ -149,7 +148,6 @@ class DataGenerator
                 $date[$start] = $start + (1 * 60 * 1000);
                 $start = $start + (1 * 60 * 1000);
             }
-
         }
         return $date;
     }

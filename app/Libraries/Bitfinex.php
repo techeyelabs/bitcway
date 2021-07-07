@@ -52,8 +52,6 @@ class Bitfinex
             $get_last_date_for_coin = DmgCoin ::where('name', 'DMGCoin') -> orderBy('id', 'desc') -> first();
 
             if ($get_last_date_for_coin -> end_date < date("Y-m-d H:i:s")) {
-
-                //dd($get_last_date_for_coin->end_date);
                 $adjustmentRowStart = date("Y-m-d H:i:s", strtotime("+1 minutes", strtotime($get_last_date_for_coin -> end_date)));
                 $adjustmentRowEnd = date("Y-m-d 23:59:00");
 
@@ -79,6 +77,7 @@ class Bitfinex
         }
 
         $current_date = strtotime(date("Y-m-d") . " 00:00:00 GMT") * 1000;
+        $currentUTC = strtotime(date("Y-m-d H:i:s") . "UTC") * 1000;
         if ($start != "" && $end != "") {
             switch ($range) {
                 case '1h':
@@ -144,6 +143,9 @@ class Bitfinex
                     $start_key = array_search($start, array_column($response_end, 0));
                     $find_date_index = array_search($current_date, array_column($response, 'time'));
                     $dmg_response = array_slice($response, 0, $find_date_index, true);
+                    $dmg_response = array_filter($response, function ($var) use ($currentUTC) {
+                        return ($var['time'] <= $currentUTC);
+                    });
 
 
                     if ($range == '3Y') {
@@ -221,6 +223,9 @@ class Bitfinex
                 $response_original = array_slice(json_decode($response_data), $key);
                 $find_date_index = array_search($current_date, array_column($json_data, 'time'));
                 $dmg_response = array_slice($json_data, 0, $find_date_index, true);
+                $dmg_response = array_filter($json_data, function ($var) use ($currentUTC) {
+                    return ($var['time'] <= $currentUTC);
+                });
 
                 foreach ($dmg_response as $d) {
                     $data_ar[] = array_values($d);

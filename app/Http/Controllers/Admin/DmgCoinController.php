@@ -11,6 +11,7 @@ use App\Models\DmgCoin;
 use App\Models\DmgCoinPriceUpdate;
 use Symfony\Component\VarDumper\Dumper\DataDumperInterface;
 use App\Libraries\DataGenerator;
+use \Carbon;
 
 class DmgCoinController extends Controller
 {
