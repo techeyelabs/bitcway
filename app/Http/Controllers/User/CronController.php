@@ -64,7 +64,7 @@ class CronController extends Controller
             $userInvestment = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeUserMoney');
             $userLoan = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeLoan');
             $userProfit = $equivalentSellAmount - $userLoan;
-            if (($userProfit) < ($userInvestment * 0.80)){
+            if (($userProfit) < ($userInvestment * 0.20)){
                 foreach ($leverageWalletCurrency as $item) {
                     // Data preparation
                     $equivalentSellAmount = $Bitfinex->getRate($item->currencyName->name) * $item->amount;
