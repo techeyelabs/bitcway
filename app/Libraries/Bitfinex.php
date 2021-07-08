@@ -162,8 +162,9 @@ class Bitfinex
                         }
                     }
                     if ($range == '1M' || $range == '7D' || $range == '3D' || $range == '1D' || $range == '6h' || $range == '1h') {
+
                         foreach ($response as $key => $value) {
-                            if ($value["time"] >= $start && $value["time"] <= $end) {
+                            if ($value["time"] >= $start && $value["time"] <= $currentUTC) {
                                 $arr[] = [$value["time"], $value["open"], $value["close"], $value["high"], $value["low"]];
                             }
                         }
@@ -223,7 +224,6 @@ class Bitfinex
                 $response_original = array_slice(json_decode($response_data), $key);
                 $find_date_index = array_search($current_date, array_column($json_data, 'time'));
                 $dmg_response = array_slice($json_data, 0, $find_date_index, true);
-                dd($currentUTC);
                 $dmg_response = array_filter($json_data, function ($var) use ($currentUTC) {
                     return ($var['time'] <= $currentUTC);
                 });
