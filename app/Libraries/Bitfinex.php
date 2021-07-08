@@ -80,7 +80,7 @@ class Bitfinex
 
         $current_date = strtotime(date("Y-m-d") . " 00:00:00 GMT") * 1000;
 //        $currentUTC = strtotime(date("Y-m-d H:i:s") . "UTC") * 1000;
-        $currentUTC = Carbon::now('UTC');
+        $currentUTC = Carbon::now('UTC')->timestamp;
         if ($start != "" && $end != "") {
             switch ($range) {
                 case '1h':
