@@ -11,7 +11,7 @@ use App\Models\DmgCoin;
 use App\Models\DmgCoinPriceUpdate;
 use Symfony\Component\VarDumper\Dumper\DataDumperInterface;
 use App\Libraries\DataGenerator;
-use \Carbon;
+use Carbon\Carbon;
 
 class DmgCoinController extends Controller
 {
@@ -97,7 +97,8 @@ class DmgCoinController extends Controller
         //If running date data is missing
         if ($request->end_date < date("Y-m-d H:i:s")){
             $adjustmentRowStart = date("Y-m-d H:i:s", strtotime("+1 minutes", strtotime($request->end_date)));
-            $adjustmentRowEnd =  date("Y-m-d 23:59:00");
+//            $adjustmentRowEnd =  date("Y-m-d 23:59:00");
+            $adjustmentRowEnd =  Carbon::tomorrow('UTC');
 
             //Missing price increase calculation
             $startoflast = strtotime($request -> start_date);
