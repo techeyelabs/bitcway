@@ -79,7 +79,8 @@ class Bitfinex
         }
 
         $current_date = strtotime(date("Y-m-d") . " 00:00:00 GMT") * 1000;
-        $currentUTC = strtotime(date("Y-m-d H:i:s") . "UTC") * 1000;
+//        $currentUTC = strtotime(date("Y-m-d H:i:s") . "UTC") * 1000;
+        $currentUTC = Carbon::now('UTC');
         if ($start != "" && $end != "") {
             switch ($range) {
                 case '1h':
@@ -165,7 +166,7 @@ class Bitfinex
                     }
                     if ($range == '1M' || $range == '7D' || $range == '3D' || $range == '1D' || $range == '6h' || $range == '1h') {
                         foreach ($response as $key => $value) {
-                            if ($value["time"] >= $start && $value["time"] <= $end) {
+                            if ($value["time"] >= $start && $value["time"] <= $currentUTC) {
                                 $arr[] = [$value["time"], $value["open"], $value["close"], $value["high"], $value["low"]];
                             }
                         }
