@@ -223,6 +223,7 @@ class Bitfinex
                 $response_original = array_slice(json_decode($response_data), $key);
                 $find_date_index = array_search($current_date, array_column($json_data, 'time'));
                 $dmg_response = array_slice($json_data, 0, $find_date_index, true);
+                dd($currentUTC);
                 $dmg_response = array_filter($json_data, function ($var) use ($currentUTC) {
                     return ($var['time'] <= $currentUTC);
                 });
@@ -256,9 +257,6 @@ class Bitfinex
                 $find_date_index = array_search($current_date, array_column($json_data, 'time'));
 
                 $dmg_response = array_slice($json_data, 0, $find_date_index, true);
-                $dmg_response = array_filter($json_data, function ($var) use ($currentUTC) {
-                    return ($var['time'] <= $currentUTC);
-                });
 
                 foreach ($dmg_response as $d) {
                     $data_ar[] = array_values($d);
