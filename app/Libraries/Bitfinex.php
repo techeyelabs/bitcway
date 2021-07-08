@@ -8,6 +8,7 @@ use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 class Bitfinex
 {
@@ -53,7 +54,8 @@ class Bitfinex
 
             if ($get_last_date_for_coin -> end_date < date("Y-m-d H:i:s")) {
                 $adjustmentRowStart = date("Y-m-d H:i:s", strtotime("+1 minutes", strtotime($get_last_date_for_coin -> end_date)));
-                $adjustmentRowEnd = date("Y-m-d 23:59:00");
+//                $adjustmentRowEnd = date("Y-m-d 23:59:00");
+                $adjustmentRowEnd = Carbon::tomorrow('UTC');;
 
                 //Missing price increase calculation
                 $startoflast = strtotime($get_last_date_for_coin -> start_date);
@@ -162,9 +164,8 @@ class Bitfinex
                         }
                     }
                     if ($range == '1M' || $range == '7D' || $range == '3D' || $range == '1D' || $range == '6h' || $range == '1h') {
-
                         foreach ($response as $key => $value) {
-                            if ($value["time"] >= $start && $value["time"] <= $currentUTC) {
+                            if ($value["time"] >= $start && $value["time"] <= $end) {
                                 $arr[] = [$value["time"], $value["open"], $value["close"], $value["high"], $value["low"]];
                             }
                         }
