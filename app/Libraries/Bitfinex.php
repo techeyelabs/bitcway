@@ -165,6 +165,7 @@ class Bitfinex
                         }
                     }
                     if ($range == '1M' || $range == '7D' || $range == '3D' || $range == '1D' || $range == '6h' || $range == '1h') {
+                        dd($response);
                         foreach ($response as $key => $value) {
                             if ($value["time"] >= $start && $value["time"] <= $currentUTC) {
                                 $arr[] = [$value["time"], $value["open"], $value["close"], $value["high"], $value["low"]];
