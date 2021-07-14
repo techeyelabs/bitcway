@@ -159,12 +159,18 @@
                             <div id="ticker_top_bar" style="margin-top:10px; margin-bottom:16px; margin-right:10px;">
                                 <div style="display: flex; font-size: 0.8rem; flex-direction: row; align-items: flex-end; justify-content: center;margin-bottom:16px;">
                                     <div class="ui-tabs ui-tabs--opaque ui-tabs--border-bottom ui-tabs--padding-bottom"  id="trade_link" justify="center">
-                                        <a href="{{route('user-trade', app()->getLocale())}}">
+                                        {{--<a href="{{route('user-trade', app()->getLocale())}}">
+                                            <span class="sideBar">{{__('menuoption3')}}</span>
+                                        </a>--}}
+                                        <a id="tradeLink" href="trade">
                                             <span class="sideBar">{{__('menuoption3')}}</span>
                                         </a>
                                     </div>
                                     <div class="ui-tabs" id="derivative_link" justify="center">
-                                        <a href="{{route('user-trade', ['type' => 'derivative', app()->getLocale()])}}">
+                                        {{--<a href="{{route('user-trade', ['type' => 'derivative', app()->getLocale()])}}">
+                                            <span class="sideBar">{{__('menuoption4')}}</span>
+                                        </a>--}}
+                                        <a id="derivativeLink" href= "trade?type=derivative">
                                             <span class="sideBar">{{__('menuoption4')}}</span>
                                         </a>
                                     </div>
@@ -175,8 +181,6 @@
                                     <input style="padding-left: 5px;" type="text" id="currency_input" onkeyup="SearchBar()" title="Type in a name">
                                     <div class="searchicon"><span class="show50"><i class="fa fa-search fa-fw"></i></span></div>
                                 </div>
-
-
                             </div>
 
                             <table class="tables trackers" id="currency_table" style="width: 100%; table-layout: fixed">
@@ -232,7 +236,7 @@
                                         </div>
                                         <div class="form-group">
                                             <small class="txtWhitecolor">{{__('subheader2')}}</small>
-                                            <small v-cloak class="float-end text-success cursor-pointer " id="bidval" v-on:click="selectedPrice=latestBid">
+                                            <small v-cloak class="float-end text-success cursor-pointer " id="bidval" v-on:click="buttonArrangementBid()">
                                                 <i v-if="bidincreased == 'increased'" class="fas fa-sort-up"></i>
                                                 <i v-else class="fas fa-sort-down"></i>
                                                 @{{latestBid}}
@@ -266,7 +270,7 @@
                                         <div class="form-group">
                                             <div id="askDiv" style="margin-bottom: 15px;">
                                                 <small class="txtWhitecolor">{{__('subheader3')}}</small>
-                                                <small v-cloak class="float-end text-danger cursor-pointer" id="askval" v-on:click="selectedPrice=latestAsk">
+                                                <small v-cloak class="float-end text-danger cursor-pointer" id="askval" v-on:click="buttonArrangementAsk()">
                                                     <i v-if="askincreased == 'askincreased'" class="fas fa-sort-up"></i>
                                                     <i v-else class="fas fa-sort-down"></i>
                                                     @{{latestAsk}}
@@ -288,11 +292,15 @@
                                 <div class="row mt-5" id="marketbutton" >
                                     <div class="col d-grid">
                                         <button id='derivativeNormalBuy'class="btn btn-block btn-success" :disabled="amount<=0 || derivativeRange > derivativeBalance" v-on:click="derivativeBuy">{{__('button9')}}</button>
-                                        <button id='derivativeLimitBuy' class="btn btn-block btn-success" disabled style="display:none;" v-on:click="limitBuy">{{__('button9')}}</button>
+                                        <button id='derivativeLimitBuy' class="btn btn-block btn-success" disabled style="display:none;" v-on:click="limitBuy('buy')">{{__('button9')}}</button>
                                     </div>
-                                    <div class="col d-grid">
+                                    {{--<div class="col d-grid">
                                         <button  :load="logdata(amount)" id='derivativeNormalSell' class="btn btn-block btn-danger" :disabled="amount <= 0 || amount > leverageWalletAmount" v-on:click="derivativeSell">{{__('button10')}}</button>
                                         <button id='derivativeLimitSell' class="btn btn-block btn-danger" disabled  style="display:none;" v-on:click="limitSell">{{__('button10')}}</button>
+                                    </div>--}}
+                                    <div class="col d-grid">
+                                        <button  :load="logdata(amount)" id='derivativeNormalSell' class="btn btn-block btn-danger" :disabled="amount <= 0 || derivativeRange > derivativeBalance" v-on:click="derivativeSell">{{__('button10')}}</button>
+                                        <button id='derivativeLimitSell' class="btn btn-block btn-danger" disabled  style="display:none;" v-on:click="limitBuy('sell')">{{__('button10')}}</button>
                                     </div>
                                 </div>
 
@@ -327,7 +335,7 @@
                                     </div>
                                     <div class="" style="margin-bottom: 15px;">
                                         <small class="txtWhitecolor">{{__('subheader2')}}</small>
-                                        <small v-cloak class="float-end text-success cursor-pointer" id="bidval" v-on:click="selectedPrice=latestBid">
+                                        <small v-cloak class="float-end text-success cursor-pointer" id="bidval" v-on:click="buttonArrangementBid()">
                                             <i v-if="bidincreased == 'increased'" :load="logbid(bidincreased)"  class="fas fa-sort-up"></i>
                                             <i v-else class="fas fa-sort-down"></i>
                                             @{{latestBid}}
@@ -360,7 +368,7 @@
                                     </div>
                                     <div id="askDiv" style="margin-bottom: 15px;">
                                         <small class="txtWhitecolor">ASK</small>
-                                        <small v-cloak class="float-end text-danger cursor-pointer" id="askval" v-on:click="selectedPrice=latestAsk">
+                                        <small v-cloak class="float-end text-danger cursor-pointer" id="askval" v-on:click="buttonArrangementAsk()">
                                             <i v-if="askincreased =='increased'" :load="logask(askincreased)" class="fas fa-sort-up"></i>
                                             <i v-else class="fas fa-sort-down"></i>
                                             @{{latestAsk}}
@@ -638,6 +646,7 @@
 
                 for (let i = 0; i < coinData.length; i++) {
                     if (coinData[i][0] == "tADAUSD") {
+                        Home.trackers[i][6] = Home.change;
                         Home.trackers[i][7] = Home.MABcurrentPrice;
                         Home.trackers[i][0] = "tMABUSD";
                     }
@@ -645,7 +654,20 @@
 
                 if (loaded == false) {
                     hideLoader();
-                    Home.selectedItem = Home.trackers[0];
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const myParam = urlParams.get('pair');
+                    console.log(Home.trackers);
+                    if (myParam != null){
+                        for(let i = 0; i < Home.trackers.length; i++){
+                            if (Home.trackers[i][0] == myParam){
+                                Home.selectedItem = Home.trackers[i];
+                                break;
+                            }
+                        }
+                    } else {
+                        Home.selectedItem = Home.trackers[0];
+                    }
+
                     Home.getChartData();
                     setInterval(function () {
                         Home.getOrders();
@@ -660,8 +682,32 @@
         var currencies      = <?php echo json_encode($currency); ?>;
         // const OrderBook Start
         $(document).ready(function() {
-            var item = ["tBTCUSD"];
-            getInitialOrder("tBTCUSD");
+            const urlParams = new URLSearchParams(window.location.search);
+            const myParam = urlParams.get('pair');
+            console.log(myParam);
+            if (myParam != null){
+                // for derivative link
+                let derivativelinks = document.getElementById("derivativeLink").getAttribute("href");
+                let temp = derivativelinks.split("&");
+                derivativelink = temp[0];
+                derivativelink += '&pair=' + myParam;
+                document.getElementById("derivativeLink").href = derivativelink;
+
+                // for trade link
+                let tradelinks = document.getElementById("tradeLink").getAttribute("href");
+                let tradetemp = tradelinks.split("?");
+                tradelink = tradetemp[0];
+                tradelink += '?pair=' + myParam;
+                document.getElementById("tradeLink").href = tradelink;
+
+                var item = [];
+                item[0] = myParam;
+                Home.selectedPair = myParam;
+                console.log(Home.selectedPair);
+            } else {
+                var item = ["tBTCUSD"];
+            }
+            getInitialOrder(item[0]);
             Home.setCurrency(item);
         });
         // const OrderBook End
@@ -669,7 +715,11 @@
         let getInitialOrder = function (currency) {
             let CurrencyApi = ' ';
             if(currency == undefined){
-                CurrencyApi = 'https://api.bitfinex.com/v2/book/tBTCUSD/P0';
+                if (myParam != null) {
+                    CurrencyApi = 'https://api.bitfinex.com/v2/book/'+ myParam +'/P0';
+                } else {
+                    CurrencyApi = 'https://api.bitfinex.com/v2/book/tBTCUSD/P0';
+                }
             } else {
                 CurrencyApi = 'https://api.bitfinex.com/v2/book/'+currency+'/P0';
             }
@@ -681,6 +731,7 @@
                     if(items){
                         if (currency == 'tMABUSD') {
                             var num = Home.MABcurrentPrice / parseFloat(items[0][0]);
+                            var change = Home.change;
                             var multiple = parseFloat(num);
                             var multiple = multiple.toFixed(4);
                         } else {
@@ -768,6 +819,13 @@
             if (Home.lastcurrency != currency) {
                 Home.lastcurrency = currency;
             }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const myParam = urlParams.get('pair');
+            if (myParam != null){
+                currency = myParam;
+            }
+
             if (currency == 'tMABUSD'){
                 var realCurr = 'tADAUSD';
             } else {
@@ -784,6 +842,7 @@
                 if (items[1]) {
                     if (currency == 'tMABUSD'){
                         var num = Home.MABcurrentPrice / parseFloat(items[1][0]);
+                        var change = Home.change;
                         console.log(Home.MABcurrentPrice);
                         console.log(items[1][0]);
                         var multiple = parseFloat(num);
@@ -909,7 +968,9 @@
                 bidincreased:  '',
                 askincreased: '',
                 lastcurrency: 'tBTCUSD',
-                MABcurrentPrice: {{$current_price}}
+                MABcurrentPrice: {{$current_price}},
+                change: {{$change}},
+                selectedPair: ''
             },
             mounted() {
                 this.chart = LightweightCharts.createChart(this.$refs.chart, {
@@ -933,6 +994,9 @@
                 });
             },
             computed:{
+                selectedPair(){
+                    return this.selectedPair;
+                },
                 currency(){
                     let currency = this.selectedItem[0]?this.selectedItem[0]:'tBTCUSD';
                     currency = this.splitCurrency(currency);
@@ -950,10 +1014,14 @@
                 },
                 derivativeRange(){
                     if(document.getElementById("limitAmountId").value !=""){
-                        var limitval=document.getElementById("limitAmountId").value;
+                        console.log(document.getElementById("limitAmountId").value);
+                        var limitval = document.getElementById("limitAmountId").value;
                         return (this.limitAmount)/this.derivativeValue;
                     }
                     else{
+                        console.log(this.amount);
+                        console.log(this.selectedPrice);
+                        console.log(this.derivativeValue);
                         return (this.amount*this.selectedPrice)/this.derivativeValue;
                     }
                 },
@@ -1007,6 +1075,25 @@
                     return currency;
                 },
                 setCurrency(item){
+                    let slug = window.location.pathname + '?pair=' + item[0];
+                    window.history.pushState('slug', 'pair', slug);
+
+                    // for derivative link
+                    let derivativelinks = document.getElementById("derivativeLink").getAttribute("href");
+                    let temp = derivativelinks.split("&");
+                    derivativelink = temp[0];
+                    derivativelink += '&pair=' + item[0];
+                    document.getElementById("derivativeLink").href = derivativelink;
+
+                    // for trade link
+                    let tradelinks = document.getElementById("tradeLink").getAttribute("href");
+                    let tradetemp = tradelinks.split("?");
+                    tradelink = tradetemp[0];
+                    tradelink += '?pair=' + item[0];
+                    document.getElementById("tradeLink").href = tradelink;
+
+
+                    Home.selectedPair = item[0];
                     let coin    = item[0];
                     let symbolx = coin.substr(1);
                     getInitialOrder('t'+symbolx);
@@ -1205,92 +1292,6 @@
                             bottom: 0,
                         },
                     });
-                     //volumeSeries.setData([
-                    //     { time: '2021-05-19', value: 1621404000000, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     { time: '2021-04-22', value: 21737523.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     { time: '2021-03-23', value: 29328713.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     { time: '2021-02-24', value: 37435638.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     { time: '2021-01-25', value: 25269995.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     { time: '2021-10-26', value: 24973311.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     { time: '2021-10-29', value: 22103692.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     { time: '2021-09-30', value: 25231199.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     { time: '2021-10-31', value: 24214427.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2021-11-01', value: 22533201.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2021-11-02', value: 14734412.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2021-11-05', value: 12733842.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-11-06', value: 12371207.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-11-07', value: 14891287.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-11-08', value: 12482392.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-11-09', value: 17365762.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-11-12', value: 13236769.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-11-13', value: 13047907.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-11-14', value: 18288710.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-11-15', value: 17147123.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-11-16', value: 19470986.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-11-19', value: 18405731.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-11-20', value: 22028957.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-11-21', value: 18482233.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-11-23', value: 7009050.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-11-26', value: 12308876.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-11-27', value: 14118867.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-11-28', value: 18662989.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-11-29', value: 14763658.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-11-30', value: 31142818.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-12-03', value: 27795428.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-12-04', value: 21727411.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-12-06', value: 26880429.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-12-07', value: 16948126.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-12-10', value: 16603356.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-12-11', value: 14991438.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-12-12', value: 18892182.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-12-13', value: 15454706.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-12-14', value: 13960870.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-12-17', value: 18902523.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-12-18', value: 18895777.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-12-19', value: 20968473.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-12-20', value: 26897008.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-12-21', value: 55413082.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-12-24', value: 15077207.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2018-12-26', value: 17970539.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-12-27', value: 17530977.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-12-28', value: 14771641.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2018-12-31', value: 15331758.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-01-02', value: 13969691.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2019-01-03', value: 19245411.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-01-04', value: 17035848.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-01-07', value: 16348982.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-01-08', value: 21425008.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-01-09', value: 18136000.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2019-01-10', value: 14259910.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-01-11', value: 15801548.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-01-14', value: 11342293.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-01-15', value: 10074386.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-01-16', value: 13411691.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2019-01-17', value: 15223854.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2019-01-18', value: 16802516.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-01-22', value: 18284771.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2019-01-23', value: 15109007.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-01-24', value: 12494109.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2019-01-25', value: 17806822.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2019-01-28', value: 25955718.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2019-01-29', value: 33789235.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2019-01-30', value: 27260036.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-01-31', value: 28585447.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-02-01', value: 13778392.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2019-02-04', value: 15818901.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2019-02-05', value: 14124794.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-02-06', value: 11391442.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2019-02-07', value: 12436168.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2019-02-08', value: 12011657.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-02-11', value: 9802798.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-02-12', value: 11227550.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-02-13', value: 11884803.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-02-14', value: 11190094.00, color: 'rgba(255,82,82, 0.8)' },
-                    //     // { time: '2019-02-15', value: 15719416.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-02-19', value: 12272877.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //     // { time: '2019-02-20', value: 11379006.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    //      //{ time: '2019-02-21', value: 14680547.00, color: 'rgba(0, 150, 136, 0.8)' },
-                    // ]);
                 },
                 buy(){
 
@@ -1362,12 +1363,13 @@
                     }
                     showLoader('Processing...');
                     axios.post('{{route("user-trade-buy", app()->getLocale())}}', {
-                    currency                : that.currency,
+                        currency            : that.currency,
                         buyAmount           : that.amount,
                         calcBuyAmount       : that.calcAmount,
                         derivative_currency_price : that.selectedPrice,
                         leverage            : $("#sliderRange").val(),
-                        derivativeUserMoney : that.derivativeRange
+                        derivativeUserMoney : that.derivativeRange,
+                        tradeType           : 'buy'
                     })
                         .then(function (response) {
                             if(response.data.status){
@@ -1387,17 +1389,20 @@
                 },
                 derivativeSell(){
                     let that = this;
-                    if(that.calcAmount <= 0 || that.amount > that.leverageWalletAmount) {
+                    if(that.calcAmount <= 0 || (that.calcAmount / that.derivativeValue) > that.derivativeBalance) {
                         toastr.error('Invalid amount !!');
                         return false;
                     }
 
                     showLoader('Processing...');
-                    axios.post('{{route("user-trade-sell", app()->getLocale())}}', {
+                    axios.post('{{route("user-trade-buy", app()->getLocale())}}', {
                         currency       : that.currency,
-                        sellAmount     : that.amount,
-                        calcSellAmount : that.calcAmount,
-                        derivativeType : '0'
+                        buyAmount     : that.amount,
+                        calcBuyAmount : that.calcAmount,
+                        derivative_currency_price : that.selectedPrice,
+                        leverage            : $("#sliderRange").val(),
+                        derivativeUserMoney : that.derivativeRange,
+                        tradeType           : 'sell'
                     })
                         .then(function (response) {
                             if(response.data.status){
@@ -1415,8 +1420,9 @@
                                 window.location.reload();
                         });
                 },
-                limitBuy(){
+                limitBuy(type){
                     let sellCheckBox   = document.getElementById("limitSellInput");
+                    let buyCheckBox    = document.getElementById("limitBuyInput");
                     //for Derivative buy/sell
                     var chk_derivative = document.getElementById("rangeInput");
                     if(chk_derivative){
@@ -1426,9 +1432,14 @@
                         var derivative = 0;
                     }
 
-                    let buyCheckedValue = $('#limitBuyInput:checked').val();
-                    if (buyCheckedValue == 1){
-                        sellCheckBox.disabled = true;
+                    let buyCheckedValue = $('#limitBuyInput').val();
+                    let sellCheckedValue = $('#limitSellInput').val();
+                    if (buyCheckedValue == 1 || sellCheckedValue == 1){
+                        if (buyCheckedValue == 1){
+                            sellCheckBox.disabled = true;
+                        } else {
+                            buyCheckBox.disabled = true;
+                        }
                         let that = this;
                         showLoader('Processing...');
                         axios.post('{{route("user-limit-buy", app()->getLocale())}}', {
@@ -1438,22 +1449,20 @@
                             currencyAmount    : that.totalLimitCurrency,
                             transactionStatus : 1,
                             derivative        : derivative,
-                            //id:idval
-                        })
-                            .then(function (response) {
-                                if(response.data.status){
-                                    toastr.success('Limit Buy successfull');
-                                    {{--window.location.href = '{{route("user-wallets")}}';--}}
-                                    hideLoader();
-                                    sellCheckBox.disabled = false;
-                                    get_buy_sell_data(that.currency);
-                                    return false;
-                                }
-                                toastr.error('Error occured(Limit) !!');
-                            })
-                            .catch(function (error) {
-                                toastr.error('Error occured(Limit) !!');
-                            });
+                            type              : type
+                        }).then(function (response) {
+                            if(response.data.status){
+                                toastr.success('Limit entry successful');
+                                {{--window.location.href = '{{route("user-wallets")}}';--}}
+                                hideLoader();
+                                sellCheckBox.disabled = false;
+                                get_buy_sell_data(that.currency);
+                                return false;
+                            }
+                            toastr.error('Error occured(Limit) !!');
+                        }).catch(function (error) {
+                            toastr.error('Error occured(Limit) !!');
+                        });
                     }
 
                 },
@@ -1676,6 +1685,26 @@
                     }
                 }
             }
+        }
+        function buttonArrangementAsk(){
+            Home.selectedPrice = Home.latestAsk;
+            // Blockings
+            $('#derivativeNormalBuy').prop('disabled', true);
+            $('#normalBuy').prop('disabled', true);
+
+            // Unblockings
+            $('#derivativeNormalSell').prop('disabled', false);
+            $('#normalSell').prop('disabled', false);
+        }
+        function buttonArrangementBid(){
+            Home.selectedPrice = Home.latestBid;
+            // Blockings
+            $('#derivativeNormalSell').prop('disabled', true);
+            $('#normalSell').prop('disabled', true);
+
+            // Unblockings
+            $('#derivativeNormalBuy').prop('disabled', false);
+            $('#normalBuy').prop('disabled', false);
         }
         var url_part = $(location).attr("href").split('/').pop();
         if(url_part === 'trade'){

@@ -33,6 +33,20 @@ class Bitfinex
         return false;
     }
 
+    public function getRateBuySell($type, $coin1, $coin2 = 'USD'){
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "https://api-pub.bitfinex.com/v2/tickers?symbols=t".$coin1."USD");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($curl);
+        curl_close($curl);
+        $final_result = json_decode($result);
+        if ($type == 'buy'){
+            return $final_result[0][1];
+        } else {
+            return $final_result[0][3];
+        }
+    }
+
     public function getCandle($currency, $interval, $start, $end, $range)
     {
         $get_start_date_for_coin = DmgCoin ::select('start_date') -> where('name', 'DMGCoin') -> first();
@@ -79,8 +93,7 @@ class Bitfinex
         }
 
         $current_date = strtotime(date("Y-m-d") . " 00:00:00 GMT") * 1000;
-//        $currentUTC = strtotime(date("Y-m-d H:i:s") . "UTC") * 1000;
-        $currentUTC = Carbon::now('UTC')->timestamp;
+        $currentUTC = (Carbon::now('UTC')->timestamp) * 1000;
         if ($start != "" && $end != "") {
             switch ($range) {
                 case '1h':
@@ -144,8 +157,8 @@ class Bitfinex
                     $end_key = array_search($date_before_start_date, array_column(json_decode($response_original), 0));
                     $response_end = array_slice(json_decode($response_original), $end_key);
                     $start_key = array_search($start, array_column($response_end, 0));
-                    $find_date_index = array_search($current_date, array_column($response, 'time'));
-                    $dmg_response = array_slice($response, 0, $find_date_index, true);
+                    //$find_date_index = array_search($current_date, array_column($response, 'time'));
+                    //$dmg_response = array_slice($response, 0, $find_date_index, true);
                     $dmg_response = array_filter($response, function ($var) use ($currentUTC) {
                         return ($var['time'] <= $currentUTC);
                     });
@@ -165,7 +178,6 @@ class Bitfinex
                         }
                     }
                     if ($range == '1M' || $range == '7D' || $range == '3D' || $range == '1D' || $range == '6h' || $range == '1h') {
-                        dd($response);
                         foreach ($response as $key => $value) {
                             if ($value["time"] >= $start && $value["time"] <= $currentUTC) {
                                 $arr[] = [$value["time"], $value["open"], $value["close"], $value["high"], $value["low"]];
@@ -225,8 +237,8 @@ class Bitfinex
                 $response_data = Http ::get('https://api-pub.bitfinex.com/v2/candles/trade:' . $interval . ':' . $currency . '/hist?limit=10000');
                 $key = array_search($date_before_start_date, array_column(json_decode($response_data), 0));
                 $response_original = array_slice(json_decode($response_data), $key);
-                $find_date_index = array_search($current_date, array_column($json_data, 'time'));
-                $dmg_response = array_slice($json_data, 0, $find_date_index, true);
+                //$find_date_index = array_search($current_date, array_column($json_data, 'time'));
+                //$dmg_response = array_slice($json_data, 0, $find_date_index, true);
                 $dmg_response = array_filter($json_data, function ($var) use ($currentUTC) {
                     return ($var['time'] <= $currentUTC);
                 });
@@ -252,11 +264,6 @@ class Bitfinex
                 $response_original = array_slice(json_decode($response_data), $key);
                 $get_json = file_get_contents('./dataJson/1d.json');
                 $json_data = json_decode($get_json, 'true');
-                /*print_r($response_original);
-                echo "BREAK";
-                echo "<br>";
-                echo "$current_date";
-                dd($json_data);*/
                 $find_date_index = array_search($current_date, array_column($json_data, 'time'));
 
                 $dmg_response = array_slice($json_data, 0, $find_date_index, true);

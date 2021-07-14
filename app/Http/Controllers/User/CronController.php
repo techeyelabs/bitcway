@@ -15,6 +15,7 @@ use App\Models\UserWallet;
 use App\Models\TransactionHistory;
 use App\Models\LockedSavingsSetting;
 use App\Models\LockedSaving;
+use App\Models\User;
 use App\Models\Leverage_Wallet;
 use Illuminate\Support\Facades\DB;
 use mysql_xdevapi\Exception;
@@ -40,7 +41,7 @@ class CronController extends Controller
                 $UserWallet->balance = $UserWallet->balance + $redemptionValue;
                 $UserWallet->equivalent_trade_amount = $UserWallet->equivalent_trade_amount + ($totalCoin * $Bitfinex->getRate($item->currency->name));
             }
-            $UserWallet->currency_price = $Bitfinex->getRate($item->currency->name);
+            $UserWallet->currency_price = $Bitfinex->getRateBuySell($item->currency->name);
             $UserWallet->user_id = $item->user_id;
             $UserWallet->currency_id = $item->currency_id;
             $UserWallet->save();

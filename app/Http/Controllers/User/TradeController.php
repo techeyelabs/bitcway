@@ -30,11 +30,13 @@ class TradeController extends Controller
     use CurrentMABPrice;
     public function index(Request $request)
     {
+
         $data['userInfo'] = UserWallet::where('user_id', Auth::user()->id)->get();
         $currency = array();
         $data['currency'] = 0;
-
-        $data['current_price'] = $this->getCurrentPrice();
+        $resp = $this->getCurrentPrice();
+        $data['current_price'] = $resp['lastval'];
+        $data['change'] = $resp['change'] / 100;
 
         if(isset($request->type)){
             $data['type'] = $request->type;
@@ -223,6 +225,7 @@ class TradeController extends Controller
             if(isset($request->leverage)) {
                 $LeverageWallet = new Leverage_Wallet();
                 $LeverageWallet->amount = $request->buyAmount;
+                $LeverageWallet->trade_type = $request->tradeType;
                 $LeverageWallet->equivalent_amount = $request->calcBuyAmount;
                 $LeverageWallet->derivative_currency_price = $request->derivative_currency_price;
                 $LeverageWallet->derivativeUserMoney = $request->derivativeUserMoney;
@@ -254,7 +257,7 @@ class TradeController extends Controller
         DB::beginTransaction();
         try {
             if (isset($request->derivativeType)) {
-                $leverageWalletCurrency = Leverage_Wallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->orderBy('id', 'desc')->get();
+                $leverageWalletCurrency = Leverage_Wallet::where('id', $request->id)->get();
                 $leverageSellAmount = $leverageRequestSellAmount;
 
                 foreach ($leverageWalletCurrency as $item) {
@@ -311,9 +314,8 @@ class TradeController extends Controller
                 $TransactionHistory->user_id = Auth::user()->id;
                 $TransactionHistory->currency_id = $currency->id;
                 $TransactionHistory->save();
-
-            }else{
-                $TransactionHistory= new TransactionHistory();
+            } else {
+                $TransactionHistory = new TransactionHistory();
                 $TransactionHistory->amount = $request->sellAmount;
                 $TransactionHistory->equivalent_amount = $request->calcSellAmount;
                 $TransactionHistory->type = 2;
@@ -432,6 +434,9 @@ class TradeController extends Controller
 
     public function limitBuy(Request $request)
     {
+        if ($request->currency == 'MAB'){
+            $request->currency = 'ADA';
+        }
         $currency = Currency ::where('name', $request -> currency) -> first();
         $limitBuy = new LimitBuySell();
         $limitBuy -> limitType = $request -> limitType;
@@ -440,15 +445,14 @@ class TradeController extends Controller
         $limitBuy -> transactionStatus = $request -> transactionStatus;
         $limitBuy -> user_id = Auth ::user() -> id;
         $limitBuy -> currency_id = $currency -> id;
+        if (isset($request -> type)){
+            $limitBuy -> type = $request -> type;
+        }
         if ($request -> derivative) {
             $limitBuy -> derivative = $request -> derivative;
         }
         $limitBuy -> save();
-
-
         return response() -> json(['status' => true]);
-
-
     }
     public function limitSell(Request $request){
         if ($request->currency == 'MAB'){

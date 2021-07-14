@@ -111,6 +111,7 @@
                     <ul class="container-fluid" style=" min-width: 1000px;">
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('column1')}}</p>
+                            <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('col12')}}</p>
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount" style="text-align: left; ">{{__('size')}}</p>
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName" style="text-align: left;">{{__('entryprice')}}</p>
                             <p class="col txtWhitecolor" id="CoinpriceIntoMycoin2" style="text-align: center;">{{__('markprice')}}</p>
@@ -121,12 +122,13 @@
                         <?php
                         $j = 0;
                         foreach($transactionHistory as $index =>$item ){
-                        if(($item->leverage) >= 1 ){
-                        $j++;
+                            if(($item->leverage) >= 1 ){
+                                $j++;
                         ?>
                         {{--{!! number_format((double)($item->equivalent_amount / $item->leverage),5) !!}--}}
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName2{{$j}}" style="text-align: left;">{{($item->currencyName->name == 'ADA') ? 'MAB' : $item->currencyName->name}}</p>
+                            <p class="col txtWhitecolor" id="type{{$j}}" style="text-align: left;">{{$item->trade_type}}</p>
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount2{{$j}}" style="text-align: left;">{!! number_format((double)($item->amount), 5) !!}</p>
                             <p class="col txtWhitecolor d-none previous" id="derivativeEntryPrice{{$j}}" style="text-align: left;">{{($item->equivalent_amount)}}</p>
                             <p class="col txtWhitecolor" id="derivativeCurrencyEntryPrice{{$j}}" style="text-align: left;">{{($item->derivative_currency_price)}}</p>
@@ -138,6 +140,7 @@
                             <p class="col d-none previous" id="derivativeUnrealizedCurrencyPrice{{$j}}" style="text-align: right;color:white;">00.00</p>
                             <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: right; color:white;">{{$item->leverage}}</p>
                             <p class="col d-none" id="totalDerivativeAmount{{$j}}" style="text-align: right;color: #00aced">000.00</p>
+                            <p class="col d-none" id="id{{$j}}">{{$item->id}}</p>
                             <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetDerivativeSell{{$j}}"  style="cursor: pointer;" onclick="derivative_Sell_Function('{{$j}}')">{{__('title9')}}</span></p>
                         </li>
                         <?php
@@ -240,6 +243,7 @@
         // const socket = io('http://192.144.82.234:3000/');
         const socket = io('https://bitc-way.com:3000/');
         let loaded = false;
+        console.log("here");
         socket.on('trackers', (trackers) => {
             let totalValue = 0;
             let totalDerivativeValue = 0
@@ -257,6 +261,7 @@
                 }
 
                 let full_data = trackers.trackers.trackers;
+                console.log(full_data);
                 // let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + realcurrname + 'USD') {
@@ -296,7 +301,7 @@
             for (let j = 1; j <= indexNumber2; j++) {
                 let currencyName = $('#MyCoinCurrencyName2' + j).html();
                 let currencyAmount = parseFloat($('#MyTotalCoinAmount2' + j).html());
-
+                let tradeType = $('#type' + j).html();
                 let realcurrname2 = '';
                 if (currencyName == 'MAB') {
                     realcurrname2 = 'ADA';
@@ -305,16 +310,27 @@
                 }
 
                 let full_data = trackers.trackers.trackers;
-                // let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
-                    if (item[0] === 't' + realcurrname2 + 'USD') {
-                        if (realcurrname2 == 'ADA'){
-                            item[1] = item[1] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[1] ;
+                    if (tradeType == 'buy'){
+                        if (item[0] === 't' + realcurrname2 + 'USD') {
+                            if (realcurrname2 == 'ADA'){
+                                item[1] = item[1] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[1] ;
+                            }
+                            parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
+                            parseFloat($('#CoinpriceintoMyCurrency' + j).html(( item[1]).toFixed(5)));
+                            parseFloat($('#totalDerivativeAmount' + j).html(( currencyAmount*item[1]).toFixed(5)));
                         }
-                        parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
-                        parseFloat($('#CoinpriceintoMyCurrency' + j).html(( item[1]).toFixed(5)));
-                        parseFloat($('#totalDerivativeAmount' + j).html(( currencyAmount*item[1]).toFixed(5)));
+                    } else {
+                        if (item[0] === 't' + realcurrname2 + 'USD') {
+                            if (realcurrname2 == 'ADA'){
+                                item[3] = item[3] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[3] ;
+                            }
+                            parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[3]).toFixed(5)));
+                            parseFloat($('#CoinpriceintoMyCurrency' + j).html(( item[3]).toFixed(5)));
+                            parseFloat($('#totalDerivativeAmount' + j).html(( currencyAmount*item[3]).toFixed(5)));
+                        }
                     }
+
                 });
             }
 
@@ -424,26 +440,26 @@
     <script>
         function derivative_Sell_Function(index) {
             let derivativeCurrencyName = $('#MyCoinCurrencyName2' + index).html();
+            let id = parseInt($('#id' + index).html());
             let derivativeCurrencySize = parseFloat($('#MyTotalCoinAmount2' + index).html());
             let totalDerivativeAmount = parseFloat($('#totalDerivativeAmount' + index).html());
 
-                axios.post('{{route("user-trade-sell", app()->getLocale())}}',{
-                    currency: derivativeCurrencyName,
-                    sellAmount: derivativeCurrencySize,
-                    calcSellAmount: totalDerivativeAmount,
-                    derivativeType: '0'
-                })
-                    .then(function (response) {
-                        if(response.data.status){
-                            toastr.success('Sell successfull');
-                            window.location.href = '{{route("user-wallets", app()->getLocale())}}';
-                            return false;
-                        }
-                        toastr.error('Error occured !!');
-                    })
-                    .catch(function (error) {
-                        toastr.error('Error occured !!');
-                    });
+            axios.post('{{route("user-trade-sell", app()->getLocale())}}',{
+                currency: derivativeCurrencyName,
+                sellAmount: derivativeCurrencySize,
+                calcSellAmount: totalDerivativeAmount,
+                derivativeType: '0',
+                id: id
+            }).then(function (response) {
+                if(response.data.status) {
+                    toastr.success('Trade successfull');
+                    window.location.href = '{{route("user-wallets", app()->getLocale())}}';
+                    return false;
+                }
+                toastr.error('Error occured !!');
+            }).catch(function (error) {
+                toastr.error('Error occured !!');
+            });
         }
     </script>
 

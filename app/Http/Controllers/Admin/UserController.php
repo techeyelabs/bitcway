@@ -106,7 +106,7 @@ class UserController extends Controller
         $data['userDerivativeBalance'] = User::where('id',$user_id)->first('derivative');
         $data['transactionHistory'] = Leverage_Wallet::where('user_id',$user_id)->where('leverage', '>', 0)->with('leveragehistory')->with('currencyName')->orderBy('id', 'DESC')->get();
         $currentTime = Carbon\Carbon::now();
-        $data['current_price'] = $this->getCurrentPrice();
+        $data['current_price'] = $this->getCurrentPrice()['lastval'];
         $data['finances'] = LockedSaving::where('user_id', $user_id)->where('redemption_date', '>', $currentTime)->with('currency')->orderBy('id', 'DESC')->get();
 
         return view('admin.user.wallets', $data);
