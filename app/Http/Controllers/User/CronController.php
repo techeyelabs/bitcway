@@ -128,6 +128,10 @@ class CronController extends Controller
                         $TransactionHistory->user_id = Auth::user()->id;
                         $TransactionHistory->currency_id = $currency->id;
                         $TransactionHistory->save();
+
+                        $victim = User::find($user->user_id);
+                        $victim->derivative = $victim->derivative + $sellAmountToUserWallet;
+                        $victim->save();
                     }
                     catch(\Exception $e)
                     {
@@ -135,10 +139,8 @@ class CronController extends Controller
                         return response()->json(['status' => $e]);
                     }
                     DB::commit();
+
                 }
-                $victim = User::find($user->user_id);
-                $victim->derivative = $victim->derivative + $sellAmountToUserWallet;
-                $victim->save();
             }
         }
         exit;
