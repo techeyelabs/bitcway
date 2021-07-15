@@ -40,6 +40,10 @@ class AuthController extends Controller
     {
         return view('user.auth.signup');
     }
+    public function random_string($length) {
+        $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        return substr(str_shuffle(str_repeat($chars, ceil($length/strlen($chars)) )), 0, $length);
+    }
 
     public function signupAction(Request $request)
     {
@@ -53,6 +57,9 @@ class AuthController extends Controller
             'agree' => 'required'
         ]);
 
+        $random_val = rand(26,35);
+        $walletstring = $this-> random_string($random_val);
+
         $User = new User();
         $User->first_name = $request->first_name;
         $User->last_name = $request->last_name;
@@ -62,6 +69,7 @@ class AuthController extends Controller
         $User->email = $request->email;
         $User->password = Hash::make($request->password);
         $User->verification_token = time().rand(1000,9999);
+        $User->wallet_id = $walletstring;
         $User->save();
 
         $User->view = 'emails.verify_email';
