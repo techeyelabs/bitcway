@@ -268,10 +268,10 @@
                         console.log(realcurrname);
                         // parseFloat($('#CoinpriceIntoMycoin' + i).html((tradeCurrencySize * item[1]).toFixed(5)));
                         if (realcurrname == 'ADA'){
-                            item[1] = item[1] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[1] ;
+                            item[3] = item[3] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[3] ;
                         }
-                        parseFloat($('#CoinpriceIntoMycoin' + i).html((item[1]).toFixed(5)));
-                        parseFloat($('#totalTradeAmount' + i).html((tradeCurrencySize*item[1]).toFixed(5)));
+                        parseFloat($('#CoinpriceIntoMycoin' + i).html((item[3]).toFixed(5)));
+                        parseFloat($('#totalTradeAmount' + i).html((tradeCurrencySize * item[3]).toFixed(5)));
                     }
                 });
             }
@@ -314,20 +314,20 @@
                     if (tradeType == 'buy'){
                         if (item[0] === 't' + realcurrname2 + 'USD') {
                             if (realcurrname2 == 'ADA'){
-                                item[1] = item[1] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[1] ;
-                            }
-                            parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
-                            parseFloat($('#CoinpriceintoMyCurrency' + j).html(( item[1]).toFixed(5)));
-                            parseFloat($('#totalDerivativeAmount' + j).html(( currencyAmount*item[1]).toFixed(5)));
-                        }
-                    } else {
-                        if (item[0] === 't' + realcurrname2 + 'USD') {
-                            if (realcurrname2 == 'ADA'){
                                 item[3] = item[3] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[3] ;
                             }
                             parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[3]).toFixed(5)));
                             parseFloat($('#CoinpriceintoMyCurrency' + j).html(( item[3]).toFixed(5)));
                             parseFloat($('#totalDerivativeAmount' + j).html(( currencyAmount*item[3]).toFixed(5)));
+                        }
+                    } else {
+                        if (item[0] === 't' + realcurrname2 + 'USD') {
+                            if (realcurrname2 == 'ADA'){
+                                item[1] = item[1] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[1] ;
+                            }
+                            parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * item[1]).toFixed(5)));
+                            parseFloat($('#CoinpriceintoMyCurrency' + j).html(( item[1]).toFixed(5)));
+                            parseFloat($('#totalDerivativeAmount' + j).html(( currencyAmount*item[1]).toFixed(5)));
                         }
                     }
 
