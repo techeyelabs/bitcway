@@ -105,10 +105,10 @@
                                 </select>
                             </span>
                             <span class="col txtWhitecolor" style="text-align: center">
-                                <input class="asset-input" id="trade-amount_{{$index}}" name="trade-amount" placeholder="Currency amount"/>
+                                <input class="asset-input" id="trade-amount_{{$index}}" name="trade-amount" placeholder="Size"/>
                             </span>
                             <span class="col txtWhitecolor" style="text-align: center">
-                                <input class="asset-input" id="limit-rate_{{$index}}" name="limit-rate" placeholder="Limit amount" disabled/>
+                                <input class="asset-input" id="limit-rate_{{$index}}" name="limit-rate" placeholder="Limit price" disabled/>
                             </span>
                             <input type="hidden" id="id_{{$index}}" name="id_{{$index}}" value="{{$item->id}}">
                             <span class="col txtHeadingColor" style="text-align: left; cursor: pointer" onclick="trade('{{$index}}')">Submit</span>
@@ -183,10 +183,10 @@
                                 </select>
                             </span>
                             <span class="col txtWhitecolor" style="text-align: center">
-                                <input class="asset-input" id="trade-amount_derivative_{{$j}}" name="trade-amount_derivative_{{$j}}" placeholder="Currency amount"/>
+                                <input class="asset-input" id="trade-amount_derivative_{{$j}}" name="trade-amount_derivative_{{$j}}" placeholder="Size"/>
                             </span>
                             <span class="col txtWhitecolor" style="text-align: center">
-                                <input class="asset-input" id="limit-rate_derivative_{{$j}}" name="limit-rate_derivative_{{$j}}" placeholder="Limit amount" disabled/>
+                                <input class="asset-input" id="limit-rate_derivative_{{$j}}" name="limit-rate_derivative_{{$j}}" placeholder="Limit price" disabled/>
                             </span>
                             <input type="hidden" id="id_{{$j}}" name="id_derivative_{{$j}}" value="{{$item->id}}">
                             <span class="col txtHeadingColor" style="text-align: left; cursor: pointer" onclick="trade('{{$j}}')">Submit</span>
