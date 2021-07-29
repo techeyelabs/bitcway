@@ -41,9 +41,9 @@ class Bitfinex
         curl_close($curl);
         $final_result = json_decode($result);
         if ($type == 'buy'){
-            return $final_result[0][1];
-        } else {
             return $final_result[0][3];
+        } else {
+            return $final_result[0][1];
         }
     }
 
@@ -251,6 +251,9 @@ class Bitfinex
                 } else {
                     $response = $data_ar;
                 }
+                if ($interval == '1m'){
+                    $response = array_splice($response, 0, count($response) - 4);
+                }
 
                 return $response;
 
@@ -266,7 +269,10 @@ class Bitfinex
                 $json_data = json_decode($get_json, 'true');
                 $find_date_index = array_search($current_date, array_column($json_data, 'time'));
 
-                $dmg_response = array_slice($json_data, 0, $find_date_index, true);
+                // $dmg_response = array_slice($json_data, 0, $find_date_index, true);
+                $dmg_response = array_filter($json_data, function ($var) use ($currentUTC) {
+                    return ($var['time'] <= $currentUTC);
+                });
 
                 foreach ($dmg_response as $d) {
                     $data_ar[] = array_values($d);
@@ -277,7 +283,6 @@ class Bitfinex
             } else {
                 $response = Http ::get('https://api-pub.bitfinex.com/v2/candles/trade:1D:' . $currency . '/hist?limit=10000');
             }
-
         }
         if ($response -> json()) return $response -> json();
     }

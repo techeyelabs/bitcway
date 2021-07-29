@@ -1363,29 +1363,27 @@
                     }
                     showLoader('Processing...');
                     axios.post('{{route("user-trade-buy", app()->getLocale())}}', {
-                        currency            : that.currency,
-                        buyAmount           : that.amount,
-                        calcBuyAmount       : that.calcAmount,
-                        derivative_currency_price : that.selectedPrice,
-                        leverage            : $("#sliderRange").val(),
-                        derivativeUserMoney : that.derivativeRange,
-                        tradeType           : 'buy'
-                    })
-                        .then(function (response) {
-                            if(response.data.status){
-                                toastr.success('Buy successfull');
-                                //window.location.href = '{{route("user-trade-derivative", app()->getLocale())}}';
-                                $('#limitAmountId').val("");
-                                $('#totalLimitCurrencyId').val("");
-                                hideLoader();
-                                get_buy_sell_data(that.currency);
-                                return false;
-                            }
-                            toastr.error('Error occured !!');
-                        })
-                        .catch(function (error) {
-                            toastr.error('Error occured !!');
-                        });
+                        currency: that.currency,
+                        buyAmount: that.amount,
+                        calcBuyAmount: that.calcAmount,
+                        derivative_currency_price: that.selectedPrice,
+                        leverage: $("#sliderRange").val(),
+                        derivativeUserMoney: that.derivativeRange,
+                        tradeType: 'buy'
+                    }).then(function (response) {
+                        if (response.data.status) {
+                            toastr.success('Buy successfull');
+                            //window.location.href = '{{route("user-trade-derivative", app()->getLocale())}}';
+                            $('#limitAmountId').val("");
+                            $('#totalLimitCurrencyId').val("");
+                            hideLoader();
+                            get_buy_sell_data(that.currency);
+                            return false;
+                        }
+                        toastr.error('Error occured !!');
+                    }).catch(function (error) {
+                        toastr.error('Error occured !!');
+                    });
                 },
                 derivativeSell(){
                     let that = this;
@@ -1403,22 +1401,20 @@
                         leverage            : $("#sliderRange").val(),
                         derivativeUserMoney : that.derivativeRange,
                         tradeType           : 'sell'
-                    })
-                        .then(function (response) {
-                            if(response.data.status){
-                                toastr.success('Sell successfull');
-                                //window.location.href = '{{route("user-trade-derivative", app()->getLocale())}}';
-                                hideLoader();
-                                get_buy_sell_data(that.currency);
-                                return false;
-                            }
-                                toastr.error('Error occured !!');
-                                window.location.reload();
-                        })
-                        .catch(function (error) {
-                                toastr.error('Error occured !!');
-                                window.location.reload();
-                        });
+                    }).then(function (response) {
+                        if(response.data.status){
+                            toastr.success('Sell successfull');
+                            //window.location.href = '{{route("user-trade-derivative", app()->getLocale())}}';
+                            hideLoader();
+                            get_buy_sell_data(that.currency);
+                            return false;
+                        }
+                            toastr.error('Error occured !!');
+                            window.location.reload();
+                    }).catch(function (error) {
+                        toastr.error('Error occured !!');
+                        window.location.reload();
+                    });
                 },
                 limitBuy(type){
                     let sellCheckBox   = document.getElementById("limitSellInput");
@@ -1707,10 +1703,11 @@
             $('#normalBuy').prop('disabled', false);
         }
         var url_part = $(location).attr("href").split('/').pop();
-        if(url_part === 'trade'){
+        var type = "{!! isset($type)? 'derivative' : 'trade' !!}";
+        if(type === 'trade'){
             $('#trade_link').addClass('nav_active');
         }
-        if(url_part === 'trade?type=derivative'){
+        if(type === 'derivative'){
             $('#derivative_link').addClass('nav_active');
         }
     </script>

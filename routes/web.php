@@ -40,15 +40,15 @@ use App\Http\Controllers\Admin\LockedSavingsController as AdminLockedSavingsCont
 //     App::setLocale('en');
 //     dd(App::getLocale());
 // });
-Route::post('/getwaycallback', [WalletController::class, 'getwaycallback'])->name('getwaycallback');
-Route::get('/get-buy-orders', [TradeController::class, 'getBuyOrders'])->name('user-get-buy-orders');
-Route::get('/get-order', [UpdateController::class, 'getfirstbook']);
+Route::post('/getwaycallback',  [WalletController::class, 'getwaycallback'])->name('getwaycallback');
+Route::get('/get-buy-orders',   [TradeController::class, 'getBuyOrders'])->name('user-get-buy-orders');
+Route::get('/get-order',        [UpdateController::class, 'getfirstbook']);
 
 
 //Limit BuySell Cron Job
-Route::get('/limitcronjob', [LimitCronController::class, 'limitCronJob'])->name('limit-buysell-cronjob');
-Route::get('/testjobbuy', [LimitCronController::class, 'updateLimitBuyTable']);
-Route::get('/testjobsell', [LimitCronController::class, 'updateLimitSellTable']);
+Route::get('/limitcronjob',     [LimitCronController::class, 'limitCronJob'])->name('limit-buysell-cronjob');
+Route::get('/testjobbuy',       [LimitCronController::class, 'updateLimitBuyTable']);
+Route::get('/testjobsell',      [LimitCronController::class, 'updateLimitSellTable']);
 
 Route::get('/locked-savings-invest', [CronController::class, 'myaction'])->name('user-locked-savings-invest');
 Route::get('/leverage-sell-all', [CronController::class, 'derivativeAutoSell'])->name('leverage-sell-all');
@@ -56,77 +56,80 @@ Route::get('/leverage-sell-all', [CronController::class, 'derivativeAutoSell'])-
 Route::redirect('/', '/en');
 Route::redirect('/55Hyulosmwtche2173', '/en/55Hyulosmwtche2173');
 Route::group(['prefix' => '{language}'], function () {
-    Route::get('/', [HomeController::class, 'index'])->name('front-home');
-    Route::get('/terms', [HomeController::class, 'terms'])->name('front-terms');
-    Route::get('/about', [HomeController::class, 'about'])->name('front-about');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/',             [HomeController::class, 'index'])->name('front-home');
+    Route::get('/terms',        [HomeController::class, 'terms'])->name('front-terms');
+    Route::get('/about',        [HomeController::class, 'about'])->name('front-about');
+    Route::get('/logout',       [AuthController::class, 'logout'])->name('logout');
     Route::get('/verify/{token}', [AuthController::class, 'verify'])->name('verify-email');
 
     Route::prefix('update')->group(function () {
-        Route::get('/currencies', [UpdateController::class, 'getCurrencies']);
+        Route::get('/currencies',   [UpdateController::class, 'getCurrencies']);
     });
 
-    Route::get('/get-order-dummy', [UpdateController::class, 'getOrderDummy']);
+    Route::get('/get-order-dummy',  [UpdateController::class, 'getOrderDummy']);
 
     Route::middleware(['guest'])->group(function () {
-        Route::get('/login', [AuthController::class, 'login'])->name('login');
-        Route::post('/login', [AuthController::class, 'loginAction'])->name('login-action');
+        Route::get('/login',    [AuthController::class, 'login'])->name('login');
+        Route::post('/login',   [AuthController::class, 'loginAction'])->name('login-action');
 
-        Route::get('/signup', [AuthController::class, 'signup'])->name('signup');
-        Route::post('/signup', [AuthController::class, 'signupAction'])->name('signup-action');
+        Route::get('/signup',   [AuthController::class, 'signup'])->name('signup');
+        Route::post('/signup',  [AuthController::class, 'signupAction'])->name('signup-action');
 
-        Route::get('/forgot', [AuthController::class, 'forgot'])->name('forgot');
-        Route::post('/forgot', [AuthController::class, 'forgotAction'])->name('forgot-action');
+        Route::get('/forgot',   [AuthController::class, 'forgot'])->name('forgot');
+        Route::post('/forgot',  [AuthController::class, 'forgotAction'])->name('forgot-action');
 
 
-        Route::get('/reset', [AuthController::class, 'reset'])->name('reset');
-        Route::post('/reset', [AuthController::class, 'resetAction'])->name('reset-action');
+        Route::get('/reset',    [AuthController::class, 'reset'])->name('reset');
+        Route::post('/reset',   [AuthController::class, 'resetAction'])->name('reset-action');
     });
 
     Route::prefix('user')->middleware(['auth'])->group(function () {
-        // Derivative sell all as you are bankrupt
-        Route::get('/derivative-sell-all', [TradeController::class, 'derivativeSellAll'])->name('user-derivative-sell-all');
+        Route::post('/sell-from-asset',      [TradeController::class, 'sellFromAsset'])->name('user-sell-from-asset');
 
-        Route::get('/change-password', [AuthController::class, 'changePassword'])->name('user-change-password');
-        Route::post('/change-password', [AuthController::class, 'changePasswordAction'])->name('user-change-password-action');
-        Route::get('/update-profile', [AuthController::class, 'updateProfile'])->name('user-update-profile');
-        Route::post('/update-profile', [AuthController::class, 'updateProfileAction'])->name('user-update-profile-action');
+
+        // Derivative sell all as you are bankrupt
+        Route::get('/derivative-sell-all',  [TradeController::class, 'derivativeSellAll'])->name('user-derivative-sell-all');
+
+        Route::get('/change-password',      [AuthController::class, 'changePassword'])->name('user-change-password');
+        Route::post('/change-password',     [AuthController::class, 'changePasswordAction'])->name('user-change-password-action');
+        Route::get('/update-profile',       [AuthController::class, 'updateProfile'])->name('user-update-profile');
+        Route::post('/update-profile',      [AuthController::class, 'updateProfileAction'])->name('user-update-profile-action');
 
         //        Route::get('/', [DashboardController::class, 'index'])->name('user-dashboard');
-        Route::get('/transactions', [BuySellController::class, 'index'])->name('user-transactions');
-        Route::get('/wallets', [WalletController::class, 'wallets'])->name('user-wallets');
-        Route::post('/wallets', [WalletController::class, 'derivativedeposit'])->name('derivativedeposit');
+        Route::get('/transactions',         [BuySellController::class, 'index'])->name('user-transactions');
+        Route::get('/wallets',              [WalletController::class, 'wallets'])->name('user-wallets');
+    Route::post('/wallets',                 [WalletController::class, 'derivativedeposit'])->name('derivativedeposit');
 
         Route::prefix('wallet')->group(function () {
-            Route::get('/', [WalletController::class, 'index'])->name('user-wallet');
-            Route::get('/deposit', [WalletController::class, 'deposit'])->name('user-deposit');
-            Route::post('/deposit', [WalletController::class, 'depositAction'])->name('user-deposit-action');
-            Route::get('/withdraw', [WalletController::class, 'withdraw'])->name('user-withdraw');
-            Route::post('/withdraw', [WalletController::class, 'withdrawAction'])->name('user-withdraw-action');
+            Route::get('/',                 [WalletController::class, 'index'])->name('user-wallet');
+            Route::get('/deposit',          [WalletController::class, 'deposit'])->name('user-deposit');
+            Route::post('/deposit',         [WalletController::class, 'depositAction'])->name('user-deposit-action');
+            Route::get('/withdraw',         [WalletController::class, 'withdraw'])->name('user-withdraw');
+            Route::post('/withdraw',        [WalletController::class, 'withdrawAction'])->name('user-withdraw-action');
 
             //Gateway
-            Route::post('/hcgenerate', [WalletController::class, 'hcgenerate'])->name('hcgenerate');
+            Route::post('/hcgenerate',      [WalletController::class, 'hcgenerate'])->name('hcgenerate');
             Route::post('/getwayUriResponse', [WalletController::class, 'getwayUriResponse'])->name('getwayUriResponse');
             Route::get('/getwayPaymentReceipt', [WalletController::class, 'getwayPaymentReceipt'])->name('getwayPaymentReceipt');
-            Route::get('/getwayReturnUrl', [WalletController::class, 'getwayReturnUrl'])->name('getwayReturnUrl');
+            Route::get('/getwayReturnUrl',  [WalletController::class, 'getwayReturnUrl'])->name('getwayReturnUrl');
             Route::get('/getwaylinkprocess/{amount}/{gatewaylink}', [WalletController::class, 'getwayLinkProcess'])->name('getwayLinkProcess');
         });
 
-        Route::get('/message', [MessageController::class, 'index'])->name('user-message');
-        Route::post('/send-message', [MessageController::class, 'send'])->name('user-send-message');
-        Route::get('/get-message', [MessageController::class, 'getMessages'])->name('user-get-message');
+        Route::get('/message',              [MessageController::class, 'index'])->name('user-message');
+        Route::post('/send-message',        [MessageController::class, 'send'])->name('user-send-message');
+        Route::get('/get-message',          [MessageController::class, 'getMessages'])->name('user-get-message');
 
-        Route::get('/trade', [TradeController::class, 'index'])->name('user-trade');
+        Route::get('/trade',                [TradeController::class, 'index'])->name('user-trade');
         Route::get('/trade?type=derivative', [TradeController::class, 'index'])->name('user-trade-derivative');
-        Route::get('/trade-finance', [TradeController::class, 'finance'])->name('user-trade-finance');
+        Route::get('/trade-finance',        [TradeController::class, 'finance'])->name('user-trade-finance');
         Route::post('/trade-finance-entry', [TradeController::class, 'insertFinance'])->name('user-trade-finance-entry');
-        Route::get('/get-chart-data', [TradeController::class, 'getChartData'])->name('user-get-chart-data');
-        Route::post('/trade-buy', [TradeController::class, 'buy'])->name('user-trade-buy');
-        Route::post('/trade-sell', [TradeController::class, 'sell'])->name('user-trade-sell');
+        Route::get('/get-chart-data',       [TradeController::class, 'getChartData'])->name('user-get-chart-data');
+        Route::post('/trade-buy',           [TradeController::class, 'buy'])->name('user-trade-buy');
+        Route::post('/trade-sell',          [TradeController::class, 'sell'])->name('user-trade-sell');
 
-        Route::post('/limit-buy', [TradeController::class, 'limitBuy'])->name('user-limit-buy');
-        Route::post('/limit-sell', [TradeController::class, 'limitSell'])->name('user-limit-sell');
-        Route::post('/limit-delete', [TradeController::class, 'limitDelete'])->name('user-limit-delete');
+        Route::post('/limit-buy',           [TradeController::class, 'limitBuy'])->name('user-limit-buy');
+        Route::post('/limit-sell',          [TradeController::class, 'limitSell'])->name('user-limit-sell');
+        Route::post('/limit-delete',        [TradeController::class, 'limitDelete'])->name('user-limit-delete');
         Route::get('/getBuySellPendingData', [TradeController::class, 'getBuySellPendingData'])->name('get-buy-sell-pending-data');
 
     });

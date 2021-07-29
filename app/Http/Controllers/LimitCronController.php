@@ -9,6 +9,7 @@ use App\Models\LimitBuySell;
 use App\Models\TransactionHistory;
 use App\Models\User;
 use App\Models\UserWallet;
+use App\Models\CronTrack;
 use App\Models\Message; //for cron testing, remove later
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -21,14 +22,10 @@ class LimitCronController extends Controller
     use CurrentMABPrice;
     public function limitCronJob(){
         //test if the cron works
-        //$test = new Message();
-        //$test->message = "there you go";
-        //$test->type = 1;
-        //$test->status = 1;
-        //$test->read_by_admin = 1;
-        //$test->read_by_user = 1;
-        //$test->user_id = 10;
-        //$test->save();
+        $test = CronTrack::where('id', 1)->first();
+        $test->limitcron = date('Y-m-d H:i:s');
+        $test->save();
+
         $mabLast = $this->getCurrentPrice()['lastval'];
         $Bitfinex = new Bitfinex();
         $limitPrice = LimitBuySell::where("transactionStatus", 1)->with("currency")->get();
@@ -45,17 +42,19 @@ class LimitCronController extends Controller
                         //For saving Trade & derivative Amount in User table(derivative/balance)
                         $leverage = 1;
                         if(isset($data->derivative)){
+                            if (($user->derivative - ($data->currencyAmount * $getCurrentRate) / $data->derivative) < 0){
+                                continue;
+                            }
                             $leverage = $data->derivative;
-                            $user->derivative = $user->derivative - ($data->currencyAmount * $data->priceLimit) / $data->derivative;
+                            $user->derivative = $user->derivative - ($data->currencyAmount * $getCurrentRate) / $data->derivative;
                         }
                         $user->save();
-                        // derivativeLoan
                         try{
                             $TransactionHistory= new TransactionHistory();
                             $TransactionHistory->amount = $data->currencyAmount;
-                            $TransactionHistory->equivalent_amount = $data->currencyAmount * $data->priceLimit;
-                            $TransactionHistory->derivativeUserMoney = ($data->currencyAmount * $data->priceLimit) / $data->derivative;
-                            $TransactionHistory->derivativeLoan = ($data->currencyAmount * $data->priceLimit) * (1 - (1 / $data->derivative));
+                            $TransactionHistory->equivalent_amount = $data->currencyAmount * $getCurrentRate;
+                            $TransactionHistory->derivativeUserMoney = ($data->currencyAmount * $getCurrentRate) / $data->derivative;
+                            $TransactionHistory->derivativeLoan = ($data->currencyAmount * $getCurrentRate) * (1 - (1 / $data->derivative));
                             if ($data->type == 'buy'){
                                 $TransactionHistory->type = 1;
                             } else {
@@ -70,10 +69,10 @@ class LimitCronController extends Controller
                                 $LeverageWallet = new Leverage_Wallet();
                                 $LeverageWallet->amount = $data->currencyAmount;
                                 $LeverageWallet->trade_type = $data->type;
-                                $LeverageWallet->equivalent_amount = $data->currencyAmount * $data->priceLimit;
-                                $LeverageWallet->derivative_currency_price = $data->priceLimit;
-                                $LeverageWallet->derivativeUserMoney = ($data->currencyAmount * $data->priceLimit) / $data->derivative;
-                                $LeverageWallet->derivativeLoan = ($data->currencyAmount * $data->priceLimit) * (1 - (1 / $data->derivative));
+                                $LeverageWallet->equivalent_amount = $data->currencyAmount * $getCurrentRate;
+                                $LeverageWallet->derivative_currency_price = $getCurrentRate;
+                                $LeverageWallet->derivativeUserMoney = ($data->currencyAmount * $getCurrentRate) / $data->derivative;
+                                $LeverageWallet->derivativeLoan = ($data->currencyAmount * $getCurrentRate) * (1 - (1 / $data->derivative));
                                 $LeverageWallet->type = 1;
                                 $LeverageWallet->leverage = $data->derivative;
                                 $LeverageWallet->user_id = $user->id;
@@ -96,17 +95,19 @@ class LimitCronController extends Controller
                         //For saving Trade & derivative Amount in User table(derivative/balance)
                         $leverage = 1;
                         if(isset($data->derivative)){
+                            if (($user->derivative - ($data->currencyAmount * $getCurrentRate) / $data->derivative) < 0){
+                                continue;
+                            }
                             $leverage = $data->derivative;
-                            $user->derivative = $user->derivative - ($data->currencyAmount * $data->priceLimit) / $data->derivative;
+                            $user->derivative = $user->derivative - ($data->currencyAmount * $getCurrentRate) / $data->derivative;
                         }
                         $user->save();
-                        // derivativeLoan
                         try{
                             $TransactionHistory= new TransactionHistory();
                             $TransactionHistory->amount = $data->currencyAmount;
-                            $TransactionHistory->equivalent_amount = $data->currencyAmount * $data->priceLimit;
-                            $TransactionHistory->derivativeUserMoney = ($data->currencyAmount * $data->priceLimit) / $data->derivative;
-                            $TransactionHistory->derivativeLoan = ($data->currencyAmount * $data->priceLimit) * (1 - (1 / $data->derivative));
+                            $TransactionHistory->equivalent_amount = $data->currencyAmount * $getCurrentRate;
+                            $TransactionHistory->derivativeUserMoney = ($data->currencyAmount * $getCurrentRate) / $data->derivative;
+                            $TransactionHistory->derivativeLoan = ($data->currencyAmount * $getCurrentRate) * (1 - (1 / $data->derivative));
                             if ($data->type == 'buy'){
                                 $TransactionHistory->type = 1;
                             } else {
@@ -121,10 +122,10 @@ class LimitCronController extends Controller
                                 $LeverageWallet = new Leverage_Wallet();
                                 $LeverageWallet->amount = $data->currencyAmount;
                                 $LeverageWallet->trade_type = $data->type;
-                                $LeverageWallet->equivalent_amount = $data->currencyAmount * $data->priceLimit;
-                                $LeverageWallet->derivative_currency_price = $data->priceLimit;
-                                $LeverageWallet->derivativeUserMoney = ($data->currencyAmount * $data->priceLimit) / $data->derivative;
-                                $LeverageWallet->derivativeLoan = ($data->currencyAmount * $data->priceLimit) * (1 - (1 / $data->derivative));
+                                $LeverageWallet->equivalent_amount = $data->currencyAmount * $getCurrentRate;
+                                $LeverageWallet->derivative_currency_price = $getCurrentRate;
+                                $LeverageWallet->derivativeUserMoney = ($data->currencyAmount * $getCurrentRate) / $data->derivative;
+                                $LeverageWallet->derivativeLoan = ($data->currencyAmount * $getCurrentRate) * (1 - (1 / $data->derivative));
                                 $LeverageWallet->type = 1;
                                 $LeverageWallet->leverage = $data->derivative;
                                 $LeverageWallet->user_id = $user->id;
@@ -146,7 +147,7 @@ class LimitCronController extends Controller
                     if($getCurrentRate <= $data->priceLimit){
                         $this->updateLimitBuyTable($data->currency->id, $data->id, $data->user_id);
                     }
-                //For Sell
+                    //For Sell
                 }else if($data->limitType == 2){
                     if($getCurrentRate >= $data->priceLimit){
                         $this->updateLimitSellTable($data->currency->id, $data->id, $data->user_id);
@@ -223,16 +224,13 @@ class LimitCronController extends Controller
             $UserWallet->balance =  $UserWallet->balance - $equivalent_trade_balance_limit;
             $UserWallet->equivalent_trade_amount = $UserWallet->equivalent_trade_amount - $equivalent_trade_amount_limit;
             $UserWallet->save();
+
+            if ($UserWallet->balance == 0.00000000){
+                $UserWallet->delete();
+            }
         }
-
-
         $userBalance->balance = $userBalance->balance + $equivalent_trade_amount_limit;
-
         $userBalance->save();
-        if ($UserWallet->balance == 0.00000000){
-            $UserWallet->delete();
-        }
-
 
         try{
             $TransactionHistory= new TransactionHistory();

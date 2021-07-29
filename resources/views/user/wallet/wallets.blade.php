@@ -10,6 +10,20 @@
             background-color: #102331;
         }
 
+        .tradeType-select{
+            width: 150px;
+            background-color: #102331;
+            border: #102331;
+            color: white;
+            height: 25px;
+        }
+
+        .asset-input{
+            background-color: #102331;
+            border: 1px solid #102331;
+            color: white
+        }
+
     </style>
 @endsection
 
@@ -75,12 +89,29 @@
                         <li class="row list-group-item d-flex justify-content-between align-items-center ">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName{{$index}}" style="text-align: left;">{{($item->currency->name == 'ADA') ? 'MAB' : $item->currency->name}}</p>
                             <p class="col txtWhitecolor" id="MyTotalCoinSize{{$index}}" style="text-align: left;">{!! number_format((double)($item->balance),5)!!}</p>
-{{--                            <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}" style="text-align: center;">{!! number_format((double)($item->equivalent_trade_amount),5)!!}</p>--}}
+                            {{--<p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}" style="text-align: center;">{!! number_format((double)($item->equivalent_trade_amount),5)!!}</p>--}}
                             <p class="col txtWhitecolor" id="MyTotalCoinAmount{{$index}}" style="text-align: center;">{!! number_format((double)($item->currency_price),5)!!}</p>
                             <p class="col txtWhitecolor" id="CoinpriceIntoMycoin{{$index}}" style="text-align: center;">00.00</p>
                             <p class="col " id="unrealizedpnl{{$index}}" style="text-align: right;">00.00</p>
                             <p class="col d-none" id="totalTradeAmount{{$index}}" style="text-align: right;color: #00aced">000.00</p>
-                            <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetTradeSell{{$index}}" style="cursor: pointer;" onclick="trade_Sell_Function('{{$index}}')" >{{__('title9')}}</span></p>
+                            <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetTradeSell{{$index}}" style="cursor: pointer;" onclick="toggleForm('{{$index}}')" >{{__('title9')}}</span></p>
+                            {{--<p class="col txtHeadingColor"  style="text-align: right;"><span id="assetTradeSell{{$index}}" style="cursor: pointer;" onclick="trade_Sell_Function('{{$index}}')" >{{__('title9')}}</span></p>--}}
+                        </li>
+                        <li class="row list-group-item d-flex justify-content-between align-items-center" id="{{$index}}" style="display: none !important">
+                            <span class="col txtWhitecolor" style="text-align: right">
+                                <select name="tradeType_{{$index}}" id="tradeType_{{$index}}" class="tradeType-select" onchange="limitAmountShow({{$index}})">
+                                  <option value="0">Market</option>
+                                  <option value="1">Limit</option>
+                                </select>
+                            </span>
+                            <span class="col txtWhitecolor" style="text-align: center">
+                                <input class="asset-input" id="trade-amount_{{$index}}" name="trade-amount" placeholder="Currency amount"/>
+                            </span>
+                            <span class="col txtWhitecolor" style="text-align: center">
+                                <input class="asset-input" id="limit-rate_{{$index}}" name="limit-rate" placeholder="Limit amount" disabled/>
+                            </span>
+                            <input type="hidden" id="id_{{$index}}" name="id_{{$index}}" value="{{$item->id}}">
+                            <span class="col txtHeadingColor" style="text-align: left; cursor: pointer" onclick="trade('{{$index}}')">Submit</span>
                         </li>
                         <?php
                         }
@@ -141,7 +172,24 @@
                             <p class="col txtWhitecolor" id="derivativePercent{{$j}}" style="text-align: right; color:white;">{{$item->leverage}}</p>
                             <p class="col d-none" id="totalDerivativeAmount{{$j}}" style="text-align: right;color: #00aced">000.00</p>
                             <p class="col d-none" id="id{{$j}}">{{$item->id}}</p>
-                            <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetDerivativeSell{{$j}}"  style="cursor: pointer;" onclick="derivative_Sell_Function('{{$j}}')">{{__('title9')}}</span></p>
+                            <p class="col txtHeadingColor"  style="text-align: right;"><span id="assetDerivativeSell{{$j}}"  style="cursor: pointer;" onclick="toggleForm('derivative_{{$j}}')">{{__('title9')}}</span></p>
+                            {{--<p class="col txtHeadingColor"  style="text-align: right;"><span id="assetDerivativeSell{{$j}}"  style="cursor: pointer;" onclick="derivative_Sell_Function('{{$j}}')">{{__('title9')}}</span></p>--}}
+                        </li>
+                        <li class="row list-group-item d-flex justify-content-between align-items-center" id="derivative_{{$j}}" style="display: none !important">
+                            <span class="col txtWhitecolor" style="text-align: right">
+                                <select name="tradeType_derivative_{{$j}}" id="tradeType_derivative_{{$j}}" class="tradeType-select" onchange="limitAmountShowDerivative({{$j}})">
+                                  <option value="0">Market</option>
+                                  <option value="1">Limit</option>
+                                </select>
+                            </span>
+                            <span class="col txtWhitecolor" style="text-align: center">
+                                <input class="asset-input" id="trade-amount_derivative_{{$j}}" name="trade-amount_derivative_{{$j}}" placeholder="Currency amount"/>
+                            </span>
+                            <span class="col txtWhitecolor" style="text-align: center">
+                                <input class="asset-input" id="limit-rate_derivative_{{$j}}" name="limit-rate_derivative_{{$j}}" placeholder="Limit amount" disabled/>
+                            </span>
+                            <input type="hidden" id="id_{{$j}}" name="id_derivative_{{$j}}" value="{{$item->id}}">
+                            <span class="col txtHeadingColor" style="text-align: left; cursor: pointer" onclick="trade('{{$j}}')">Submit</span>
                         </li>
                         <?php
                         }
@@ -284,9 +332,10 @@
 
             for (let tupnl = 0; tupnl < indexNumber; tupnl++) {
                var tradeUnrealizedpnlid = document.getElementById('unrealizedpnl'+ tupnl);
+               var amountId = parseFloat($('#MyTotalCoinSize' + tupnl).text().replace(',', ''));
                let tradeEntryPrice = parseFloat($('#MyTotalCoinAmount' + tupnl).text().replace(',', ''));
                let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + tupnl).html());
-               let tradeUnrealizedpnl = tradeMarkPrice - tradeEntryPrice;
+               let tradeUnrealizedpnl = (tradeMarkPrice - tradeEntryPrice) * amountId;
 
                 if (tradeUnrealizedpnl < 0){
                     parseFloat($('#unrealizedpnl'+ tupnl).html((tradeUnrealizedpnl).toFixed(5)));
@@ -350,11 +399,20 @@
 
             for (let dupnl = 1; dupnl <= indexNumber2; dupnl++) {
                 var derivativeUnrealizedpnlid = document.getElementById('derivativeUnrealizedPrice'+ dupnl);
+                var derivativeAmountId = parseFloat($('#MyTotalCoinAmount2' + dupnl).html().replace(',',''));
+                var type = $('#type' + dupnl).html();
                 let derivativeEntryPrice = parseFloat($('#derivativeEntryPrice' + dupnl).html().replace(',',''));
                 let derivativeMarkPrice = parseFloat($('#CoinpriceintoMycoin2' + dupnl).html());
                 let derivativeCurrencyEntryPrice = parseFloat($('#derivativeCurrencyEntryPrice' + dupnl).html().replace(',',''));
                 let derivativeCurrencyMarkPrice = parseFloat($('#CoinpriceintoMyCurrency' + dupnl).html());
-                let derivativeUnrealizedpnl = parseFloat(derivativeCurrencyMarkPrice - derivativeCurrencyEntryPrice);
+                console.log(type);
+                let derivativeUnrealizedpnl = 0.00;
+                if (type === 'buy'){
+                    derivativeUnrealizedpnl = parseFloat(derivativeCurrencyEntryPrice - derivativeCurrencyMarkPrice) * derivativeAmountId;
+                } else {
+                    derivativeUnrealizedpnl = parseFloat(derivativeCurrencyMarkPrice - derivativeCurrencyEntryPrice) * derivativeAmountId;
+                }
+
                 if (derivativeUnrealizedpnl < 0){
                     parseFloat($('#derivativeUnrealizedPrice'+ dupnl ).html((derivativeUnrealizedpnl).toFixed(5)));
                     derivativeUnrealizedpnlid.style.color = '#dc3545'
@@ -492,6 +550,143 @@
                 } else {
                     bt.disabled = true;
                 }
+            }
+        }
+
+        function toggleForm(id){
+            console.log(id);
+            var elems = document.getElementById(id);
+            if (elems.style.display === 'block'){
+                elems.style.cssText += ';display:none !important;'
+            } else {
+                elems.style.cssText += ';display:block !important;'
+            }
+        }
+
+        function trade(index){
+            //for regular trade
+            var tradeType = $('#tradeType_'+index).val();
+            var tradelimitRate = parseFloat($('#limit-rate_'+index).val());
+            var tradeamount = parseFloat($('#trade-amount_'+index).val());
+            var tradeCurrency = $('#MyCoinCurrencyName'+index).html();
+            var tradePrice = parseFloat($('#CoinpriceIntoMycoin'+index).html());
+            var tradeId = $('#id_'+index).val();
+
+            //for derivative trade
+            var tradeTypeDerivative = $('#tradeType_derivative_'+index).val();
+            var tradelimitRateDerivative = parseFloat($('#limit-rate_derivative_'+index).val());
+            var tradeamountDerivative = parseFloat($('#trade-amount_derivative_'+index).val());
+            var tradeCurrencyDerivative = $('#MyCoinCurrencyName2'+index).html();
+            var tradePriceDerivative = parseFloat($('#CoinpriceintoMyCurrency'+index).html());
+            var tradeIdDerivative = $('#id_'+index).val();
+
+            let tradeCurrencySize = parseFloat($('#MyTotalCoinSize' + index).html());
+            var tradeCurrencySizeDerivative = parseFloat($('#MyTotalCoinAmount2'+index).html());
+
+            // showLoader('Processing...');
+            if (tradeType == "0" || tradeType == "1"){
+                if (tradeamount > tradeCurrencySize){
+                    toastr.error('Invalid amount !!');
+                    return false;
+                }
+                if (tradeType == "0"){
+                    axios.post('{{route("user-trade-sell", app()->getLocale())}}', {
+                        currency        : tradeCurrency,
+                        sellAmount      : tradeamount,
+                        calcSellAmount  : tradePrice * tradeamount
+                    }).then(function (response) {
+                        if(response.data.status){
+                            toastr.success('Trade successfull');
+                            window.location.reload();
+                            return false;
+                        }
+                        toastr.error('Invalid data provided !!');
+                    }).catch(function (error) {
+                        toastr.error('Invalid data provided !!');
+                    });
+                } else {
+                    derivative = 0;
+                    axios.post('{{route("user-limit-sell", app()->getLocale())}}', {
+                        currency            : tradeCurrency,
+                        limitType           : 2,
+                        priceLimit          : tradelimitRate,
+                        currencyAmount      : tradeamount,
+                        transactionStatus   : 1,
+                        derivative          : derivative
+                    }).then(function (response) {
+                        if(response.data.status){
+                            toastr.success('Trade successfull');
+                            window.location.reload();
+                            return false;
+                        }
+                        toastr.error('Error occured !!');
+                    }).catch(function (error) {
+                        toastr.error('Error occured !!');
+                    });
+                }
+
+            } else {
+                if (tradeamountDerivative > tradeCurrencySizeDerivative){
+                    toastr.error('Invalid amount !!');
+                    return false;
+                }
+                if (tradeTypeDerivative == "0"){
+                    derivative = 0;
+                    axios.post('{{route("user-trade-sell", app()->getLocale())}}', {
+                        currency: tradeCurrencyDerivative,
+                        sellAmount: tradeamountDerivative,
+                        calcSellAmount: tradePriceDerivative * tradeamountDerivative,
+                        derivativeType: '0',
+                        id: tradeIdDerivative
+                    }).then(function (response) {
+                        if(response.data.status){
+                            toastr.success('Trade successfull');
+                            window.location.reload();
+                            return false;
+                        }
+                        toastr.error('Error occured !!');
+                    }).catch(function (error) {
+                        toastr.error('Error occured !!');
+                    });
+                } else {
+                    var derivative = parseInt($('#derivativePercent'+index).html());
+                    console.log(derivative);
+                    axios.post('{{route("user-limit-sell", app()->getLocale())}}', {
+                        currency            : tradeCurrencyDerivative,
+                        limitType           : 2,
+                        priceLimit          : tradelimitRateDerivative,
+                        currencyAmount      : tradeamountDerivative,
+                        transactionStatus   : 1,
+                        derivative          : derivative
+                    }).then(function (response) {
+                        if(response.data.status){
+                            toastr.success('Trade successfull');
+                            window.location.reload();
+                            return false;
+                        }
+                        toastr.error('Error occured !!');
+                    }).catch(function (error) {
+                        toastr.error('Error occured !!');
+                    });
+                }
+            }
+        }
+
+        function limitAmountShow(id){
+            if ($('#tradeType_' + id).val() == 1){
+                $('#limit-rate_' + id ).attr('disabled', false);
+            } else {
+                $('#limit-rate_' + id ).attr('disabled', true);
+            }
+        }
+
+        function limitAmountShowDerivative(id){
+            console.log($('#tradeType_derivative_' + id).val());
+            if ($('#tradeType_derivative_' + id).val() == 1){
+                $('#limit-rate_derivative_' + id ).attr('disabled', false);
+            } else {
+                $('#limit-rate_derivative_' + id ).attr('disabled', true);
+                $('#limit-rate_derivative_' + id ).val('');
             }
         }
     </script>

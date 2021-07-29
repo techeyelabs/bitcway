@@ -70,7 +70,6 @@
                             @error('email')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
-
                         </div>
 
                         <button type="submit" onclick="updateProfile()" class="btn btn-outline-warning float-end">{{__('button13')}}</button>

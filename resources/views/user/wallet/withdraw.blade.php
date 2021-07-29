@@ -47,7 +47,6 @@
                             @error('amount')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
-                            <label class="txtWhitecolor mt-3" for="">{{Auth::user()->wallet_id}}</label>
                         </div>
                         <button class="btn btn-outline-warning float-end" id="withdrawBtn" v-on:click="withdraw"  disabled >{{__('button4')}}</button>
                             @endif

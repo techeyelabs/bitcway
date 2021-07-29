@@ -251,9 +251,8 @@ class TradeController extends Controller
         }
         $currency = Currency::where('name', $request->currency)->first();
         if(!$currency){
-            return response()->json(['status' => false]);
+            return response()->json(['status' => true]);
         }
-
         DB::beginTransaction();
         try {
             if (isset($request->derivativeType)) {
@@ -468,6 +467,7 @@ class TradeController extends Controller
         $limitSell->currency_id = $currency->id;
         if($request->derivative){
             $limitSell->derivative = $request->derivative;
+            $limitSell->type = "sell";
         }
         $limitSell->save();
 
@@ -504,6 +504,10 @@ class TradeController extends Controller
         $limitBuy = LimitBuySell ::find($request -> limitId);
         $limitBuy -> delete();
         return response() -> json(['status' => true]);
+    }
+
+    public function sellFromAsset(Request $request){
+        dd($request);
     }
 
 }

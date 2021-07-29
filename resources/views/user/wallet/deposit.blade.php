@@ -16,7 +16,8 @@
                             <label class="txtWhitecolor">{{__('col14')}} ({{__('minimumdeposit')}})</label>
                             <input type="number" class="form-control mb-2" aria-describedby="" name="amount" id="amount"
                                    value="{{old('amount')}}" placeholder="Enter amount in USD here..." required v-model="amount" v-on:keyup="hcgenerate">
-                            <small class="DarkGrayColor">{{__('tranfee1')}}<span id="percentAmount">00</span> USD ({{__('tranfee2')}})</small>
+                            <small class="DarkGrayColor">{{__('tranfee1')}}<span id="percentAmount">00</span> USD ({{__('tranfee2')}})</small><br/>
+                            <small class="DarkGrayColor" style="font-size: 16px; color: white !important">BTC Address : <span id="wallet_address"></span>{{Auth::user()->wallet_id}}</small>
                             @error('amount')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -27,15 +28,14 @@
                         <button class="btn btn-outline-warning float-end" :disabled="amount <= 99" onclick="gatewaypost()">{{__('button3')}}</button>
 
                         <div class="BITCPaymentGateway d-none ">
-                                <input type = "text" name = "hash_key" id="hash_key" value = "{{$hash_key}}">
-                                <input type = "text" name = "site_id" id="site_id" value = "{{$site_id}}">
-                                <input type ="number" name = "trading_id" id="trading_id" value = "{{$trading_id}}">
-                                <input type = "number" name ="amount" id="rate" value = "">
-                                <input type ="text" name = "hc" id="hc" value = "">
+                            <input type = "text" name = "hash_key" id="hash_key" value = "{{$hash_key}}">
+                            <input type = "text" name = "site_id" id="site_id" value = "{{$site_id}}">
+                            <input type ="number" name = "trading_id" id="trading_id" value = "{{$trading_id}}">
+                            <input type = "number" name ="amount" id="rate" value = "">
+                            <input type ="text" name = "hc" id="hc" value = "">
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
