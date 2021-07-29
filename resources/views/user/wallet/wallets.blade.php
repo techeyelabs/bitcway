@@ -39,7 +39,10 @@
                     <div class="row container-fluid" >
                         <div class="  text-left " style="margin-left: -15px;">
                             <abbr title="{{__('your_total_margin_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_margin_balance')}}</abbr><br>
-                            <h4 class="txtWhitecolor text-left mb-4" ><span id="totalMArginBalanceId">00.00</span><span style="font-size: 10px">&nbsp; USD</span></h4>
+                            <h4 class="txtWhitecolor text-left mb-4" >
+                                <span id="totalMArginBalanceId">{{$userBalance->balance}}</span><span style="font-size: 10px">&nbsp; USD</span>
+                                <span id="walletbalanceToAdd" style="display: none">{{$userBalance->balance}}</span>
+                            </h4>
                             <div class="col-md-12 row">
                                 <div class="col-md-8">
                                     <abbr title="{{__('your_total_wallet_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_wallet_balance')}}</abbr><br>
@@ -111,7 +114,7 @@
                                 <input class="asset-input" id="limit-rate_{{$index}}" name="limit-rate" placeholder="Limit price" disabled/>
                             </span>
                             <input type="hidden" id="id_{{$index}}" name="id_{{$index}}" value="{{$item->id}}">
-                            <span class="col txtHeadingColor" style="text-align: left; cursor: pointer" onclick="trade('{{$index}}')">Submit</span>
+                            <span class="col txtHeadingColor" style="text-align: left; cursor: pointer" onclick="trade('{{$index}}', 'trade')">Submit</span>
                         </li>
                         <?php
                         }
@@ -188,8 +191,8 @@
                             <span class="col txtWhitecolor" style="text-align: center">
                                 <input class="asset-input" id="limit-rate_derivative_{{$j}}" name="limit-rate_derivative_{{$j}}" placeholder="Limit price" disabled/>
                             </span>
-                            <input type="hidden" id="id_{{$j}}" name="id_derivative_{{$j}}" value="{{$item->id}}">
-                            <span class="col txtHeadingColor" style="text-align: left; cursor: pointer" onclick="trade('{{$j}}')">Submit</span>
+                            <input type="hidden" id="id_derivative_{{$j}}" name="id_derivative_{{$j}}" value="{{$item->id}}">
+                            <span class="col txtHeadingColor" style="text-align: left; cursor: pointer" onclick="trade('{{$j}}', 'derivative')">Submit</span>
                         </li>
                         <?php
                         }
@@ -331,11 +334,11 @@
             }
 
             for (let tupnl = 0; tupnl < indexNumber; tupnl++) {
-               var tradeUnrealizedpnlid = document.getElementById('unrealizedpnl'+ tupnl);
-               var amountId = parseFloat($('#MyTotalCoinSize' + tupnl).text().replace(',', ''));
-               let tradeEntryPrice = parseFloat($('#MyTotalCoinAmount' + tupnl).text().replace(',', ''));
-               let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + tupnl).html());
-               let tradeUnrealizedpnl = (tradeMarkPrice - tradeEntryPrice) * amountId;
+                var tradeUnrealizedpnlid = document.getElementById('unrealizedpnl'+ tupnl);
+                var amountId = parseFloat($('#MyTotalCoinSize' + tupnl).text().replace(',', ''));
+                let tradeEntryPrice = parseFloat($('#MyTotalCoinAmount' + tupnl).text().replace(',', ''));
+                let tradeMarkPrice = parseFloat($('#CoinpriceIntoMycoin' + tupnl).html());
+                let tradeUnrealizedpnl = (tradeMarkPrice - tradeEntryPrice) * amountId;
 
                 if (tradeUnrealizedpnl < 0){
                     parseFloat($('#unrealizedpnl'+ tupnl).html((tradeUnrealizedpnl).toFixed(5)));
@@ -408,9 +411,9 @@
                 console.log(type);
                 let derivativeUnrealizedpnl = 0.00;
                 if (type === 'buy'){
-                    derivativeUnrealizedpnl = parseFloat(derivativeCurrencyEntryPrice - derivativeCurrencyMarkPrice) * derivativeAmountId;
-                } else {
                     derivativeUnrealizedpnl = parseFloat(derivativeCurrencyMarkPrice - derivativeCurrencyEntryPrice) * derivativeAmountId;
+                } else {
+                    derivativeUnrealizedpnl = parseFloat(derivativeCurrencyEntryPrice - derivativeCurrencyMarkPrice) * derivativeAmountId;
                 }
 
                 if (derivativeUnrealizedpnl < 0){
@@ -461,14 +464,16 @@
             let tradeMargin = parseFloat($('#totalAmount').html());
             let derivativeMargin = parseFloat($('#totalDerivativeAmount').html());
             let financeMargin = parseFloat($('#totalFinanceAmount').html());
-            totalMargin = parseFloat(tradeMargin + derivativeMargin + financeMargin);
+            let wallet = parseFloat($('#walletbalanceToAdd').html());
+            let totalMargin = parseFloat(tradeMargin + derivativeMargin + financeMargin);
             if (isNaN(totalMargin)) {
                 parseFloat($('#totalMArginBalanceId').html("00.00"));
             }
             else if (totalMargin == 0){
-                parseFloat($('#totalMArginBalanceId').html("00.00"));
+                parseFloat($('#totalMArginBalanceId').html(wallet));
             }else{
-                parseFloat($('#totalMArginBalanceId').html((totalMargin).toFixed(5)));
+                let total = parseFloat(totalMargin) + parseFloat(wallet);
+                parseFloat($('#totalMArginBalanceId').html((total).toFixed(5)));
             }
         })
     </script>
@@ -563,7 +568,7 @@
             }
         }
 
-        function trade(index){
+        function trade(index, type){
             //for regular trade
             var tradeType = $('#tradeType_'+index).val();
             var tradelimitRate = parseFloat($('#limit-rate_'+index).val());
@@ -578,13 +583,13 @@
             var tradeamountDerivative = parseFloat($('#trade-amount_derivative_'+index).val());
             var tradeCurrencyDerivative = $('#MyCoinCurrencyName2'+index).html();
             var tradePriceDerivative = parseFloat($('#CoinpriceintoMyCurrency'+index).html());
-            var tradeIdDerivative = $('#id_'+index).val();
+            var tradeIdDerivative = $('#id_derivative_'+index).val();
 
             let tradeCurrencySize = parseFloat($('#MyTotalCoinSize' + index).html());
             var tradeCurrencySizeDerivative = parseFloat($('#MyTotalCoinAmount2'+index).html());
 
             // showLoader('Processing...');
-            if (tradeType == "0" || tradeType == "1"){
+            if (type == 'trade'){
                 if (tradeamount > tradeCurrencySize){
                     toastr.error('Invalid amount !!');
                     return false;
