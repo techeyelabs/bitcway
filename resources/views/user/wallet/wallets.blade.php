@@ -693,7 +693,7 @@
                         transactionStatus   : 1,
                         derivative          : derivative,
                         itemId              : derivativeItemId,
-                        derivativeTradeType : tradeTypeDerivative
+                        derivativeTradeType : derivativeTradeType
                     }).then(function (response) {
                         if(response.data.status){
                             toastr.success('Trade successfull');
