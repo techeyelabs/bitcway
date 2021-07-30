@@ -218,7 +218,7 @@
                             <tr>
                                 <td>{{$lst->limit_rate}}</td>
                                 <td>{{$lst->amount}}</td>
-                                <td>{{($lst->type == 1)? 'buy' : 'sell'}}</td>
+                                <td class={{($lst->type == 1)? 'text-success' : 'text-danger'}}>{{($lst->type == 1)? 'buy' : 'sell'}}</td>
                                 <td>{{$lst->currency->name}}</td>
                                 <td>
                                     <i class="fas fa-trash deleteEnabled" style="color: green;" onclick="settlementDelete('{{$lst->id}}')"></i>
