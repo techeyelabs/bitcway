@@ -50,8 +50,8 @@
                                 </div>
                                 <div class="col-md-4" style="margin-top: 3px;">
                                     <button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
-                                            data-bs-target="#derivativeModal" style="width: 100px;"
-                                            onclick="setFlag(1)">{{__('button11')}}
+                                        data-bs-target="#derivativeModal" style="width: 100px;"
+                                        onclick="setFlag(1)">{{__('button11')}}
                                     </button>
                                 </div>
                             </div>
@@ -155,7 +155,7 @@
                         </li>
                         <?php
                         $j = 0;
-                        foreach($transactionHistory as $index =>$item ){
+                        foreach($transactionHistory as $index => $item ){
                             if(($item->leverage) >= 1 ){
                                 $j++;
                         ?>
@@ -197,8 +197,36 @@
                         <?php
                         }
                         }
-
                         ?>
+                        <br/>
+                        <div class="mb-2" style="margin: auto">
+                            <div class="container-fluid">
+                                <div class="text-left" style="margin-left: -10px">
+                                    <abbr title="Derivative Wallet"  class="txtWhitecolor text-left initialism">Leverage trade limits</abbr><br>
+                                </div>
+                            </div>
+                        </div>
+                        <table style="min-width: 400px; color: white !important">
+                            <tr>
+                                <th>Limit</th>
+                                <th>Size</th>
+                                <th>Position</th>
+                                <th>SYMBOL</th>
+                                <th>Action</th>
+                            </tr>
+                            <?php foreach ($leverageSettlementLimits as $index => $lst ){ ?>
+                            <tr>
+                                <td>{{$lst->limit_rate}}</td>
+                                <td>{{$lst->amount}}</td>
+                                <td>{{($lst->type == 1)? 'buy' : 'sell'}}</td>
+                                <td>{{$lst->currency->name}}</td>
+                                <td>
+                                    <i class="fas fa-trash deleteEnabled" style="color: green;" onclick="settlementDelete('{{$lst->id}}')"></i>
+                                </td>
+                            </tr>
+                            <?php } ?>
+                        </table>
+
                         <p style="display: none;" id="myCoinIndex2">{{$j}}</p>
                     </ul>
                 </div>
@@ -584,6 +612,8 @@
             var tradeCurrencyDerivative = $('#MyCoinCurrencyName2'+index).html();
             var tradePriceDerivative = parseFloat($('#CoinpriceintoMyCurrency'+index).html());
             var tradeIdDerivative = $('#id_derivative_'+index).val();
+            var derivativeTradeType = $('#type'+index).html();
+            var derivativeItemId = parseInt($('#id'+index).html());
 
             let tradeCurrencySize = parseFloat($('#MyTotalCoinSize' + index).html());
             var tradeCurrencySizeDerivative = parseFloat($('#MyTotalCoinAmount2'+index).html());
@@ -655,14 +685,15 @@
                     });
                 } else {
                     var derivative = parseInt($('#derivativePercent'+index).html());
-                    console.log(derivative);
-                    axios.post('{{route("user-limit-sell", app()->getLocale())}}', {
+                    axios.post('{{route("user-limit-derivative-settlement", app()->getLocale())}}', {
                         currency            : tradeCurrencyDerivative,
                         limitType           : 2,
                         priceLimit          : tradelimitRateDerivative,
                         currencyAmount      : tradeamountDerivative,
                         transactionStatus   : 1,
-                        derivative          : derivative
+                        derivative          : derivative,
+                        itemId              : derivativeItemId,
+                        derivativeTradeType : tradeTypeDerivative
                     }).then(function (response) {
                         if(response.data.status){
                             toastr.success('Trade successfull');
@@ -675,6 +706,21 @@
                     });
                 }
             }
+        }
+
+        function settlementDelete(id){
+            axios.post('{{route("user-delete-settlement", app()->getLocale())}}', {
+                id : id,
+            }).then(function (response) {
+                if(response.data.status){
+                    toastr.success('Deletion successfull');
+                    window.location.reload();
+                    return false;
+                }
+                toastr.error('Error occured !!');
+            }).catch(function (error) {
+                toastr.error('Error occured !!');
+            });
         }
 
         function limitAmountShow(id){

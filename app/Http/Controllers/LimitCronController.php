@@ -10,12 +10,16 @@ use App\Models\TransactionHistory;
 use App\Models\User;
 use App\Models\UserWallet;
 use App\Models\CronTrack;
+use App\Models\LeverageSettlementLimit;
 use App\Models\Message; //for cron testing, remove later
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use mysql_xdevapi\Exception;
 use App\Traits\CurrentMABPrice;
+use GuzzleHttp\Client;
+
 
 class LimitCronController extends Controller
 {
@@ -153,6 +157,37 @@ class LimitCronController extends Controller
                         $this->updateLimitSellTable($data->currency->id, $data->id, $data->user_id);
                     }
                 }
+            }
+        }
+
+        $settlmentLimits = LeverageSettlementLimit::where('settlment_status', 0)->get();
+        foreach ($settlmentLimits as $index => $item){
+            try{
+                if ($item->type == 'buy'){
+                    $getCurrentRate = $Bitfinex->getRateBuySell('sell', $item->currency->name);
+                } else {
+                    $getCurrentRate = $Bitfinex->getRateBuySell('buy', $item->currency->name);
+                }
+                if ($item->limit_rate <= $item->price_at_time_of_creation && $item->price_at_time_of_creation <= $getCurrentRate || $item->limit_rate >= $item->price_at_time_of_creation && $item->price_at_time_of_creation >= $getCurrentRate){
+                    $client = new Client();
+                    $res = $client->request('POST', '/limit-sell', [
+                        'form_params' => [
+                            'currency'          => $item->currency->name,
+                            'limitType'         => 2,
+                            'priceLimit'        => $item->limit_rate,
+                            'currencyAmount'    => $item->amount,
+                            'transactionStatus' => 1,
+                            'derivative'        => $item->leverage,
+                        ]
+                    ]);
+
+                    if ($res->getStatusCode() == 200){
+                        $item->status = 1;
+                        $item->save();
+                    }
+                }
+            } catch (Exception $e){
+                continue;
             }
         }
     }

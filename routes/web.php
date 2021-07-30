@@ -129,14 +129,16 @@ Route::group(['prefix' => '{language}'], function () {
 
         Route::post('/limit-buy',           [TradeController::class, 'limitBuy'])->name('user-limit-buy');
         Route::post('/limit-sell',          [TradeController::class, 'limitSell'])->name('user-limit-sell');
+        Route::post('/delete-settlement',   [TradeController::class, 'deleteSettlementLimit'])->name('user-delete-settlement');
         Route::post('/limit-delete',        [TradeController::class, 'limitDelete'])->name('user-limit-delete');
+        Route::post('/limit-derivative-settlement', [TradeController::class, 'limitDerivativeSettlement'])->name('user-limit-derivative-settlement');
         Route::get('/getBuySellPendingData', [TradeController::class, 'getBuySellPendingData'])->name('get-buy-sell-pending-data');
 
     });
 
     Route::prefix('55Hyulosmwtche2173')->group(function () {
-        Route::get('/', [AdminAuthController::class, 'login'])->name('admin-login');
-        Route::post('/', [AdminAuthController::class, 'loginAction'])->name('admin-login-action');
+        Route::get('/',     [AdminAuthController::class, 'login'])->name('admin-login');
+        Route::post('/',    [AdminAuthController::class, 'loginAction'])->name('admin-login-action');
         Route::middleware(['auth:admin'])->group(function () {
             Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard');
             Route::get('/logout', [AdminAuthController::class, 'logout'])->name('admin-logout');

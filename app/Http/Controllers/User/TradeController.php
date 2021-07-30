@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\DerivativeSell;
 use App\Models\LimitBuySell;
+use App\Models\LeverageSettlementLimit;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User;
@@ -23,6 +24,7 @@ use App\Models\LockedSaving;
 use App\Models\Leverage_Wallet;
 use Illuminate\Support\Facades\DB;
 use mysql_xdevapi\Exception;
+use Validator;
 use function PHPUnit\Framework\countOf;
 
 class TradeController extends Controller
@@ -472,6 +474,47 @@ class TradeController extends Controller
         $limitSell->save();
 
         return response()->json(['status' => true]);
+    }
+
+    public function limitDerivativeSettlement(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'currency' => 'required|string',
+            'currencyAmount' => 'required',
+            'priceLimit' => 'required',
+            'itemId' => 'required|integer'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['status' => false]);
+        }
+        try {
+            if ($request->currency == 'MAB') {
+                $request->currency = 'ADA';
+            }
+            $currency = Currency::where('name', $request->currency)->first();  // Get currency
+            $settlement = new LeverageSettlementLimit();  // Object initiation
+            $settlement->user_id = Auth::user()->id;  // Assign user
+            $settlement->amount = $request->currencyAmount;  // Assign crypto amount
+            $settlement->limit_rate = $request->priceLimit;  // Assign limit
+            $settlement->currency_id = $currency->id;  // Assign currency Id
+            $settlement->type = $request->derivativeTradeType;  // Assign currency Id
+            $settlement->leverage_wallet_id = $request->itemId;  // Assign leverage wallet id
+            $settlement->save();
+
+            return response()->json(['status' => true]);
+        } catch (Exception $e) {
+            return response()->json(['status' => false]);
+        }
+    }
+
+    public function deleteSettlementLimit(Request $request){
+        $id = $request->id;
+        try{
+            LeverageSettlementLimit::where('id', $id)->delete();
+            return response()->json(['status' => true]);
+        } catch(Exception $e) {
+            return response()->json(['status' => false]);
+        }
     }
 
     public function getBuySellPendingData(Request $coinid)

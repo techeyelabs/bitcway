@@ -17,6 +17,7 @@ use App\Models\UserWallet;
 use App\Models\TransactionHistory;
 use App\Models\User;
 use App\Models\LockedSaving;
+use App\Models\LeverageSettlementLimit;
 use Carbon;
 
 use App\Traits\CurrentMABPrice;
@@ -235,6 +236,7 @@ class WalletController extends Controller
         $currentTime = Carbon\Carbon::now();
         $data['finances'] = LockedSaving::where('user_id', Auth::user()->id)->where('redemption_date', '>', $currentTime)->with('currency')->orderBy('id', 'DESC')->get();
         $data['current_price'] = $this->getCurrentPrice()['lastval'];
+        $data['leverageSettlementLimits'] = LeverageSettlementLimit::where('user_id', Auth::user()->id)->where('settlement_status', 0)->get();
         foreach ($data['wallets'] as $item) {
             $data['total'] += $item->balance * (is_numeric($Bitfinex->getRate($item->currency->name) ? $Bitfinex->getRate($item->currency->name) : 1));
         }
