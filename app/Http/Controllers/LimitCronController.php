@@ -144,8 +144,15 @@ class LimitCronController extends Controller
                     }
                 }
             } else {
+                if ($data->currency->name == 'ADA'){
+                    $getCurrentRate = $mabLast;
+                }
                 $flag = ($data->limitType == 1) ? 'buy' : 'sell';
                 $getCurrentRate = $Bitfinex->getRateBuySell($flag, $data->currency->name);
+                if ($data->currency->name == 'ADA'){
+                    $getCurrentRate = $mabLast;
+                }
+
                 //For Buy
                 if ($data->limitType == 1){
                     if($getCurrentRate <= $data->priceLimit){
