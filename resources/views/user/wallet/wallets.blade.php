@@ -140,7 +140,7 @@
                                 <td>{{$lst->currencyAmount}}</td>
                                 <td>{{($lst->currency->name == 'ADA')? 'MAB' : $lst->currency->name}}</td>
                                 <td>
-                                    <i class="fas fa-trash deleteEnabled" style="color: green;" onclick="tradeDelete('{{$lst->id}}')"></i>
+                                    <i class="fas fa-trash deleteEnabled" style="color: green; cursor: pointer" onclick="tradeDelete('{{$lst->id}}')"></i>
                                 </td>
                             </tr>
                             <?php } ?>
@@ -247,7 +247,7 @@
                                 <td class={{($lst->type == 1)? 'text-success' : 'text-danger'}}>{{($lst->type == 1)? 'buy' : 'sell'}}</td>
                                 <td>{{($lst->currency->name == 'ADA')? 'MAB' : $lst->currency->name}}</td>
                                 <td>
-                                    <i class="fas fa-trash deleteEnabled" style="color: green;" onclick="settlementDelete('{{$lst->id}}')"></i>
+                                    <i class="fas fa-trash deleteEnabled" style="color: green; cursor: pointer" onclick="settlementDelete('{{$lst->id}}')"></i>
                                 </td>
                             </tr>
                             <?php } ?>
