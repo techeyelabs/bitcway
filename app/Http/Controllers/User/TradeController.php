@@ -471,6 +471,9 @@ class TradeController extends Controller
             $limitSell->derivative = $request->derivative;
             $limitSell->type = "sell";
         }
+        if ($request->is_from_asset) {
+            $limitSell->is_from_asset = 1;
+        }
         $limitSell->save();
 
         return response()->json(['status' => true]);
@@ -511,6 +514,16 @@ class TradeController extends Controller
         $id = $request->id;
         try{
             LeverageSettlementLimit::where('id', $id)->delete();
+            return response()->json(['status' => true]);
+        } catch(Exception $e) {
+            return response()->json(['status' => false]);
+        }
+    }
+
+    public function deleteTradeAsset(Request $request){
+        $id = $request->id;
+        try{
+            LimitBuySell::where('id', $id)->delete();
             return response()->json(['status' => true]);
         } catch(Exception $e) {
             return response()->json(['status' => false]);

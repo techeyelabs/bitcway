@@ -119,6 +119,32 @@
                         <?php
                         }
                         ?>
+                        <br/>
+                        <div class="mb-2" style="margin: auto">
+                            <div class="container-fluid">
+                                <div class="text-left" style="margin-left: -10px">
+                                    <abbr title="Derivative Wallet"  class="txtWhitecolor text-left initialism">Trade limits</abbr><br>
+                                </div>
+                            </div>
+                        </div>
+                        <table style="min-width: 400px; color: white !important">
+                            <tr>
+                                <th>Limit</th>
+                                <th>Size</th>
+                                <th>SYMBOL</th>
+                                <th>Action</th>
+                            </tr>
+                            <?php foreach ($limitBuySell as $index => $lst ){ ?>
+                            <tr>
+                                <td>{{$lst->priceLimit}}</td>
+                                <td>{{$lst->currencyAmount}}</td>
+                                <td>{{($lst->currency->name == 'ADA')? 'MAB' : $lst->currency->name}}</td>
+                                <td>
+                                    <i class="fas fa-trash deleteEnabled" style="color: green;" onclick="tradeDelete('{{$lst->id}}')"></i>
+                                </td>
+                            </tr>
+                            <?php } ?>
+                        </table>
                         <p style="display: none;" id="myCoinIndex">{{$i}}</p>
                     </ul>
                 </div>
@@ -219,7 +245,7 @@
                                 <td>{{$lst->limit_rate}}</td>
                                 <td>{{$lst->amount}}</td>
                                 <td class={{($lst->type == 1)? 'text-success' : 'text-danger'}}>{{($lst->type == 1)? 'buy' : 'sell'}}</td>
-                                <td>{{$lst->currency->name}}</td>
+                                <td>{{($lst->currency->name == 'ADA')? 'MAB' : $lst->currency->name}}</td>
                                 <td>
                                     <i class="fas fa-trash deleteEnabled" style="color: green;" onclick="settlementDelete('{{$lst->id}}')"></i>
                                 </td>
@@ -647,7 +673,8 @@
                         priceLimit          : tradelimitRate,
                         currencyAmount      : tradeamount,
                         transactionStatus   : 1,
-                        derivative          : derivative
+                        derivative          : derivative,
+                        is_from_asset       : 1
                     }).then(function (response) {
                         if(response.data.status){
                             toastr.success('Trade successfull');
@@ -710,6 +737,21 @@
 
         function settlementDelete(id){
             axios.post('{{route("user-delete-settlement", app()->getLocale())}}', {
+                id : id,
+            }).then(function (response) {
+                if(response.data.status){
+                    toastr.success('Deletion successfull');
+                    window.location.reload();
+                    return false;
+                }
+                toastr.error('Error occured !!');
+            }).catch(function (error) {
+                toastr.error('Error occured !!');
+            });
+        }
+
+        function tradeDelete(id){
+            axios.post('{{route("user-delete-asset-trade", app()->getLocale())}}', {
                 id : id,
             }).then(function (response) {
                 if(response.data.status){
