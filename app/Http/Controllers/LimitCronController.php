@@ -153,7 +153,7 @@ class LimitCronController extends Controller
                     $getCurrentRate = $mabLast;
                 }
 
-                if ($data->limit_rate <= $data->price_at_time_of_creation && $data->price_at_time_of_creation <= $getCurrentRate || $data->limit_rate >= $data->price_at_time_of_creation && $data->price_at_time_of_creation >= $getCurrentRate){
+                if ($data->priceLimit <= $data->price_at_time_of_creation && $data->price_at_time_of_creation <= $getCurrentRate || $data->priceLimit >= $data->price_at_time_of_creation && $data->price_at_time_of_creation >= $getCurrentRate){
                     $this->updateLimitBuyTable($data->currency->id, $data->id, $data->user_id);
                 }
             }
