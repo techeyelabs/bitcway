@@ -439,6 +439,7 @@ class TradeController extends Controller
         $getCurrentRate = $Bitfinex->getRateBuySell('sell', $request->currency);
         if ($request->currency == 'MAB'){
             $request->currency = 'ADA';
+            $getCurrentRate = $this->getCurrentPrice()['lastval'];
         }
         $currency = Currency ::where('name', $request -> currency) -> first();
         $limitBuy = new LimitBuySell();
@@ -463,6 +464,7 @@ class TradeController extends Controller
         $getCurrentRate = $Bitfinex->getRateBuySell('sell', $request->currency);
         if ($request->currency == 'MAB'){
             $request->currency = 'ADA';
+            $getCurrentRate = $this->getCurrentPrice()['lastval'];
         }
         $currency = Currency::where('name', $request->currency)->first();
         $limitSell = new LimitBuySell();
