@@ -34,6 +34,7 @@ class Bitfinex
     }
 
     public function getRateBuySell($type, $coin1, $coin2 = 'USD'){
+        $coin1 = ($coin1 == 'MAB')?'ADA':$coin1;
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, "https://api-pub.bitfinex.com/v2/tickers?symbols=t".$coin1."USD");
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
