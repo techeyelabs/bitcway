@@ -456,6 +456,8 @@ class TradeController extends Controller
         return response() -> json(['status' => true]);
     }
     public function limitSell(Request $request){
+        $Bitfinex = new Bitfinex();
+        $getCurrentRate = $Bitfinex->getRateBuySell('sell', $request->currency);
         if ($request->currency == 'MAB'){
             $request->currency = 'ADA';
         }
@@ -467,6 +469,7 @@ class TradeController extends Controller
         $limitSell->transactionStatus = $request->transactionStatus;
         $limitSell->user_id = Auth::user()->id;
         $limitSell->currency_id = $currency->id;
+        $limitSell->price_at_time_of_creation = $getCurrentRate;
         if($request->derivative){
             $limitSell->derivative = $request->derivative;
             $limitSell->type = "sell";
@@ -490,7 +493,9 @@ class TradeController extends Controller
         if ($validator->fails()) {
             return response()->json(['status' => false]);
         }
+        $Bitfinex = new Bitfinex();
         try {
+            $getCurrentRate = $Bitfinex->getRateBuySell('sell', $request->currency);
             if ($request->currency == 'MAB') {
                 $request->currency = 'ADA';
             }
@@ -500,6 +505,7 @@ class TradeController extends Controller
             $settlement->amount = $request->currencyAmount;  // Assign crypto amount
             $settlement->limit_rate = $request->priceLimit;  // Assign limit
             $settlement->currency_id = $currency->id;  // Assign currency Id
+            $settlement->price_at_time_of_creation = $getCurrentRate;  // Get rate at time of creation
             $settlement->type = $request->derivativeTradeType;  // Assign currency Id
             $settlement->leverage_wallet_id = $request->itemId;  // Assign leverage wallet id
             $settlement->save();
