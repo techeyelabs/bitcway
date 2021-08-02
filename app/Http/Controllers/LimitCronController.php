@@ -160,7 +160,7 @@ class LimitCronController extends Controller
             }
         }
 
-        $settlmentLimits = LeverageSettlementLimit::where('settlment_status', 0)->get();
+        $settlmentLimits = LeverageSettlementLimit::where('settlement_status', 0)->get();
         foreach ($settlmentLimits as $index => $item){
             try{
                 if ($item->type == 'buy'){
