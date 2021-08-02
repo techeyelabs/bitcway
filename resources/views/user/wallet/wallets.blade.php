@@ -674,7 +674,8 @@
                         currencyAmount      : tradeamount,
                         transactionStatus   : 1,
                         derivative          : derivative,
-                        is_from_asset       : 1
+                        is_from_asset       : 1,
+                        lastPrice           : tradePrice
                     }).then(function (response) {
                         if(response.data.status){
                             toastr.success('Trade successfull');
@@ -720,7 +721,8 @@
                         transactionStatus   : 1,
                         derivative          : derivative,
                         itemId              : derivativeItemId,
-                        derivativeTradeType : derivativeTradeType
+                        derivativeTradeType : derivativeTradeType,
+                        lastPrice           : tradePriceDerivative
                     }).then(function (response) {
                         if(response.data.status){
                             toastr.success('Trade successfull');

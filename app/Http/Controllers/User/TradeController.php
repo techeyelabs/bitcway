@@ -469,7 +469,7 @@ class TradeController extends Controller
         $limitSell->transactionStatus = $request->transactionStatus;
         $limitSell->user_id = Auth::user()->id;
         $limitSell->currency_id = $currency->id;
-        $limitSell->price_at_time_of_creation = $getCurrentRate;
+        $limitSell->price_at_time_of_creation = $request->lastPrice;
         if($request->derivative){
             $limitSell->derivative = $request->derivative;
             $limitSell->type = "sell";
@@ -505,7 +505,7 @@ class TradeController extends Controller
             $settlement->amount = $request->currencyAmount;  // Assign crypto amount
             $settlement->limit_rate = $request->priceLimit;  // Assign limit
             $settlement->currency_id = $currency->id;  // Assign currency Id
-            $settlement->price_at_time_of_creation = $getCurrentRate;  // Get rate at time of creation
+            $settlement->price_at_time_of_creation = $request->lastPrice;  // Get rate at time of creation
             $settlement->type = $request->derivativeTradeType;  // Assign currency Id
             $settlement->leverage_wallet_id = $request->itemId;  // Assign leverage wallet id
             $settlement->save();
