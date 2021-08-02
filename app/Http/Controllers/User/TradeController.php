@@ -435,6 +435,8 @@ class TradeController extends Controller
 
     public function limitBuy(Request $request)
     {
+        $Bitfinex = new Bitfinex();
+        $getCurrentRate = $Bitfinex->getRateBuySell('sell', $request->currency);
         if ($request->currency == 'MAB'){
             $request->currency = 'ADA';
         }
@@ -446,6 +448,7 @@ class TradeController extends Controller
         $limitBuy -> transactionStatus = $request -> transactionStatus;
         $limitBuy -> user_id = Auth ::user() -> id;
         $limitBuy -> currency_id = $currency -> id;
+        $limitBuy -> price_at_time_of_creation = $getCurrentRate;
         if (isset($request -> type)){
             $limitBuy -> type = $request -> type;
         }
@@ -469,7 +472,11 @@ class TradeController extends Controller
         $limitSell->transactionStatus = $request->transactionStatus;
         $limitSell->user_id = Auth::user()->id;
         $limitSell->currency_id = $currency->id;
-        $limitSell->price_at_time_of_creation = $request->lastPrice;
+        if(isset($request->lastPrice)){
+            $limitSell->price_at_time_of_creation = $request->lastPrice;
+        } else {
+            $limitSell->price_at_time_of_creation = $getCurrentRate;
+        }
         if($request->derivative){
             $limitSell->derivative = $request->derivative;
             $limitSell->type = "sell";
