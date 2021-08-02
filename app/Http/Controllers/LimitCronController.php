@@ -41,7 +41,7 @@ class LimitCronController extends Controller
                     if ($data->currency->name == 'ADA'){
                         $getCurrentRate = $mabLast;
                     }
-                    if ($getCurrentRate <= $data->priceLimit){
+                    if ($data->priceLimit <= $data->price_at_time_of_creation && $data->price_at_time_of_creation <= $getCurrentRate || $data->priceLimit >= $data->price_at_time_of_creation && $data->price_at_time_of_creation >= $getCurrentRate){
                         $user = User::where('id', $data->user_id)->first();
                         //For saving Trade & derivative Amount in User table(derivative/balance)
                         $leverage = 1;
@@ -94,7 +94,7 @@ class LimitCronController extends Controller
                     if ($data->currency->name == 'ADA'){
                         $getCurrentRate = $mabLast;
                     }
-                    if ($getCurrentRate >= $data->priceLimit){
+                    if ($data->priceLimit <= $data->price_at_time_of_creation && $data->price_at_time_of_creation <= $getCurrentRate || $data->priceLimit >= $data->price_at_time_of_creation && $data->price_at_time_of_creation >= $getCurrentRate){
                         $user = User::where('id', $data->user_id)->first();
                         //For saving Trade & derivative Amount in User table(derivative/balance)
                         $leverage = 1;
@@ -152,7 +152,6 @@ class LimitCronController extends Controller
                 if ($data->currency->name == 'ADA'){
                     $getCurrentRate = $mabLast;
                 }
-
                 if ($data->priceLimit <= $data->price_at_time_of_creation && $data->price_at_time_of_creation <= $getCurrentRate || $data->priceLimit >= $data->price_at_time_of_creation && $data->price_at_time_of_creation >= $getCurrentRate){
                     $this->updateLimitBuyTable($data->currency->id, $data->id, $data->user_id);
                 }
