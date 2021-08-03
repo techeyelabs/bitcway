@@ -67,8 +67,8 @@ class Bitfinex
             //Entry for current_date
             $get_last_date_for_coin = DmgCoin ::where('name', 'DMGCoin') -> orderBy('id', 'desc') -> first();
 
-            if ($get_last_date_for_coin -> end_date <= date("Y-m-d H:i:s")) {
-                $adjustmentRowStart = date("Y-m-d H:i:s", strtotime("+1 day", strtotime($get_last_date_for_coin -> end_date)));
+            if ($get_last_date_for_coin -> end_date < Carbon::today('UTC')) {
+                $adjustmentRowStart = date("Y-m-d H:i:s", strtotime("+1 minutes", strtotime($get_last_date_for_coin -> end_date)));
 //                $adjustmentRowEnd = date("Y-m-d 23:59:00");
                 $adjustmentRowEnd = Carbon::tomorrow('UTC');;
 
