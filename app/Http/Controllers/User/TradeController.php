@@ -472,7 +472,12 @@ class TradeController extends Controller
         $limitSell->priceLimit = $request->priceLimit;
         $limitSell->currencyAmount = $request->currencyAmount;
         $limitSell->transactionStatus = $request->transactionStatus;
-        $limitSell->user_id = Auth::user()->id;
+        if (isset(Auth::user()->id)){
+            $limitSell->user_id = Auth::user()->id;
+        } else {
+            $limitSell->user_id = $request->user_id;
+        }
+
         $limitSell->currency_id = $currency->id;
         if(isset($request->lastPrice)){
             $limitSell->price_at_time_of_creation = $request->lastPrice;

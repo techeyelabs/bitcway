@@ -176,6 +176,7 @@ class LimitCronController extends Controller
                             'currencyAmount'    => $item->amount,
                             'transactionStatus' => 1,
                             'derivative'        => $item->leverage,
+                            'user_id'           => $item->user_id
                         ]
                     ]);
 
