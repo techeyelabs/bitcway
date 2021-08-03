@@ -181,7 +181,7 @@ class LimitCronController extends Controller
                     ]);
 
                     if ($res->getStatusCode() == 200){
-                        $item->status = 1;
+                        $item->settlement_status = 1;
                         $item->save();
                     }
                 }
