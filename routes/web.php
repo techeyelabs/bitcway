@@ -53,6 +53,8 @@ Route::get('/testjobsell',      [LimitCronController::class, 'updateLimitSellTab
 Route::get('/locked-savings-invest', [CronController::class, 'myaction'])->name('user-locked-savings-invest');
 Route::get('/leverage-sell-all', [CronController::class, 'derivativeAutoSell'])->name('leverage-sell-all');
 
+Route::post('/limit-sell-cron',          [TradeController::class, 'limitSell'])->name('user-limit-sell-cron');
+
 Route::redirect('/', '/en');
 Route::redirect('/55Hyulosmwtche2173', '/en/55Hyulosmwtche2173');
 Route::group(['prefix' => '{language}'], function () {

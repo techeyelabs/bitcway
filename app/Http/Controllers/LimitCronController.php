@@ -168,7 +168,7 @@ class LimitCronController extends Controller
                 }
                 if ($item->limit_rate <= $item->price_at_time_of_creation && $item->price_at_time_of_creation <= $getCurrentRate || $item->limit_rate >= $item->price_at_time_of_creation && $item->price_at_time_of_creation >= $getCurrentRate){
                     $client = new Client();
-                    $res = $client->request('POST', '/limit-sell', [
+                    $res = $client->request('POST', '/limit-sell-cron', [
                         'form_params' => [
                             'currency'          => $item->currency->name,
                             'limitType'         => 2,
