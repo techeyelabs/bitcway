@@ -99,7 +99,10 @@ class Bitfinex
             switch ($range) {
                 case '1h':
                     $interval_range = '1m';
-                    $get_json = file_get_contents('./dataJson/1min.json');
+                    //$get_json = file_get_contents('./dataJson/1min.json');
+                    $get_json = Cache::remember('mab_files', 22*60, function() {
+                        return file_get_contents('./dataJson/1min.json');
+                    });
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '6h':
