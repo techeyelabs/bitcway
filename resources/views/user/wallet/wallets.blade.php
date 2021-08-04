@@ -367,16 +367,19 @@
 
                 let full_data = trackers.trackers.trackers;
                 console.log(full_data);
+                let value = 0;
                 // let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
                     if (item[0] === 't' + realcurrname + 'USD') {
                         console.log(realcurrname);
                         // parseFloat($('#CoinpriceIntoMycoin' + i).html((tradeCurrencySize * item[1]).toFixed(5)));
                         if (realcurrname == 'ADA') {
-                            item[3] = item[3] * (Math.random() * ({{$current_price * 1.1}} - {{$current_price}}) + {{$current_price}}) / item[3];
+                            value = item[3] * {{$ratio}};
+                        } else {
+                            value = item[3];
                         }
-                        parseFloat($('#CoinpriceIntoMycoin' + i).html((item[3]).toFixed(5)));
-                        parseFloat($('#totalTradeAmount' + i).html((tradeCurrencySize * item[3]).toFixed(5)));
+                        parseFloat($('#CoinpriceIntoMycoin' + i).html((value).toFixed(5)));
+                        parseFloat($('#totalTradeAmount' + i).html((tradeCurrencySize * value).toFixed(5)));
                     }
                 });
             }
