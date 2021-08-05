@@ -419,12 +419,12 @@
                         <div class="text-center title mb-2 txtHeadingColor"></div>
 
                         <div id='buttonrow' class="chart-top-row">
-                            <span><h6 v-cloak>@{{currency}}/USD</h6></span>
-                            <span class="interval" id='1mI' v-on:click="getChartData('interval','1m')">1m</span>
-                            <span class="interval" id="15mI" v-on:click="getChartData('interval','15m')">15m</span>
-                            <span class="interval" id="30mI" v-on:click="getChartData('interval','30m')">30m</span>
-                            <span class="interval" id="1hI"  v-on:click="getChartData('interval','1h')">1h</span>
-                            <span class="interval" id="6hI"  v-on:click="getChartData('interval','6h')">6h</span>
+                            <span><h6 style="margin-top: -2px; margin-bottom: 0px" v-cloak>@{{currency}}/USD</h6></span>
+                            <span class="interval border-removal" id='1mI' v-on:click="getChartData('interval','1m')">1m</span>
+                            <span class="interval border-removal" id="15mI" v-on:click="getChartData('interval','15m')">15m</span>
+                            <span class="interval border-removal" id="30mI" v-on:click="getChartData('interval','30m')">30m</span>
+                            <span class="interval border-removal" id="1hI"  v-on:click="getChartData('interval','1h')">1h</span>
+                            <span class="interval border-removal" id="6hI"  v-on:click="getChartData('interval','6h')">6h</span>
                             <span class="reload interval" v-on:click="chartReload()">&#x21bb;</span>
                         </div>
                         <div class="chart" id="chart" ref="chart" style="height:465px; display: block; color: white; background-color: #171b26;">
