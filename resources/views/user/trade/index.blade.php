@@ -139,6 +139,24 @@
             font-size: 12px;
             padding: 5px 8px 3px;
         }
+        .selected-param{
+            background-color: gray;
+        }
+        .reload {
+            font-family: Lucida Sans Unicode
+        }
+        .ht:hover .tooltip {
+            display:block;
+        }
+
+        .tooltip {
+            display: none;
+            color: red;
+            margin-left: 28px; /* moves the tooltip to the right */
+            margin-top: 15px; /* moves it down */
+            position: absolute;
+            z-index: 1000;
+        }
     </style>
 @endsection
 @section('content')
@@ -402,12 +420,12 @@
 
                         <div id='buttonrow' class="chart-top-row">
                             <span><h6 v-cloak>@{{currency}}/USD</h6></span>
-                            <span class="interval" id='1m' v-on:click="getChartData('interval','1m')">1m</span>
-                            <span class="interval" id="15m" v-on:click="getChartData('interval','15m')">15m</span>
-                            <span class="interval" id="30m" v-on:click="getChartData('interval','30m')">30m</span>
-                            <span class="interval" id="1h"  v-on:click="getChartData('interval','1h')">1h</span>
-                            <span class="interval" id="6h"  v-on:click="getChartData('interval','6h')">6h</span>
-                            <span class="interval" style="margin-left: 10px">BitcWay</span>
+                            <span class="interval" id='1mI' v-on:click="getChartData('interval','1m')">1m</span>
+                            <span class="interval" id="15mI" v-on:click="getChartData('interval','15m')">15m</span>
+                            <span class="interval" id="30mI" v-on:click="getChartData('interval','30m')">30m</span>
+                            <span class="interval" id="1hI"  v-on:click="getChartData('interval','1h')">1h</span>
+                            <span class="interval" id="6hI"  v-on:click="getChartData('interval','6h')">6h</span>
+                            <span class="reload interval" v-on:click="chartReload()">&#x21bb;</span>
                         </div>
                         <div class="chart" id="chart" ref="chart" style="height:465px; display: block; color: white; background-color: #171b26;">
 {{--                            <div class="loader" style="display: none">--}}
@@ -1140,7 +1158,29 @@
                     this.selectedItem = item;
                     this.getChartData();
                 },
+                chartReload(){
+                    let selected = $(".selected-param").html();
+                    if (selected === '1m' || selected === '15m' || selected === '30m' || selected === '1h' || selected ===  '6h'){
+                        console.log("if");
+                        this.getChartData('interval', selected);
+                    } else {
+                        console.log("else");
+                        this.getChartData('range', selected);
+                    }
+                },
                 getChartData(type,value){
+                    $(".interval").removeClass("selected-param");
+                    if (value !== undefined){
+                        if (type == 'interval'){
+                            $("#"+value+'I').addClass("selected-param");
+                        } else {
+                            $("#"+value).addClass("selected-param");
+                        }
+
+                    } else {
+                        $("#1Y").addClass("selected-param");
+                    }
+
                     //alert('I am here');
                     if (type!='' && type ==='interval'){
                         var interval_value = value;
@@ -1153,6 +1193,7 @@
                         var range_value = value;
                         var current_date = new Date();
                         var enddate = current_date.getTime();
+                        console.log(range_value);
                         var startdate= this.getStartDate(range_value);
                     }
                     else{
@@ -1199,6 +1240,7 @@
                     });
                 },
                 getStartDate(range){
+                    console.log(range);
                     var startdate="";
                     if (range === '3Y' || range === '1Y'){
                         var date_ago = new Date(
@@ -1207,7 +1249,7 @@
                             new Date().getDate()
                         );
                     }
-                    if(range === '3M' || range === '1M'){
+                    else if(range === '3M' || range === '1M'){
                         var date_ago = new Date(
                             new Date().getFullYear(),
                             new Date().getMonth()-parseInt(range[0]),
@@ -1215,17 +1257,16 @@
                         );
 
                     }
-                    if(range === '7D' || range === '3D' || range === '1D'){
+                    else if(range === '7D' || range === '3D' || range === '1D'){
                         var date_ago = new Date(
                             new Date().getFullYear(),
                             new Date().getMonth(),
                             new Date().getDate()-parseInt(range[0]) + 1
                         );
                     }
-                    if(range === '6h' || range === '1h'){
+                    else if(range === '6h' || range === '1h'){
                         var date_1day_ago = new Date();
                         startdate = date_1day_ago.getTime() - (parseInt(range[0]) * 3600 * 1000);
-
                     }
                     else{
                         startdate=date_ago.getTime();
