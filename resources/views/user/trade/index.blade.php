@@ -425,7 +425,7 @@
                             <span class="interval border-removal" id="30mI" v-on:click="getChartData('interval','30m')">30m</span>
                             <span class="interval border-removal" id="1hI"  v-on:click="getChartData('interval','1h')">1h</span>
                             <span class="interval border-removal" id="6hI"  v-on:click="getChartData('interval','6h')">6h</span>
-                            <span class="reload interval" v-on:click="chartReload()">&#x21bb;</span>
+                            <span class="reload interval" v-on:click="chartReload()">UPDATE</span>
                         </div>
                         <div class="chart" id="chart" ref="chart" style="height:465px; display: block; color: white; background-color: #171b26;">
 {{--                            <div class="loader" style="display: none">--}}
@@ -748,7 +748,7 @@
                     items = response.data;
                     if(items){
                         if (currency == 'tMABUSD') {
-                            var num = Home.MABcurrentPrice / parseFloat(items[0][0]);
+                            var num = parseFolat(Home.MABcurrentPrice / 1.358);
                             var change = Home.change;
                             var multiple = parseFloat(num);
                             var multiple = multiple.toFixed(4);
