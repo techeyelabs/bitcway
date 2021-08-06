@@ -424,8 +424,7 @@
                     if (tradeType == 'buy'){
                         if (item[0] === 't' + realcurrname2 + 'USD') {
                             if (realcurrname2 == 'ADA'){
-                                value = {{$ratio}};
-                                {{--value = item[3] * {{$ratio}};--}}
+                                value = item[3] * {{$ratio}};
                             } else {
                                 value = item[3]
                             }
@@ -433,8 +432,7 @@
                     } else {
                         if (item[0] === 't' + realcurrname2 + 'USD') {
                             if (realcurrname2 == 'ADA'){
-                                value = {{$ratio}} ;
-                                {{--value = item[1] * {{$ratio}} ;--}}
+                                value = item[1] * {{$ratio}} ;
                             } else {
                                 value = item[1];
                             }

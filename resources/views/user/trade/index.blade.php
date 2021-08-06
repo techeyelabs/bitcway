@@ -873,8 +873,7 @@
                         bids = [];
                         asks = [];
                         items[1].forEach(function (item) {
-                            // var temp = item[0] * multiple;
-                            var temp = multiple;
+                            var temp = item[0] * multiple;
                             item[0] = temp.toFixed(4);
                             if (item[2] > 0) {
                                 bids.push(item);
