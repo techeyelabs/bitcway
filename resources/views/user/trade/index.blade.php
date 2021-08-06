@@ -1751,5 +1751,13 @@
         if(type === 'derivative'){
             $('#derivative_link').addClass('nav_active');
         }
+
+        setTimeout(function(){
+            var url_part = $(location).attr("href").split('/').pop();
+            console.log(url_part);
+            if (url_part.split('=')[1] == 'tMABUSD'){
+                window.location.reload(1);
+            }
+        }, 60000);
     </script>
 @endsection
