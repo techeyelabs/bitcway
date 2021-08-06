@@ -759,7 +759,8 @@
                             bids = [];
                             asks = [];
                             items.forEach(function(item){
-                                var temp = item[0] * multiple;
+                                // var temp = item[0] * multiple;
+                                var temp = multiple;
                                 item[0] = temp.toFixed(4);
                                 if(item[2] > 0){
                                     bids.push(item);
@@ -859,7 +860,7 @@
                 Home.asksprev = Home.asks;
                 if (items[1]) {
                     if (currency == 'tMABUSD'){
-                        var num = Home.MABcurrentPrice / parseFloat(items[1][0]);
+                        var num = Home.MABcurrentPrice / 1.358;
                         var change = Home.change;
                         console.log(Home.MABcurrentPrice);
                         console.log(items[1][0]);
@@ -872,7 +873,8 @@
                         bids = [];
                         asks = [];
                         items[1].forEach(function (item) {
-                            var temp = item[0] * multiple;
+                            // var temp = item[0] * multiple;
+                            var temp = multiple;
                             item[0] = temp.toFixed(4);
                             if (item[2] > 0) {
                                 bids.push(item);
