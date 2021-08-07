@@ -86,16 +86,6 @@ class CronController extends Controller
             $userInvestment = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeUserMoney');
             $userLoan = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeLoan');
             $userProfit = $equivalentSellAmount - $userLoan;
-            echo $equivalentSellAmount;
-            echo '<br/>';
-            echo $userInvestment;
-            echo '<br/>';
-            echo $userLoan;
-            echo '<br/>';
-            echo $userProfit;
-            echo '<br/>';
-            echo $userProfit;
-            exit;
             if (($userProfit) < ($userInvestment * 0.20)){
                 foreach ($leverageWalletCurrency as $item) {
                     // Data preparation
