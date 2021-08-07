@@ -25,7 +25,7 @@ class Bitfinex
         return [];
     }
 
-    public function getRate($type = null, $coin1, $coin2 = 'USD')
+    public function getRate($coin1, $coin2 = 'USD', $type = null)
     {
         if ($type == null){
             $response = Http ::post($this -> PublicUrl . $this -> Version . '/calc/fx', [
