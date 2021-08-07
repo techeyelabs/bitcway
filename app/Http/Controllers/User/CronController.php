@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\DerivativeSell;
+use App\Traits\CurrentMABPrice;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ use App\Models\LockedSaving;
 use App\Models\User;
 use App\Models\CronTrack;
 use App\Models\Leverage_Wallet;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use mysql_xdevapi\Exception;
 use function PHPUnit\Framework\countOf;
@@ -25,6 +27,7 @@ use App\Libraries\Bitfinex;
 
 class CronController extends Controller
 {
+    use CurrentMABPrice;
     public function myaction(Request $request)
     {
         $test = CronTrack::where('id', 1)->first();
@@ -67,8 +70,12 @@ class CronController extends Controller
             $equivalentSellAmount = 0;
             $leverageWalletCurrency = Leverage_Wallet::where('user_id', $user->user_id)->orderBy('id', 'desc')->get();
             foreach($leverageWalletCurrency as $lwc){
-                $equivalentSellAmount += $Bitfinex->getRate($lwc->currencyName->name, $lwc->trade_type) * $lwc->amount;
-                dd($equivalentSellAmount);
+                if ($lwc->currencyName->name == 'ADA'){
+                    $resp = $this->getCurrentPrice()['lastval'] / Config::get('site-variables.ada-price');
+                    $equivalentSellAmount += $Bitfinex->getRate($lwc->currencyName->name, $lwc->trade_type) * $resp * $lwc->amount;
+                } else {
+                    $equivalentSellAmount += $Bitfinex->getRate($lwc->currencyName->name, $lwc->trade_type) * $lwc->amount;
+                }
             }
             $userInvestment = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeUserMoney');
             $userLoan = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeLoan');

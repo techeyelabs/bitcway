@@ -20,6 +20,7 @@ use App\Models\LockedSaving;
 use App\Models\LimitBuySell;
 use App\Models\LeverageSettlementLimit;
 use Carbon;
+use Illuminate\Support\Facades\Config;
 
 use App\Traits\CurrentMABPrice;
 
@@ -239,7 +240,7 @@ class WalletController extends Controller
         $data['current_price'] = $this->getCurrentPrice()['lastval'];
         $data['leverageSettlementLimits'] = LeverageSettlementLimit::where('user_id', Auth::user()->id)->where('settlement_status', 0)->get();
         $data['limitBuySell'] = LimitBuySell::where('user_id', Auth::user()->id)->where('transactionStatus', 1)->where('is_from_asset', 1)->get();
-        $data['ratio'] = $this->getCurrentPrice()['lastval'] / 1.358;
+        $data['ratio'] = $this->getCurrentPrice()['lastval'] / Config::get('site-variables.ada-price');
         foreach ($data['wallets'] as $item) {
             $data['total'] += $item->balance * (is_numeric($Bitfinex->getRate($item->currency->name) ? $Bitfinex->getRate($item->currency->name) : 1));
         }
