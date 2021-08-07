@@ -72,14 +72,30 @@ class CronController extends Controller
             foreach($leverageWalletCurrency as $lwc){
                 if ($lwc->currencyName->name == 'ADA'){
                     $resp = $this->getCurrentPrice()['lastval'] / Config::get('site-variables.ada-price');
-                    $equivalentSellAmount += $Bitfinex->getRate($lwc->currencyName->name, $lwc->trade_type) * $resp * $lwc->amount;
+                    $price = $Bitfinex->getRate($lwc->currencyName->name, $lwc->trade_type) * $resp;
                 } else {
-                    $equivalentSellAmount += $Bitfinex->getRate($lwc->currencyName->name, $lwc->trade_type) * $lwc->amount;
+                    $price = $Bitfinex->getRate($lwc->currencyName->name, $lwc->trade_type);
                 }
+                if ($lwc->trade_type == 'buy'){
+                    $equivalentSellAmount += $lwc->amount * $price;
+                } else {
+                    $equivalentSellAmount += ($lwc->derivative_currency_price * 2) - $price;
+                }
+
             }
             $userInvestment = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeUserMoney');
             $userLoan = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeLoan');
             $userProfit = $equivalentSellAmount - $userLoan;
+            echo $equivalentSellAmount;
+            echo '<br/>';
+            echo $userInvestment;
+            echo '<br/>';
+            echo $userLoan;
+            echo '<br/>';
+            echo $userProfit;
+            echo '<br/>';
+            echo $userProfit;
+            exit;
             if (($userProfit) < ($userInvestment * 0.20)){
                 foreach ($leverageWalletCurrency as $item) {
                     // Data preparation
