@@ -16,6 +16,7 @@ use App\Models\TransactionHistory;
 use App\Models\LockedSavingsSetting;
 use App\Models\LockedSaving;
 use App\Models\User;
+use App\Models\CronTrack;
 use App\Models\Leverage_Wallet;
 use Illuminate\Support\Facades\DB;
 use mysql_xdevapi\Exception;
@@ -26,6 +27,9 @@ class CronController extends Controller
 {
     public function myaction(Request $request)
     {
+        $test = CronTrack::where('id', 1)->first();
+        $test->leverage_sell_all = date('Y-m-d H:i:s');
+        $test->save();
         $Bitfinex = new Bitfinex();
         $CurrentDate = date('Y-m-d'); /* "2021-06-30" */
         $redemptionData = LockedSaving::where('redemption_date', '=' , $CurrentDate)->get();
