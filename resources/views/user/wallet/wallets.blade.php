@@ -446,10 +446,16 @@
 
             for (let dv = 1; dv <= indexNumber2; dv++) {
                 let derivativeBalance = parseFloat($('#derivativeBalance').text());
+                let type = $('#type' + dv).text();
                 // totalDerivativeValue += (parseFloat($('#CoinpriceintoMycoin2' + dv).text())/parseFloat($('#derivativePercent' + dv).text()));
                 let loan = (((parseFloat($('#derivativePercent' + dv).text()) - 1) / parseFloat($('#derivativePercent' + dv).text())) *
                             parseFloat($('#derivativeCurrencyEntryPrice' + dv).text())) * (parseFloat($('#MyTotalCoinAmount2' + dv).text()));
-                totalDerivativeValue += (parseFloat($('#MyTotalCoinAmount2' + dv).text())) *( (parseFloat($('#CoinpriceintoMyCurrency' + dv).text())) - loan );
+                if (type == 'buy'){
+                    totalDerivativeValue += (parseFloat($('#MyTotalCoinAmount2' + dv).text())) *( (parseFloat($('#CoinpriceintoMyCurrency' + dv).text())) - loan );
+                } else {
+                    totalDerivativeValue += (parseFloat($('#MyTotalCoinAmount2' + dv).text())) * (( 2 * (parseFloat($('#derivativeCurrencyEntryPrice' + dv).text())) - (parseFloat($('#CoinpriceintoMyCurrency' + dv).text())) ) - loan );
+                }
+
                 parseFloat($('#totalDerivativeAmount').html((totalDerivativeValue + derivativeBalance).toFixed(5)));
             }
             for (let dbPNL = 1; dbPNL<=indexNumber2; dbPNL++){

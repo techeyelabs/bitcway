@@ -173,7 +173,6 @@
                 <div class="card tickersDiv" >
                     <div class="card-body" style="padding-right: 0px">
                         <div id="trackers">
-                            <div class="text-center title txtHeadingColor"><h4>{{__('title11')}}</h4></div>
                             <div id="ticker_top_bar" style="margin-top:10px; margin-bottom:16px; margin-right:10px;">
                                 <div style="display: flex; font-size: 0.8rem; flex-direction: row; align-items: flex-end; justify-content: center;margin-bottom:16px;">
                                     <div class="ui-tabs ui-tabs--opaque ui-tabs--border-bottom ui-tabs--padding-bottom"  id="trade_link" justify="center">

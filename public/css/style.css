@@ -644,7 +644,7 @@ table,th, td {
      border-color: #081420 !important;
 }
 .tickersDiv{
-    height: 575px !important;
+    height: 565px !important;
 }
 .tableClass>:not(:last-child)>:last-child>* {
     border-bottom-color: inherit;
