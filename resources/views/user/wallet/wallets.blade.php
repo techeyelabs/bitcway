@@ -366,7 +366,6 @@
                 }
 
                 let full_data = trackers.trackers.trackers;
-                console.log(full_data);
                 let value = 0;
                 // let full_data = trackers.trackers;
                 full_data.forEach(async function (item) {
@@ -453,7 +452,10 @@
                 if (type == 'buy'){
                     totalDerivativeValue += (parseFloat($('#MyTotalCoinAmount2' + dv).text())) *( (parseFloat($('#CoinpriceintoMyCurrency' + dv).text())) - loan );
                 } else {
-                    totalDerivativeValue += (parseFloat($('#MyTotalCoinAmount2' + dv).text())) * (( 2 * (parseFloat($('#derivativeCurrencyEntryPrice' + dv).text())) - (parseFloat($('#CoinpriceintoMyCurrency' + dv).text())) ) - loan );
+                    console.log("first", 2 * (parseFloat($('#derivativeCurrencyEntryPrice' + dv).text())));
+                    console.log("second", parseFloat($('#CoinpriceintoMyCurrency' + dv).text()));
+                    console.log("third", loan);
+                    totalDerivativeValue += ((parseFloat($('#MyTotalCoinAmount2' + dv).text())) * ( 2 * (parseFloat($('#derivativeCurrencyEntryPrice' + dv).text())) - (parseFloat($('#CoinpriceintoMyCurrency' + dv).text())) )) - loan ;
                 }
 
                 parseFloat($('#totalDerivativeAmount').html((totalDerivativeValue + derivativeBalance).toFixed(5)));
