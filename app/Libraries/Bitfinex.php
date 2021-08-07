@@ -25,20 +25,24 @@ class Bitfinex
         return [];
     }
 
-    public function getRate($coin1, $coin2 = 'USD', $type = null)
+    public function getRate($coin1, $type = null, $coin2 = 'USD')
     {
-        if ($type == null){
-            $response = Http ::post($this -> PublicUrl . $this -> Version . '/calc/fx', [
-                'ccy1' => $coin1,
-                'ccy2' => $coin2,
-            ]);
-            if ($response -> json()) return $response -> json()[0];
+        $response = Http ::get($this -> PublicTicker . $this -> version1 . '/pubticker/'.strtolower($coin1).'usd');
+        if ($type != null){
+            // $response = Http ::post($this -> PublicUrl . $this -> Version . '/calc/fx', [
+            //     'ccy1' => $coin1,
+            //     'ccy2' => $coin2,
+            // ]);
+            if ($response -> json()) return $response -> json()["last_price"];
             return false;
         } else {
-            $response = Http ::post($this -> $PublicTicker . $this -> $version1 . '/pubticker/'.strtolower($coin1).'btc');
-            dd($response);
+            if ($type == 'buy'){
+                if ($response -> json()) return $response -> json()["ask"];
+            } else {
+                if ($response -> json()) return $response -> json()["bid"];
+            }
+            return false;
         }
-
     }
 
     public function getRateBuySell($type, $coin1, $coin2 = 'USD'){

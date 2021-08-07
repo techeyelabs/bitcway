@@ -67,7 +67,8 @@ class CronController extends Controller
             $equivalentSellAmount = 0;
             $leverageWalletCurrency = Leverage_Wallet::where('user_id', $user->user_id)->orderBy('id', 'desc')->get();
             foreach($leverageWalletCurrency as $lwc){
-                $equivalentSellAmount += $Bitfinex->getRate($lwc->currencyName->name) * $lwc->amount;
+                $equivalentSellAmount += $Bitfinex->getRate($lwc->currencyName->name, $lwc->trade_type) * $lwc->amount;
+                dd($equivalentSellAmount);
             }
             $userInvestment = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeUserMoney');
             $userLoan = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeLoan');
