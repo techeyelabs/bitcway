@@ -28,7 +28,7 @@ class CronController extends Controller
     public function myaction(Request $request)
     {
         $test = CronTrack::where('id', 1)->first();
-        $test->leverage_sell_all = date('Y-m-d H:i:s');
+        $test->	finance = date('Y-m-d H:i:s');
         $test->save();
         $Bitfinex = new Bitfinex();
         $CurrentDate = date('Y-m-d'); /* "2021-06-30" */
@@ -58,6 +58,9 @@ class CronController extends Controller
 
     public function derivativeAutoSell(Request $request)
     {
+        $test = CronTrack::where('id', 1)->first();
+        $test->leverage_sell_all = date('Y-m-d H:i:s');
+        $test->save();
         $Bitfinex = new Bitfinex();
         $users = Leverage_Wallet::select('user_id')->groupBy('user_id')->get();
         foreach ($users as $user){

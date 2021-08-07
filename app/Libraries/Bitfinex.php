@@ -13,8 +13,10 @@ use Carbon\Carbon;
 class Bitfinex
 {
     private $PublicUrl = 'https://api-pub.bitfinex.com/';
+    private $PublicTicker = 'https://api.bitfinex.com/';
     private $AuthenticatedUrl = 'https://api.bitfinex.com/';
     private $Version = 'v2';
+    private $version1 = 'v1';
 
     public function getCurrencies()
     {
@@ -23,14 +25,20 @@ class Bitfinex
         return [];
     }
 
-    public function getRate($coin1, $coin2 = 'USD')
+    public function getRate($type = null, $coin1, $coin2 = 'USD')
     {
-        $response = Http ::post($this -> PublicUrl . $this -> Version . '/calc/fx', [
-            'ccy1' => $coin1,
-            'ccy2' => $coin2,
-        ]);
-        if ($response -> json()) return $response -> json()[0];
-        return false;
+        if ($type == null){
+            $response = Http ::post($this -> PublicUrl . $this -> Version . '/calc/fx', [
+                'ccy1' => $coin1,
+                'ccy2' => $coin2,
+            ]);
+            if ($response -> json()) return $response -> json()[0];
+            return false;
+        } else {
+            $response = Http ::post($this -> $PublicTicker . $this -> $version1 . '/pubticker/'.strtolower($coin1).'btc');
+            dd($response);
+        }
+
     }
 
     public function getRateBuySell($type, $coin1, $coin2 = 'USD'){
