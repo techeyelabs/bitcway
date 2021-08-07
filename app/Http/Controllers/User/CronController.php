@@ -79,7 +79,7 @@ class CronController extends Controller
                 if ($lwc->trade_type == 'buy'){
                     $equivalentSellAmount += $lwc->amount * $price;
                 } else {
-                    $equivalentSellAmount += ($lwc->derivative_currency_price * 2) - $price;
+                    $equivalentSellAmount += $lwc->amount * (($lwc->derivative_currency_price * 2) - $price);
                 }
 
             }
