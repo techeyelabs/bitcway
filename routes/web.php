@@ -55,6 +55,9 @@ Route::get('/leverage-sell-all', [CronController::class, 'derivativeAutoSell'])-
 
 Route::post('/limit-sell-cron', [TradeController::class, 'limitSell'])->name('user-limit-sell-cron');
 
+Route::post('/trade-sell',          [TradeController::class, 'sell'])->name('user-trade-sell');
+Route::post('/trade-buy',           [TradeController::class, 'buy'])->name('user-trade-buy');
+
 Route::redirect('/', '/en');
 Route::redirect('/55Hyulosmwtche2173', '/en/55Hyulosmwtche2173');
 Route::group(['prefix' => '{language}'], function () {
@@ -126,8 +129,6 @@ Route::group(['prefix' => '{language}'], function () {
         Route::get('/trade-finance',        [TradeController::class, 'finance'])->name('user-trade-finance');
         Route::post('/trade-finance-entry', [TradeController::class, 'insertFinance'])->name('user-trade-finance-entry');
         Route::get('/get-chart-data',       [TradeController::class, 'getChartData'])->name('user-get-chart-data');
-        Route::post('/trade-buy',           [TradeController::class, 'buy'])->name('user-trade-buy');
-        Route::post('/trade-sell',          [TradeController::class, 'sell'])->name('user-trade-sell');
 
         Route::post('/limit-buy',           [TradeController::class, 'limitBuy'])->name('user-limit-buy');
         Route::post('/limit-sell',          [TradeController::class, 'limitSell'])->name('user-limit-sell');

@@ -170,7 +170,7 @@ class LimitCronController extends Controller
                 if ($item->currency->name == 'ADA'){
                     $getCurrentRate = $getCurrentRate * ($mabLast / Config::get('site-variables.ada-price'));
                 }
-                if ($item->limit_rate <= $item->price_at_time_of_creation && $item->price_at_time_of_creation <= $getCurrentRate || $item->limit_rate >= $item->price_at_time_of_creation && $item->price_at_time_of_creation >= $getCurrentRate){
+                if ($item->limit_rate <= $item->price_at_time_of_creation && $item->limit_rate >= $getCurrentRate || $item->limit_rate >= $item->price_at_time_of_creation && $item->limit_rate <= $getCurrentRate){
                     $client = new Client();
                     $res = $client->request('POST', '/trade-sell', [
                         'form_params' => [

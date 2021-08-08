@@ -13,6 +13,8 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'getwaycallback',
-        'limit-sell-cron'
+        'limit-sell-cron',
+        'trade-sell',
+        'trade-buy'
     ];
 }
