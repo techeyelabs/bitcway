@@ -15,6 +15,7 @@ use App\Models\Message; //for cron testing, remove later
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use mysql_xdevapi\Exception;
 use App\Traits\CurrentMABPrice;
@@ -165,6 +166,9 @@ class LimitCronController extends Controller
                     $getCurrentRate = $Bitfinex->getRateBuySell('sell', $item->currency->name);
                 } else {
                     $getCurrentRate = $Bitfinex->getRateBuySell('buy', $item->currency->name);
+                }
+                if ($item->currency->name == 'ADA'){
+                    $getCurrentRate = $getCurrentRate * ($mabLast / Config::get('site-variables.ada-price'));
                 }
                 if ($item->limit_rate <= $item->price_at_time_of_creation && $item->price_at_time_of_creation <= $getCurrentRate || $item->limit_rate >= $item->price_at_time_of_creation && $item->price_at_time_of_creation >= $getCurrentRate){
                     $client = new Client();
