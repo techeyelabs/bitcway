@@ -81,7 +81,6 @@ class CronController extends Controller
                 } else {
                     $equivalentSellAmount += $lwc->amount * (($lwc->derivative_currency_price * 2) - $price);
                 }
-
             }
             $userInvestment = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeUserMoney');
             $userLoan = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeLoan');
@@ -89,7 +88,17 @@ class CronController extends Controller
             if (($userProfit) < ($userInvestment * 0.20)){
                 foreach ($leverageWalletCurrency as $item) {
                     // Data preparation
-                    $equivalentSellAmount = $Bitfinex->getRate($item->currencyName->name) * $item->amount;
+                    if ($lwc->currencyName->name == 'ADA'){
+                        $resp = $this->getCurrentPrice()['lastval'] / Config::get('site-variables.ada-price');
+                        $rate = $Bitfinex->getRate($item->currencyName->name, $item->trade_type) * $resp;
+                    } else {
+                        $rate = $Bitfinex->getRate($item->currencyName->name, $item->trade_type);
+                    }
+                    if ($lwc->trade_type == 'buy'){
+                        $equivalentSellAmount += $item->amount * $rate;
+                    } else {
+                        $equivalentSellAmount += $item->amount * (($item->derivative_currency_price * 2) - $rate);
+                    }
                     $leverageRequestSellAmount = $item->amount;
                     $currency = Currency::where('name', $item->currencyName->name)->first();
 
@@ -107,8 +116,14 @@ class CronController extends Controller
                             $derivativeSells->leverage = $item->leverage;
 
                             if ($item->amount <= $leverageSellAmount) {
-                                $sellTimeValue = ($equivalentSellAmount * $item->amount) / $leverageRequestSellAmount;
-                                $sellAmountToUserWallet = $sellTimeValue - ($item->equivalent_amount * (($item->leverage - 1) / $item->leverage));
+                                if($item->trade_type == 'buy'){
+                                    $sellTimeValue = ($equivalentSellAmount * $item->amount) / $leverageRequestSellAmount;
+                                    $sellAmountToUserWallet = $sellTimeValue - ($item->equivalent_amount * (($item->leverage - 1) / $item->leverage));
+                                } else {
+                                    $sellTimeValue = ($equivalentSellAmount * $item->amount) / $leverageRequestSellAmount;
+                                    $sellAmountToUserWallet = $sellTimeValue - ($item->equivalent_amount * (($item->leverage - 1) / $item->leverage));
+                                }
+
 
                                 $derivativeSells->amount = $item->amount;
                                 $derivativeSells->equivalent_amount = $item->equivalent_amount;
