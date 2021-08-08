@@ -1,5 +1,5 @@
 /vendor
-public/dataJson
+/dataJson
 .env
 node_modules
 .idea/
