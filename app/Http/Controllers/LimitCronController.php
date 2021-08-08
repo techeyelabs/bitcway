@@ -171,23 +171,28 @@ class LimitCronController extends Controller
                     $getCurrentRate = $getCurrentRate * ($mabLast / Config::get('site-variables.ada-price'));
                 }
                 if ($item->limit_rate <= $item->price_at_time_of_creation && $item->limit_rate >= $getCurrentRate || $item->limit_rate >= $item->price_at_time_of_creation && $item->limit_rate <= $getCurrentRate){
-                    $client = new Client();
-                    $res = $client->request('POST', '/trade-sell', [
-                        'form_params' => [
+                    //$client = new Client();
+                    //$res = $client->request('POST', '/trade-sell', [
+                    //    'form_params' => [
                             //'limitType'         => 2,
                             //'priceLimit'        => $item->limit_rate,
                             //'transactionStatus' => 1,
                             //'derivative'        => $item->leverage,
                             //'user_id'           => $item->user_id,
-                            'currency'          => $item->currency->name,
-                            'sellAmount'        => $item->amount,
-                            'calcSellAmount'    => $item->limit_rate * $item->amount,
-                            'derivativeType'    => 0,
-                            'id'                => $item->id
-                        ]
-                    ]);
+                    //        'currency'          => $item->currency->name,
+                    //        'sellAmount'        => $item->amount,
+                    //        'calcSellAmount'    => $item->limit_rate * $item->amount,
+                    //        'derivativeType'    => 0,
+                    //        'id'                => $item->id
+                    //    ]
+                    //]);
 
-                    if ($res->getStatusCode() == 200){
+                    //if ($res->getStatusCode() == 200){
+                    //    $item->settlement_status = 1;
+                    //    $item->save();
+                    //}
+                    $result = $this->sell($item->currency->name, $item->amount, $item->limit_rate * $item->amount, 0, $item->id);
+                    if ($result == 200){
                         $item->settlement_status = 1;
                         $item->save();
                     }
@@ -196,6 +201,89 @@ class LimitCronController extends Controller
                 continue;
             }
         }
+    }
+
+    private function sell($currency, $sellAmount, $calcSellAmount, $derivativeType, $id)
+    {
+        $leverageRequestSellAmount = $sellAmount;
+        $equivalentSellAmount = $calcSellAmount;
+        if ($currency == 'MAB'){
+            $currency = 'ADA';
+        }
+        $currency = Currency::where('name', $currency)->first();
+        if(!$currency){
+            return response()->json(['status' => true]);
+        }
+        DB::beginTransaction();
+        try {
+            if (isset($derivativeType)) {
+                $leverageWalletCurrency = Leverage_Wallet::where('id', $id)->get();
+                $user = User::where('id', $leverageWalletCurrency[0]->user_id)->first();
+                $leverageSellAmount = $leverageRequestSellAmount;
+
+                foreach ($leverageWalletCurrency as $item) {
+                    $derivativeSells = new DerivativeSell();
+                    $derivativeSells->type = $item->type;
+                    $derivativeSells->status = $item->status;
+                    $derivativeSells->user_id = $item->user_id;
+                    $derivativeSells->currency_id = $item->currency_id;
+                    $derivativeSells->leverage = $item->leverage;
+
+                    if ($item->amount <= $leverageSellAmount) {
+                        $sellTimeValue = ($equivalentSellAmount * $item->amount) / $leverageRequestSellAmount;
+                        $sellAmountToUserWallet = $sellTimeValue - ($item->equivalent_amount * (($item->leverage - 1) / $item->leverage));
+
+                        $derivativeSells->amount = $item->amount;
+                        $derivativeSells->equivalent_amount = $item->equivalent_amount;
+                        $derivativeSells->priceAtSell = $sellTimeValue;
+                        $derivativeSells->profit = $sellTimeValue - $item->equivalent_amount;
+                        $derivativeSells->save();
+
+                        $user->derivative = $user->derivative + $sellAmountToUserWallet;
+                        $user->save();
+
+                        $leverageSellAmount -= $item->amount;
+                        $item->delete();
+                    } else {
+                        $sellTimeValue = ($equivalentSellAmount * $leverageSellAmount) / $leverageRequestSellAmount;
+                        $buyTimeValue = ($item->equivalent_amount * $leverageSellAmount) / $item->amount;
+                        $sellAmountToUserWallet = $sellTimeValue - ($buyTimeValue * (($item->leverage - 1) / $item->leverage));
+
+                        $derivativeSells->amount = $leverageSellAmount;
+                        $derivativeSells->equivalent_amount = $buyTimeValue;
+                        $derivativeSells->priceAtSell = $sellTimeValue;
+                        $derivativeSells->profit = $sellTimeValue - $buyTimeValue;
+                        $derivativeSells->save();
+
+                        $user->derivative = $user->derivative + $sellAmountToUserWallet;
+                        $user->save();
+
+                        $item->amount = $item->amount - $leverageSellAmount;
+                        $item->equivalent_amount = $item->equivalent_amount - $buyTimeValue;
+                        $item->save();
+                        $leverageSellAmount = 0;
+                    }
+                    if ($leverageSellAmount == 0) {
+                        break;
+                    }
+                }
+
+                $TransactionHistory = new TransactionHistory();
+                $TransactionHistory->amount = $sellAmount;
+                $TransactionHistory->equivalent_amount = $calcSellAmount;
+                $TransactionHistory->type = 2;
+                $TransactionHistory->user_id = $user->id;
+                $TransactionHistory->currency_id = $currency->id;
+                $TransactionHistory->save();
+            }
+        }
+        catch(\Exception $e)
+        {
+            DB::rollback();
+            return 200;
+        }
+        DB::commit();
+        return 400;
     }
 
     public function updateLimitBuyTable($currencyId, $id, $userId){
