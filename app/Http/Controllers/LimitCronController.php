@@ -172,15 +172,18 @@ class LimitCronController extends Controller
                 }
                 if ($item->limit_rate <= $item->price_at_time_of_creation && $item->price_at_time_of_creation <= $getCurrentRate || $item->limit_rate >= $item->price_at_time_of_creation && $item->price_at_time_of_creation >= $getCurrentRate){
                     $client = new Client();
-                    $res = $client->request('POST', '/limit-sell-cron', [
+                    $res = $client->request('POST', '/trade-sell', [
                         'form_params' => [
+                            //'limitType'         => 2,
+                            //'priceLimit'        => $item->limit_rate,
+                            //'transactionStatus' => 1,
+                            //'derivative'        => $item->leverage,
+                            //'user_id'           => $item->user_id,
                             'currency'          => $item->currency->name,
-                            'limitType'         => 2,
-                            'priceLimit'        => $item->limit_rate,
-                            'currencyAmount'    => $item->amount,
-                            'transactionStatus' => 1,
-                            'derivative'        => $item->leverage,
-                            'user_id'           => $item->user_id
+                            'sellAmount'        => $item->amount,
+                            'calcSellAmount'    => $item->limit_rate * $item->amount,
+                            'derivativeType'    => 0,
+                            'id'                => $item->id
                         ]
                     ]);
 
