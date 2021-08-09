@@ -1096,6 +1096,7 @@
                     Home.amount = '';
                     Home.buyAmount = 0;
                     Home.sellAmount = 0;
+                    Home.selectedPrice = '';
                     let slug = window.location.pathname + '?pair=' + item[0];
                     window.history.pushState('slug', 'pair', slug);
 
