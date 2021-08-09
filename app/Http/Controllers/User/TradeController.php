@@ -191,7 +191,7 @@ class TradeController extends Controller
             }else{
                 $UserWallet->balance = $UserWallet->balance+$request->buyAmount;
                 $UserWallet->equivalent_trade_amount = $UserWallet->equivalent_trade_amount + $request->calcBuyAmount;
-                $UserWallet->currency_price = $request->currency_price;
+                $UserWallet->currency_price = $UserWallet->equivalent_trade_amount / $UserWallet->balance;
             }
             $UserWallet->user_id = Auth::user()->id;
             $UserWallet->currency_id = $currency->id;
