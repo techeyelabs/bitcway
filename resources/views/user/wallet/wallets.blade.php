@@ -547,11 +547,11 @@
         })
     </script>
     <script>
-       function trade_Sell_Function(index) {
-           console.log(index);
-           let currencyName = $('#MyCoinCurrencyName' + index).html();
-           let tradeCurrencySize = parseFloat($('#MyTotalCoinSize' + index).html());
-           let tradeSellAmount = parseFloat($('#totalTradeAmount' + index).html());
+        function trade_Sell_Function(index) {
+            console.log(index);
+            let currencyName = $('#MyCoinCurrencyName' + index).html();
+            let tradeCurrencySize = parseFloat($('#MyTotalCoinSize' + index).html());
+            let tradeSellAmount = parseFloat($('#totalTradeAmount' + index).html());
 
             axios.post('{{route("user-trade-sell", app()->getLocale())}}', {
                 currency: currencyName,

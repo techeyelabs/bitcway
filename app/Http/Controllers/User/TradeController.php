@@ -460,13 +460,21 @@ class TradeController extends Controller
         return response() -> json(['status' => true]);
     }
     public function limitSell(Request $request){
+        $currency = Currency::where('name', $request->currency)->first();
+
+        $balance = UserWallet::select('balance')->where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->first();
+        $totalSpent = LimitBuySell::where('derivative', 0)->where('transactionStatus', 1)->where('user_id', Auth::user()->id)->sum('currencyAmount');
+        if ($request->currencyAmount > ($balance - $totalSpent)){
+            return response()->json(['status' => false]);
+        }
+
         $Bitfinex = new Bitfinex();
         $getCurrentRate = $Bitfinex->getRateBuySell('sell', $request->currency);
         if ($request->currency == 'MAB'){
             $request->currency = 'ADA';
             $getCurrentRate = $this->getCurrentPrice()['lastval'];
         }
-        $currency = Currency::where('name', $request->currency)->first();
+
         $limitSell = new LimitBuySell();
         $limitSell->limitType = $request->limitType;
         $limitSell->priceLimit = $request->priceLimit;
@@ -504,6 +512,11 @@ class TradeController extends Controller
             'priceLimit' => 'required',
             'itemId' => 'required|integer'
         ]);
+        $total_booked = LeverageSettlementLimit::where('leverage_wallet_id', $request->itemId)->sum('amount');
+        $totalHas = Leverage_Wallet::where('id', $request->itemId)->first();
+        if ($request->currencyAmount > ($totalHas->amount - $total_booked)){
+            return response()->json(['status' => false]);
+        }
         if ($validator->fails()) {
             return response()->json(['status' => false]);
         }
