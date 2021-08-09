@@ -512,7 +512,7 @@ class TradeController extends Controller
             'priceLimit' => 'required',
             'itemId' => 'required|integer'
         ]);
-        $total_booked = LeverageSettlementLimit::where('leverage_wallet_id', $request->itemId)->sum('amount');
+        $total_booked = LeverageSettlementLimit::where('leverage_wallet_id', $request->itemId)->where('settlement_status', 0)->sum('amount');
         $totalHas = Leverage_Wallet::where('id', $request->itemId)->first();
         if ($request->currencyAmount > ($totalHas->amount - $total_booked)){
             return response()->json(['status' => false]);
