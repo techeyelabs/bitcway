@@ -1095,6 +1095,7 @@
                 setCurrency(item){
                     Home.amount = '';
                     Home.buyAmount = 0;
+                    Home.sellAmount = 0;
                     let slug = window.location.pathname + '?pair=' + item[0];
                     window.history.pushState('slug', 'pair', slug);
 
