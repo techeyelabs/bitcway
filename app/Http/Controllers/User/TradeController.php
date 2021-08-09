@@ -514,8 +514,13 @@ class TradeController extends Controller
         ]);
         $total_booked = LeverageSettlementLimit::where('leverage_wallet_id', $request->itemId)->sum('amount');
         $totalHas = Leverage_Wallet::where('id', $request->itemId)->first();
-        if ($request->currencyAmount > ($totalHas->amount - $total_booked)){
-            return response()->json(['status' => false]);
+        if ($request->currencyAmount != ($totalHas->amount - $total_booked)){
+            return response()->json([
+                'status' => true,
+                'total booked' => $total_booked,
+                'total has' => $totalHas,
+                'request' => $request->currencyAmount
+            ]);
         }
         if ($validator->fails()) {
             return response()->json(['status' => false]);

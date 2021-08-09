@@ -584,8 +584,9 @@
                 id: id
             }).then(function (response) {
                 if(response.data.status) {
+                    console.log(response.data);
                     toastr.success('Trade successfull');
-                    window.location.href = '{{route("user-wallets", app()->getLocale())}}';
+                    {{--window.location.href = '{{route("user-wallets", app()->getLocale())}}';--}}
                     return false;
                 }
                 toastr.error('Error occured !!');
