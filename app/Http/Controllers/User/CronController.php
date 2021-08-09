@@ -67,6 +67,7 @@ class CronController extends Controller
         $Bitfinex = new Bitfinex();
         $users = Leverage_Wallet::select('user_id')->groupBy('user_id')->get();
         foreach ($users as $user){
+            $individual = User::where('id', $user->user_id)->first();
             $equivalentSellAmount = 0;
             $leverageWalletCurrency = Leverage_Wallet::where('user_id', $user->user_id)->orderBy('id', 'desc')->get();
             foreach($leverageWalletCurrency as $lwc){
@@ -81,6 +82,7 @@ class CronController extends Controller
                 } else {
                     $equivalentSellAmount += $lwc->amount * (($lwc->derivative_currency_price * 2) - $price);
                 }
+                echo $equivalentSellAmount;
             }
             $userInvestment = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeUserMoney');
             $userLoan = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeLoan');
@@ -104,7 +106,7 @@ class CronController extends Controller
 
                     DB::beginTransaction();
                     try {
-                        $leverageWalletCurrency = Leverage_Wallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->orderBy('id', 'desc')->get();
+                        $leverageWalletCurrency = Leverage_Wallet::where('user_id', $user->user_id)->where('currency_id', $currency->id)->orderBy('id', 'desc')->get();
                         $leverageSellAmount = $leverageRequestSellAmount;
 
                         foreach ($leverageWalletCurrency as $item) {
@@ -131,8 +133,8 @@ class CronController extends Controller
                                 $derivativeSells->profit = $sellTimeValue - $item->equivalent_amount;
                                 $derivativeSells->save();
 
-                                Auth::user()->derivative = Auth::user()->derivative + $sellAmountToUserWallet;
-                                Auth::user()->save();
+                                $individual->derivative = $individual->derivative + $sellAmountToUserWallet;
+                                $individual->save();
 
                                 $leverageSellAmount -= $item->amount;
                                 $item->delete();
@@ -161,7 +163,7 @@ class CronController extends Controller
                         $TransactionHistory->amount = $leverageRequestSellAmount;
                         $TransactionHistory->equivalent_amount = $equivalentSellAmount;
                         $TransactionHistory->type = 2;
-                        $TransactionHistory->user_id = Auth::user()->id;
+                        $TransactionHistory->user_id = $user->user_id;
                         $TransactionHistory->currency_id = $currency->id;
                         $TransactionHistory->save();
 

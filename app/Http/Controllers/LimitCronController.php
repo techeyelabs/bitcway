@@ -9,6 +9,7 @@ use App\Models\LimitBuySell;
 use App\Models\TransactionHistory;
 use App\Models\User;
 use App\Models\UserWallet;
+use App\Models\DerivativeSell;
 use App\Models\CronTrack;
 use App\Models\LeverageSettlementLimit;
 use App\Models\Message; //for cron testing, remove later
@@ -20,18 +21,22 @@ use Illuminate\Support\Facades\DB;
 use mysql_xdevapi\Exception;
 use App\Traits\CurrentMABPrice;
 use GuzzleHttp\Client;
+use Carbon\Carbon;
 
 
 class LimitCronController extends Controller
 {
-    use CurrentMABPrice;
+    // use CurrentMABPrice;
+    private $baseUrl = 'https://bitc-way.com';
     public function limitCronJob(){
         //test if the cron works
-        $test = CronTrack::where('id', 1)->first();
-        $test->limitcron = date('Y-m-d H:i:s');
-        $test->save();
+        // $test = CronTrack::where('id', 1)->first();
+        // $test->limitcron = date('Y-m-d H:i:s');
+        // $test->save();
+        // $mabdata = $this->getCurrentPrice()['lastval'];
+        $mabdata = $this->getLastPrice();
+        $mabLast = $mabdata['lastval'];
 
-        $mabLast = $this->getCurrentPrice()['lastval'];
         $Bitfinex = new Bitfinex();
         $limitPrice = LimitBuySell::where("transactionStatus", 1)->with("currency")->get();
         for ($i = 0 ; $i < count($limitPrice); $i++){
@@ -153,7 +158,8 @@ class LimitCronController extends Controller
                 if ($data->currency->name == 'ADA'){
                     $getCurrentRate = $mabLast;
                 }
-                if ($data->priceLimit <= $data->price_at_time_of_creation && $data->price_at_time_of_creation <= $getCurrentRate || $data->priceLimit >= $data->price_at_time_of_creation && $data->price_at_time_of_creation >= $getCurrentRate){
+
+                if ($data->priceLimit <= $data->price_at_time_of_creation && $data->limit_rate >= $getCurrentRate || $data->priceLimit >= $data->price_at_time_of_creation && $data->limit_rate <= $getCurrentRate){
                     $this->updateLimitBuyTable($data->currency->id, $data->id, $data->user_id);
                 }
             }
@@ -163,22 +169,23 @@ class LimitCronController extends Controller
         foreach ($settlmentLimits as $index => $item){
             try{
                 if ($item->type == 'buy'){
-                    $getCurrentRate = $Bitfinex->getRateBuySell('sell', $item->currency->name);
-                } else {
                     $getCurrentRate = $Bitfinex->getRateBuySell('buy', $item->currency->name);
+                } else {
+                    $getCurrentRate = $Bitfinex->getRateBuySell('sell', $item->currency->name);
                 }
                 if ($item->currency->name == 'ADA'){
                     $getCurrentRate = $getCurrentRate * ($mabLast / Config::get('site-variables.ada-price'));
                 }
                 if ($item->limit_rate <= $item->price_at_time_of_creation && $item->limit_rate >= $getCurrentRate || $item->limit_rate >= $item->price_at_time_of_creation && $item->limit_rate <= $getCurrentRate){
+                    // if(true){
                     //$client = new Client();
                     //$res = $client->request('POST', '/trade-sell', [
                     //    'form_params' => [
-                            //'limitType'         => 2,
-                            //'priceLimit'        => $item->limit_rate,
-                            //'transactionStatus' => 1,
-                            //'derivative'        => $item->leverage,
-                            //'user_id'           => $item->user_id,
+                    //'limitType'         => 2,
+                    //'priceLimit'        => $item->limit_rate,
+                    //'transactionStatus' => 1,
+                    //'derivative'        => $item->leverage,
+                    //'user_id'           => $item->user_id,
                     //        'currency'          => $item->currency->name,
                     //        'sellAmount'        => $item->amount,
                     //        'calcSellAmount'    => $item->limit_rate * $item->amount,
@@ -203,8 +210,39 @@ class LimitCronController extends Controller
         }
     }
 
+    private function getLastPrice(){
+        $get_json = file_get_contents('https://bitc-way.com/dataJson/1min.json');
+        $json_data = json_decode($get_json, 'true');
+
+        $current_date = strtotime(date("Y-m-d") . " 00:00:00 GMT") * 1000;
+        $currentUTC = (Carbon::now('UTC')->timestamp) * 1000;
+        $lastUTC = Carbon::now('UTC')->subDays(1)->timestamp * 1000;
+        $find_date_index = array_search($currentUTC, array_column($json_data, 'time'));
+        $dmg_response_24 = array_filter($json_data, function ($var) use ($lastUTC) {
+            return ($var['time'] <= $lastUTC);
+        });
+        $dmg_response = array_filter($json_data, function ($var) use ($currentUTC) {
+            return ($var['time'] <= $currentUTC);
+        });
+        $lastval = $dmg_response_24[count($dmg_response_24) - 1]['high'];
+        $nowval = $dmg_response[count($dmg_response) - 1]['high'];
+        if ($lastval > $nowval){
+            $change = ($lastval / $nowval) * -1;
+        } else {
+            $change =  $nowval / $lastval;
+        }
+        $data = [
+            'change' => $change,
+            'lastval' => $dmg_response[count($dmg_response) - 1]['high']
+        ];
+        return $data;
+    }
+
     private function sell($currency, $sellAmount, $calcSellAmount, $derivativeType, $id)
     {
+        $test = CronTrack::where('id', 1)->first();
+        $test->limitcron = date('Y-m-d H:i:s');
+        $test->save();
         $leverageRequestSellAmount = $sellAmount;
         $equivalentSellAmount = $calcSellAmount;
         if ($currency == 'MAB'){
@@ -217,7 +255,8 @@ class LimitCronController extends Controller
         DB::beginTransaction();
         try {
             if (isset($derivativeType)) {
-                $leverageWalletCurrency = Leverage_Wallet::where('id', $id)->get();
+                $theRow = LeverageSettlementLimit::where('id', $id)->first();
+                $leverageWalletCurrency = Leverage_Wallet::where('id', $theRow->leverage_wallet_id)->get();
                 $user = User::where('id', $leverageWalletCurrency[0]->user_id)->first();
                 $leverageSellAmount = $leverageRequestSellAmount;
 
@@ -280,10 +319,10 @@ class LimitCronController extends Controller
         catch(\Exception $e)
         {
             DB::rollback();
-            return 200;
+            return 400;
         }
         DB::commit();
-        return 400;
+        return 200;
     }
 
     public function updateLimitBuyTable($currencyId, $id, $userId){
@@ -380,5 +419,33 @@ class LimitCronController extends Controller
 
         $updateLimitTable->transactionStatus = 2;
         $updateLimitTable->save();
+    }
+
+    public function getCurrentPrice(){
+        $get_json = file_get_contents('./dataJson/1min.json');
+        $json_data = json_decode($get_json, 'true');
+        $current_date = strtotime(date("Y-m-d") . " 00:00:00 GMT") * 1000;
+        $currentUTC = (Carbon::now('UTC')->timestamp) * 1000;
+        $lastUTC = Carbon::now('UTC')->subDays(1)->timestamp * 1000;
+        $find_date_index = array_search($currentUTC, array_column($json_data, 'time'));
+        $dmg_response_24 = array_filter($json_data, function ($var) use ($lastUTC) {
+            return ($var['time'] <= $lastUTC);
+        });
+        $dmg_response = array_filter($json_data, function ($var) use ($currentUTC) {
+            return ($var['time'] <= $currentUTC);
+        });
+        $lastval = $dmg_response_24[count($dmg_response_24) - 1]['high'];
+        $nowval = $dmg_response[count($dmg_response) - 1]['high'];
+        if ($lastval > $nowval){
+            $change = ($lastval / $nowval) * -1;
+        } else {
+            $change =  $nowval / $lastval;
+        }
+        $data = [
+            'change' => $change,
+            'lastval' => $dmg_response[count($dmg_response) - 1]['high']
+        ];
+        return $data;
+        // return $json_data[$find_date_index]['open'];
     }
 }

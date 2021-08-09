@@ -747,7 +747,7 @@
                     items = response.data;
                     if(items){
                         if (currency == 'tMABUSD') {
-                            var num = parseFolat(Home.MABcurrentPrice / 1.358);
+                            var num = parseFolat(Home.MABcurrentPrice / {{Config::get('site-variables.ada-price')}});
                             var change = Home.change;
                             var multiple = parseFloat(num);
                             var multiple = multiple.toFixed(4);
@@ -859,7 +859,7 @@
                 Home.asksprev = Home.asks;
                 if (items[1]) {
                     if (currency == 'tMABUSD'){
-                        var num = Home.MABcurrentPrice / 1.358;
+                        var num = Home.MABcurrentPrice / {{Config::get('site-variables.ada-price')}};
                         var change = Home.change;
                         console.log(Home.MABcurrentPrice);
                         console.log(items[1][0]);
@@ -1022,7 +1022,7 @@
                     return currency;
                 },
                 calcAmount(){
-                    return this.buyAmount*this.selectedItem[7];
+                    return this.buyAmount * this.selectedItem[7];
                 },
                 calcSellAmount(){
                     return this.selectedItem[7]*this.sellAmount;
@@ -1093,6 +1093,7 @@
                     return currency;
                 },
                 setCurrency(item){
+                    Home.amount = '';
                     let slug = window.location.pathname + '?pair=' + item[0];
                     window.history.pushState('slug', 'pair', slug);
 
@@ -1339,6 +1340,10 @@
                     let that = this;
 
                     if(that.calcAmount <= 0 || that.calcAmount > that.usdBalance) {
+                        toastr.error('Invalid amount !!');
+                        return false;
+                    }
+                    if(that.calcAmount !== that.amount * parseFloat(that.selectedPrice)){
                         toastr.error('Invalid amount !!');
                         return false;
                     }
