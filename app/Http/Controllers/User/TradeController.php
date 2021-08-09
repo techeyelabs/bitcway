@@ -463,7 +463,7 @@ class TradeController extends Controller
         $currency = Currency::where('name', $request->currency)->first();
 
         $balance = UserWallet::select('balance')->where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->first();
-        $totalSpent = LimitBuySell::where('derivative', 0)->where('transactionStatus', 1)->where('user_id', Auth::user()->id)->sum('currencyAmount');
+        $totalSpent = LimitBuySell::where('derivative', 0)->where('transactionStatus', 1)->where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->sum('currencyAmount');
         if ($request->currencyAmount > ($balance->balance - $totalSpent)){
             return response()->json(['status' => false]);
         }
