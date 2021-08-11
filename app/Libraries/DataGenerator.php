@@ -142,8 +142,9 @@ class DataGenerator
      */
     public function date_generator($start, $end, $days_diff, $interval)
     {
+        $start = $start - (1 * 60 * 1000);
         $date = [];
-        for ($i = 0; $i < $days_diff; $i++) {
+        for ($i = 0; $i <= $days_diff; $i++) {
             if ($start <= $end) {
                 $date[$start] = $start + (1 * 60 * 1000);
                 $start = $start + (1 * 60 * 1000);

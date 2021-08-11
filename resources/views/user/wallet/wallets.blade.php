@@ -189,7 +189,7 @@
                         <li class="row list-group-item d-flex justify-content-between align-items-center">
                             <p class="col txtWhitecolor" id="MyCoinCurrencyName2{{$j}}" style="text-align: left;">{{($item->currencyName->name == 'ADA') ? 'MAB' : $item->currencyName->name}}</p>
                             <p class="col txtWhitecolor" id="type{{$j}}" style="text-align: left;">{{$item->trade_type}}</p>
-                            <p class="col txtWhitecolor" id="MyTotalCoinAmount2{{$j}}" style="text-align: left;">{!! number_format((double)($item->amount), 5) !!}</p>
+                            <p class="col txtWhitecolor" id="MyTotalCoinAmount2{{$j}}" style="text-align: left;">{{$item->amount}}</p>
                             <p class="col txtWhitecolor d-none previous" id="derivativeEntryPrice{{$j}}" style="text-align: left;">{{($item->equivalent_amount)}}</p>
                             <p class="col txtWhitecolor" id="derivativeCurrencyEntryPrice{{$j}}" style="text-align: left;">{{($item->derivative_currency_price)}}</p>
                             <p class="d-none" id="derivativeLoan{{$j}}" >{{($item->derivativeLoan)}}</p>
