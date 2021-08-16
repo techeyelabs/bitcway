@@ -1,21 +1,20 @@
 @extends('user.layouts.main')
 
 @section('custom_css')
-    <style>
-        table
-        {
-            table-layout: fixed !important;
-            width: 100% !important;
-        }
-        table, th, td {
-         text-align: center !important;
-        }
-        #myTab{
-            width: 101%;
-        }
-        .walletBtn{
-            width: 135px !important;
-        }
+<style>
+    table {
+        table-layout: fixed !important;
+        width: 100% !important;
+    }
+    table, th, td {
+        text-align: center !important;
+    }
+    #myTab{
+        width: 101%;
+    }
+    .walletBtn{
+        width: 135px !important;
+    }
 </style>
 @endsection
 @section('content')

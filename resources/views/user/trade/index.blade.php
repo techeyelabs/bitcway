@@ -632,7 +632,7 @@
             "toolbar_bg": "#171b26",
             "enable_publishing": false,
             "withdateranges": true,
-            "range": "YTD",
+            // "range": "YTD",
             "hide_side_toolbar": true,
             "allow_symbol_change": true,
             "details": false,
@@ -685,7 +685,7 @@
                         Home.selectedItem = Home.trackers[0];
                     }
 
-                    Home.getChartData();
+                    Home.getChartData('interval','1m');
                     setInterval(function () {
                         Home.getOrders();
                     }, 2000);
