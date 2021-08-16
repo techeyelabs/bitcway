@@ -685,7 +685,7 @@
                         Home.selectedItem = Home.trackers[0];
                     }
 
-                    Home.getChartData('interval','1m');
+                    Home.getChartData();
                     setInterval(function () {
                         Home.getOrders();
                     }, 2000);
