@@ -110,28 +110,32 @@ class TradeController extends Controller
 
     public function getChartData(Request $request)
     {
+        $range = $request->range;
         if($request->user_currency == 'MAB'){
              $currency = 'ADA';
         }
         else{
             $currency = $request->user_currency;
         }
-        if($request->interval && $request->interval!=""){
+        if ($request->interval && $request->interval != "") {
 
+            $interval_value = $request->interval;
+            $start = '';
+            $end = '';
+        } else {
+            if ($request->range == ''){
+                $interval_value = '1m';
+                $range = '1Y';
+            } else {
                 $interval_value = $request->interval;
-                $start ='';
-                $end   ='';
-        }
-        else{
-            $interval_value='1m';
-             if(($request->start && $request->end) && ($request->start !="" && $request->end !="") ){
-                 $start =  $request->start;
-                 $end =  $request->end;
-             }
-             else{
-                 $start = '';
-                 $end = '';
-             }
+            }
+            if (($request->start && $request->end) && ($request->start != "" && $request->end != "")) {
+                $start = $request->start;
+                $end = $request->end;
+            } else {
+                $start = '';
+                $end = '';
+            }
         }
         if(empty($request->currency)) return response()->json(['status' => false]);
         $Bitfinex = new Bitfinex();
@@ -140,7 +144,7 @@ class TradeController extends Controller
                 $response = $Bitfinex->getCandle('tADAUSD', $interval_value,'','','' );
             }
             elseif ($start != "" && $end != ""){
-                $response = $Bitfinex->getCandle('tADAUSD', '',$start,$end,$request->range );
+                $response = $Bitfinex->getCandle('tADAUSD', '',$start,$end,$range );
 
             }
             else{
@@ -155,7 +159,7 @@ class TradeController extends Controller
             }
             elseif ($start != "" && $end != ""){
 
-                $response = $Bitfinex->getCandle($request->currency,'', $start, $end,$request->range );
+                $response = $Bitfinex->getCandle($request->currency,'', $start, $end,$range );
             }
             else{
 
