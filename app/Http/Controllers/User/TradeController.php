@@ -123,7 +123,7 @@ class TradeController extends Controller
                 $end   ='';
         }
         else{
-            $interval_value='';
+            $interval_value='1m';
              if(($request->start && $request->end) && ($request->start !="" && $request->end !="") ){
                  $start =  $request->start;
                  $end =  $request->end;
