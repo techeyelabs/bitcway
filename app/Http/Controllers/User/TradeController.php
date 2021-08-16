@@ -118,17 +118,10 @@ class TradeController extends Controller
             $currency = $request->user_currency;
         }
         if ($request->interval && $request->interval != "") {
-
             $interval_value = $request->interval;
             $start = '';
             $end = '';
         } else {
-            if ($request->range == ''){
-                $interval_value = '1m';
-                $range = '1Y';
-            } else {
-                $interval_value = $request->interval;
-            }
             if (($request->start && $request->end) && ($request->start != "" && $request->end != "")) {
                 $start = $request->start;
                 $end = $request->end;
@@ -136,6 +129,10 @@ class TradeController extends Controller
                 $start = '';
                 $end = '';
             }
+        }
+        if (($request->interval == '' || $request->interval == null) && ($request->range == null || $request->range == '')){
+            $interval_value = '1m';
+            $range = '1Y';
         }
         if(empty($request->currency)) return response()->json(['status' => false]);
         $Bitfinex = new Bitfinex();
