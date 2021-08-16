@@ -111,28 +111,27 @@ class TradeController extends Controller
     public function getChartData(Request $request)
     {
         if($request->user_currency == 'MAB'){
-            $currency = 'ADA';
+             $currency = 'ADA';
         }
         else{
             $currency = $request->user_currency;
         }
         if($request->interval && $request->interval!=""){
-            $interval_value = $request->interval;
-            $start ='';
-            $end   ='';
+
+                $interval_value = $request->interval;
+                $start ='';
+                $end   ='';
         }
         else{
-            if ($request->range == ''){
-                $interval_value='1m';
-            }
-            if(($request->start && $request->end) && ($request->start !="" && $request->end !="") ){
-                $start =  $request->start;
-                $end =  $request->end;
-            }
-            else{
-                $start = '';
-                $end = '';
-            }
+            $interval_value='1m';
+             if(($request->start && $request->end) && ($request->start !="" && $request->end !="") ){
+                 $start =  $request->start;
+                 $end =  $request->end;
+             }
+             else{
+                 $start = '';
+                 $end = '';
+             }
         }
         if(empty($request->currency)) return response()->json(['status' => false]);
         $Bitfinex = new Bitfinex();
