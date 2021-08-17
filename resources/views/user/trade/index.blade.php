@@ -1245,6 +1245,7 @@
                 },
                 getStartDate(range){
                     console.log(range);
+                    console.log(parseInt(range[0]));
                     var startdate="";
                     if (range === '3Y' || range === '1Y'){
                         var date_ago = new Date(
