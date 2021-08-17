@@ -133,6 +133,9 @@ class TradeController extends Controller
                  $end = '';
              }
         }
+        if ($request->interval == null && $request->range == null){
+            $interval_value='1m';
+        }
         if(empty($request->currency)) return response()->json(['status' => false]);
         $Bitfinex = new Bitfinex();
         if($request->currency == 'tMABUSD'){

@@ -1174,11 +1174,11 @@
                 },
                 getChartData(type,value){
                     $(".interval").removeClass("selected-param");
-                    if (value !== undefined){
-                        if (type == 'interval'){
-                            $("#"+value+'I').addClass("selected-param");
+                    if (value !== undefined) {
+                        if (type == 'interval') {
+                            $("#" + value + 'I').addClass("selected-param");
                         } else {
-                            $("#"+value).addClass("selected-param");
+                            $("#" + value).addClass("selected-param");
                         }
 
                     } else {
@@ -1186,26 +1186,26 @@
                     }
 
                     //alert('I am here');
-                    if (type!='' && type ==='interval'){
+                    if (type != '' && type === 'interval') {
                         var interval_value = value;
-                    }
-                    else{
-                       var interval_value="";
+                    } else {
+                        var interval_value = "";
 
                     }
-                    if (type ==='range'){
+                    if (type === 'range') {
                         var range_value = value;
                         var current_date = new Date();
                         var enddate = current_date.getTime();
                         console.log(range_value);
-                        var startdate= this.getStartDate(range_value);
-                    }
-                    else{
+                        var startdate = this.getStartDate(range_value);
+                    } else {
                         var startdate = "";
-                        var enddate   = "";
+                        var enddate = "";
                         var range_value = "";
-
                     }
+                    console.log(startdate);
+                    console.log(enddate);
+                    return;
                     let that = this;
                     let currency = that.selectedItem[0];
                     // showLoader('Loading ...');
