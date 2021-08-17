@@ -251,6 +251,7 @@ class TradeController extends Controller
 
     public function sell(Request $request)
     {
+        dd($request->derivativeType);
         $leverageRequestSellAmount = $request->sellAmount;
         $equivalentSellAmount = $request->calcSellAmount;
         if ($request->currency == 'MAB'){
