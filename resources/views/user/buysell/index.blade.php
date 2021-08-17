@@ -39,7 +39,7 @@
             </table>
         </div>
         <div class="card-body historyTable">
-            <table id="derivative">
+            <table class="table" id="derivative">
                 <thead>
                     <th class="txtWhitecolor fs14px">{{__('col8')}}</th>
                     <th class="txtWhitecolor fs14px">{{__('column1')}}</th>
