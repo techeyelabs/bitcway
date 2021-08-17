@@ -1243,40 +1243,36 @@
                         hideLoader();
                     });
                 },
-                getStartDate(range){
+                getStartDate(range) {
                     console.log(range);
                     console.log(parseInt(range[0]));
-                    var startdate="";
-                    if (range === '3Y' || range === '1Y'){
+                    var startdate = "";
+                    if (range === '3Y' || range === '1Y') {
                         var date_ago = new Date(
-                            new Date().getFullYear()-parseInt(range[0]),
+                            new Date().getFullYear() - parseInt(range[0]),
                             new Date().getMonth(),
                             new Date().getDate()
                         );
-                    }
-                    else if(range === '3M' || range === '1M'){
+                    } else if (range === '3M' || range === '1M') {
                         var date_ago = new Date(
                             new Date().getFullYear(),
-                            new Date().getMonth()-parseInt(range[0]),
+                            new Date().getMonth() - parseInt(range[0]),
                             new Date().getDate()
                         );
 
-                    }
-                    else if(range === '7D' || range === '3D' || range === '1D'){
+                    } else if (range === '7D' || range === '3D' || range === '1D') {
                         var date_ago = new Date(
                             new Date().getFullYear(),
                             new Date().getMonth(),
-                            new Date().getDate()-parseInt(range[0]) + 1
+                            new Date().getDate() - parseInt(range[0]) + 1
                         );
-                    }
-                    else if(range === '6h' || range === '1h'){
+                    } else if (range === '6h' || range === '1h') {
                         var date_1day_ago = new Date();
                         startdate = date_1day_ago.getTime() - (parseInt(range[0]) * 3600 * 1000);
+                    } else {
+                        startdate = date_ago.getTime();
                     }
-                    else{
-                        startdate=date_ago.getTime();
-                    }
-
+                    console.log(date_ago);
                     return startdate;
                 },
                 drawChart(data){
