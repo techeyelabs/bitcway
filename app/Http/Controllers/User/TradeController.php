@@ -332,7 +332,7 @@ class TradeController extends Controller
             $TransactionHistory->amount = $request->sellAmount;
             $TransactionHistory->equivalent_amount = $request->calcSellAmount;
             $TransactionHistory->type = 2;
-            $TransactionHistory->is_settlement = 0;
+            $TransactionHistory->is_settlement = ($request->derivativeType) ? 1: 0;
             $TransactionHistory->user_id = Auth::user()->id;
             $TransactionHistory->currency_id = $currency->id;
             $TransactionHistory->save();
