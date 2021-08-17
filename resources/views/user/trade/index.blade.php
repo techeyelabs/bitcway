@@ -1203,9 +1203,6 @@
                         var enddate = "";
                         var range_value = "";
                     }
-                    console.log(startdate);
-                    console.log(enddate);
-                    return;
                     let that = this;
                     let currency = that.selectedItem[0];
                     // showLoader('Loading ...');
@@ -1244,9 +1241,7 @@
                     });
                 },
                 getStartDate(range) {
-                    console.log(range);
-                    console.log(parseInt(range[0]));
-                    var startdate = "";
+                    var startdate = 0;
                     if (range === '3Y' || range === '1Y') {
                         var date_ago = new Date(
                             new Date().getFullYear() - parseInt(range[0]),
@@ -1266,13 +1261,15 @@
                             new Date().getMonth(),
                             new Date().getDate() - parseInt(range[0]) + 1
                         );
-                    } else if (range === '6h' || range === '1h') {
+                    }
+                    if (range === '6h' || range === '1h') {
+                        console.log("first");
                         var date_1day_ago = new Date();
                         startdate = date_1day_ago.getTime() - (parseInt(range[0]) * 3600 * 1000);
                     } else {
+                        console.log("second");
                         startdate = date_ago.getTime();
                     }
-                    console.log(startdate);
                     return startdate;
                 },
                 drawChart(data){
