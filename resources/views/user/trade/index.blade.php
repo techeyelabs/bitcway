@@ -1272,7 +1272,7 @@
                     } else {
                         startdate = date_ago.getTime();
                     }
-                    console.log(date_ago.getTime());
+                    console.log(startdate);
                     return startdate;
                 },
                 drawChart(data){
