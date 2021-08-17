@@ -222,6 +222,8 @@ class TradeController extends Controller
                 $TransactionHistory->derivativeLoan = $request->calcBuyAmount - $request->derivativeUserMoney;
             }
             $TransactionHistory->type = 1;
+            $TransactionHistory->profit = 0;
+            $TransactionHistory->is_settlement = 0;
             $TransactionHistory->leverage = $leverage;
             $TransactionHistory->user_id = Auth::user()->id;
             $TransactionHistory->currency_id = $currency->id;
@@ -260,6 +262,7 @@ class TradeController extends Controller
         }
         DB::beginTransaction();
         try {
+            $TransactionHistory = new TransactionHistory();  // History object initiation
             if (isset($request->derivativeType)) {
                 $leverageWalletCurrency = Leverage_Wallet::where('id', $request->id)->get();
                 $leverageSellAmount = $leverageRequestSellAmount;
@@ -273,6 +276,7 @@ class TradeController extends Controller
                     $derivativeSells->leverage = $item->leverage;
 
                     if ($item->amount <= $leverageSellAmount) {
+                        $buyTimeValue = $item->equivalent_amount;
                         $sellTimeValue = ($equivalentSellAmount * $item->amount) / $leverageRequestSellAmount;
                         $sellAmountToUserWallet = $sellTimeValue - ($item->equivalent_amount * (($item->leverage - 1) / $item->leverage));
 
@@ -306,42 +310,33 @@ class TradeController extends Controller
                         $item->save();
                         $leverageSellAmount = 0;
                     }
+                    $TransactionHistory->profit = ($buyTimeValue / $item->leverage) - $sellAmountToUserWallet;
                     if ($leverageSellAmount == 0) {
                         break;
                     }
                 }
-
-                $TransactionHistory = new TransactionHistory();
-                $TransactionHistory->amount = $request->sellAmount;
-                $TransactionHistory->equivalent_amount = $request->calcSellAmount;
-                $TransactionHistory->type = 2;
-                $TransactionHistory->user_id = Auth::user()->id;
-                $TransactionHistory->currency_id = $currency->id;
-                $TransactionHistory->save();
             } else {
-                $TransactionHistory = new TransactionHistory();
-                $TransactionHistory->amount = $request->sellAmount;
-                $TransactionHistory->equivalent_amount = $request->calcSellAmount;
-                $TransactionHistory->type = 2;
-                $TransactionHistory->user_id = Auth::user()->id;
-                $TransactionHistory->currency_id = $currency->id;
-                $TransactionHistory->save();
-
                 $UserWallet = UserWallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->first();
-                if(!$UserWallet) return response()->json(['status' => false]);
+                if (!$UserWallet) return response()->json(['status' => false]);
 
-                $UserWallet->balance = $UserWallet->balance-$request->sellAmount;
+                $UserWallet->balance = $UserWallet->balance - $request->sellAmount;
                 $UserWallet->save();
-                if ($UserWallet->balance == 0.00000000){
+                if ($UserWallet->balance == 0.00000000) {
                     $UserWallet->delete();
                 }
 
-                Auth::user()->balance = Auth::user()->balance+$equivalentSellAmount;
+                Auth::user()->balance = Auth::user()->balance + $equivalentSellAmount;
                 Auth::user()->save();
+                $TransactionHistory->profit = $request->calcSellAmount - ($UserWallet->currency_price * $request->sellAmount);
             }
-        }
-        catch(\Exception $e)
-        {
+            $TransactionHistory->amount = $request->sellAmount;
+            $TransactionHistory->equivalent_amount = $request->calcSellAmount;
+            $TransactionHistory->type = 2;
+            $TransactionHistory->is_settlement = 0;
+            $TransactionHistory->user_id = Auth::user()->id;
+            $TransactionHistory->currency_id = $currency->id;
+            $TransactionHistory->save();
+        } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['status' => false]);
         }

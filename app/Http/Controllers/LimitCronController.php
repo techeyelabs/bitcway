@@ -265,6 +265,9 @@ class LimitCronController extends Controller
                 $leverageSellAmount = $leverageRequestSellAmount;
 
                 foreach ($leverageWalletCurrency as $item) {
+
+                    $TransactionHistory = new TransactionHistory(); // History object initiation
+
                     $derivativeSells = new DerivativeSell();
                     $derivativeSells->type = $item->type;
                     $derivativeSells->status = $item->status;
@@ -274,6 +277,7 @@ class LimitCronController extends Controller
 
                     if ($item->amount <= $leverageSellAmount) {
                         $sellTimeValue = ($equivalentSellAmount * $item->amount) / $leverageRequestSellAmount;
+                        $buyTimeValue = $item->equivalent_amount;
                         $sellAmountToUserWallet = $sellTimeValue - ($item->equivalent_amount * (($item->leverage - 1) / $item->leverage));
 
                         $derivativeSells->amount = $item->amount;
@@ -287,10 +291,14 @@ class LimitCronController extends Controller
 
                         $leverageSellAmount -= $item->amount;
                         $item->delete();
+
+                        $TransactionHistory->amount = $item->amount;  // Amount entry in history
+                        $TransactionHistory->derivativeLoan = $item->equivalent_amount * (($item->leverage - 1) / $item->leverage); // Loan entry
                     } else {
                         $sellTimeValue = ($equivalentSellAmount * $leverageSellAmount) / $leverageRequestSellAmount;
                         $buyTimeValue = ($item->equivalent_amount * $leverageSellAmount) / $item->amount;
                         $sellAmountToUserWallet = $sellTimeValue - ($buyTimeValue * (($item->leverage - 1) / $item->leverage));
+                        $invest =
 
                         $derivativeSells->amount = $leverageSellAmount;
                         $derivativeSells->equivalent_amount = $buyTimeValue;
@@ -305,19 +313,26 @@ class LimitCronController extends Controller
                         $item->equivalent_amount = $item->equivalent_amount - $buyTimeValue;
                         $item->save();
                         $leverageSellAmount = 0;
+
+                        $TransactionHistory->amount = $leverageSellAmount; // Amount entry in history
+                        $TransactionHistory->derivativeLoan = $buyTimeValue * (($item->leverage - 1) / $item->leverage); // Loan entry
                     }
+
+                    // History entry for settlement
+
+                    $TransactionHistory->equivalent_amount = $sellTimeValue;
+                    $TransactionHistory->derivativeUserMoney = $sellAmountToUserWallet;
+                    $TransactionHistory->type = ($item->trade_type == 'buy') ? 1 : 2;
+                    $TransactionHistory->profit = ($buyTimeValue / $item->leverage) - $sellAmountToUserWallet;
+                    $TransactionHistory->is_settlement = 1;
+                    $TransactionHistory->user_id = $user->id;
+                    $TransactionHistory->currency_id = $currency->id;
+                    $TransactionHistory->save();
+
                     if ($leverageSellAmount == 0) {
-                        break;
+                        break; // Available sell amount is finished, settlement complete
                     }
                 }
-
-                $TransactionHistory = new TransactionHistory();
-                $TransactionHistory->amount = $sellAmount;
-                $TransactionHistory->equivalent_amount = $calcSellAmount;
-                $TransactionHistory->type = 2;
-                $TransactionHistory->user_id = $user->id;
-                $TransactionHistory->currency_id = $currency->id;
-                $TransactionHistory->save();
             }
         }
         catch(\Exception $e)
