@@ -1770,6 +1770,6 @@
             if (url_part.split('=')[1] == 'tMABUSD'){
                 window.location.reload(1);
             }
-        }, 60000);
+        }, 300000);
     </script>
 @endsection
