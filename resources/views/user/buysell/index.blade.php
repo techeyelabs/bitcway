@@ -15,10 +15,10 @@
         <div class="card-body historyTable">
             <table class="table" id="trade">
                 <thead>
-                    <th class="txtWhitecolor fs14px">Date & Time</th>
-                    <th class="txtWhitecolor fs14px">Symbol</th>
-                    <th class="txtWhitecolor fs14px">Size</th>
-                    <th class="txtWhitecolor fs14px">Entry Price (USD)</th>
+                    <th class="txtWhitecolor fs14px">{{__('col8')}}</th>
+                    <th class="txtWhitecolor fs14px">{{__('column1')}}</th>
+                    <th class="txtWhitecolor fs14px">{{__('size')}}</th>
+                    <th class="txtWhitecolor fs14px">{{__('entryprice')}} (USD)</th>
                     <th class="txtWhitecolor fs14px">Settlement Price (USD)</th>
                     <th class="txtWhitecolor fs14px">Profit</th>
                 </thead>
@@ -29,9 +29,9 @@
                         <td class="txtWhitecolor fs14px">{{ ($item->currency->name == 'ADA') ? 'MAB' : $item->currency->name}}</td>
                         <td class="txtWhitecolor fs14px">{!! number_format((double)($item->amount), 8) !!}</td>
                         <td class="txtWhitecolor fs14px">{!! (double)($item->equivalent_amount / $item->amount) !!}</td>
-                        <td class="txtWhitecolor fs14px">{{$item->equivalent_amount}}</td>
+                        <td class="txtWhitecolor fs14px">{!! (double)($item->equivalent_amount / $item->amount) !!}</td>
                         <td class="txtWhitecolor fs14px">
-                            {{$item->type==1?'Buy':'Sell'}}
+                            {{$item->profit}}
                         </td>
                     </tr>
                     <?php }?>
@@ -43,10 +43,11 @@
                 <thead>
                     <th class="txtWhitecolor fs14px">{{__('col8')}}</th>
                     <th class="txtWhitecolor fs14px">{{__('column1')}}</th>
-                    <th class="txtWhitecolor fs14px">{{__('col10')}}</th>
-                    <th class="txtWhitecolor fs14px">{{__('col1')}} (USD)</th>
-                    <th class="txtWhitecolor fs14px">{{__('total')}} (USD)</th>
                     <th class="txtWhitecolor fs14px">{{__('col12')}}</th>
+                    <th class="txtWhitecolor fs14px">{{__('size')}} (USD)</th>
+                    <th class="txtWhitecolor fs14px">{{__('entryprice')}} (USD)</th>
+                    <th class="txtWhitecolor fs14px">Settlement Price (USD)</th>
+                    <th class="txtWhitecolor fs14px">Profit</th>
                 </thead>
                 <tbody>
                     <?php foreach($derivatives as $item){?>
@@ -55,10 +56,8 @@
                         <td class="txtWhitecolor fs14px">{{ ($item->currency->name == 'ADA') ? 'MAB' : $item->currency->name}}</td>
                         <td class="txtWhitecolor fs14px">{!! number_format((double)($item->amount), 8) !!}</td>
                         <td class="txtWhitecolor fs14px">{!! (double)($item->equivalent_amount / $item->amount) !!}</td>
-                        <td class="txtWhitecolor fs14px">{{$item->equivalent_amount}}</td>
-                        <td class="txtWhitecolor fs14px">
-                            {{$item->type==1?'Buy':'Sell'}}
-                        </td>
+                        <td class="txtWhitecolor fs14px">{!! (double)($item->equivalent_amount / $item->amount) !!}</td>
+                        <td class="txtWhitecolor fs14px">{{$item->type==1?'Buy':'Sell'}}</td>
                     </tr>
                     <?php }?>
                 </tbody>

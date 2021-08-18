@@ -157,6 +157,11 @@
             position: absolute;
             z-index: 1000;
         }
+
+        .blur{
+            -webkit-filter: blur(1px); /* Chrome, Safari, Opera */
+            filter: blur(1px);
+        }
     </style>
 @endsection
 @section('content')
@@ -1093,6 +1098,7 @@
                     return currency;
                 },
                 setCurrency(item){
+                    $('#chart').html('');
                     Home.amount = '';
                     Home.buyAmount = 0;
                     Home.sellAmount = 0;
@@ -1173,6 +1179,7 @@
                     }
                 },
                 getChartData(type,value){
+                    $("#chart").addClass("blur");
                     $(".interval").removeClass("selected-param");
                     if (value !== undefined) {
                         if (type == 'interval') {
@@ -1232,6 +1239,9 @@
                             setTimeout(function(){
                                 that.drawChart(chartData);
                             }, 100);
+                            setTimeout(function(){
+                                $("#chart").removeClass("blur");
+                            }, 200);
                         }
                     })
                     .catch(function (error) {
