@@ -216,6 +216,7 @@ class TradeController extends Controller
             $TransactionHistory->amount = $request->buyAmount;
             $TransactionHistory->equivalent_amount = $request->calcBuyAmount;
             $TransactionHistory->derivativeUserMoney = $request->derivativeUserMoney;
+            $TransactionHistory->entry_price = $request->currency_price;
             if ($request->derivativeLoan == 0){
                 $TransactionHistory->derivativeLoan = 0;
             }else{
@@ -234,7 +235,7 @@ class TradeController extends Controller
                 $LeverageWallet->amount = $request->buyAmount;
                 $LeverageWallet->trade_type = $request->tradeType;
                 $LeverageWallet->equivalent_amount = $request->calcBuyAmount;
-                $LeverageWallet->derivative_currency_price = $request->derivative_currency_price;
+                $LeverageWallet->derivative_currency_price = $request->currency_price;
                 $LeverageWallet->derivativeUserMoney = $request->derivativeUserMoney;
                 $LeverageWallet->derivativeLoan = $request->calcBuyAmount - $request->derivativeUserMoney;
                 $LeverageWallet->type = 1;
@@ -251,7 +252,6 @@ class TradeController extends Controller
 
     public function sell(Request $request)
     {
-        dd($request->derivativeType);
         $leverageRequestSellAmount = $request->sellAmount;
         $equivalentSellAmount = $request->calcSellAmount;
         if ($request->currency == 'MAB'){
@@ -312,6 +312,7 @@ class TradeController extends Controller
                         $leverageSellAmount = 0;
                     }
                     $TransactionHistory->profit = ($buyTimeValue / $item->leverage) - $sellAmountToUserWallet;
+                    $TransactionHistory->entry_price = $item->derivative_currency_price;
                     if ($leverageSellAmount == 0) {
                         break;
                     }
@@ -329,6 +330,7 @@ class TradeController extends Controller
                 Auth::user()->balance = Auth::user()->balance + $equivalentSellAmount;
                 Auth::user()->save();
                 $TransactionHistory->profit = $request->calcSellAmount - ($UserWallet->currency_price * $request->sellAmount);
+                $TransactionHistory->entry_price = $UserWallet->currency_price;
             }
             $TransactionHistory->amount = $request->sellAmount;
             $TransactionHistory->equivalent_amount = $request->calcSellAmount;

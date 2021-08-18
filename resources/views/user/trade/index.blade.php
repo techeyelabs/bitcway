@@ -1393,7 +1393,8 @@
                     axios.post('{{route("user-trade-sell", app()->getLocale())}}', {
                         currency        : that.currency,
                         sellAmount      : that.amount,
-                        calcSellAmount  : that.calcAmount
+                        calcSellAmount  : that.calcAmount,
+                        currency_price  : that.calcAmount / that.amount
                     })
                     .then(function (response) {
                         if(response.data.status){
@@ -1419,7 +1420,7 @@
                         currency: that.currency,
                         buyAmount: that.amount,
                         calcBuyAmount: that.calcAmount,
-                        derivative_currency_price: that.selectedPrice,
+                        currency_price: that.selectedPrice,
                         leverage: $("#sliderRange").val(),
                         derivativeUserMoney: that.derivativeRange,
                         tradeType: 'buy'
@@ -1450,7 +1451,7 @@
                         currency       : that.currency,
                         buyAmount     : that.amount,
                         calcBuyAmount : that.calcAmount,
-                        derivative_currency_price : that.selectedPrice,
+                        currency_price : that.selectedPrice,
                         leverage            : $("#sliderRange").val(),
                         derivativeUserMoney : that.derivativeRange,
                         tradeType           : 'sell'
