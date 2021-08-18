@@ -35,8 +35,6 @@
                     <?php }?>
                 </tbody>
             </table>
-        </div>
-        <div class="card-body historyTable">
             <table class="table" id="derivative" style="display: none">
                 <thead>
                     <th class="txtWhitecolor fs14px">{{__('col8')}}</th>
