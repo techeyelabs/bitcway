@@ -70,7 +70,10 @@
 
                         <div class="row  text-left mb-3" style="margin-left: -15px;">
                             <abbr title="{{__('Btrade_wallet')}}"  class="txtWhitecolor text-left initialism">{{__('trade_wallet')}}</abbr><br>
-                            <h4 class="txtWhitecolor text-left mb-2" id="totalAmount">00.00<span style="font-size: 10px">&nbsp; USD</span></h4>
+                            <h4 class="txtWhitecolor text-left mb-4" >
+                                <span id="totalAmount">00.00</span>
+                                <span style="font-size: 10px"> USD</span>
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -160,7 +163,10 @@
                         <div class="text-left">
                             <abbr title="Derivative Wallet"  class="txtWhitecolor text-left initialism">{{__('title20')}}</abbr><br>
                             <span class="d-none" id="derivativeBalance">{{($userDerivativeBalance->derivative == '0') ? '00.00' : $userDerivativeBalance->derivative}}</span>
-                            <h4 class="txtWhitecolor text-left mb-3" id="totalDerivativeAmount">{{($userDerivativeBalance->derivative == '0') ? '00.00' : $userDerivativeBalance->derivative}}<span style="font-size: 10px">&nbsp; USD</span></h4>
+                            <h4 class="txtWhitecolor text-left mb-4" >
+                                <span id="totalDerivativeAmount">{{($userDerivativeBalance->derivative == '0') ? '00.00' : $userDerivativeBalance->derivative}}</span>
+                                <span style="font-size: 10px"> USD</span>
+                            </h4>
                         </div>
                         <div class="col-md-12 row">
                             <div class="col-md-7">
