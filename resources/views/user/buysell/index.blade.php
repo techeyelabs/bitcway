@@ -3,10 +3,10 @@
 @section('custom_css')
     <style>
         .loss{
-            color: red;
+            color: #dc3545;
         }
         .profit{
-            color: green;
+            color: #198754;
         }
     </style>
 @endsection
