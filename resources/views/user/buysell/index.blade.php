@@ -38,7 +38,7 @@
                         <td class="txtWhitecolor fs14px">{!! number_format((double)($item->amount), 8) !!}</td>
                         <td class="txtWhitecolor fs14px">{!! (double)($item->entry_price) !!}</td>
                         <td class="txtWhitecolor fs14px">{!! (double)($item->equivalent_amount / $item->amount) !!}</td>
-                        <td class="txtWhitecolor fs14px">{{$item->profit}}</td>
+                        <td class="fs14px {{($item->profit < 0)? 'loss': 'profit'}}">{{$item->profit}}</td>
                     </tr>
                     <?php }?>
                 </tbody>
@@ -62,7 +62,7 @@
                         <td class="txtWhitecolor fs14px">{!! number_format((double)($item->amount), 8) !!}</td>
                         <td class="txtWhitecolor fs14px">{!! (double)($item->equivalent_amount / $item->amount) !!}</td>
                         <td class="txtWhitecolor fs14px">{!! (double)($item->entry_price) !!}</td>
-                        <td class="txtWhitecolor fs14px {{($item->profit < 0)? 'loss': 'profit'}}">{{$item->profit}}</td>
+                        <td class="fs14px {{($item->profit < 0)? 'loss': 'profit'}}">{{$item->profit}}</td>
                     </tr>
                     <?php }?>
                 </tbody>
