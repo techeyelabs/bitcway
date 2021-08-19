@@ -50,10 +50,10 @@
                     <tr>
                         <td class="txtWhitecolor fs14px">{{date('d/m/Y', strtotime($item->created_at))}}</td>
                         <td class="txtWhitecolor fs14px">{{ ($item->currency->name == 'ADA') ? 'MAB' : $item->currency->name}}</td>
+                        <td class="txtWhitecolor fs14px">{{$item->type==1?'Buy':'Sell'}}</td>
                         <td class="txtWhitecolor fs14px">{!! number_format((double)($item->amount), 8) !!}</td>
                         <td class="txtWhitecolor fs14px">{!! (double)($item->equivalent_amount / $item->amount) !!}</td>
                         <td class="txtWhitecolor fs14px">{!! (double)($item->entry_price) !!}</td>
-                        <td class="txtWhitecolor fs14px">{{$item->type==1?'Buy':'Sell'}}</td>
                         <td class="txtWhitecolor fs14px">{{$item->profit}}</td>
                     </tr>
                     <?php }?>
