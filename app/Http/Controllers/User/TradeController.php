@@ -460,19 +460,19 @@ class TradeController extends Controller
         return response() -> json(['status' => true]);
     }
     public function limitSell(Request $request){
+        $Bitfinex = new Bitfinex();
+        $getCurrentRate = $Bitfinex->getRateBuySell('sell', $request->currency);
+        if ($request->currency == 'MAB'){
+            $request->currency = 'ADA';
+            $getCurrentRate = $this->getCurrentPrice()['lastval'];
+        }
+
         $currency = Currency::where('name', $request->currency)->first();
 
         $balance = UserWallet::select('balance')->where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->first();
         $totalSpent = LimitBuySell::where('derivative', 0)->where('transactionStatus', 1)->where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->sum('currencyAmount');
         if ($request->currencyAmount > ($balance->balance - $totalSpent)){
             return response()->json(['status' => false]);
-        }
-
-        $Bitfinex = new Bitfinex();
-        $getCurrentRate = $Bitfinex->getRateBuySell('sell', $request->currency);
-        if ($request->currency == 'MAB'){
-            $request->currency = 'ADA';
-            $getCurrentRate = $this->getCurrentPrice()['lastval'];
         }
 
         $limitSell = new LimitBuySell();
