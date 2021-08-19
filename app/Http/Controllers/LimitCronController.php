@@ -376,7 +376,7 @@ class LimitCronController extends Controller
         try{
             $TransactionHistory= new TransactionHistory();
             $TransactionHistory->amount = $equivalent_trade_balance_limit;
-            $TransactionHistory->entry_price = $updateLimitTable->priceLimit;
+            $TransactionHistory->entry_price = $updateLimitTable->price_at_time_of_creation;
             $TransactionHistory->equivalent_amount = $equivalent_trade_amount_limit;
             $TransactionHistory->derivativeUserMoney = 0;
             $TransactionHistory->derivativeLoan = 0;
@@ -426,7 +426,7 @@ class LimitCronController extends Controller
         try{
             $TransactionHistory= new TransactionHistory();
             $TransactionHistory->amount = $equivalent_trade_balance_limit;
-            $TransactionHistory->entry_price = $updateLimitTable->priceLimit;
+            $TransactionHistory->entry_price = $updateLimitTable->price_at_time_of_creation;
             $TransactionHistory->equivalent_amount = $equivalent_trade_amount_limit;
             $TransactionHistory->derivativeUserMoney = 0;
             $TransactionHistory->derivativeLoan = 0;
