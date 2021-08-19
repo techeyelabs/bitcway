@@ -152,9 +152,6 @@ class LimitCronController extends Controller
                     }
                 }
             } else {
-                if ($data->currency->name == 'ADA'){
-                    $getCurrentRate = $getCurrentRate * $mabLast;
-                }
                 $flag = ($data->limitType == 1) ? 'buy' : 'sell';
                 $getCurrentRate = $Bitfinex->getRateBuySell($flag, $data->currency->name);
                 if ($data->currency->name == 'ADA'){
@@ -378,6 +375,7 @@ class LimitCronController extends Controller
             $TransactionHistory->amount = $equivalent_trade_balance_limit;
             $TransactionHistory->entry_price = $updateLimitTable->price_at_time_of_creation;
             $TransactionHistory->equivalent_amount = $equivalent_trade_amount_limit;
+            $TransactionHistory->profit = $TransactionHistory->equivalent_amount - ($TransactionHistory->entry_price * $TransactionHistory->amount);
             $TransactionHistory->derivativeUserMoney = 0;
             $TransactionHistory->derivativeLoan = 0;
             $TransactionHistory->type = 1;
@@ -428,6 +426,7 @@ class LimitCronController extends Controller
             $TransactionHistory->amount = $equivalent_trade_balance_limit;
             $TransactionHistory->entry_price = $updateLimitTable->price_at_time_of_creation;
             $TransactionHistory->equivalent_amount = $equivalent_trade_amount_limit;
+            $TransactionHistory->profit = $TransactionHistory->equivalent_amount - ($TransactionHistory->entry_price * $TransactionHistory->amount);
             $TransactionHistory->derivativeUserMoney = 0;
             $TransactionHistory->derivativeLoan = 0;
             $TransactionHistory->type = 2;
