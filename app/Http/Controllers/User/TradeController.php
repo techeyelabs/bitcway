@@ -184,15 +184,14 @@ class TradeController extends Controller
         if(!$currency) return response()->json(['status' => false]);
         $UserWallet = UserWallet::where('user_id', Auth::user()->id)->where('currency_id', $currency->id)->first();
         //For saving Trade data in User Wallet table
-        if (!isset($request->leverage)){
-            if(!$UserWallet) {
+        if (!isset($request->leverage)) {
+            if (!$UserWallet) {
                 $UserWallet = new UserWallet();
                 $UserWallet->balance = $request->buyAmount;
                 $UserWallet->equivalent_trade_amount = $request->calcBuyAmount;
                 $UserWallet->currency_price = $request->currency_price;
-
-            }else{
-                $UserWallet->balance = $UserWallet->balance+$request->buyAmount;
+            } else {
+                $UserWallet->balance = $UserWallet->balance + $request->buyAmount;
                 $UserWallet->equivalent_trade_amount = $UserWallet->equivalent_trade_amount + $request->calcBuyAmount;
                 $UserWallet->currency_price = $UserWallet->equivalent_trade_amount / $UserWallet->balance;
             }
