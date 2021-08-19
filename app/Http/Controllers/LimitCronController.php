@@ -35,7 +35,7 @@ class LimitCronController extends Controller
         // $test->save();
         // $mabdata = $this->getCurrentPrice()['lastval'];
         $mabdata = $this->getLastPrice();
-        $mabLast = $mabdata['lastval'];
+        $mabLast = $mabdata['lastval'] / Config::get('site-variables.ada-price');;
 
         $Bitfinex = new Bitfinex();
         $limitPrice = LimitBuySell::where("transactionStatus", 1)->with("currency")->get();
@@ -45,7 +45,7 @@ class LimitCronController extends Controller
                 if($data->type == 'buy'){
                     $getCurrentRate = $Bitfinex->getRateBuySell('buy', $data->currency->name);
                     if ($data->currency->name == 'ADA'){
-                        $getCurrentRate = $mabLast;
+                        $getCurrentRate = $getCurrentRate * $mabLast;
                     }
                     if ($data->priceLimit <= $data->price_at_time_of_creation && $data->price_at_time_of_creation <= $getCurrentRate || $data->priceLimit >= $data->price_at_time_of_creation && $data->price_at_time_of_creation >= $getCurrentRate){
                         $user = User::where('id', $data->user_id)->first();
@@ -99,7 +99,7 @@ class LimitCronController extends Controller
                 } else {
                     $getCurrentRate = $Bitfinex->getRateBuySell('sell', $data->currency->name);
                     if ($data->currency->name == 'ADA'){
-                        $getCurrentRate = $mabLast;
+                        $getCurrentRate = $getCurrentRate * $mabLast;
                     }
                     if ($data->priceLimit <= $data->price_at_time_of_creation && $data->price_at_time_of_creation <= $getCurrentRate || $data->priceLimit >= $data->price_at_time_of_creation && $data->price_at_time_of_creation >= $getCurrentRate){
                         $user = User::where('id', $data->user_id)->first();
@@ -153,12 +153,12 @@ class LimitCronController extends Controller
                 }
             } else {
                 if ($data->currency->name == 'ADA'){
-                    $getCurrentRate = $mabLast;
+                    $getCurrentRate = $getCurrentRate * $mabLast;
                 }
                 $flag = ($data->limitType == 1) ? 'buy' : 'sell';
                 $getCurrentRate = $Bitfinex->getRateBuySell($flag, $data->currency->name);
                 if ($data->currency->name == 'ADA'){
-                    $getCurrentRate = $mabLast;
+                    $getCurrentRate = $getCurrentRate * $mabLast;
                 }
 
                 if ($data->priceLimit <= $data->price_at_time_of_creation && $data->priceLimit >= $getCurrentRate || $data->priceLimit >= $data->price_at_time_of_creation && $data->priceLimit <= $getCurrentRate){
@@ -180,7 +180,7 @@ class LimitCronController extends Controller
                     $getCurrentRate = $Bitfinex->getRateBuySell('sell', $item->currency->name);
                 }
                 if ($item->currency->name == 'ADA'){
-                    $getCurrentRate = $getCurrentRate * ($mabLast / Config::get('site-variables.ada-price'));
+                    $getCurrentRate = $getCurrentRate * $mabLast;
                 }
                 if ($item->limit_rate <= $item->price_at_time_of_creation && $item->limit_rate >= $getCurrentRate || $item->limit_rate >= $item->price_at_time_of_creation && $item->limit_rate <= $getCurrentRate){
                     // if(true){
