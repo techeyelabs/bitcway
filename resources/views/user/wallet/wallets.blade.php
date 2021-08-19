@@ -155,16 +155,24 @@
         {{--Derivative Wallet Start--}}
         <div class="card mt-3">
             <div class="card-body">
-                <div class="mb-4" style="margin: auto">
+                <div class="mb-4" style="width: 360px;">
                     <div class="container-fluid">
                         <div class="text-left">
                             <abbr title="Derivative Wallet"  class="txtWhitecolor text-left initialism">{{__('title20')}}</abbr><br>
                             <span class="d-none" id="derivativeBalance">{{($userDerivativeBalance->derivative == '0') ? '00.00' : $userDerivativeBalance->derivative}}</span>
                             <h4 class="txtWhitecolor text-left mb-3" id="totalDerivativeAmount">{{($userDerivativeBalance->derivative == '0') ? '00.00' : $userDerivativeBalance->derivative}}<span style="font-size: 10px">&nbsp; USD</span></h4>
                         </div>
-                        <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal"
-                                data-bs-target="#derivativeModal" style="width: 100px;" onclick="setFlag(2)">{{__('button11')}}
-                        </button>
+                        <div class="col-md-12 row">
+                            <div class="col-md-7">
+                                <abbr title="{{__('your_total_wallet_balance')}}"  class="txtWhitecolor text-left initialism">{{__('total_wallet_balance')}}</abbr><br>
+                                <h4 class="txtWhitecolor text-left" >{{($userDerivativeBalance->derivative == '0') ? '00.00' : number_format((float) ($userDerivativeBalance->derivative),2,'.', '')}}<span style="font-size: 10px">&nbsp; USD</span></h4>
+                            </div>
+                            <div class="col-md-5" style="margin-top: 3px;">
+                                <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal"
+                                        data-bs-target="#derivativeModal" style="width: 100px;" onclick="setFlag(2)">{{__('button11')}}
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div style="margin: auto; overflow-x: auto">
