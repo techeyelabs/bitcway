@@ -119,12 +119,18 @@ class CronController extends Controller
                         foreach ($leverageWalletCurrency as $item) {
                             $TransactionHistory = new TransactionHistory();
                             $TransactionHistory->entry_price = $item->derivative_currency_price	;
+
                             $derivativeSells = new DerivativeSell();
                             $derivativeSells->type = $item->type;
                             $derivativeSells->status = $item->status;
                             $derivativeSells->user_id = $item->user_id;
                             $derivativeSells->currency_id = $item->currency_id;
                             $derivativeSells->leverage = $item->leverage;
+                            if($item->trade_type == 'buy') {
+                                $TransactionHistory->type = 1;
+                            } else {
+                                $TransactionHistory->type = 2;
+                            }
 
                             if ($item->amount <= $leverageSellAmount) {
                                 if($item->trade_type == 'buy'){
@@ -172,7 +178,6 @@ class CronController extends Controller
                             $TransactionHistory->amount = $leverageRequestSellAmount;
                             $TransactionHistory->is_settlement = 1;
                             $TransactionHistory->equivalent_amount = $equivalentSellAmount;
-                            $TransactionHistory->type = 2;
                             $TransactionHistory->user_id = $user->user_id;
                             $TransactionHistory->currency_id = $currency->id;
                             $TransactionHistory->save();
