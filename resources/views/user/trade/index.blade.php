@@ -946,9 +946,10 @@
 
                     Home.latestAsk   = Home.asks[0][0];
                     Home.askIncrease = Home.asks[0][0] > Home.asks[1][0];
-
                 }
             }
+
+            $('#coinval').attr('disabled', false);
 
             let msg = JSON.stringify({ 
                 event   : 'subscribe',
@@ -1098,6 +1099,7 @@
                     return currency;
                 },
                 setCurrency(item){
+                    $('#coinval').attr('disabled', true);
                     $('#chart').html('');
                     Home.amount = '';
                     Home.buyAmount = 0;

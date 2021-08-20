@@ -726,7 +726,7 @@
                     toastr.error('Invalid amount !!');
                     return false;
                 }
-                calcSellAmount = 0;
+                let calcSellAmount = 0;
                 if (derivativeTradeType == 'buy'){
                     calcSellAmount = tradePriceDerivative * tradeamountDerivative;
                 } else {
