@@ -947,9 +947,9 @@
                     Home.latestAsk   = Home.asks[0][0];
                     Home.askIncrease = Home.asks[0][0] > Home.asks[1][0];
                 }
-            }
-
-            $('#coinval').attr('disabled', false);
+            }.then(function(){
+                $('#coinval').attr('disabled', false);
+            })
 
             let msg = JSON.stringify({ 
                 event   : 'subscribe',
