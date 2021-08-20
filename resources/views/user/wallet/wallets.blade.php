@@ -726,10 +726,11 @@
                     toastr.error('Invalid amount !!');
                     return false;
                 }
+                calcSellAmount = 0;
                 if (derivativeTradeType == 'buy'){
-                    let calcSellAmount = tradePriceDerivative * tradeamountDerivative;
+                    calcSellAmount = tradePriceDerivative * tradeamountDerivative;
                 } else {
-                    let calcSellAmount = (2 * entryPrice - tradePriceDerivative) * tradeamountDerivative;
+                    calcSellAmount = (2 * entryPrice - tradePriceDerivative) * tradeamountDerivative;
                 }
                 if (tradeTypeDerivative == "0"){
                     derivative = 0;
