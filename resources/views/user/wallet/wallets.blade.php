@@ -726,12 +726,17 @@
                     toastr.error('Invalid amount !!');
                     return false;
                 }
+                if (derivativeTradeType == 'buy'){
+                    let calcSellAmount = tradePriceDerivative * tradeamountDerivative;
+                } else {
+                    let calcSellAmount = (2 * entryPrice - tradePriceDerivative) * tradeamountDerivative;
+                }
                 if (tradeTypeDerivative == "0"){
                     derivative = 0;
                     axios.post('{{route("user-trade-sell", app()->getLocale())}}', {
                         currency: tradeCurrencyDerivative,
                         sellAmount: tradeamountDerivative,
-                        calcSellAmount: (2 * entryPrice - tradePriceDerivative) * tradeamountDerivative,
+                        calcSellAmount: calcSellAmount,
                         derivativeType: '0',
                         id: tradeIdDerivative
                     }).then(function (response) {
