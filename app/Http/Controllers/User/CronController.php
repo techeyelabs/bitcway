@@ -83,8 +83,10 @@ class CronController extends Controller
                     $equivalentSellAmount += $lwc->amount * (($lwc->derivative_currency_price * 2) - $price);
                 }
                 echo $equivalentSellAmount;
+                echo '<br/>';
             }
             $userInvestment = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeUserMoney');
+            $userInvestment += $individual->derivative;
             $userLoan = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeLoan');
             $userProfit = $equivalentSellAmount - $userLoan;
             echo $userProfit;
@@ -92,7 +94,6 @@ class CronController extends Controller
             echo $userInvestment;
             echo '<br/>';
             echo $userInvestment * 0.20;
-            exit;
             if (($userProfit) < ($userInvestment * 0.20)){
                 foreach ($leverageWalletCurrency as $item) {
                     // Data preparation
@@ -116,6 +117,8 @@ class CronController extends Controller
                         $leverageSellAmount = $leverageRequestSellAmount;
 
                         foreach ($leverageWalletCurrency as $item) {
+                            $TransactionHistory = new TransactionHistory();
+                            $TransactionHistory->entry_price = $item->derivative_currency_price	;
                             $derivativeSells = new DerivativeSell();
                             $derivativeSells->type = $item->type;
                             $derivativeSells->status = $item->status;
@@ -131,7 +134,8 @@ class CronController extends Controller
                                     $sellTimeValue = ($equivalentSellAmount * $item->amount) / $leverageRequestSellAmount;
                                     $sellAmountToUserWallet = $sellTimeValue - ($item->equivalent_amount * (($item->leverage - 1) / $item->leverage));
                                 }
-
+                                $buyTimeValue = $item->derivative_currency_price * $item->amount;
+                                $TransactionHistory->profit = $sellAmountToUserWallet - ($buyTimeValue / $item->leverage);
 
                                 $derivativeSells->amount = $item->amount;
                                 $derivativeSells->equivalent_amount = $item->equivalent_amount;
@@ -146,7 +150,7 @@ class CronController extends Controller
                                 $item->delete();
                             } else {
                                 $sellTimeValue = ($equivalentSellAmount * $leverageSellAmount) / $leverageRequestSellAmount;
-                                $buyTimeValue = ($item->equivalent_amount * $leverageSellAmount) / $item->amount;
+                                $buyTimeValue = ($item->derivative_currency_price * $leverageSellAmount) / $item->amount;
                                 $sellAmountToUserWallet = $sellTimeValue - ($buyTimeValue * (($item->leverage - 1) / $item->leverage));
 
                                 $derivativeSells->amount = $leverageSellAmount;
@@ -159,23 +163,24 @@ class CronController extends Controller
                                 $item->equivalent_amount = $item->equivalent_amount - $buyTimeValue;
                                 $item->save();
                                 $leverageSellAmount = 0;
+
+                                $TransactionHistory->profit = $sellAmountToUserWallet - ($buyTimeValue / $item->leverage);
                             }
                             if ($leverageSellAmount == 0) {
                                 break;
                             }
+                            $TransactionHistory->amount = $leverageRequestSellAmount;
+                            $TransactionHistory->is_settlement = 1;
+                            $TransactionHistory->equivalent_amount = $equivalentSellAmount;
+                            $TransactionHistory->type = 2;
+                            $TransactionHistory->user_id = $user->user_id;
+                            $TransactionHistory->currency_id = $currency->id;
+                            $TransactionHistory->save();
+
+                            $victim = User::find($user->user_id);
+                            $victim->derivative = $victim->derivative + $sellAmountToUserWallet;
+                            $victim->save();
                         }
-
-                        $TransactionHistory = new TransactionHistory();
-                        $TransactionHistory->amount = $leverageRequestSellAmount;
-                        $TransactionHistory->equivalent_amount = $equivalentSellAmount;
-                        $TransactionHistory->type = 2;
-                        $TransactionHistory->user_id = $user->user_id;
-                        $TransactionHistory->currency_id = $currency->id;
-                        $TransactionHistory->save();
-
-                        $victim = User::find($user->user_id);
-                        $victim->derivative = $victim->derivative + $sellAmountToUserWallet;
-                        $victim->save();
                     }
                     catch(\Exception $e)
                     {
