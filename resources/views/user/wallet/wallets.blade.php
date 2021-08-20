@@ -669,6 +669,7 @@
             var tradeamountDerivative = parseFloat($('#trade-amount_derivative_'+index).val());
             var tradeCurrencyDerivative = $('#MyCoinCurrencyName2'+index).html();
             var tradePriceDerivative = parseFloat($('#CoinpriceintoMyCurrency'+index).html());
+            var entryPrice = parseFloat($('#derivativeCurrencyEntryPrice'+index).html());
             var tradeIdDerivative = $('#id_derivative_'+index).val();
             var derivativeTradeType = $('#type'+index).html();
             var derivativeItemId = parseInt($('#id'+index).html());
@@ -730,7 +731,7 @@
                     axios.post('{{route("user-trade-sell", app()->getLocale())}}', {
                         currency: tradeCurrencyDerivative,
                         sellAmount: tradeamountDerivative,
-                        calcSellAmount: tradePriceDerivative * tradeamountDerivative,
+                        calcSellAmount: (2 * entryPrice - tradePriceDerivative) * tradeamountDerivative,
                         derivativeType: '0',
                         id: tradeIdDerivative
                     }).then(function (response) {
