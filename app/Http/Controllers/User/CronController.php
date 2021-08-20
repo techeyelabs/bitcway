@@ -73,29 +73,35 @@ class CronController extends Controller
             foreach($leverageWalletCurrency as $lwc){
                 if ($lwc->currencyName->name == 'ADA'){
                     $resp = $this->getCurrentPrice()['lastval'] / Config::get('site-variables.ada-price');
-                    $price = $Bitfinex->getRateBuySell($lwc->trade_type, $lwc->currencyName->name) * $resp;
+                    $price = $Bitfinex->getRate($lwc->currencyName->name, $lwc->trade_type) * $resp;
                 } else {
-                    $price = $Bitfinex->getRateBuySell($lwc->trade_type, $lwc->currencyName->name);
+                    $price = $Bitfinex->getRate($lwc->currencyName->name, $lwc->trade_type);
                 }
                 if ($lwc->trade_type == 'buy'){
                     $equivalentSellAmount += $lwc->amount * $price;
                 } else {
                     $equivalentSellAmount += $lwc->amount * (($lwc->derivative_currency_price * 2) - $price);
                 }
+                echo $equivalentSellAmount;
             }
             $userInvestment = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeUserMoney');
             $userLoan = Leverage_Wallet::where('user_id', $user->user_id)->sum('derivativeLoan');
             $userProfit = $equivalentSellAmount - $userLoan;
+            echo $userProfit;
+            echo '<br/>';
+            echo $userInvestment;
+            echo '<br/>';
+            echo $userInvestment * 0.20;
+            exit;
             if (($userProfit) < ($userInvestment * 0.20)){
                 foreach ($leverageWalletCurrency as $item) {
-                    $equivalentSellAmount = 0;
                     // Data preparation
-                    $resp = 1;
                     if ($lwc->currencyName->name == 'ADA'){
-                        $resp = $this->getCurrentPrice()['lastval'] / Config::get('site-variables.ada-price'); // Get MAB rate multiplier
+                        $resp = $this->getCurrentPrice()['lastval'] / Config::get('site-variables.ada-price');
+                        $rate = $Bitfinex->getRate($item->currencyName->name, $item->trade_type) * $resp;
+                    } else {
+                        $rate = $Bitfinex->getRate($item->currencyName->name, $item->trade_type);
                     }
-                    $rate = $Bitfinex->getRate($item->currencyName->name, $item->trade_type) * $resp; // Get current rate of coin in question
-
                     if ($lwc->trade_type == 'buy'){
                         $equivalentSellAmount += $item->amount * $rate;
                     } else {
@@ -103,9 +109,10 @@ class CronController extends Controller
                     }
                     $leverageRequestSellAmount = $item->amount;
                     $currency = Currency::where('name', $item->currencyName->name)->first();
+
                     DB::beginTransaction();
                     try {
-                        $leverageWalletCurrency = Leverage_Wallet::where('user_id', $user->user_id)->where('currency_id', $currency->id)->orderBy('id', 'desc')->where('id', $item->id)->get();
+                        $leverageWalletCurrency = Leverage_Wallet::where('user_id', $user->user_id)->where('currency_id', $currency->id)->orderBy('id', 'desc')->get();
                         $leverageSellAmount = $leverageRequestSellAmount;
 
                         foreach ($leverageWalletCurrency as $item) {
@@ -117,7 +124,14 @@ class CronController extends Controller
                             $derivativeSells->leverage = $item->leverage;
 
                             if ($item->amount <= $leverageSellAmount) {
-                                $sellTimeValue = $equivalentSellAmount;
+                                if($item->trade_type == 'buy'){
+                                    $sellTimeValue = ($equivalentSellAmount * $item->amount) / $leverageRequestSellAmount;
+                                    $sellAmountToUserWallet = $sellTimeValue - ($item->equivalent_amount * (($item->leverage - 1) / $item->leverage));
+                                } else {
+                                    $sellTimeValue = ($equivalentSellAmount * $item->amount) / $leverageRequestSellAmount;
+                                    $sellAmountToUserWallet = $sellTimeValue - ($item->equivalent_amount * (($item->leverage - 1) / $item->leverage));
+                                }
+
 
                                 $derivativeSells->amount = $item->amount;
                                 $derivativeSells->equivalent_amount = $item->equivalent_amount;
