@@ -947,9 +947,8 @@
                     Home.latestAsk   = Home.asks[0][0];
                     Home.askIncrease = Home.asks[0][0] > Home.asks[1][0];
                 }
-            }.then(function(){
-                $('#coinval').attr('disabled', false);
-            })
+            }
+
 
             let msg = JSON.stringify({ 
                 event   : 'subscribe',
@@ -1558,8 +1557,12 @@
                 getOrders(){
                     let that = this;
                     let currency = that.selectedItem[0];
-                    getOrders(currency);
-                    // getInitialOrder(currency);
+                    setTimeout(function(){
+                        getOrders(currency);
+                    }, 100);
+                    setTimeout(function () {
+                        $('#coinval').attr('disabled', false);
+                    }, 1000);
                 },
                 resize(width, height) {
                     this.chart.resize(width, height);
