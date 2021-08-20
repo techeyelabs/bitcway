@@ -423,6 +423,8 @@
             for (let j = 1; j <= indexNumber2; j++) {
                 let currencyName = $('#MyCoinCurrencyName2' + j).html();
                 let currencyAmount = parseFloat($('#MyTotalCoinAmount2' + j).html());
+                let entryPrice = parseFloat($('#derivativeCurrencyEntryPrice' + j).html());
+                let pnl = parseFloat($('#derivativeUnrealizedPrice' + j).html());
                 let tradeType = $('#type' + j).html();
                 let realcurrname2 = '';
                 if (currencyName == 'MAB') {
@@ -453,7 +455,8 @@
                     }
                     parseFloat($('#CoinpriceintoMycoin2' + j).html((currencyAmount * value).toFixed(5)));
                     parseFloat($('#CoinpriceintoMyCurrency' + j).html(( value).toFixed(5)));
-                    parseFloat($('#totalDerivativeAmount' + j).html(( currencyAmount*value).toFixed(5)));
+                    let totalDerivative = (entryPrice * currencyAmount) + pnl;
+                    parseFloat($('#totalDerivativeAmount' + j).html((totalDerivative).toFixed(5)));
                 });
             }
 
