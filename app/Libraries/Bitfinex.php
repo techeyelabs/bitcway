@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
+use Redis;
 
 class Bitfinex
 {
@@ -111,47 +112,56 @@ class Bitfinex
             switch ($range) {
                 case '1h':
                     $interval_range = '1m';
-                    $get_json = file_get_contents('./dataJson/1min.json');
+                    $get_json = Redis::get('1m');
+                    //$get_json = file_get_contents('./dataJson/1min.json');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '6h':
                     $interval_range = '5m';
-                    $get_json = file_get_contents('./dataJson/5min.json');
+                    $get_json = Redis::get('5m');
+                    //$get_json = file_get_contents('./dataJson/5min.json');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '1D':
                     $interval_range = '15m';
-                    $get_json = file_get_contents('./dataJson/15min.json');
+                    $get_json = Redis::get('15m');
+                    //$get_json = file_get_contents('./dataJson/15min.json');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '3D':
                     $interval_range = '30m';
-                    $get_json = file_get_contents('./dataJson/30min.json');
+                    $get_json = Redis::get('30m');
+                    //$get_json = file_get_contents('./dataJson/30min.json');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '7D':
                     $interval_range = '1h';
-                    $get_json = file_get_contents('./dataJson/1h.json');
+                    $get_json = Redis::get('1h');
+                    //$get_json = file_get_contents('./dataJson/1h.json');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '1M':
                     $interval_range = '6h';
-                    $get_json = file_get_contents('./dataJson/6h.json');
+                    $get_json = Redis::get('6h');
+                    //$get_json = file_get_contents('./dataJson/6h.json');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '3M':
                     $interval_range = '12h';
-                    $get_json = file_get_contents('./dataJson/6h.json');
+                    $get_json = Redis::get('12h');
+                    //$get_json = file_get_contents('./dataJson/6h.json');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '1Y':
                     $interval_range = '1D';
-                    $get_json = file_get_contents('./dataJson/1d.json');
+                    $get_json = Redis::get('1D');
+                    //$get_json = file_get_contents('./dataJson/1d.json');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '3Y':
                     $interval_range = '7D';
-                    $get_json = file_get_contents('./dataJson/7d.json');
+                    $get_json = Redis::get('7D');
+                    //$get_json = file_get_contents('./dataJson/7d.json');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 default:
@@ -224,27 +234,33 @@ class Bitfinex
             if ($currency == 'tADAUSD') {
                 switch ($interval) {
                     case '1m':
-                        $get_json = file_get_contents('./dataJson/1min.json');
+                        //$get_json = file_get_contents('./dataJson/1min.json');
+                        $get_json = Redis::get('1m');
                         $json_data = json_decode($get_json, 'true');
                         break;
                     case '15m':
-                        $get_json = file_get_contents('./dataJson/15min.json');
+                        //$get_json = file_get_contents('./dataJson/15min.json');
+                        $get_json = Redis::get('15m');
                         $json_data = json_decode($get_json, 'true');
                         break;
                     case '30m':
-                        $get_json = file_get_contents('./dataJson/30min.json');
+                        //$get_json = file_get_contents('./dataJson/30min.json');
+                        $get_json = Redis::get('30m');
                         $json_data = json_decode($get_json, 'true');
                         break;
                     case '1h':
-                        $get_json = file_get_contents('./dataJson/1h.json');
+                        //$get_json = file_get_contents('./dataJson/1h.json');
+                        $get_json = Redis::get('1h');
                         $json_data = json_decode($get_json, 'true');
                         break;
                     case '6h':
-                        $get_json = file_get_contents('./dataJson/6h.json');
+                        //$get_json = file_get_contents('./dataJson/6h.json');
+                        $get_json = Redis::get('6h');
                         $json_data = json_decode($get_json, 'true');
                         break;
                     default:
-                        $get_json = file_get_contents('./dataJson/7d.json');
+                        //$get_json = file_get_contents('./dataJson/7d.json');
+                        $get_json = Redis::get('7d');
                         $json_data = json_decode($get_json, 'true');
                 }
                 $response_data = Http ::get('https://api-pub.bitfinex.com/v2/candles/trade:' . $interval . ':' . $currency . '/hist?limit=10000');
