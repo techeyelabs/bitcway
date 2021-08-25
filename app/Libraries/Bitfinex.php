@@ -156,9 +156,9 @@ class Bitfinex
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '3M':
-                    $interval_range = '12h';
-                    $this->handleCache('12h');
-                    $get_json = Redis::get('12h');
+                    $interval_range = '6h';
+                    $this->handleCache('6h');
+                    $get_json = Redis::get('6h');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '1Y':
