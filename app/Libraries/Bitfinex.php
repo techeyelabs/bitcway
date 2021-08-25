@@ -19,6 +19,15 @@ class Bitfinex
     private $Version = 'v2';
     private $version1 = 'v1';
 
+    private function handleCache($type)
+    {
+        if(!Redis::exists($type)) {
+            $get_content = file_get_contents('./dataJson/'.$type.'.json');
+            Redis::set($type, $get_content);
+        }
+        return 0;
+    }
+
     public function getCurrencies()
     {
         $response = Http ::get($this -> PublicUrl . $this -> Version . '/conf/pub:list:currency');
@@ -112,56 +121,56 @@ class Bitfinex
             switch ($range) {
                 case '1h':
                     $interval_range = '1m';
-                    $get_json = Redis::get('1m');
-                    //$get_json = file_get_contents('./dataJson/1min.json');
+                    $this->handleCache('1min');
+                    $get_json = Redis::get('1min');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '6h':
                     $interval_range = '5m';
-                    $get_json = Redis::get('5m');
-                    //$get_json = file_get_contents('./dataJson/5min.json');
+                    $this->handleCache('5min');
+                    $get_json = Redis::get('5min');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '1D':
                     $interval_range = '15m';
-                    $get_json = Redis::get('15m');
-                    //$get_json = file_get_contents('./dataJson/15min.json');
+                    $this->handleCache('15min');
+                    $get_json = Redis::get('15min');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '3D':
                     $interval_range = '30m';
-                    $get_json = Redis::get('30m');
-                    //$get_json = file_get_contents('./dataJson/30min.json');
+                    $this->handleCache('30min');
+                    $get_json = Redis::get('30min');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '7D':
                     $interval_range = '1h';
+                    $this->handleCache('1h');
                     $get_json = Redis::get('1h');
-                    //$get_json = file_get_contents('./dataJson/1h.json');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '1M':
                     $interval_range = '6h';
+                    $this->handleCache('6h');
                     $get_json = Redis::get('6h');
-                    //$get_json = file_get_contents('./dataJson/6h.json');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '3M':
                     $interval_range = '12h';
+                    $this->handleCache('12h');
                     $get_json = Redis::get('12h');
-                    //$get_json = file_get_contents('./dataJson/6h.json');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '1Y':
                     $interval_range = '1D';
-                    $get_json = Redis::get('1D');
-                    //$get_json = file_get_contents('./dataJson/1d.json');
+                    $this->handleCache('1d');
+                    $get_json = Redis::get('1d');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 case '3Y':
                     $interval_range = '7D';
-                    $get_json = Redis::get('7D');
-                    //$get_json = file_get_contents('./dataJson/7d.json');
+                    $this->handleCache('7d');
+                    $get_json = Redis::get('7d');
                     $json_data = json_decode($get_json, 'true');
                     break;
                 default:
@@ -234,32 +243,32 @@ class Bitfinex
             if ($currency == 'tADAUSD') {
                 switch ($interval) {
                     case '1m':
-                        //$get_json = file_get_contents('./dataJson/1min.json');
-                        $get_json = Redis::get('1m');
+                        $this->handleCache('1min');
+                        $get_json = Redis::get('1min');
                         $json_data = json_decode($get_json, 'true');
                         break;
                     case '15m':
-                        //$get_json = file_get_contents('./dataJson/15min.json');
-                        $get_json = Redis::get('15m');
+                        $this->handleCache('15min');
+                        $get_json = Redis::get('15min');
                         $json_data = json_decode($get_json, 'true');
                         break;
                     case '30m':
-                        //$get_json = file_get_contents('./dataJson/30min.json');
-                        $get_json = Redis::get('30m');
+                        $this->handleCache('30min');
+                        $get_json = Redis::get('30min');
                         $json_data = json_decode($get_json, 'true');
                         break;
                     case '1h':
-                        //$get_json = file_get_contents('./dataJson/1h.json');
+                        $this->handleCache('1h');
                         $get_json = Redis::get('1h');
                         $json_data = json_decode($get_json, 'true');
                         break;
                     case '6h':
-                        //$get_json = file_get_contents('./dataJson/6h.json');
+                        $this->handleCache('6h');
                         $get_json = Redis::get('6h');
                         $json_data = json_decode($get_json, 'true');
                         break;
                     default:
-                        //$get_json = file_get_contents('./dataJson/7d.json');
+                        $this->handleCache('7d');
                         $get_json = Redis::get('7d');
                         $json_data = json_decode($get_json, 'true');
                 }
