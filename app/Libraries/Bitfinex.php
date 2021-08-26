@@ -21,11 +21,13 @@ class Bitfinex
 
     private function handleCache($type)
     {
-        if(!Redis::exists($type)) {
-            $get_content = file_get_contents('./dataJson/'.$type.'.json');
-            Redis::set($type, $get_content);
-        }
-        return 0;
+//        if(!Redis::exists($type)) {
+//            $get_content = file_get_contents('./dataJson/'.$type.'.json');
+//            Redis::set($type, $get_content);
+//        }
+//        $get_json = Redis::get($type);
+        $get_json = file_get_contents('./dataJson/'.$type.'.json');
+        return json_decode($get_json, 'true');
     }
 
     public function getCurrencies()
@@ -121,64 +123,46 @@ class Bitfinex
             switch ($range) {
                 case '1h':
                     $interval_range = '1m';
-                    $this->handleCache('1min');
-                    $get_json = Redis::get('1min');
-                    $json_data = json_decode($get_json, 'true');
+                    $json_data = $this->handleCache('1min');
                     break;
                 case '6h':
                     $interval_range = '5m';
-                    $this->handleCache('5min');
-                    $get_json = Redis::get('5min');
-                    $json_data = json_decode($get_json, 'true');
+                    $json_data = $this->handleCache('5min');
                     break;
                 case '1D':
                     $interval_range = '15m';
-                    $this->handleCache('15min');
-                    $get_json = Redis::get('15min');
-                    $json_data = json_decode($get_json, 'true');
+                    $json_data = $this->handleCache('15min');
                     break;
                 case '3D':
                     $interval_range = '30m';
-                    $this->handleCache('30min');
-                    $get_json = Redis::get('30min');
-                    $json_data = json_decode($get_json, 'true');
+                    $json_data = $this->handleCache('30min');
                     break;
                 case '7D':
                     $interval_range = '1h';
-                    $this->handleCache('1h');
-                    $get_json = Redis::get('1h');
-                    $json_data = json_decode($get_json, 'true');
+                    $json_data = $this->handleCache('1h');
                     break;
                 case '1M':
                     $interval_range = '6h';
-                    $this->handleCache('6h');
-                    $get_json = Redis::get('6h');
-                    $json_data = json_decode($get_json, 'true');
+                    $json_data = $this->handleCache('6h');
                     break;
                 case '3M':
                     $interval_range = '6h';
-                    $this->handleCache('6h');
-                    $get_json = Redis::get('6h');
-                    $json_data = json_decode($get_json, 'true');
+                    $json_data = $this->handleCache('6h');
                     break;
                 case '1Y':
                     $interval_range = '1D';
-                    $this->handleCache('1d');
-                    $get_json = Redis::get('1d');
-                    $json_data = json_decode($get_json, 'true');
+                    $json_data = $this->handleCache('1d');
                     break;
                 case '3Y':
                     $interval_range = '7D';
-                    $this->handleCache('7d');
-                    $get_json = Redis::get('7d');
-                    $json_data = json_decode($get_json, 'true');
+                    $json_data = $this->handleCache('7d');
                     break;
                 default:
                     $interval_range = '1W';
             }
 
             if ($currency == 'tADAUSD') {
-                if ($get_json === false) {
+                if ($json_data === false) {
                     dd("not found");
                 }
                 if ($json_data === null) {
@@ -243,34 +227,22 @@ class Bitfinex
             if ($currency == 'tADAUSD') {
                 switch ($interval) {
                     case '1m':
-                        $this->handleCache('1min');
-                        $get_json = Redis::get('1min');
-                        $json_data = json_decode($get_json, 'true');
+                        $json_data = $this->handleCache('1min');
                         break;
                     case '15m':
-                        $this->handleCache('15min');
-                        $get_json = Redis::get('15min');
-                        $json_data = json_decode($get_json, 'true');
+                        $json_data = $this->handleCache('15min');
                         break;
                     case '30m':
-                        $this->handleCache('30min');
-                        $get_json = Redis::get('30min');
-                        $json_data = json_decode($get_json, 'true');
+                        $json_data = $this->handleCache('30min');
                         break;
                     case '1h':
-                        $this->handleCache('1h');
-                        $get_json = Redis::get('1h');
-                        $json_data = json_decode($get_json, 'true');
+                        $json_data = $this->handleCache('1h');
                         break;
                     case '6h':
-                        $this->handleCache('6h');
-                        $get_json = Redis::get('6h');
-                        $json_data = json_decode($get_json, 'true');
+                        $json_data = $this->handleCache('6h');
                         break;
                     default:
-                        $this->handleCache('7d');
-                        $get_json = Redis::get('7d');
-                        $json_data = json_decode($get_json, 'true');
+                        $json_data = $this->handleCache('7d');
                 }
                 $response_data = Http ::get('https://api-pub.bitfinex.com/v2/candles/trade:' . $interval . ':' . $currency . '/hist?limit=10000');
                 $key = array_search($date_before_start_date, array_column(json_decode($response_data), 0));
