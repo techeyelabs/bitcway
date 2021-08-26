@@ -311,6 +311,12 @@ class TradeController extends Controller
                     $TransactionHistory->profit = $sellAmountToUserWallet - ($buyTimeValue / $item->leverage) ;
                     $TransactionHistory->entry_price = $item->derivative_currency_price;
                     $TransactionHistory->type = ($item->trade_type == 'buy')? 1: 2;
+                    if($item->trade_type == 'buy'){
+                        $TransactionHistory->equivalent_amount = $request->calcSellAmount;
+                    } else {
+                        $TransactionHistory->equivalent_amount = (2 * $item->derivative_currency_price) - $request->calcSellAmount;
+                    }
+
                     if ($leverageSellAmount == 0) {
                         break;
                     }
@@ -330,9 +336,9 @@ class TradeController extends Controller
                 $TransactionHistory->profit = $request->calcSellAmount - ($UserWallet->currency_price * $request->sellAmount);
                 $TransactionHistory->entry_price = $UserWallet->currency_price;
                 $TransactionHistory->type = 2;
+                $TransactionHistory->equivalent_amount = $request->calcSellAmount;
             }
             $TransactionHistory->amount = $request->sellAmount;
-            $TransactionHistory->equivalent_amount = $request->calcSellAmount;
             $TransactionHistory->is_settlement = (isset($request->derivativeType))? 1: 0;
             $TransactionHistory->user_id = Auth::user()->id;
             $TransactionHistory->currency_id = $currency->id;
