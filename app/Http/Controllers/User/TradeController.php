@@ -314,7 +314,7 @@ class TradeController extends Controller
                     if($item->trade_type == 'buy'){
                         $TransactionHistory->equivalent_amount = $request->calcSellAmount;
                     } else {
-                        $TransactionHistory->equivalent_amount = (2 * $item->derivative_currency_price) - ($request->calcSellAmount / $request->sellAmount);
+                        $TransactionHistory->equivalent_amount = ((2 * $item->derivative_currency_price) - ($request->calcSellAmount / $request->sellAmount)) * $request->sellAmount;
                     }
 
                     if ($leverageSellAmount == 0) {
