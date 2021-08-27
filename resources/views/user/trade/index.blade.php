@@ -835,7 +835,6 @@
                         Home.askIncrease = Home.asks[0][0] > Home.asks[1][0];
                     }
                 })
-                .then($('#coinval').attr('disabled', false))
                 .catch(error => "404")
         }
 
@@ -1562,7 +1561,7 @@
                         getOrders(currency);
                     }, 100);
                     setTimeout(function () {
-                        //$('#coinval').attr('disabled', false);
+                        $('#coinval').attr('disabled', false);
                     }, 1000);
                 },
                 resize(width, height) {
